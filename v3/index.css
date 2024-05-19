@@ -1,0 +1,58 @@
+:root
+{
+    --color-eigen: #16161d;
+    --color-white: #fff;
+
+    --grid-size  : 24px;
+}
+
+*
+{
+    box-sizing: border-box;
+}
+
+html
+{
+    font-size: 16px;
+
+    line-height: 24px;
+
+    color: var(--color-white);
+}
+
+html,
+body
+{
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    min-height: 100%;
+
+    background-color: var(--color-eigen);
+}
+
+main
+{
+    position: relative;
+
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+}
+
+canvas
+{
+    display: block;
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+}
