@@ -78,26 +78,32 @@ function algorithm( canvasManager, imageManager, options )
     }
 
     let backgroundIndex = 0;
-    let step = "FIRST"; // "FIRST" -> "LINE" -> "LAST"
+    let machineIndex    = 0;
 
-    canvasManager.drawImage( backgrounds[ backgroundIndex ] );
+    // States: "BG", "BLANK", "LINE"
+    const machine = [ "BG", "LINE", "LINE" ];
 
-    // PROBLEM: if I dont draw lines in every turn, I cannot see them clearly and that's a pity
-    //          on the other hand if I draw them every turn they're kinda aggressive
     window.setInterval(
         () =>
         {
-            if ( step === "FIRST" && ++backgroundIndex === backgrounds.length )
+            if ( machineIndex === machine.length )
             {
-                backgroundIndex = 0;
+                machineIndex = 0;
+
+                ++backgroundIndex;
+
+                if ( backgroundIndex === backgrounds.length )
+                {
+                    backgroundIndex = 0;
+                }
             }
 
-            if ( step === "FIRST" ) canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
-            if ( step === "LINE" || step === "LAST"  ) canvasManager.mergeAndDrawImage( imaginaryLines[ backgroundIndex ], options.alphaDelta );
+            const step = machine[ machineIndex ];
 
-            if ( step === "FIRST" ) step = "LINE";
-            if ( step === "LINE"  ) step = "LAST";
-            if ( step === "LAST"  ) step = "FIRST";
+            if ( step === "BG"    ) canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ]   , options.alphaDelta );
+            if ( step === "LINE"  ) canvasManager.mergeAndDrawImage( imaginaryLines[ backgroundIndex ], options.alphaDelta );
+
+            ++machineIndex;
         },
         options.frameDelay
     );
