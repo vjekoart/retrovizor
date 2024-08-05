@@ -1,0 +1,142 @@
+:root
+{
+    --color-white: #fff;
+    --color-dark:  #16161d;
+    --color-dark-light: #717194;
+
+    --grid-base: 16px;
+    --line-height: 24px;
+    --line-height-console: 21px;
+
+    --font-family: sans-serif;
+    --font-family-console: consolas;
+    --font-size-heading: 24px;
+    --font-size-text: 16px;
+    --font-size-console: 14px;
+}
+
+*
+{
+    box-sizing: border-box;
+}
+
+html,
+body
+{
+    margin:  0;
+    padding: 0;
+
+    color:      var(--color-white);
+    background: var(--color-dark);
+}
+
+html
+{
+    font-family: var(--font-family);
+    font-size: var(--font-size-text);
+}
+
+h1
+{
+    margin: calc(2 * var(--line-height)) 0;
+
+    font-size:   var(--font-size-heading);
+    font-weight: 500;
+
+    line-height: var(--line-height);
+    text-align:  center;
+}
+
+main#user-interface
+{
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-base);
+
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+textarea#program-output
+{
+    resize: none;
+
+    display: block;
+    width: 100%;
+
+    margin: 0;
+    padding: 0 var(--line-height-console);
+
+    font-family: var(--font-family-console);
+    font-size: var(--font-size-console);
+    line-height: var(--line-height-console);
+
+    background: transparent;
+    color: var(--color-white);
+    border: none;
+}
+
+textarea#program-output:focus
+{
+    outline: none;
+}
+
+
+form#user-interaction
+{
+    display: flex;
+    flex-direction: row;
+    width:  100%;
+    padding: 0;
+}
+
+label[for="user-input"],
+input[type="text"]#user-input,
+button[type="submit"]#user-submit
+{
+    font-family: var(--font-family-console);
+    font-size: var(--font-size-console);
+    font-weight: 700;
+    line-height: var(--line-height-console);
+
+    background: transparent;
+    color:      var(--color-white);
+}
+
+label[for="user-input"],
+button[type="submit"]#user-submit
+{
+    display: block;
+    width: var(--line-height-console);
+    height: var(--line-height-console);
+    margin: 0;
+    padding: 0;
+
+    text-align: center;
+}
+
+label[for="user-input"]
+{
+    // Placeholder
+}
+
+input[type="text"]#user-input
+{
+    display: block;
+    width: 100%;
+
+    border: none;
+    border-bottom: 2px solid var(--color-white);
+}
+
+input[type="text"]#user-input:focus
+{
+    outline: none;
+}
+
+button[type="submit"]#user-submit
+{
+    border: none;
+    outline: none;
+}
