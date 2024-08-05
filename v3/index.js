@@ -12,16 +12,9 @@
  * Try to add something like broken non-straight lines, because they seem like a natural thing that comes out of this
  * hallucination. Closed-eyes are just inspiration, I should not try to copy that because I cant and it's not necessary.
  * 
- * Algorithm: how to find adjecent points that have the strongest opacity.
- *      1. Choose random bright point from the array.
- *      2. Look around you (first circle) and choose the brightest point. If all points are completely dark, step out to another circle.
- *      3. Using this approach, repeat and create a path that consists of max N bright points, or if you go outside the canvas.
- *      4. You can't choose point that was already selected.
- * 
- *      @important Function for this algorithm is missing. Replace "paths" drawing with this function.
- * 
  * @Tech
  * - extract managers to module files
+ * - generate stuff on worker? initialization part has an impact on performance and UX
  * - clean up and prettify code
  * - create a TypeScript build system for this project
  * - this may be a custom web element that has verbose configuration (everything is optional)
@@ -32,99 +25,79 @@ function main()
     {
         alphaDelta: 20,
         drawPadding: 20,
-        frameDelay: 100,
-        blobPolygonSize: 8,
-        blobPolygonDistance: 150,
-        blobColor:
-        {
-            r: 203,
-            g: 203,
-            b: 216,
-            a: 0.1
-        },
+        frameCount: 24,
+        frameDelay: 50,
         noiseColor:
         {
             r: 185,
             g: 185,
             b: 202
         },
-        blobs:
+        accentColor:
         {
-            minWidthFactor:  0.10, // 1 means same as screen height, 0.5 means half of the screen height
-            maxWidthFactor:  0.15, // 1 means same as screen width, 0.5 means half of the screen width
-            minHeightFactor: 0.21, // 1 means same as screen height, 0.5 means half of the screen height
-            maxHeightFactor: 0.33  // 1 means same as screen height, 0.5 means half of the screen height
-        }
+            r: 185,//200,
+            g: 185,//200,
+            b: 202//213
+        },
+        maxImaginaryLineLength: 200
     }
 
-    const canvasManager = new CanvasManager( options.blobColor, options.noiseColor, options.drawPadding );
-    const imageManager  = new ImageManager( options.noiseColor );
+    const canvasManager = new CanvasManager( options.drawPadding );
+    const imageManager  = new ImageManager( options.accentColor, options.noiseColor );
 
     canvasManager.setup();
 
-    algorithmSecond( canvasManager, imageManager, options );
+    algorithm( canvasManager, imageManager, options );
 }
 
-function algorithmSecond( canvasManager, imageManager, options )
+function algorithm( canvasManager, imageManager, options )
 {
-    // TODO: Programatically generate frames where count is N
-    const backgrounds = [
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 13, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 18, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 17, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 18, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 17, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 18, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 17, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 18, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 17, 120 ),
-        imageManager.generateDistortedArray( canvasManager.pixelCount, 16, 120 )
-    ];
+    const backgrounds = [];
 
-    const paths = [
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs ),
-        imageManager.generatePathArray( canvasManager.pixelCountX, canvasManager.pixelCountY, 150, options.blobs )
-    ];
+    for ( let i = 0; i < options.frameCount; ++i )
+    {
+        const coverage   = utilities.getRandomFromInterval( 12,  20 );
+        const maxStep    = utilities.getRandomFromInterval( 80, 120 );
+        const background = imageManager.generateDistortedArray( canvasManager.pixelCount, coverage, maxStep );
+
+        backgrounds.push( background );
+    }
+
+    const imaginaryLines = [];
+
+    for ( const background of backgrounds )
+    {
+        const imaginaryLine = imageManager.generateImaginaryLine(
+            background,
+            canvasManager.pixelCountX,
+            canvasManager.pixelCountY,
+            options.maxImaginaryLineLength
+        )
+
+        imaginaryLines.push( imaginaryLine );
+    }
 
     let backgroundIndex = 0;
-    let pathIndex       = 0;
-    let index           = 0;
+    let step = "FIRST"; // "FIRST" -> "LINE" -> "LAST"
 
     canvasManager.drawImage( backgrounds[ backgroundIndex ] );
 
+    // PROBLEM: if I dont draw lines in every turn, I cannot see them clearly and that's a pity
+    //          on the other hand if I draw them every turn they're kinda aggressive
     window.setInterval(
         () =>
         {
-            if ( index === 0 )
+            if ( step === "FIRST" && ++backgroundIndex === backgrounds.length )
             {
-                index = 1;
-
-                // if ( ++pathIndex === paths.length )
-                // {
-                //     pathIndex = 0;
-                // }
-
-                // canvasManager.mergeAndDrawImage( paths[ pathIndex ], options.alphaDelta );
+                backgroundIndex = 0;
             }
-            else
-            {
-                index = 0;
 
-                if ( ++backgroundIndex === backgrounds.length )
-                {
-                    backgroundIndex = 0;
-                }
+            if ( step === "FIRST" ) canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
+            if ( step === "LINE" || step === "LAST"  ) canvasManager.mergeAndDrawImage( imaginaryLines[ backgroundIndex ], options.alphaDelta );
 
-                canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
-            }
+            if ( step === "FIRST" ) step = "LINE";
+            if ( step === "LINE"  ) step = "LAST";
+            if ( step === "LAST"  ) step = "FIRST";
         },
         options.frameDelay
     );
@@ -138,16 +111,16 @@ class CanvasManager
     pixelCountX = 0;
     pixelCountY = 0;
 
-    constructor( blobColor, noiseColor, padding )
+    get pixelCount()
+    {
+        return this.pixelCountX * this.pixelCountY;
+    }
+
+    constructor( padding )
     {
         this.canvas  = document.querySelector( "canvas" );
         this.context = this.canvas.getContext( "2d", { willReadFrequently: true } );
-
-        this.padding    = padding;
-        this.blobColor  = blobColor;
-        this.noiseColor = noiseColor;
-
-        this.context.strokeStyle = `rgb(${ noiseColor.r }, ${ noiseColor.g }, ${ noiseColor.b })`;
+        this.padding = padding;
     }
 
     setup()
@@ -192,6 +165,11 @@ class CanvasManager
     //       data structures
     mergeAndDrawImage( imageDataArray, alphaDelta )
     {
+        if ( !imageDataArray )
+        {
+            return;
+        }
+
         const existingImageData = this.context.getImageData(
             this.padding,
             this.padding,
@@ -199,28 +177,28 @@ class CanvasManager
             this.pixelCountY
         );
 
+        // TODO: optimise the main loop as much as possible
         for ( let i = 0; i < existingImageData.data.length; i += 4 )
         {
-            // TODO: image data should be manipulated inside ImageManager
-            // It's okay to set all pixels to the same value since their visibility is dictated by opacity
-            // TODO: is it possible to set all pixels to the same color during creation so I don't have to have 3 extra operations?
-            existingImageData.data[ i + 0 ] = this.noiseColor.r;
-            existingImageData.data[ i + 1 ] = this.noiseColor.g;
-            existingImageData.data[ i + 2 ] = this.noiseColor.b;
+            existingImageData.data[ i + 0 ] = Math.min( 255, existingImageData.data[ i + 0 ] + imageDataArray[ i + 0 ] );
+            existingImageData.data[ i + 1 ] = Math.min( 255, existingImageData.data[ i + 1 ] + imageDataArray[ i + 1 ] );
+            existingImageData.data[ i + 2 ] = Math.min( 255, existingImageData.data[ i + 2 ] + imageDataArray[ i + 2 ] );
             existingImageData.data[ i + 3 ] = Math.min( 255, Math.max( 0, existingImageData.data[ i + 3 ] - alphaDelta + imageDataArray[ i + 3 ] ) );
         }
 
         this.context.putImageData( existingImageData, this.padding, this.padding );
     }
-
-    get pixelCount()
-    {
-        return  this.pixelCountX * this.pixelCountY;
-    }
 }
 
 class ImageManager
 {
+    accentColor =
+    {
+        r: 255,
+        g: 255,
+        b: 255
+    }
+
     noiseColor =
     {
         r: 255,
@@ -228,8 +206,9 @@ class ImageManager
         b: 255
     }
 
-    constructor( noiseColor )
+    constructor( accentColor, noiseColor )
     {
+        this.accentColor = accentColor;
         this.noiseColor = noiseColor;
     }
 
@@ -247,9 +226,7 @@ class ImageManager
         const arr = new Uint8ClampedArray( byteCount );
 
         // Generate random sequences
-        // TODO: generate opacity sequence
-        const opacitySequence = [ 13, 88, 180, 220, 126, 27 ]; // Fade-in fade-out
-        //const opacitySequence = [ 66, 99, 99, 99, 99, 66 ]; // Fade-in fade-out
+        const opacitySequence = utilities.getRandomArray( 300, 13, 180 );
         const pixelSequence   = Array.from(
             { length: ( coverage / 100 ) * pixelCount },
             () => Math.floor( Math.random() * maxStep )
@@ -273,100 +250,179 @@ class ImageManager
     }
 
     /**
-     * ...
-     * @return frame
+     * Algorithm: how to find adjecent points that have the strongest opacity.
+     *      1. Choose random bright point from the array.
+     *      2. Look around you (first circle) and choose the brightest point. If all points are completely dark, step out to another circle.
+     *      3. Using this approach, repeat and create a path that consists of max N bright points, or if you go outside the canvas.
+     *      4. You can't choose point that was already selected.
+     * 
+     * @param frame       Uint8ClampedArray where each element represents a pixel.
+     * @param imageWidth
+     * @param imageHeight
+     * @param maxLength   Number representing max length of the imaginary line in pixels.
      */
-    generateBlobArray( screenWidth, screenHeight, opacity, options )
+    generateImaginaryLine( frame, imageWidth, imageHeight, maxLength )
     {
-        const blobWidth  = utilities.getRandomFromInterval(
-            Math.floor( screenWidth * options.minWidthFactor   ),
-            Math.floor( screenWidth * options.maxWidthFactor   )
-        );
+        const _startingPointPaddingFactor = 0.4; // Starting box from where the brightest point should be selected
+        const _deadEndPaddingFactor = 0.05;      // Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side
 
-        const blobHeight = utilities.getRandomFromInterval(
-            Math.floor( screenHeight * options.minHeightFactor ),
-            Math.floor( screenHeight * options.maxHeightFactor )
-        );
-
-        const offsetX = utilities.getRandomFromInterval( 0, screenWidth - blobWidth   );
-        const offsetY = utilities.getRandomFromInterval( 0, screenHeight - blobHeight );
-
-        const startRow = offsetY;
-        const endRow   = offsetY + blobHeight;
-
-        const centerColumn = Math.floor( offsetX + blobWidth / 2 );
-        const inflection   = blobHeight / 2;
-
-        const pixelCount = screenWidth * screenHeight;
-        const byteCount = 4 * pixelCount;
-        const arr = new Uint8ClampedArray( byteCount );
-
-        for ( let row = startRow, iterator = 0; row < endRow; ++row, ++iterator )
+        // Find the brightest point in the starting box, influenced by _startingPointPaddingFactor
+        const getStartingPoint = () =>
         {
-            const factor      = utilities.fadeIn( iterator < inflection ? iterator / inflection : 1 - ( iterator % inflection ) / inflection );
-            const leftWidth   = Math.ceil( factor * utilities.getRandomFromInterval( 20, blobWidth / 2 ) );
-            const rightWidth  = Math.ceil( factor * utilities.getRandomFromInterval( 20, blobWidth / 2 ) );
-            const startColumn = centerColumn - leftWidth;
-            const endColumn   = centerColumn + rightWidth;
+            const startX = Math.ceil( _startingPointPaddingFactor * imageWidth );
+            const startY = Math.ceil( _startingPointPaddingFactor * imageHeight );
+            const endX   = Math.floor( imageWidth - startX );
+            const endY   = Math.floor( imageHeight - startY );
 
-            for ( let column = startColumn; column < endColumn; ++column )
+            const startIndex = 4 * ( ( startY - 1 ) * imageWidth + ( startX - 1 ) );
+            const brightest  = { x: startX, y: startY, a: frame[ startIndex + 3 ] };
+
+            for ( let xi = startX; xi < endX; ++xi )
             {
-                const pixelIndex = ( 4 * screenWidth ) * row + 4 * column;
+                for ( let yi = startY; yi < endY; ++yi )
+                {
+                    const index = 4 * ( ( yi - 1 ) * imageWidth + ( xi - 1 ) );
+                    const currentPixel = { x: xi, y: yi, a: frame[ index + 3 ] };
 
-                arr[ pixelIndex + 0 ] = this.noiseColor.r;
-                arr[ pixelIndex + 1 ] = this.noiseColor.g;
-                arr[ pixelIndex + 2 ] = this.noiseColor.b;
-                arr[ pixelIndex + 3 ] = opacity;
+                    if ( currentPixel.a > brightest.a )
+                    {
+                        brightest.x = currentPixel.x;
+                        brightest.y = currentPixel.y;
+                        brightest.a = currentPixel.a;
+                    }
+                }
             }
+
+            return brightest;
         }
 
-        return arr;
-    }
-
-    generatePathArray( screenWidth, screenHeight, opacity, options )
-    {
-        const pathWidth  = utilities.getRandomFromInterval(
-            Math.floor( screenWidth * options.minWidthFactor   ),
-            Math.floor( screenWidth * options.maxWidthFactor   )
-        );
-        const pathHeight = utilities.getRandomFromInterval(
-            Math.floor( screenHeight * options.minHeightFactor ),
-            Math.floor( screenHeight * options.maxHeightFactor )
-        );
-
-        const offsetX = utilities.getRandomFromInterval( 0, screenWidth - pathWidth   );
-        const offsetY = utilities.getRandomFromInterval( 0, screenHeight - pathHeight );
-
-        const startRow = offsetY;
-        const endRow   = offsetY + pathHeight;
-
-        const centerColumn = offsetX + pathWidth;
-        const inflection   = pathHeight / 2;
-
-        const pixelCount = screenWidth * screenHeight;
-        const byteCount = 4 * pixelCount;
-        const arr = new Uint8ClampedArray( byteCount );
-
-        for ( let row = startRow, iterator = 0; row < endRow; ++row, ++iterator )
+        const findImaginaryLine = ( startingPoint ) =>
         {
-            const factor = utilities.fadeIn( iterator / pathHeight );
-            const centerColumnWithOffset = centerColumn - Math.floor( factor * pathWidth );
+            const line = [ startingPoint ];
 
-            const pixelIndex = ( 4 * screenWidth ) * row + 4 * centerColumnWithOffset;
+            const paddingWidth    = Math.floor( _deadEndPaddingFactor * imageWidth  );
+            const paddingHeight   = Math.floor( _deadEndPaddingFactor * imageHeight );
+            const availableWidth  = imageWidth  - 2 * paddingWidth;
+            const availableHeight = imageHeight - 2 * paddingHeight;
 
-            arr[ pixelIndex + 0 ] = this.noiseColor.r;
-            arr[ pixelIndex + 1 ] = this.noiseColor.g;
-            arr[ pixelIndex + 2 ] = this.noiseColor.b;
-            arr[ pixelIndex + 3 ] = opacity;
+            const getNearbySpots = ( focalPoint, searchXLength, searchYLength ) =>
+            {
+                let startX = focalPoint.x - searchXLength;
+                let startY = focalPoint.y - searchYLength;
+                let endX   = focalPoint.x + searchXLength;
+                let endY   = focalPoint.y + searchYLength;
+
+                if ( startX < paddingWidth  ) startX = paddingWidth;
+                if ( startY < paddingHeight ) startY = paddingHeight;
+                if ( endX   > availableWidth  + paddingWidth  ) endX = availableWidth + paddingWidth;
+                if ( endY   > availableHeight + paddingHeight ) endY = availableHeight + paddingHeight;
+
+                const spots = [];
+
+                // Top and bottom sides
+                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x: xi, y: startY } );
+                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x: xi, y: endY   } );
+
+                // Left and right sides
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x: startX, y: yi } );
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x: endX,   y: yi } );
+
+                // Remove duplicates
+                for ( const index in spots )
+                {
+                    const isDuplicate = line.find( ( point ) =>
+                    {
+                        return spots[ index ].x === point.x && spots[ index ].y === point.y;
+                    } );
+
+                    if ( isDuplicate ) spots.splice( index, 1 );
+                }
+
+                // Add opacity information
+                for ( const spot of spots )
+                {
+                    const index = 4 * ( ( spot.y - 1 ) * imageWidth + ( spot.x - 1 ) );
+                    spot.a = frame[ index + 3 ];
+                }
+
+                return spots;
+            }
+
+            const findBrightestNearbySpot = ( focalPoint, searchXLength, searchYLength ) =>
+            {
+                const brightest = { x: null, y: null, a: null };
+
+                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( ( spot ) =>
+                {
+                    if ( spot.a > 0 && ( brightest === null || spot.a >= brightest.a ) )
+                    {
+                        brightest.x = spot.x;
+                        brightest.y = spot.y;
+                        brightest.a = spot.a;
+                    }
+                } );
+
+                return brightest.x === null ? null : brightest;
+            }
+
+            // At the beginning just look at nearest (1px distance) pixels to find the brightest one
+            let focalPoint    = startingPoint;
+            let searchXLength = 1;
+            let searchYLength = 1;
+
+            while (
+                line.length < maxLength &&
+                ( searchXLength < availableWidth || searchYLength < availableHeight )
+            ) {
+                const brightestNearbySpot = findBrightestNearbySpot( focalPoint, searchXLength, searchYLength );
+
+                if ( brightestNearbySpot )
+                {
+                    line.push( brightestNearbySpot );
+                    focalPoint = brightestNearbySpot;
+                    searchXLength = 1;
+                    searchYLength = 1;
+
+                    continue;
+                }
+
+                ++searchXLength;
+                ++searchYLength;
+            } 
+
+            return line;
         }
 
-        return arr;
+        const generateFrameFromLine = ( lineArray ) =>
+        {
+            const byteCount = 4 * imageWidth * imageHeight;
+            const arr = new Uint8ClampedArray( byteCount );
+
+            for ( const spot of lineArray )
+            {
+                const index = 4 * ( ( spot.y - 1 ) * imageWidth + ( spot.x - 1 ) );
+
+                arr[ index + 0 ] = this.noiseColor.r;
+                arr[ index + 1 ] = this.noiseColor.g;
+                arr[ index + 2 ] = this.noiseColor.b;
+                arr[ index + 3 ] = 255;
+            }
+
+            return arr;
+        }
+
+        return generateFrameFromLine(
+            findImaginaryLine(
+                getStartingPoint()
+            )
+        );
     }
 }
 
 const utilities =
 {
     getRandomFromInterval: ( min, max ) => Math.floor( Math.random() * ( max - min ) + min ),
+    getRandomArray: ( n, min, max ) => Array.from( { length: n }, () => utilities.getRandomFromInterval( min, max ) ),
     fadeIn: ( x ) => 1 - ( 1 - x ) * ( 1 - x ) * ( 1 - x )
 }
 
