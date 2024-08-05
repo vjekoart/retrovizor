@@ -56,7 +56,7 @@ function algorithm( canvasManager, imageManager, options )
 
     for ( let i = 0; i < options.frameCount; ++i )
     {
-        const coverage   = utilities.getRandomFromInterval( 12,  20 );
+        const coverage   = utilities.getRandomFromInterval( 5, 10 );
         const maxStep    = utilities.getRandomFromInterval( 80, 120 );
         const background = imageManager.generateDistortedArray( canvasManager.pixelCount, coverage, maxStep );
 
@@ -81,8 +81,9 @@ function algorithm( canvasManager, imageManager, options )
     let machineIndex    = 0;
 
     // States: "BG", "BLANK", "LINE"
-    const machine = [ "BG", "LINE", "LINE" ];
+    const machine = [ "BG", "LINE" ];
 
+    // TODO: draw lines rarely, so they really make an impact
     window.setInterval(
         () =>
         {
@@ -100,7 +101,8 @@ function algorithm( canvasManager, imageManager, options )
 
             const step = machine[ machineIndex ];
 
-            if ( step === "BG"    ) canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ]   , options.alphaDelta );
+            canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
+
             if ( step === "LINE"  ) canvasManager.mergeAndDrawImage( imaginaryLines[ backgroundIndex ], options.alphaDelta );
 
             ++machineIndex;
