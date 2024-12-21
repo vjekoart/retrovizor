@@ -24,7 +24,8 @@ function main()
     const options =
     {
         alphaDelta: 20,
-        drawPadding: 20,
+        alphaDeltaFade: 10,
+        drawPadding: 0,
         frameCount: 24,
         frameDelay: 50,
         noiseColor:
@@ -35,15 +36,24 @@ function main()
         },
         accentColor:
         {
-            r: 185,//200,
-            g: 185,//200,
-            b: 202//213
+            r: 200,
+            g: 200,
+            b: 213
         },
-        maxImaginaryLineLength: 200
+        minDotOpacity: 0,
+        maxDotOpacity: 100,
+        maxImaginaryLineLength: 200,
+        imaginaryLineDotOpacityIncrease: 10
     }
 
     const canvasManager = new CanvasManager( options.drawPadding );
-    const imageManager  = new ImageManager( options.accentColor, options.noiseColor );
+    const imageManager  = new ImageManager(
+        options.accentColor,
+        options.noiseColor,
+        options.minDotOpacity,
+        options.maxDotOpacity,
+        options.imaginaryLineDotOpacityIncrease
+    );
 
     canvasManager.setup();
 
@@ -78,10 +88,13 @@ function algorithm( canvasManager, imageManager, options )
     }
 
     let backgroundIndex = 0;
+    let lineIndex       = 0;
     let machineIndex    = 0;
 
     // States: "BG", "BLANK", "LINE"
-    const machine = [ "BG", "LINE" ];
+    //const machine = [ "BG", "BLANK", "BLANK", "BLANK", "LINE", "BLANK", "BLANK", "BLANK", "BLANK", "BLANK" ];
+    //const machine = [ "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
+    const machine = [ "BG" ];
 
     // TODO: draw lines rarely, so they really make an impact
     window.setInterval(
@@ -90,6 +103,13 @@ function algorithm( canvasManager, imageManager, options )
             if ( machineIndex === machine.length )
             {
                 machineIndex = 0;
+            }
+
+            const step = machine[ machineIndex ];
+
+            if ( step === "BG" )
+            {
+                canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
 
                 ++backgroundIndex;
 
@@ -99,11 +119,23 @@ function algorithm( canvasManager, imageManager, options )
                 }
             }
 
-            const step = machine[ machineIndex ];
+            if ( step === "LINE" )
+            {
+                canvasManager.mergeAndDrawImage( imaginaryLines[ lineIndex ], options.alphaDelta );
 
-            canvasManager.mergeAndDrawImage( backgrounds[ backgroundIndex ], options.alphaDelta );
+                ++lineIndex;
 
-            if ( step === "LINE"  ) canvasManager.mergeAndDrawImage( imaginaryLines[ backgroundIndex ], options.alphaDelta );
+                if ( lineIndex === imaginaryLines.length )
+                {
+                    lineIndex = 0;
+                }
+            }
+
+            if ( step === "BLANK" )
+            {
+                // TODO: just lower the opacity of all canvas
+                canvasManager.fadeImage( options.alphaDeltaFade );
+            }
 
             ++machineIndex;
         },
@@ -196,6 +228,24 @@ class CanvasManager
 
         this.context.putImageData( existingImageData, this.padding, this.padding );
     }
+
+    fadeImage( alphaDelta )
+    {
+        const existingImageData = this.context.getImageData(
+            this.padding,
+            this.padding,
+            this.pixelCountX,
+            this.pixelCountY
+        );
+
+        // TODO: optimise the main loop as much as possible
+        for ( let i = 0; i < existingImageData.data.length; i += 4 )
+        {
+            existingImageData.data[ i + 3 ] = Math.min( 255, Math.max( 0, existingImageData.data[ i + 3 ] - alphaDelta ) );
+        }
+
+        this.context.putImageData( existingImageData, this.padding, this.padding );
+    }
 }
 
 class ImageManager
@@ -214,10 +264,17 @@ class ImageManager
         b: 255
     }
 
-    constructor( accentColor, noiseColor )
+    minDotOpacity = 0;
+    maxDotOpacity = 255;
+    imaginaryLineDotOpacityIncrease = 0;
+
+    constructor( accentColor, noiseColor, minDotOpacity, maxDotOpacity, imaginaryLineDotOpacityIncrease )
     {
-        this.accentColor = accentColor;
-        this.noiseColor = noiseColor;
+        this.accentColor   = accentColor;
+        this.noiseColor    = noiseColor;
+        this.minDotOpacity = minDotOpacity;
+        this.maxDotOpacity = maxDotOpacity;
+        this.imaginaryLineDotOpacityIncrease = imaginaryLineDotOpacityIncrease;
     }
 
     /**
@@ -234,7 +291,7 @@ class ImageManager
         const arr = new Uint8ClampedArray( byteCount );
 
         // Generate random sequences
-        const opacitySequence = utilities.getRandomArray( 300, 13, 180 );
+        const opacitySequence = utilities.getRandomArray( 300, this.minDotOpacity, this.maxDotOpacity );
         const pixelSequence   = Array.from(
             { length: ( coverage / 100 ) * pixelCount },
             () => Math.floor( Math.random() * maxStep )
@@ -366,7 +423,7 @@ class ImageManager
                     {
                         brightest.x = spot.x;
                         brightest.y = spot.y;
-                        brightest.a = spot.a;
+                        brightest.a = Math.min( 255, spot.a + this.imaginaryLineDotOpacityIncrease );
                     }
                 } );
 
@@ -413,7 +470,7 @@ class ImageManager
                 arr[ index + 0 ] = this.noiseColor.r;
                 arr[ index + 1 ] = this.noiseColor.g;
                 arr[ index + 2 ] = this.noiseColor.b;
-                arr[ index + 3 ] = 255;
+                arr[ index + 3 ] = spot.a;
             }
 
             return arr;
