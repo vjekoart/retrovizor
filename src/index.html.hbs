@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{{ data.meta.description }}">
+
+        <title>retrovizor.xyz | {{ title }}</title>
+
+        <link rel="stylesheet" type="text/css" href="/{{ internals.indexStyleBuild }}">
+    </head>
+    <body>
+    {{> @partial-block }}
+
+        <script type="text/javascript" src="/{{ internals.indexScriptBuild }}"></script>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+    "meta": {
+        "description": "A personal space about technology & society."
+    },
+    "views": {
+        "homepage": {
+            "title": "A personal space"
+        },
+        "career": {
+            "title": "Career"
+        },
+        "projects": {
+            "title": "Projects"
+        },
+        "writings": {
+            "title": "Writings"
+        }
+    }
+}

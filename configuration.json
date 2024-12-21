@@ -1,0 +1,15 @@
+{
+    "buildPath": "dist",
+    "dataFile": "src/data.json",
+    "internals": {
+        "indexScript": "src/index.js",
+        "indexScriptBuild": "index.js",
+        "indexStyle": "src/index.css",
+        "indexStyleBuild": "index.css",
+        "indexTemplate": "src/index.html.hbs",
+        "layoutPrefix": "layout.",
+        "sourcePath": "src",
+        "templatesPath": "src/templates",
+        "viewsPath": "src/views"
+    }
+}

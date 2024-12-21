@@ -1,0 +1,17 @@
+{{#> index title=title }}
+    <header role="main">
+        <h1><a href="/">Retrovizor</a></h1>
+        <div id="artwork"></div>
+    </header>
+    <nav role="main">
+        <a href="/writings">Writings</a>
+        <a href="/projects">Projects</a>
+        <a href="/career">Career</a>
+    </nav>
+    <main>
+    {{> @partial-block }}
+    </main>
+    <footer role="main">
+        Some footer
+    </footer>
+{{/index}}
