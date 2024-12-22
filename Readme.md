@@ -18,6 +18,10 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 3: library
     * Build system for library and Web Components (not native, lit?)
     * Refactor homepage UI to use Web Components; extract code
+---
+* Build system performance
+    * Try streams instead of `writeFile` and similar to improve performance 
+    * Try keeping open handles in dev mode to decrease rebuild time
 
 ## File structure (try to keep updated)
 

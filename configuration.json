@@ -2,6 +2,7 @@
     "buildPath": "dist",
     "dataFile": "src/data.json",
     "internals": {
+        "devPort": 8090,
         "indexScript": "src/index.js",
         "indexScriptBuild": "index.js",
         "indexStyle": "src/index.css",

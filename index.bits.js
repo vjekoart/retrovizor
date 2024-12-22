@@ -6,12 +6,17 @@
  */
 import Autoprefixer from "autoprefixer";
 import Babel        from "@babel/core";
+import Chokidar     from "chokidar";
 import CSSNano      from "cssnano";
 import FS           from "fs/promises";
 import Handlebars   from "handlebars";
+import HTTP         from "http";
 import Path         from "path";
 import PostCSS      from "postcss";
+import ServeHandler from "serve-handler";
 import URL          from "url";
+
+import { performance } from "node:perf_hooks";
 
 function checkPath( path, isDirectory = false )
 {
@@ -54,6 +59,9 @@ function getRootPath ()
     return Path.dirname( URL.fileURLToPath( import.meta.url ) );
 }
 
+/**
+ * @param {Array<string>} folders
+ */
 async function makeFolders ( buildPath, folders )
 {
     const fullBuildPath = Path.join( getRootPath(), buildPath );
@@ -62,6 +70,66 @@ async function makeFolders ( buildPath, folders )
     {
         console.info( `[makeFolders] Making folder '${ folder }'...` );
         await FS.mkdir( Path.join( fullBuildPath, folder ), { recursive: true } );
+    }
+}
+
+class WatchPool
+{
+    constructor ( onChange )
+    {
+        this.delayBeforePublishingChanges = 1000;
+        this.timerId = null;
+        this.changes = {
+            compileInjectStyles: false,
+            compileInjectScripts: false,
+            generateHTML: false
+        }
+
+        this.onChange = onChange;
+    }
+
+    publishChanges ()
+    {
+        this.onChange( this.changes );
+        this.changes = {
+            compileInjectStyles: false,
+            compileInjectScripts: false,
+            generateHTML: false
+        }
+    }
+
+    push ( path )
+    {
+        this.resetTimer();
+
+        if ( path.endsWith( ".html" ) || path.endsWith( ".hbs" ) )
+        {
+            this.changes.generateHTML = true;
+        }
+        if ( path.endsWith( ".css" ) )
+        {
+            this.changes.compileInjectStyles = true;
+        }
+        if ( path.endsWith( ".js" ) )
+        {
+            this.changes.compileInjectScripts = true;
+        }
+    }
+
+    resetTimer ()
+    {
+        if ( this.timerId )
+        {
+            clearTimeout( this.timerId );
+        }
+
+        this.timerId = setTimeout(
+            () => {
+                this.publishChanges();
+                this.timerId = null;
+            },
+            this.delayBeforePublishingChanges
+        );
     }
 }
 
@@ -80,18 +148,22 @@ async function writeBuildFiles ( buildPath, files )
     }
 }
 
-export async function compileInjectStyles ( buildPath, internals )
+export async function compileInjectStyles ( buildPath, internals, dev = false )
 {
+    performance.mark( "compileInjectStyles:start" );
+
     const fullIndexPath = Path.join( getRootPath(), internals.indexStyle );
 
     await checkPath( fullIndexPath );
 
     console.info( "[compileInjectStyles] Starting PostCSS process..." );
 
-    const postPlugins = [
-        Autoprefixer,
-        CSSNano
-    ];
+    const postPlugins = [ Autoprefixer ];
+
+    if ( dev === false )
+    {
+        postPlugins.push( CSSNano );
+    }
 
     const content = await FS.readFile( fullIndexPath, { encoding: "utf8" } );
     const from    = fullIndexPath;
@@ -110,10 +182,13 @@ export async function compileInjectStyles ( buildPath, internals )
     await writeBuildFiles( buildPath, files );
 
     console.info( "[compileInjectStyles] Done." );
+    performance.mark( "compileInjectStyles:end" );
 }
 
-export async function compileInjectScripts ( buildPath, internals )
+export async function compileInjectScripts ( buildPath, internals, dev = false )
 {
+    performance.mark( "compileInjectScripts:start" );
+
     const fullIndexPath = Path.join( getRootPath(), internals.indexScript );
 
     await checkPath( fullIndexPath );
@@ -121,7 +196,7 @@ export async function compileInjectScripts ( buildPath, internals )
     console.info( "[compileInjectScripts] Starting Babel process..." );
 
     const babelOptions = {
-        compact: true,
+        compact: dev ? false : true,
         presets: [ "@babel/preset-env" ]
     };
 
@@ -139,15 +214,12 @@ export async function compileInjectScripts ( buildPath, internals )
     await writeBuildFiles( buildPath, files );
 
     console.info( "[compileInjectScripts] Done." );
+    performance.mark( "compileInjectScripts:end" );
 }
 
 export async function ensureBuildFolder ( buildPath )
 {
-    if ( !buildPath )
-    {
-        throw new Error( "[ensureBuildPath] Missing buildPath!" );
-    }
-
+    performance.mark( "ensureBuildFolder:start" );
     console.info( "[ensureBuildPath] Checking build folder..." );
 
     const fullPath = Path.join( getRootPath(), buildPath );
@@ -162,34 +234,27 @@ export async function ensureBuildFolder ( buildPath )
         {
             await FS.mkdir( fullPath, { recursive: true } )
             console.info( "[ensureBuildPath] Build folder created." );
+            performance.mark( "ensureBuildFolder:end" );
             return;
         }
 
+        performance.mark( "ensureBuildFolder:end" );
         throw error;
     }
 
     console.info( "[ensureBuildPath] Done." );
+    performance.mark( "ensureBuildFolder:end" );
 }
 
-export async function generateHTML ( buildPath, internals, dataFile = null )
+export async function generateHTML ( buildPath, internals, dataFile = null, dev = false )
 {
+    performance.mark( "generateHTML:start" )
     console.info( "[generateHTML] Starting template generation..." );
 
-    const fullSourcePath    = Path.join( getRootPath(), internals.sourcePath    );
     const fullTemplatesPath = Path.join( getRootPath(), internals.templatesPath );
     const fullViewsPath     = Path.join( getRootPath(), internals.viewsPath     );
     const fullIndexPath     = Path.join( getRootPath(), internals.indexTemplate );
     const fullDataFilePath  = Path.join( getRootPath(), dataFile );
-
-    await checkPath( fullSourcePath,    true );
-    await checkPath( fullTemplatesPath, true );
-    await checkPath( fullViewsPath,     true );
-    await checkPath( fullIndexPath           );
-
-    if ( dataFile )
-    {
-        await checkPath( fullDataFilePath );
-    }
 
     console.info( "[generateHTML] Registering Handlebars partials..." );
 
@@ -237,4 +302,45 @@ export async function generateHTML ( buildPath, internals, dataFile = null )
     await writeBuildFiles( buildPath, outputFiles   );
 
     console.info( "[generateHTML] Done." );
+    performance.mark( "generateHTML:end" );
+}
+
+export function startServer( buildPath, internals )
+{
+    const fullBuildPath = Path.join( getRootPath(), buildPath );
+
+    console.info( "[startServer] Starting..." );
+
+    const server = HTTP.createServer( ( request, response ) =>
+    {
+        ServeHandler( request, response, { public: fullBuildPath } );
+    } );
+
+    server.listen( internals.devPort, () =>
+    {
+        console.info( `[startServer] Listening on port ${ internals.devPort }...` );
+    } )
+}
+
+/**
+ * @param {( changes ) => void} onChange
+ * changes = { compileInjectStyles: boolean, compileInjectScripts: boolean, generateHTML: boolean }
+ */
+export function watchLoop ( internals, onChange )
+{
+    console.info( "[watchLoop] Starting the loop..." );
+
+    const fullSourcePath = Path.join( getRootPath(), internals.sourcePath );
+    const watchPool      = new WatchPool( onChange );
+
+    Chokidar
+        .watch( fullSourcePath, { persistent: true, usePolling: true } )
+        .on( "all", ( event, path ) =>
+        {
+            if ( event === "add" || event === "change" )
+            {
+                console.info( "[watchLoop]", event, path );
+                watchPool.push( path );
+            }
+        } );
 }
