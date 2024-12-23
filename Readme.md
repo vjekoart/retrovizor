@@ -13,8 +13,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 ## TODO
 
 * Phase 1: create SIMPLE build system for HTML, CSS, JS
+    * Improve error reporting, e.g. for CSS
+    * Add support for multiple CSS files on the app level
 * Phase 2: design exploration: homepage UI without artwork/responsive skeleton
-    * Prototype homepage design without artwork
+    * Use dark-theme approach, with light gray monospace text - terminal/hacker feel
+    * Upper experience: as I've written down, fullpage artwork and title in top-right corner that floats to center as user scrolls
+    * Typography: terminal + markdown approach? Headings are bold and have `#` character in `::before` that's in different color? In general, more than one color to accent the markdown/IDE feel/
 * Phase 3: library
     * Build system for library and Web Components (not native, lit?)
     * Refactor homepage UI to use Web Components; extract code
@@ -42,4 +46,4 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * utils/ # Stateless, mainly deterministic one-call functions
         * services/ # Class-based files that have some state
         * components/ # From buttons to UI elements like navigation.
-        * styles/ # Maybe not necessary
+        * styles/ # Make possible to import these general styles from `index.css`
