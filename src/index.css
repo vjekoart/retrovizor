@@ -24,7 +24,7 @@
     --style-font-family-strong    : "Julia Mono", monospace;
     --style-font-family-content   : "Julia Mono", monospace;
     --style-font-family-title     : "Julia Mono", monospace;
-    --style-font-weight-title     : 700;
+    --style-font-weight-title     : 600;
     --style-font-weight-strong    : 600;
     --style-font-weight-normal    : 500;
 
@@ -128,6 +128,11 @@ a:focus
     color : var(--style-color-interactive-in);
 }
 
+canvas
+{
+    display  : block;
+/* NOT SURE position : fixed;*/
+}
 
 
 /**
@@ -151,7 +156,7 @@ header[role="main"] h1
 
 header[role="main"] h1 a
 {
-    color           : var(--color-light);
+    color           : var(--color-light-faded);
     text-decoration : none;
     text-transform  : uppercase;
 }
@@ -267,7 +272,6 @@ article h2
     line-height : var(--style-grid-full);
 
     color       : var(--style-color-light-highlight);
-    background  : var(--style-color-dark);
 }
 
 article h2::before
@@ -352,7 +356,7 @@ header[role="main"]
 
 header[role="main"] h1
 {
-    position : absolute;
+    position : fixed;
     top      : var(--style-grid-full);
     right    : var(--style-grid-full);
 }

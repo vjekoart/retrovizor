@@ -12,38 +12,53 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ## TODO
 
-* Phase 1: create SIMPLE build system for HTML, CSS, JS
-    * Improve error reporting, e.g. for CSS
-    * Add support for multiple CSS files on the app level
-* Phase 2: design exploration: homepage UI without artwork/responsive skeleton
-    * Use dark-theme approach, with light gray monospace text - terminal/hacker feel
-    * Upper experience: as I've written down, fullpage artwork and title in top-right corner that floats to center as user scrolls
-    * Typography: terminal + markdown approach? Headings are bold and have `#` character in `::before` that's in different color? In general, more than one color to accent the markdown/IDE feel/
-* Phase 3: library
-    * Build system for library and Web Components (not native, lit?)
-    * Refactor homepage UI to use Web Components; extract code
+* ~Phase 1: simple build system~
+* ~Phase 2: design prototype~
+* Phase 3: code extraction: library and web components
+* Phase 4: content & pages, incl. related logic
+* Phase 5: code fine-tune (decoupling, style, remove comments, optimisations)
+* Phase 6: UI fine-tune (transitions, favicons, SEO,...)
+* Phase 7: structure and clean `Readme.md`
+* PUBLISH
+* Phase 8: cycle of improvements from backlog after first feedback
 ---
-* Build system performance
-    * Try streams instead of `writeFile` and similar to improve performance 
-    * Try keeping open handles in dev mode to decrease rebuild time
+* Build system
+    * Improve error reporting, e.g. for CSS
+    * Add support for multiple CSS and JS files on the app level
+    * Performance
+        * Try streams instead of `writeFile` and similar to improve performance 
+        * Try keeping open handles in dev mode to decrease rebuild time
+* Code fine-tune
+    * Animation: loading state, computation logic to worker, rAF
+    * Animation: what about those damn lines? Make them breathe
+* UI fine-tune
+    * Title should transition and become part of the nav, max-width to read exp
 
-## File structure (try to keep updated)
+## File structure / Architecture (try to keep updated)
 
-* dist/ # Generated folder intended for deployment
-* assets/
+```
+* dist/               # Generated deployment files
+* assets/             # Binaries like fonts and images
 * src/
-    * index.ts # Executed before each view?
-    * index.css # Entry point that's loaded dynamically. Variables and global reset, may need more files if SASS+mixins is used
-    * data.json # This can be a folder if complex, data that's used during the generation of public HTML files
-    * templates/ # Partials and layouts, this + views will generate final HTML files during the build step
-    * views/ # Views organised in acutal hierarchy of the website
-        * index.html # HTML file that has `<style>` and `<script>` elements if needed
-        * about/
-            * index.html
+    * index.ts        # Executed before each view?
+    * index.css       # Entry point that's loaded dynamically.
+                      # Variables and global reset
+                      # ...may need more files if SASS+mixins is used
+    * data.json       # File or a folder
+                      # Data for the generation of public HTML files
+    * templates/      # Partials and layouts
+                      # This + views generates final HTML files during the build
+    * views/          # Views organised in acutal hierarchy of the website
+        * index.html  # HTML file that has `<style>` and `<script>` elements
+                      # if needed
+        * about.html  # Transformed to `dist/about/index.html\
         * ...
     * library/
-        * index.js # Provide entry point, register components, expose and initialize services and utils.
-        * utils/ # Stateless, mainly deterministic one-call functions
-        * services/ # Class-based files that have some state
+        * index.js    # Provide entry point, register components, expose and
+                      # initialize services and utils.
+        * utils/      # Stateless, mainly deterministic one-call functions
+        * services/   # Class-based files that have some state
         * components/ # From buttons to UI elements like navigation.
-        * styles/ # Make possible to import these general styles from `index.css`
+        * styles/     # Make possible to import these general styles
+                      # from `index.css`
+```
