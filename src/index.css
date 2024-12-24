@@ -309,13 +309,26 @@ article footer a:hover,
 article footer a:active,
 article footer a:focus
 {
-    color           : var(--style-color-light-highlight);
+    color : var(--style-color-light-highlight);
+}
+
+article footer a::before,
+article footer a::after
+{
+    color : var(--style-color-accent);
+}
+
+article footer a::before
+{
+    content       : "[";
+    padding-right : calc(0.33 * var(--style-font-size-text));
+    
 }
 
 article footer a::after
 {
-    content : "...";
-    color   : var(--style-color-accent);
+    content      : "]";
+    padding-left : calc(0.33 * var(--style-font-size-text));
 }
 
 

@@ -14,13 +14,17 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
-* Phase 3: code extraction: library and web components
+* Phase 3: code extraction: library and web components with test mechanisms
+    * Expose random JS util and service
+    * Introduce Lit and dummy web component with a simple test
+    * Extract existing HTML/CSS/JS code in the app to the library
 * Phase 4: content & pages, incl. related logic
 * Phase 5: code fine-tune (decoupling, style, remove comments, optimisations)
-* Phase 6: UI fine-tune (transitions, favicons, SEO,...)
-* Phase 7: structure and clean `Readme.md`
+* Phase 6: UI fine-tune (transitions, assets, favicons, SEO,...)
+* Phase 7: run Lighthouse and similar dev tools to ensure website quality
+* Phase 8: structure and clean `Readme.md`
 * PUBLISH
-* Phase 8: cycle of improvements from backlog after first feedback
+* Phase 9: cycle of improvements from backlog after first feedback
 ---
 * Build system
     * Improve error reporting, e.g. for CSS

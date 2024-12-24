@@ -8,10 +8,7 @@ import { performance } from "node:perf_hooks";
 import * as Library from "./library.js";
 import * as Bits    from "./index.bits.js";
 
-
-// TODO: this should be something like: Library.getConfiguration() where "internals" would be added from different file
-//       and overriden if defined in configuration.json
-import Configuration from "./configuration.json" assert { type: "json" };
+const Configuration = Library.getConfiguration();
 
 function _writePerformance ( mode )
 {
