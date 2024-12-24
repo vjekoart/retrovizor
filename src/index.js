@@ -1,3 +1,10 @@
+import
+{
+    DummyService,
+    Utilities
+}
+from "/library/index.js";
+
 /**
  * Eigengrau - what we see when we close our eyes
  *
@@ -21,6 +28,11 @@
  */
 function main()
 {
+    // Testing
+    Utilities.dummyUtility();
+    const dummyService = new DummyService();
+
+    // Real code
     const options =
     {
         alphaDelta: 20,

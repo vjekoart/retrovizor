@@ -6,6 +6,8 @@
     "indexStyleBuild": "index.css",
     "indexTemplate": "src/index.html.hbs",
     "layoutPrefix": "layout.",
+    "libraryPath": "src/library",
+    "libraryBuild": "library",
     "sourcePath": "src",
     "templatesPath": "src/templates",
     "viewsPath": "src/views"

@@ -12,6 +12,7 @@
     <body>
     {{> @partial-block }}
 
-        <script type="text/javascript" src="/{{ internals.indexScriptBuild }}"></script>
+        {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
+        <script type="module" src="/{{ internals.indexScriptBuild }}"></script>
     </body>
 </html>

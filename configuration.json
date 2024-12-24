@@ -1,4 +1,5 @@
 {
     "buildPath": "dist",
+    "buildType": "native",
     "dataFile": "src/data.json"
 }

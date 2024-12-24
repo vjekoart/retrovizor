@@ -12,11 +12,12 @@ const Configuration = Library.getConfiguration();
 
 function _writePerformance ( mode )
 {
-    performance.measure( "ensureBuildFolder:duration",    "ensureBuildFolder:start",    "ensureBuildFolder:end"    );
-    performance.measure( "generateHTML:duration",         "generateHTML:start",         "generateHTML:end"         );
-    performance.measure( "compileInjectStyles:duration",  "compileInjectStyles:start",  "compileInjectStyles:end"  );
-    performance.measure( "compileInjectScripts:duration", "compileInjectScripts:start", "compileInjectScripts:end" );
-    performance.measure( `${ mode }:duration`,            `${ mode }:start`,            `${ mode }:end`            );
+    performance.measure( "ensureBuildFolder:duration",    "ensureBuildFolder:start",    "ensureBuildFolder:end" );
+    performance.measure( "generateHTML:duration",         "generateHTML:start",         "generateHTML:end"      );
+    performance.measure( "buildScripts:duration",         "buildScripts:start",         "buildScripts:end"      );
+    performance.measure( "buildStyles:duration",          "buildStyles:start",          "buildStyles:end"       );
+    performance.measure( "buildLibrary:duration",         "buildLibrary:start",         "buildLibrary:end"      );
+    performance.measure( `${ mode }:duration`,            `${ mode }:start`,            `${ mode }:end`         );
 
     const entries = performance.getEntries();
 
@@ -32,8 +33,8 @@ function _writePerformance ( mode )
 /**
  * TODO
  * - Support for nested views
- * - compileInjectStyles: injection is done via templating actually, that can be done in a better way
- * - compileInjectScripts: injection is done via templating actually, that can be done in a better way
+ * - buildStyles: injection is done via templating actually, that can be done in a better way
+ * - buildScripts: injection is done via templating actually, that can be done in a better way
  * - ??? try/catch block here doesn't make sense? whoever runs this will watch on output, important that return code is not 0
  * - ??? Create bundle for nested (imported) CSS files that are not part of the library OR move modules to appropriate place in dist
  * - ??? Create bundle for nested (imported) JS files that are not part of the library OR move modules to appropriate place in dist
@@ -46,10 +47,10 @@ export async function build ()
 
         await Bits.ensureBuildFolder( Configuration.buildPath );
         await Promise.all([
-            Bits.generateHTML        ( Configuration.buildPath, Configuration.internals, Configuration.dataFile ),
-            // TODO: Compile "library" and inject in every view
-            Bits.compileInjectStyles ( Configuration.buildPath, Configuration.internals ),
-            Bits.compileInjectScripts( Configuration.buildPath, Configuration.internals )
+            Bits.generateHTML( Configuration.buildPath, Configuration.internals, Configuration.dataFile  ),
+            Bits.buildLibrary( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
+            Bits.buildScripts( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
+            Bits.buildStyles ( Configuration.buildPath, Configuration.buildType, Configuration.internals )
         ]);
 
         performance.mark( "build:end" );
@@ -78,13 +79,17 @@ export async function dev ()
             {
                 Bits.generateHTML( Configuration.buildPath, Configuration.internals, Configuration.dataFile, true );
             }
-            if ( changes.compileInjectStyles )
+            if ( changes.buildLibrary )
             {
-                Bits.compileInjectStyles( Configuration.buildPath, Configuration.internals, true );
+                Bits.buildLibrary( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
             }
-            if ( changes.compileInjectScripts )
+            if ( changes.buildScripts )
             {
-                Bits.compileInjectScripts( Configuration.buildPath, Configuration.internals, true );
+                Bits.buildScripts( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
+            }
+            if ( changes.buildStyles )
+            {
+                Bits.buildStyles( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
             }
         } );
     }

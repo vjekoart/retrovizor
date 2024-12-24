@@ -37,6 +37,62 @@ function checkPath( path, isDirectory = false )
     } );
 }
 
+async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
+{
+    console.info( `[compileAndMoveScript] Starting Babel process for '${ inputFilePath }'...` );
+
+    const babelOptions = {
+        compact: !dev,
+        presets: [ "@babel/preset-env" ],
+        // TODO: related to "Configuration.buildType" === "native"
+        caller:
+        {
+            // TODO: generalize this logic, i.e. protect the `library` namespace based on the internals location
+            name: "/library/index.js",
+            supportsStaticESM: true
+        }
+    };
+
+    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
+    const results = await Babel.transformAsync( content, babelOptions );
+
+    await writeFile( outputFilePath, results.code );
+
+    if ( results.map )
+    {
+        await writeFile( `${ outputFilePath }.map`, results.map.toString() );
+    }
+
+    console.info( "[compileAndMoveScript] Done." );
+}
+
+async function compileAndMoveStyle ( inputFilePath, outputFilePath, buildType, dev = false )
+{
+    console.info( `[compileAndMoveStyle] Starting PostCSS process for '${ inputFilePath }'...` );
+
+    const postPlugins = [ Autoprefixer ];
+
+    if ( dev === false )
+    {
+        postPlugins.push( CSSNano );
+    }
+
+    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
+    const from    = inputFilePath;
+    const to      = outputFilePath;
+    const map     = true;
+    const results = await PostCSS( postPlugins ).process( content, { from, to, map } );
+
+    await writeFile( outputFilePath, results.css );
+
+    if ( results.map )
+    {
+        await writeFile( `${ outputFilePath }.map`, results.map.toString() );
+    }
+
+    console.info( "[compileAndMoveStyle] Done." );
+}
+
 /** "homepage.html.hbs" to "homepage" */
 function getOutputViewName ( file )
 {
@@ -73,6 +129,29 @@ async function makeFolders ( buildPath, folders )
     }
 }
 
+/**
+ * @param { key: content } files Every key represents filename, while content is textual
+ *                               content that should be written to a file.
+ */
+async function writeBuildFiles ( buildPath, files )
+{
+    const fullBuildPath = Path.join( getRootPath(), buildPath );
+
+    for ( const file in files )
+    {
+        console.info( `[writeBuildFiles] Writing file '${ file }'...` );
+        await FS.writeFile( Path.join( fullBuildPath, file ), files[ file ] );
+    }
+}
+
+async function writeFile ( path, content )
+{
+    console.info( `[writeFile] Writing a file to '${ path }'...` );
+
+    await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
+    await FS.writeFile( path,                                         content             );
+}
+
 class WatchPool
 {
     constructor ( onChange )
@@ -80,8 +159,9 @@ class WatchPool
         this.delayBeforePublishingChanges = 1000;
         this.timerId = null;
         this.changes = {
-            compileInjectStyles: false,
-            compileInjectScripts: false,
+            buildLibrary: false,
+            buildStyles: false,
+            buildScripts: false,
             generateHTML: false
         }
 
@@ -92,8 +172,9 @@ class WatchPool
     {
         this.onChange( this.changes );
         this.changes = {
-            compileInjectStyles: false,
-            compileInjectScripts: false,
+            buildLibrary: false,
+            buildStyles: false,
+            buildScripts: false,
             generateHTML: false
         }
     }
@@ -102,17 +183,22 @@ class WatchPool
     {
         this.resetTimer();
 
+        if ( path.includes( "/library/" ) )
+        {
+            this.changes.buildLibrary = true;
+            return;
+        }
         if ( path.endsWith( ".html" ) || path.endsWith( ".hbs" ) )
         {
             this.changes.generateHTML = true;
         }
         if ( path.endsWith( ".css" ) )
         {
-            this.changes.compileInjectStyles = true;
+            this.changes.buildStyles = true;
         }
         if ( path.endsWith( ".js" ) )
         {
-            this.changes.compileInjectScripts = true;
+            this.changes.buildScripts = true;
         }
     }
 
@@ -133,88 +219,71 @@ class WatchPool
     }
 }
 
+
 /**
- * @param { key: content } files Every key represents filename, while content is textual
- *                               content that should be written to a file.
+ * PUBLIC
  */
-async function writeBuildFiles ( buildPath, files )
-{
-    const fullBuildPath = Path.join( getRootPath(), buildPath );
 
-    for ( const file in files )
+
+export async function buildLibrary ( buildPath, buildType, internals, dev = false )
+{
+    performance.mark( "buildLibrary:start" );
+    console.info( "[buildLibrary] Starting..." );
+
+    const fullLibraryPath = Path.join( getRootPath(), internals.libraryPath );
+    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true } );
+    const compilePromises = [];
+
+    for ( const file of libraryFiles )
     {
-        console.info( `[writeBuildFiles] Writing file '${ file }'...` );
-        await FS.writeFile( Path.join( fullBuildPath, file ), files[ file ] );
+        const inputPath  = Path.join( fullLibraryPath, file );
+        const outputPath = Path.join( getRootPath(), buildPath, internals.libraryBuild, file );
+
+        if ( file.endsWith( ".css" ) )
+        {
+            compilePromises.push( compileAndMoveStyle( inputPath, outputPath, buildType, dev ) );
+        }
+        if ( file.endsWith( ".js" ) )
+        {
+            compilePromises.push( compileAndMoveScript( inputPath, outputPath, buildType, dev ) );
+        }
     }
+
+    await Promise.all( compilePromises );
+
+    // What about web components? They import node modules, so need to handle that
+    // Handle with Babel, it's possible to know if something is e.g. CJS module or native
+
+    console.info( "[buildLibrary] Done." );
+    performance.mark( "buildLibrary:end" );
 }
 
-export async function compileInjectStyles ( buildPath, internals, dev = false )
+export async function buildScripts ( buildPath, buildType, internals, dev = false )
 {
-    performance.mark( "compileInjectStyles:start" );
+    performance.mark( "buildScripts:start" );
+    console.info( "[buildScripts] Starting Babel process..." );
 
-    const fullIndexPath = Path.join( getRootPath(), internals.indexStyle );
+    const fullIndexPath  = Path.join( getRootPath(), internals.indexScript                 );
+    const fullOutputPath = Path.join( getRootPath(), buildPath, internals.indexScriptBuild ); 
 
-    await checkPath( fullIndexPath );
+    await compileAndMoveScript( fullIndexPath, fullOutputPath, buildType, dev );
 
-    console.info( "[compileInjectStyles] Starting PostCSS process..." );
-
-    const postPlugins = [ Autoprefixer ];
-
-    if ( dev === false )
-    {
-        postPlugins.push( CSSNano );
-    }
-
-    const content = await FS.readFile( fullIndexPath, { encoding: "utf8" } );
-    const from    = fullIndexPath;
-    const to      = Path.join( getRootPath(), buildPath, internals.indexStyleBuild );
-    const map     = true;
-    const results = await PostCSS( postPlugins ).process( content, { from, to, map } );
-    const files   = {};
-
-    files[ internals.indexStyleBuild ] = results.css;
-
-    if ( results.map )
-    {
-        files[ `${ internals.indexStyleBuild }.map` ] = results.map.toString();
-    }
-
-    await writeBuildFiles( buildPath, files );
-
-    console.info( "[compileInjectStyles] Done." );
-    performance.mark( "compileInjectStyles:end" );
+    console.info( "[buildScripts] Done." );
+    performance.mark( "buildScripts:end" );
 }
 
-export async function compileInjectScripts ( buildPath, internals, dev = false )
+export async function buildStyles ( buildPath, buildType, internals, dev = false )
 {
-    performance.mark( "compileInjectScripts:start" );
+    performance.mark( "buildStyles:start" );
+    console.info( "[buildStyles] Starting PostCSS process..." );
 
-    const fullIndexPath = Path.join( getRootPath(), internals.indexScript );
+    const fullIndexPath  = Path.join( getRootPath(), internals.indexStyle                 );
+    const fullOutputPath = Path.join( getRootPath(), buildPath, internals.indexStyleBuild );
 
-    await checkPath( fullIndexPath );
+    await compileAndMoveStyle( fullIndexPath, fullOutputPath, buildType, dev );
 
-    console.info( "[compileInjectScripts] Starting Babel process..." );
-
-    const babelOptions = {
-        compact: dev ? false : true,
-        presets: [ "@babel/preset-env" ]
-    };
-
-    const content = await FS.readFile( fullIndexPath, { encoding: "utf8" } );
-    const results = await Babel.transformAsync( content, babelOptions );
-    const files   = {};
-
-    files[ internals.indexScriptBuild ] = results.code;
-
-    if ( results.map )
-    {
-        files[ `${ internals.indexScriptBuild }.map` ] = results.map.toString();
-    }
-
-    await writeBuildFiles( buildPath, files );
-
-    console.info( "[compileInjectScripts] Done." );
-    performance.mark( "compileInjectScripts:end" );
+    console.info( "[buildStyles] Done." );
+    performance.mark( "buildStyles:end" );
 }
 
 export async function ensureBuildFolder ( buildPath )
@@ -324,7 +393,7 @@ export function startServer( buildPath, internals )
 
 /**
  * @param {( changes ) => void} onChange
- * changes = { compileInjectStyles: boolean, compileInjectScripts: boolean, generateHTML: boolean }
+ * changes = { buildLibrary: boolean, buildStyles: boolean, buildScripts: boolean, generateHTML: boolean }
  */
 export function watchLoop ( internals, onChange )
 {
