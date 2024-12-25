@@ -28,7 +28,16 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 9: structure and clean `Readme.md`
 * PUBLISH
 * Phase 10: cycle of improvements from backlog after first feedback
----
+* ...
+* Code fine-tune
+    * Animation: loading state, computation logic to worker, rAF
+    * Animation: what about those damn lines? Make them breathe
+* UI fine-tune
+    * Title should transition and become part of the nav, max-width to read exp
+    * Try `text-align: justify` for long text
+
+### Roadmap stuff
+
 * Environment
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
@@ -42,11 +51,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * `buildLibrary|buildScripts|buildStyles` in `dev` mode
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
-* Code fine-tune
-    * Animation: loading state, computation logic to worker, rAF
-    * Animation: what about those damn lines? Make them breathe
-* UI fine-tune
-    * Title should transition and become part of the nav, max-width to read exp
 
 ## File structure / Architecture (try to keep updated)
 

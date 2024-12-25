@@ -6,14 +6,14 @@
         "homepage": {
             "title": "A personal space"
         },
-        "career": {
-            "title": "Career"
+        "user": {
+            "title": "User"
         },
-        "projects": {
-            "title": "Projects"
+        "code": {
+            "title": "Code"
         },
-        "writings": {
-            "title": "Writings"
+        "text": {
+            "title": "Text"
         }
     }
 }
