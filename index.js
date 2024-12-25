@@ -106,7 +106,10 @@ export function start ()
 
 export function test ()
 {
-    console.log( "Hello from test!" );
+    Bits.tests.runUnit( Configuration.internals );
+
+    // TODO tests.runWebComponent
+    // TODO tests.runE2E
 }
 
 /* Expose component methods, to others and to the CLI */

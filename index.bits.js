@@ -11,6 +11,7 @@ import CSSNano      from "cssnano";
 import FS           from "fs/promises";
 import Handlebars   from "handlebars";
 import HTTP         from "http";
+import Jasmine      from "jasmine";
 import Path         from "path";
 import PostCSS      from "postcss";
 import ServeHandler from "serve-handler";
@@ -113,6 +114,13 @@ function getPartialNameFromFileName ( file )
 function getRootPath ()
 {
     return Path.dirname( URL.fileURLToPath( import.meta.url ) );
+}
+
+async function getUnitTestFiles ( path )
+{
+    const files = await FS.readdir( path, { recursive: true } );
+
+    return files.filter( x => x.includes( ".test." ) );
 }
 
 /**
@@ -413,3 +421,22 @@ export function watchLoop ( internals, onChange )
             }
         } );
 }
+
+export const tests =
+{
+    runUnit: async ( internals ) =>
+    {
+        const root   = Path.join( getRootPath(), internals.sourcePath );
+        const units  = await getUnitTestFiles( root );
+        const runner = new Jasmine();
+
+        runner.loadConfig( {
+            spec_dir   : internals.sourcePath,
+            spec_files : units
+        } );
+
+        const results = await runner.execute();
+
+        console.info( results );
+    }
+};

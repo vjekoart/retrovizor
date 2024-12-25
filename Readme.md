@@ -15,20 +15,23 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
 * Phase 3: code extraction: library and web components with test mechanisms
-    * Add basic testing mechanism for exposed utility and service
+    * Tests: should tests be part of the watch loop?
     * Use https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps
     * Introduce Lit and dummy web component with a simple test
     * Extract existing HTML/CSS/JS code in the app to the library
     * Clean `index.bits.js` by moving general stuff to `library.js`
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-* Phase 5: code fine-tune (decoupling, style, remove comments, optimisations)
-* Phase 6: UI fine-tune (transitions, assets, favicons, SEO,...)
-* Phase 7: run Lighthouse and similar dev tools to ensure website quality
-* Phase 8: structure and clean `Readme.md`
+* Phase 5: Add single E2e test - user journey (Jasmine, BDD)
+* Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
+* Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
+* Phase 8: run Lighthouse and similar dev tools to ensure website quality
+* Phase 9: structure and clean `Readme.md`
 * PUBLISH
-* Phase 9: cycle of improvements from backlog after first feedback
+* Phase 10: cycle of improvements from backlog after first feedback
 ---
-* Environment/component: add `lint` action that lints the whole codebase
+* Environment
+    * Migrate to TypeScript
+    * Add `lint` action that lints the whole codebase
 * Build system
     * `buildType`: for now native web module, but later enable bundling
     * Improve error reporting, e.g. for CSS, don't die when there's an error
