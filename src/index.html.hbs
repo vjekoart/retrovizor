@@ -7,12 +7,22 @@
 
         <title>retrovizor.xyz | {{ title }}</title>
 
-        <link rel="stylesheet" type="text/css" href="/{{ internals.indexStyleBuild }}">
+        <link rel="stylesheet" type="text/css" href="/{{ configuration.internals.indexStyleBuild }}">
     </head>
     <body>
     {{> @partial-block }}
-
+        <script type="importmap">
+            {
+                "imports":
+                {
+                    "Library": "/{{ configuration.internals.libraryBuild }}/index.js",
+                {{#each configuration.dependencies}}
+                    "{{@key}}": "/{{this}}"{{#unless @last}},{{/unless}}
+                {{/each}}
+                }
+            }
+        </script>
         {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
-        <script type="module" src="/{{ internals.indexScriptBuild }}"></script>
+        <script type="module" src="/{{ configuration.internals.indexScriptBuild }}"></script>
     </body>
 </html>

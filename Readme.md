@@ -15,38 +15,37 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
 * Phase 3: code extraction: library and web components with test mechanisms
-    * Tests: should tests be part of the watch loop?
-    * Use https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps
-    * Introduce Lit and dummy web component with a simple test
+    * Lit: add basic testing mechanism
     * Extract existing HTML/CSS/JS code in the app to the library
     * Clean `index.bits.js` by moving general stuff to `library.js`
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
+    * First logic, then focusing on the content
 * Phase 5: Add single E2e test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
-    * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats
+    * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
+    * General: apply patterns from the article Declarative thinking
+    * Animation: loading state, computation logic to worker, rAF
+    * Animation: what about those damn lines? Make them breathe
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
+    * Title should transition and become part of the nav, max-width to read exp
+    * Try `text-align: justify` for long text
+    * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: run Lighthouse and similar dev tools to ensure website quality
 * Phase 9: structure and clean `Readme.md`
 * PUBLISH
 * Phase 10: cycle of improvements from backlog after first feedback
-* ...
-* Code fine-tune
-    * General: apply patterns from the article Declarative thinking
-    * Animation: loading state, computation logic to worker, rAF
-    * Animation: what about those damn lines? Make them breathe
-* UI fine-tune
-    * Title should transition and become part of the nav, max-width to read exp
-    * Try `text-align: justify` for long text
-    * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 
-### Roadmap stuff
+### Roadmap stuff (not part of the first version)
 
 * Environment
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
 * Build system
     * `buildType`: for now native web module, but later enable bundling
+    * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder
     * Improve error reporting, e.g. for CSS, don't die when there's an error
+    * Handle file rename in the loop
+    * Add something like `npm run dev:test` to support test development
     * Add support for multiple CSS and JS files on the app level
     * Performance
         * Try streams instead of `writeFile` and similar to improve performance 

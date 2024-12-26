@@ -47,7 +47,8 @@ export async function build ()
 
         await Bits.ensureBuildFolder( Configuration.buildPath );
         await Promise.all([
-            Bits.generateHTML( Configuration.buildPath, Configuration.internals, Configuration.dataFile  ),
+            Bits.copyAssets  ( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
+            Bits.generateHTML( Configuration                                                             ),
             Bits.buildLibrary( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
             Bits.buildScripts( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
             Bits.buildStyles ( Configuration.buildPath, Configuration.buildType, Configuration.internals )
@@ -75,9 +76,13 @@ export async function dev ()
         Bits.startServer( Configuration.buildPath, Configuration.internals );
         Bits.watchLoop( Configuration.internals, changes =>
         {
+            if ( changes.copyAssets )
+            {
+                Bits.copyAssets( Configuration.buildPath, Configuration.buildType, Configuration.internals );
+            }
             if ( changes.generateHTML )
             {
-                Bits.generateHTML( Configuration.buildPath, Configuration.internals, Configuration.dataFile, true );
+                Bits.generateHTML( Configuration, true );
             }
             if ( changes.buildLibrary )
             {

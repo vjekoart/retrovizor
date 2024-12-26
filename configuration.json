@@ -1,5 +1,9 @@
 {
     "buildPath": "dist",
     "buildType": "native",
-    "dataFile": "src/data.json"
+    "dataFile": "src/data.json",
+    "dependencies":
+    {
+        "lit": "assets/lit-core.min.js"
+    }
 }

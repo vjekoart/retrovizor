@@ -45,11 +45,12 @@ async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, 
     const babelOptions = {
         compact: !dev,
         presets: [ "@babel/preset-env" ],
+        sourceMaps: true,
         // TODO: related to "Configuration.buildType" === "native"
         caller:
         {
             // TODO: generalize this logic, i.e. protect the `library` namespace based on the internals location
-            name: "/library/index.js",
+            name: "Library",
             supportsStaticESM: true
         }
     };
@@ -128,12 +129,10 @@ async function getUnitTestFiles ( path )
  */
 async function makeFolders ( buildPath, folders )
 {
-    const fullBuildPath = Path.join( getRootPath(), buildPath );
-
     for ( const folder of folders )
     {
         console.info( `[makeFolders] Making folder '${ folder }'...` );
-        await FS.mkdir( Path.join( fullBuildPath, folder ), { recursive: true } );
+        await FS.mkdir( Path.join( buildPath, folder ), { recursive: true } );
     }
 }
 
@@ -143,12 +142,10 @@ async function makeFolders ( buildPath, folders )
  */
 async function writeBuildFiles ( buildPath, files )
 {
-    const fullBuildPath = Path.join( getRootPath(), buildPath );
-
     for ( const file in files )
     {
         console.info( `[writeBuildFiles] Writing file '${ file }'...` );
-        await FS.writeFile( Path.join( fullBuildPath, file ), files[ file ] );
+        await FS.writeFile( Path.join( buildPath, file ), files[ file ] );
     }
 }
 
@@ -167,10 +164,11 @@ class WatchPool
         this.delayBeforePublishingChanges = 1000;
         this.timerId = null;
         this.changes = {
-            buildLibrary: false,
-            buildStyles: false,
-            buildScripts: false,
-            generateHTML: false
+            buildLibrary : false,
+            buildStyles  : false,
+            buildScripts : false,
+            copyAssets   : false,
+            generateHTML : false
         }
 
         this.onChange = onChange;
@@ -180,10 +178,11 @@ class WatchPool
     {
         this.onChange( this.changes );
         this.changes = {
-            buildLibrary: false,
-            buildStyles: false,
-            buildScripts: false,
-            generateHTML: false
+            buildLibrary : false,
+            buildStyles  : false,
+            buildScripts : false,
+            copyAssets   : false,
+            generateHTML : false
         }
     }
 
@@ -191,6 +190,12 @@ class WatchPool
     {
         this.resetTimer();
 
+        // TODO: add suport for "node_modules", right now this is relevant only for buildType = "native"
+        if ( path.includes( "/assets/" ) )
+        {
+            this.changes.copyAssets = true;
+            return;
+        }
         if ( path.includes( "/library/" ) )
         {
             this.changes.buildLibrary = true;
@@ -294,6 +299,20 @@ export async function buildStyles ( buildPath, buildType, internals, dev = false
     performance.mark( "buildStyles:end" );
 }
 
+export async function copyAssets ( buildPath, buildType, internals )
+{
+    performance.mark( "copyAssets:start" );
+    console.info( "[copyAssets] Identifying and copying asset files..." );
+
+    const fullAssetsPath = Path.join( getRootPath(), internals.assetsPath            );
+    const fullOutputPath = Path.join( getRootPath(), buildPath, internals.assetsPath );
+
+    await FS.cp( fullAssetsPath, fullOutputPath, { recursive: true } );
+
+    console.info( "[copyAssets] Done." );
+    performance.mark( "copyAssets:end" );
+}
+
 export async function ensureBuildFolder ( buildPath )
 {
     performance.mark( "ensureBuildFolder:start" );
@@ -323,15 +342,16 @@ export async function ensureBuildFolder ( buildPath )
     performance.mark( "ensureBuildFolder:end" );
 }
 
-export async function generateHTML ( buildPath, internals, dataFile = null, dev = false )
+export async function generateHTML ( configuration, dev = false )
 {
     performance.mark( "generateHTML:start" )
     console.info( "[generateHTML] Starting template generation..." );
 
-    const fullTemplatesPath = Path.join( getRootPath(), internals.templatesPath );
-    const fullViewsPath     = Path.join( getRootPath(), internals.viewsPath     );
-    const fullIndexPath     = Path.join( getRootPath(), internals.indexTemplate );
-    const fullDataFilePath  = Path.join( getRootPath(), dataFile );
+    const fullBuildPath     = Path.join( getRootPath(), configuration.buildPath               );
+    const fullTemplatesPath = Path.join( getRootPath(), configuration.internals.templatesPath );
+    const fullViewsPath     = Path.join( getRootPath(), configuration.internals.viewsPath     );
+    const fullIndexPath     = Path.join( getRootPath(), configuration.internals.indexTemplate );
+    const fullDataFilePath  = Path.join( getRootPath(), configuration.dataFile                );
 
     console.info( "[generateHTML] Registering Handlebars partials..." );
 
@@ -343,7 +363,7 @@ export async function generateHTML ( buildPath, internals, dataFile = null, dev 
 
     for ( const file of templateFiles )
     {
-        if ( file.startsWith( internals.layoutPrefix ) )
+        if ( file.startsWith( configuration.internals.layoutPrefix ) )
         {
             const name    = getPartialNameFromFileName( file );
             const content = await FS.readFile( Path.join( fullTemplatesPath, file ), { encoding: "utf8" } );
@@ -356,7 +376,8 @@ export async function generateHTML ( buildPath, internals, dataFile = null, dev 
 
     console.info( "[generateHTML] Compiling views..." );
 
-    const data          = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
+    const data          = configuration.dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
+    const templateData  = { data, configuration };
     const viewFiles     = await FS.readdir( fullViewsPath );
     const outputFiles   = {};
     const outputFolders = [];
@@ -372,11 +393,11 @@ export async function generateHTML ( buildPath, internals, dataFile = null, dev 
             outputFolders.push( fileName );
         }
 
-        outputFiles[ fileName === "index" ? "index.html" : `${ fileName }/index.html` ] = template( Object.assign( { data }, { internals } ) );
+        outputFiles[ fileName === "index" ? "index.html" : `${ fileName }/index.html` ] = template( templateData );
     }
 
-    await makeFolders    ( buildPath, outputFolders );
-    await writeBuildFiles( buildPath, outputFiles   );
+    await makeFolders    ( fullBuildPath, outputFolders );
+    await writeBuildFiles( fullBuildPath, outputFiles   );
 
     console.info( "[generateHTML] Done." );
     performance.mark( "generateHTML:end" );
@@ -408,10 +429,11 @@ export function watchLoop ( internals, onChange )
     console.info( "[watchLoop] Starting the loop..." );
 
     const fullSourcePath = Path.join( getRootPath(), internals.sourcePath );
+    const fullAssetsPath = Path.join( getRootPath(), internals.assetsPath );
     const watchPool      = new WatchPool( onChange );
 
     Chokidar
-        .watch( fullSourcePath, { persistent: true, usePolling: true } )
+        .watch( [ fullAssetsPath, fullSourcePath ], { persistent: true, usePolling: true } )
         .on( "all", ( event, path ) =>
         {
             if ( event === "add" || event === "change" )

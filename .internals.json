@@ -1,4 +1,5 @@
 {
+    "assetsPath": "assets",
     "devPort": 8090,
     "indexScript": "src/index.js",
     "indexScriptBuild": "index.js",
