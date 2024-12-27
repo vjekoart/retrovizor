@@ -16,18 +16,21 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * Phase 3: code extraction: library and web components with test mechanisms
     * Extract existing HTML/CSS/JS code in the app to the library
+        * Homepage: only animation
+        * Nav: add `Home`
+        * page layout: nav (basically header), main and footer
         * Use `typography.css` to define H-elements, P; use web components only to override those styles
     * Clean `index.bits.js` by moving general stuff to `library.js`
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * First logic, then focusing on the content
-* Phase 5: Add single E2e test - user journey (Jasmine, BDD)
+* Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
+    * Phase 6.2: build system fine tune
+        * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
     * General: apply patterns from the article Declarative thinking
     * Animation: loading state, computation logic to worker, rAF
     * Animation: what about those damn lines? Make them breathe
-* Phase 6.1: build system fine tune
-    * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * Title should transition and become part of the nav, max-width to read exp
     * Try `text-align: justify` for long text
@@ -39,6 +42,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ### Roadmap stuff (not part of the first version)
 
+* Website functionalities
+    * Add support for linkable headings, like in Confluence
+    * Add support for _Table of contents_
 * Environment
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
