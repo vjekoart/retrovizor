@@ -4,18 +4,18 @@
  * Keep in mind that this is also full of potential candidates for utility library,
  * but specifically for the NodeJS namespace (everything's gonna be NodeJS at the beginning).
  */
-import Autoprefixer from "autoprefixer";
-import Babel        from "@babel/core";
-import Chokidar     from "chokidar";
-import CSSNano      from "cssnano";
-import FS           from "fs/promises";
-import Handlebars   from "handlebars";
-import HTTP         from "http";
-import Jasmine      from "jasmine";
-import Path         from "path";
-import PostCSS      from "postcss";
-import ServeHandler from "serve-handler";
-import URL          from "url";
+import Autoprefixer   from "autoprefixer";
+import Babel          from "@babel/core";
+import Chokidar       from "chokidar";
+import CSSNano        from "cssnano";
+import FS             from "fs/promises";
+import Handlebars     from "handlebars";
+import HTTP           from "http";
+import JasmineBrowser from "jasmine-browser-runner";
+import Path           from "path";
+import PostCSS        from "postcss";
+import ServeHandler   from "serve-handler";
+import URL            from "url";
 
 import { performance } from "node:perf_hooks";
 
@@ -117,11 +117,11 @@ function getRootPath ()
     return Path.dirname( URL.fileURLToPath( import.meta.url ) );
 }
 
-async function getUnitTestFiles ( path )
+async function getTestFiles ( path, includes )
 {
     const files = await FS.readdir( path, { recursive: true } );
 
-    return files.filter( x => x.includes( ".test." ) );
+    return files.filter( x => x.includes( includes ) );
 }
 
 /**
@@ -446,19 +446,41 @@ export function watchLoop ( internals, onChange )
 
 export const tests =
 {
-    runUnit: async ( internals ) =>
+    runWebBrowser: async ( Configuration ) =>
     {
-        const root   = Path.join( getRootPath(), internals.sourcePath );
-        const units  = await getUnitTestFiles( root );
-        const runner = new Jasmine();
+        const { sourcePath, tests } = Configuration.internals;
 
-        runner.loadConfig( {
-            spec_dir   : internals.sourcePath,
-            spec_files : units
-        } );
+        const root   = Path.join( getRootPath(), sourcePath );
+        const units  = await getTestFiles( root, tests.browserTestIncludes );
 
-        const results = await runner.execute();
+        const config = {
+            projectBaseDir       : getRootPath(),
+            srcDir               : sourcePath,
+            specDir              : sourcePath,
+            specFiles            : units,
+            esmFilenameExtension : ".js",
+            enableTopLevelAwait  : false,
+            useHtmlReporter      : false,
+            env                  :
+            {
+                stopSpecOnExpectationFailure : false,
+                stopOnSpecFailure            : false,
+                random                       : true
+            },
+            importMap:
+            {
+                moduleRootDir: ".",
+                imports: Configuration.dependencies
+            },
+            listenAddress : "localhost",
+            hostname      : "localhost",
+            browser       :
+            {
+                name : "headlessFirefox"
+            }
+        };
 
+        const results = await JasmineBrowser.runSpecs( config );
         console.info( results );
-    }
+    },
 };

@@ -15,8 +15,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
 * Phase 3: code extraction: library and web components with test mechanisms
-    * Lit: add basic testing mechanism
     * Extract existing HTML/CSS/JS code in the app to the library
+        * Use `typography.css` to define H-elements, P; use web components only to override those styles
     * Clean `index.bits.js` by moving general stuff to `library.js`
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * First logic, then focusing on the content
@@ -26,6 +26,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * General: apply patterns from the article Declarative thinking
     * Animation: loading state, computation logic to worker, rAF
     * Animation: what about those damn lines? Make them breathe
+* Phase 6.1: build system fine tune
+    * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * Title should transition and become part of the nav, max-width to read exp
     * Try `text-align: justify` for long text
@@ -41,6 +43,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
 * Build system
+    * Compare `buildType:native` and `buildType:bundle` performance
     * `buildType`: for now native web module, but later enable bundling
     * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder
     * Improve error reporting, e.g. for CSS, don't die when there's an error
@@ -84,3 +87,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * styles/      # Make possible to import these general styles
                        # from `index.css`
 ```
+
+### Notes
+
+* Tests: files with `*.unit.test.js` are run as basic unit tests, while files with `*.component.test.js` are run inside a web browser

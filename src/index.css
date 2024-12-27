@@ -1,31 +1,6 @@
 @import url( "/library/index.css" );
 
 /**
- * Small, general, components
- */
-a
-{
-    text-decoration : none;
- 
-    color           : var(--style-color-interactive);
-    transition      : color var(--transition-duration-short) ease-in-out;
-}
-
-a:hover,
-a:active,
-a:focus
-{
-    color : var(--style-color-interactive-in);
-}
-
-canvas
-{
-    display  : block;
-/* NOT SURE position : fixed;*/
-}
-
-
-/**
  * Header component
  */
 header[role="main"]

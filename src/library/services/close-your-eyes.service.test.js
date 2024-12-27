@@ -4,7 +4,8 @@ describe( "CloseYourEyes suite", () =>
 {
     it( "constructor", () =>
     {
-        const instance = new CloseYourEyes();
+        const canvas   = document.createElement( "canvas" );
+        const instance = new CloseYourEyes( canvas );
 
         expect( instance instanceof CloseYourEyes ).toBe( true );        
     } );

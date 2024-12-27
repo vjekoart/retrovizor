@@ -111,9 +111,7 @@ export function start ()
 
 export function test ()
 {
-    Bits.tests.runUnit( Configuration.internals );
-
-    // TODO tests.runWebComponent
+    Bits.tests.runWebBrowser( Configuration );
     // TODO tests.runE2E
 }
 
