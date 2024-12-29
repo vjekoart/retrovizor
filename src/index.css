@@ -9,23 +9,6 @@ header[role="main"]
     height   : 100vh;
 }
 
-header[role="main"] h1
-{
-    margin      : 0;
-
-    font-family : var(--style-font-family-title);
-    font-size   : var(--style-font-size-title);
-    font-weight : var(--style-font-weight-title);
-    line-height : var(--style-font-size-title);
-}
-
-header[role="main"] h1 a
-{
-    color           : var(--color-light-faded);
-    text-decoration : none;
-    text-transform  : uppercase;
-}
-
 header[role="main"] #artwork
 {
     display : block;
@@ -33,77 +16,11 @@ header[role="main"] #artwork
     height  : 100vh;
 }
 
-header[role="main"] button
-{
-    display       : block;
-
-    width         : calc(2 * var(--style-grid-full));
-    height        : calc(2 * var(--style-grid-full));
-      
-    font-family   : var(--style-font-family-title);
-    font-size     : var(--style-font-size-title);
-    font-weight   : var(--style-font-weight-title);
-    line-height   : calc(2 * var(--style-font-size-title));
-    text-align    : center;
-
-    color         : var(--style-color-light);
-    background    : transparent;
-    border        : none;
-    outline       : none;
-
-    cursor        : pointer;
-}
-
 
 /**
  * Navigation component
  */
-nav[role="main"]
-{
-    padding    : var(--style-grid-full);
-    text-align : center;
-}
 
-nav[role="main"] a
-{
-    display         : inline-block;
-    margin          : 0 var(--style-grid-half) 0 0;
-    
-    font-family     : var(--style-font-family-strong);
-    font-weight     : var(--style-font-weight-strong);
-    font-size       : var(--style-font-size-text);
-    line-height     : var(--style-grid-full);
-    text-transform  : uppercase;
-    text-decoration : none;
- 
-    color           : var(--style-color-light);
-    border-bottom   : var(--style-line-width-light) solid var(--style-color-light);
-}
-
-nav[role="main"] a:hover,
-nav[role="main"] a:active,
-nav[role="main"] a:focus,
-nav[role="main"] a.active
-{
-    color : var(--style-color-light-highlight);
-}
-
-nav[role="main"] a:hover,
-nav[role="main"] a:active,
-nav[role="main"] a:focus
-{
-    border-color : var(--style-color-accent);
-}
-
-nav[role="main"] a.active
-{
-    border-color : var(--style-color-light-highlight);
-}
-
-nav[role="main"] a:last-child
-{
-    margin-right: 0;
-}
 
 
 /**
@@ -198,33 +115,6 @@ article footer a::after
 
 
 /**
- * Footer component
- */
-footer[role="main"]
-{
-    padding    : var(--style-grid-full);
-    text-align : center;
-}
-
-footer[role="main"] p
-{
-    margin      : 0;
-
-    font-family : var(--style-font-family-strong);
-    font-weight : var(--style-font-weight-strong);
-    font-size   : var(--style-font-size-text);
-    line-height : var(--style-grid-full);
-
-    color       : var(--style-color-light-faded);
-}
-
-footer[role="main"] p strong
-{
-    color: var(--style-color-accent);
-}
-
-
-/**
  * Index view: composition
  */
 header[role="main"]
@@ -232,23 +122,12 @@ header[role="main"]
     position : relative;
 }
 
-header[role="main"] h1
+retro-title
 {
     position : fixed;
-    top      : var(--style-grid-full);
-    right    : var(--style-grid-full);
+    top      : 0;
+    right    : 0;
 }
-
-header[role="main"] button
-{
-    position  : absolute;
-    bottom    : var(--style-grid-full);
-    left      : 50%;
-    transform : translateX(-50%);
-}
-
-nav[role="main"]
-{}
 
 main
 {
@@ -257,6 +136,3 @@ main
     max-width  : calc(24 * var(--style-grid-full));
     margin     : 0 auto;
 }
-
-footer[role="main"]
-{}

@@ -1,13 +1,10 @@
 {{#> index title=title }}
     <header role="main">
-        <h1>retrovizor.xyz: page layout</h1>
-        header[role="main"]
+        <retro-title></retro-title>
+        <retro-nav></retro-nav>
     </header>
     <main>
     {{> @partial-block }}
     </main>
-    <footer role="main">
-        Here comes Retro footer
-        <retro-footer></retro-footer>
-    </footer>
+    <retro-footer></retro-footer>
 {{/index}}

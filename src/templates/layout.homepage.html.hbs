@@ -1,21 +1,12 @@
 {{#> index title=title }}
     <header role="main">
-        <h1><a href="/">Retrovizor</a></h1>
+        <retro-title></retro-title>
         <div id="artwork">
             <canvas></canvas>
         </div>
-        <button type="button">&#x2193;</button>
     </header>
-    <nav role="main">
-        <a href="/">Home</a>
-        <a href="/text" class="active">Text</a>
-        <a href="/code">Code</a>
-        <a href="/user">User</a>
-    </nav>
+    <retro-nav></retro-nav>
     <main>
     {{> @partial-block }}
     </main>
-    <footer role="main">
-        <p>retrovizor<strong>&middot;</strong>xyz</p>
-    </footer>
 {{/index}}

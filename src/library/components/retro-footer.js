@@ -2,48 +2,34 @@ import { LitElement, html, css } from "lit";
 
 export class RetroFooter extends LitElement
 {
-    static properties =
-    {
-        "dummyValue":
-        {
-            attribute: "data-dummy-value",
-            type: String
-        }
-    };
-
     static styles = css`
         :host
         {
-            display: block;
-            background-color: cyan;
+            display    : block;
+            padding    : var(--style-grid-full);
+            text-align : center;
         }
 
-        em,
-        strong
+        :host p
         {
-            display: block;
-            margin: var(--style-grid-full);
+            margin      : 0;
+
+            font-family : var(--style-font-family-strong);
+            font-weight : var(--style-font-weight-strong);
+            font-size   : var(--style-font-size-text);
+            line-height : var(--style-grid-full);
+
+            color       : var(--style-color-light-faded);
         }
 
-        em
+        :host p strong
         {
-            background-color: var(--style-color-accent);
-        }
-
-        strong
-        {
-            background-color: var(--color-red);
+            color: var(--style-color-accent);
         }
     `;
 
-    constructor ()
-    {
-        super();
-        this.dummyValue = "Default dummyValue!";
-    }
-
     render ()
     {
-        return html`<div><em>Value</em><strong>${ this.dummyValue }</strong></div>`;
+        return html`<p>retrovizor<strong>&middot;</strong>xyz</p>`;
     }
 }

@@ -1,16 +1,16 @@
 import { renderComponent } from "../test.utilities.js";
-import { RetroFooter     } from "./retro-footer.js";
+import { RetroNav        } from "./retro-nav.js";
 
-describe( "RetroFooter", () =>
+describe( "RetroNav", () =>
 {
     beforeAll( () =>
     {
-        customElements.define( "retro-footer", RetroFooter );
+        customElements.define( "retro-nav", RetroNav );
     } );
 
     it( "renders: default", async () =>
     {
-        const { shadowRoot } = await renderComponent( "retro-footer", "<retro-footer></retro-footer>" );
+        const { shadowRoot } = await renderComponent( "retro-nav", "<retro-nav></retro-nav>" );
         const value = shadowRoot.innerHTML.includes( "retrovizor" );
         expect( value ).toBeTruthy();
     } );
