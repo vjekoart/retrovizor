@@ -3,32 +3,9 @@
  *
  * @see Readme.md
  */
-import { performance } from "node:perf_hooks";
-
 import * as Library from "./library.js";
-import * as Bits    from "./index.bits.js";
 
-const Configuration = Library.getConfiguration();
-
-function _writePerformance ( mode )
-{
-    performance.measure( "ensureBuildFolder:duration",    "ensureBuildFolder:start",    "ensureBuildFolder:end" );
-    performance.measure( "generateHTML:duration",         "generateHTML:start",         "generateHTML:end"      );
-    performance.measure( "buildScripts:duration",         "buildScripts:start",         "buildScripts:end"      );
-    performance.measure( "buildStyles:duration",          "buildStyles:start",          "buildStyles:end"       );
-    performance.measure( "buildLibrary:duration",         "buildLibrary:start",         "buildLibrary:end"      );
-    performance.measure( `${ mode }:duration`,            `${ mode }:start`,            `${ mode }:end`         );
-
-    const entries = performance.getEntries();
-
-    entries.forEach( x =>
-    {
-        if ( x.name.endsWith( ":duration" ) )
-        {
-            console.log( x.name, ( x.duration / 1000 ).toFixed( 4 ), "seconds" );
-        }
-    } );
-}
+const Configuration = Library.general.getConfiguration();
 
 /**
  * TODO
@@ -43,19 +20,14 @@ export async function build ()
 {
     try
     {
-        performance.mark( "build:start" );
-
-        await Bits.ensureBuildFolder( Configuration.buildPath );
+        await Library.frontend.ensureBuildFolder( Configuration );
         await Promise.all([
-            Bits.copyAssets  ( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
-            Bits.generateHTML( Configuration                                                             ),
-            Bits.buildLibrary( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
-            Bits.buildScripts( Configuration.buildPath, Configuration.buildType, Configuration.internals ),
-            Bits.buildStyles ( Configuration.buildPath, Configuration.buildType, Configuration.internals )
+            Library.frontend.copyAssets  ( Configuration ),
+            Library.frontend.generateHTML( Configuration ),
+            Library.frontend.buildLibrary( Configuration ),
+            Library.frontend.buildScripts( Configuration ),
+            Library.frontend.buildStyles ( Configuration )
         ]);
-
-        performance.mark( "build:end" );
-        _writePerformance( "build" );
     }
     catch ( error )
     {
@@ -72,29 +44,29 @@ export async function dev ()
 {
     try
     {
-        await Bits.ensureBuildFolder( Configuration.buildPath );
-        Bits.startServer( Configuration.buildPath, Configuration.internals );
-        Bits.watchLoop( Configuration.internals, changes =>
+        await Library.frontend.ensureBuildFolder( Configuration );
+        Library.frontend.startServer( Configuration );
+        Library.frontend.watchLoop( Configuration, changes =>
         {
             if ( changes.copyAssets )
             {
-                Bits.copyAssets( Configuration.buildPath, Configuration.buildType, Configuration.internals );
+                Library.frontend.copyAssets( Configuration );
             }
             if ( changes.generateHTML )
             {
-                Bits.generateHTML( Configuration, true );
+                Library.frontend.generateHTML( Configuration, true );
             }
             if ( changes.buildLibrary )
             {
-                Bits.buildLibrary( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
+                Library.frontend.buildLibrary( Configuration, true );
             }
             if ( changes.buildScripts )
             {
-                Bits.buildScripts( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
+                Library.frontend.buildScripts( Configuration, true );
             }
             if ( changes.buildStyles )
             {
-                Bits.buildStyles( Configuration.buildPath, Configuration.buildType, Configuration.internals, true );
+                Library.frontend.buildStyles( Configuration, true );
             }
         } );
     }
@@ -111,12 +83,12 @@ export function start ()
 
 export function test ()
 {
-    Bits.tests.runWebBrowser( Configuration );
+    Library.frontend.tests.runWebBrowser( Configuration );
     // TODO tests.runE2E
 }
 
 /* Expose component methods, to others and to the CLI */
-Library.expose(
+Library.general.expose(
     [
         build,
         deploy,

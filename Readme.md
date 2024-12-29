@@ -20,7 +20,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Nav: add `Home`
         * page layout: nav (basically header), main and footer
         * Use `typography.css` to define H-elements, P; use web components only to override those styles
-    * Clean `index.bits.js` by moving general stuff to `library.js`
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * First logic
         * `active` class logic for pages
