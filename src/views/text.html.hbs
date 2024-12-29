@@ -1,6 +1,13 @@
 {{#> layout.page title=data.views.text.title }}
     <p>Textual content, like articles, blog posts, thoughts, and similar...</p>
 
+    <retro-article-excerpt></retro-article-excerpt>
+
+    <retro-article-excerpt data-href="example">
+        <span slot="title">This is an article title</span>
+        <span slot="excerpt">This is a dummy excerpt that should span at least one line. But to make sure, I'll add a couple of words.</span>
+    </retro-article-excerpt>
+
     <h2>Initial **short** articles</h2>
     <p>Not for sharing - until articles are expanded and improved, but should be good enough for first publish.</p>
 

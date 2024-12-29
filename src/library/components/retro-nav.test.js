@@ -11,7 +11,10 @@ describe( "RetroNav", () =>
     it( "renders: default", async () =>
     {
         const { shadowRoot } = await renderComponent( "retro-nav", "<retro-nav></retro-nav>" );
-        const value = shadowRoot.innerHTML.includes( "retrovizor" );
-        expect( value ).toBeTruthy();
+
+        expect( shadowRoot.innerHTML.includes( "Home" ) ).toBeTruthy();
+        expect( shadowRoot.innerHTML.includes( "Code" ) ).toBeTruthy();
+        expect( shadowRoot.innerHTML.includes( "Text" ) ).toBeTruthy();
+        expect( shadowRoot.innerHTML.includes( "User" ) ).toBeTruthy();
     } );
 } );

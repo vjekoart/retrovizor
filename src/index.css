@@ -1,7 +1,7 @@
 @import url( "/library/index.css" );
 
 /**
- * Header component
+ * Header component => merge with main outlet in layout.homepage
  */
 header[role="main"]
 {
@@ -16,15 +16,8 @@ header[role="main"] #artwork
     height  : 100vh;
 }
 
-
 /**
- * Navigation component
- */
-
-
-
-/**
- * Main outlet
+ * Main outlet => merge with main outlet in layout.homepage
  */
 main
 {
@@ -35,87 +28,7 @@ main
 }
 
 /**
- * Article component
- */
-article
-{
-    position: relative;
-
-    margin-bottom  : var(--style-grid-full);
-}
-
-article h2
-{
-    margin  : 0 0 var(--style-grid-third) 0;
-
-    font-family : var(--style-font-family-strong);
-    font-weight : var(--style-font-weight-strong);
-    font-size   : var(--style-font-size-text);
-    line-height : var(--style-grid-full);
-
-    color       : var(--style-color-light-highlight);
-}
-
-article h2::before
-{
-    content       : "#";
-    padding-right : calc(0.33 * var(--style-font-size-text));
-    color         : var(--style-color-accent);
-}
-
-article p
-{
-    margin      : 0;
-
-    font-family : var(--style-font-family-content);
-    font-weight : var(--style-font-weight-normal);
-    font-size   : var(--style-font-size-text);
-    line-height : var(--style-line-height);
-}
-
-article footer
-{
-    text-align: right;
-}
-
-article footer a
-{
-    color           : var(--style-color-light);
-    font-family     : var(--style-font-family-content);
-    font-weight     : var(--style-font-weight-title);
-    font-size       : var(--style-font-size-footer-link);
-    line-height     : var(--style-line-height);
-}
-
-article footer a:hover,
-article footer a:active,
-article footer a:focus
-{
-    color : var(--style-color-light-highlight);
-}
-
-article footer a::before,
-article footer a::after
-{
-    color : var(--style-color-accent);
-}
-
-article footer a::before
-{
-    content       : "[";
-    padding-right : calc(0.33 * var(--style-font-size-text));
-    
-}
-
-article footer a::after
-{
-    content      : "]";
-    padding-left : calc(0.33 * var(--style-font-size-text));
-}
-
-
-/**
- * Index view: composition
+ * layout.homepage composition
  */
 header[role="main"]
 {
