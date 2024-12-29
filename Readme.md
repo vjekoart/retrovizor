@@ -20,9 +20,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Nav: add `Home`
         * page layout: nav (basically header), main and footer
         * Use `typography.css` to define H-elements, P; use web components only to override those styles
-    * How?
-        * Enable CSS and JS files for views
-        * Enable CSS and JS files for templates
+        * Refine/restructure styles to support this idea
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * First logic
         * `active` class logic for pages
@@ -36,6 +34,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * General: apply patterns from the article Declarative thinking
     * Animation: loading state, computation logic to worker, rAF
     * Animation: what about those damn lines? Make them breathe
+    * Refactor `generateHTML` method to something more readable
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * Title should transition and become part of the nav, max-width to read exp
     * Try `text-align: justify` for long text

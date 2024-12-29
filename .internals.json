@@ -11,10 +11,12 @@
     "libraryBuild": "library",
     "sourcePath": "src",
     "templatesPath": "src/templates",
+    "templatesBuild": "templates",
     "tests":
     {
         "browserTestIncludes": ".test.",
         "serverPort": 4321
     },
-    "viewsPath": "src/views"
+    "viewsPath": "src/views",
+    "viewsBuild": "views"
 }

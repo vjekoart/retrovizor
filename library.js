@@ -89,13 +89,51 @@ async function buildScripts ( configuration, dev = false )
 {
     console.info( "[buildScripts] Starting Babel process..." );
 
-    const { buildPath, buildType          } = configuration;
-    const { indexScript, indexScriptBuild } = configuration.internals;
+    const { buildPath, buildType } = configuration;
+    const {
+        indexScript,
+        indexScriptBuild,
+        templatesBuild,
+        templatesPath,
+        viewsBuild,
+        viewsPath
+    } = configuration.internals;
 
     const fullIndexPath  = Path.join( Bits.getRootPath(), indexScript                 );
     const fullOutputPath = Path.join( Bits.getRootPath(), buildPath, indexScriptBuild ); 
 
     await Bits.compileAndMoveScript( fullIndexPath, fullOutputPath, buildType, dev );
+
+    // View and template scripts
+    const fullTemplatesPath   = Path.join( Bits.getRootPath(), templatesPath );
+    const fullViewsPath       = Path.join( Bits.getRootPath(), viewsPath     );
+    const templateFiles       = await FS.readdir( fullTemplatesPath );
+    const viewFiles           = await FS.readdir( fullViewsPath     );
+    const scriptTemplateFiles = templateFiles
+                                    .filter( x => x.endsWith( ".js" ) )
+                                    .map( x =>
+                                    {
+                                        return {
+                                            input: Path.join( fullTemplatesPath, x ),
+                                            output: Path.join( Bits.getRootPath(), buildPath, templatesBuild, x )
+                                        }
+                                    } );
+    const scriptViewFiles     = viewFiles
+                                    .filter( x => x.endsWith( ".js" ) )
+                                    .map( x =>
+                                    {
+                                        return {
+                                            input: Path.join( fullViewsPath, x ),
+                                            output: Path.join( Bits.getRootPath(), buildPath, viewsBuild, x )
+                                        }
+                                    } );
+
+    const filesToBuild = scriptTemplateFiles.concat( scriptViewFiles );
+
+    for ( const file of filesToBuild )
+    {
+        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
+    }
 
     console.info( "[buildScripts] Done." );
 }
@@ -104,13 +142,51 @@ async function buildStyles ( configuration, dev = false )
 {
     console.info( "[buildStyles] Starting PostCSS process..." );
 
-    const { buildPath, buildType        } = configuration;
-    const { indexStyle, indexStyleBuild } = configuration.internals;
+    const { buildPath, buildType } = configuration;
+    const {
+        indexStyle,
+        indexStyleBuild,
+        templatesBuild,
+        templatesPath,
+        viewsBuild,
+        viewsPath
+    } = configuration.internals;
 
     const fullIndexPath  = Path.join( Bits.getRootPath(), indexStyle                 );
     const fullOutputPath = Path.join( Bits.getRootPath(), buildPath, indexStyleBuild );
 
     await Bits.compileAndMoveStyle( fullIndexPath, fullOutputPath, buildType, dev );
+
+    // View and template styles
+    const fullTemplatesPath  = Path.join( Bits.getRootPath(), templatesPath );
+    const fullViewsPath      = Path.join( Bits.getRootPath(), viewsPath     );
+    const templateFiles      = await FS.readdir( fullTemplatesPath );
+    const viewFiles          = await FS.readdir( fullViewsPath     );
+    const styleTemplateFiles = templateFiles
+                                    .filter( x => x.endsWith( ".css" ) )
+                                    .map( x =>
+                                    {
+                                        return {
+                                            input: Path.join( fullTemplatesPath, x ),
+                                            output: Path.join( Bits.getRootPath(), buildPath, templatesBuild, x )
+                                        }
+                                    } );
+    const styleViewFiles     = viewFiles
+                                    .filter( x => x.endsWith( ".css" ) )
+                                    .map( x =>
+                                    {
+                                        return {
+                                            input: Path.join( fullViewsPath, x ),
+                                            output: Path.join( Bits.getRootPath(), buildPath, viewsBuild, x )
+                                        }
+                                    } );
+
+    const filesToBuild = styleTemplateFiles.concat( styleViewFiles );
+
+    for ( const file of filesToBuild )
+    {
+        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
+    }
 
     console.info( "[buildStyles] Done." );
 }
@@ -136,7 +212,7 @@ async function ensureBuildFolder ( configuration )
 
     const { buildPath } = configuration;
     const fullBuildPath = Path.join( Bits.getRootPath(), buildPath );
-    console.log( "fullBuildPath", fullBuildPath );
+
     try
     {
         await Bits.checkPath( fullBuildPath, true );    
@@ -180,9 +256,10 @@ async function generateHTML ( configuration, dev = false )
         index: await FS.readFile( fullIndexPath, { encoding: "utf8" } )
     };
 
-    const templateFiles = await FS.readdir( fullTemplatesPath );
+    const templateFiles     = await FS.readdir( fullTemplatesPath );
+    const htmlTemplateFiles = templateFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
 
-    for ( const file of templateFiles )
+    for ( const file of htmlTemplateFiles )
     {
         if ( file.startsWith( layoutPrefix ) )
         {
@@ -200,10 +277,11 @@ async function generateHTML ( configuration, dev = false )
     const data          = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
     const templateData  = { data, configuration };
     const viewFiles     = await FS.readdir( fullViewsPath );
-    const outputFiles   = {};
+    const htmlViewFiles = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
+    const outputFiles   = {}; 
     const outputFolders = [];
 
-    for ( const file of viewFiles )
+    for ( const file of htmlViewFiles )
     {
         const content  = await FS.readFile( Path.join( fullViewsPath, file ), { encoding: "utf8" } );
         const template = Handlebars.compile( content );
