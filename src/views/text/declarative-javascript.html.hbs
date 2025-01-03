@@ -1,0 +1,25 @@
+{{#> layout.page
+    title=data.views.text.title
+    view="text"
+}}
+    <h3>Thoughts on declarative code in JavaScript / Small example of declarative thinking</h3>
+
+    * Introduction
+        * A sentence about declarative paradigm
+        * A question: How could we approach to writing and refactoring a complex codebase with these ideas in mind? (in JS env)
+    * Approach to applying declarative stuff
+        * Let's start from the high-level, entry points to the code
+        * Starting from high-level is more beneficial to the team, we're making entry points understandable, therefore making it easier for everyone in the team to understand the bigger picture, while working with specifics that are in the ownership of every person
+        * Improve communication and cooperation
+    * Approach: layers and same level of abstraction on each layer
+        * Walkthrough - a higher-level function polluted with technical details, hard to grasp the main idea of the function
+        * Example: pure JS (NodeJS) - function refactoring - extraction to a close utility file
+        * Example: SPA framework - component refactoring
+    * Approach: don't be afraid of large files - sometimes the *what?* part of the code is quite verbose
+        * Nothing wrong if we have e.g. a router declaration file with 400 lines where almost every line is like a `register.something( "X", x );`
+        * Nothing wrong if a file has 50 small utility functions for working with web browser or NodeJS APIs
+        * Add spaces and empty lines, make reading easy, don't save on digital paper, but rather on physicial tree paper. Add empty lines to separate logic in a single function if needed.
+    * Approach: make use of _Hoisting_ to make the most important stuff visible
+        * JS works in a way that file is always read twice, so let's make use of that
+        * Let's put ourselves in the shoes of a human exploring the new codebase and trying to understand the bigger picture: it's easier when we open a file and we see the main functionality/idea of the file, rather than a random utility
+{{/layout.page}}

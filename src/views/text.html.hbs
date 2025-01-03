@@ -2,64 +2,18 @@
     title=data.views.text.title
     view="text"
 }}
-    <p>Textual content, like articles, blog posts, thoughts, and similar...</p>
-
-    <retro-article-excerpt></retro-article-excerpt>
-
-    <retro-article-excerpt data-href="example">
-        <span slot="title">This is an article title</span>
-        <span slot="excerpt">This is a dummy excerpt that should span at least one line. But to make sure, I'll add a couple of words.</span>
+    <retro-article-excerpt data-href="native-web-frontend/" data-date="2025-03-01">
+        <span slot="title">Building a web frontend with native technologies</span>
+        <span slot="excerpt">TBA</span>
     </retro-article-excerpt>
 
-    <h2>Initial **short** articles</h2>
-    <p>Not for sharing - until articles are expanded and improved, but should be good enough for first publish.</p>
+    <retro-article-excerpt data-href="declarative-javascript/" data-date="2025-03-01">
+        <span slot="title">Thoughts on declarative code in JavaScript</span>
+        <span slot="excerpt">TBA</span>
+    </retro-article-excerpt>
 
-    <h3>What is Retrovizor?</h3>
-    <p>retròvīzor, <em>noun</em> - rear-view mirror</p>
-    <p>...we see the world through a rear-view mirror. We march backwards into the future. <strong>Staviti konkretan citat</strong></p>
-    <p>Par rečenica o tome kako ova *osobna* web stranica jest mjesto za razmišljanja o digitalnoj tehnologiji, industriji, njezinom utjecaju na pojedinca. Također i mjesto za programe i programski kod koji može biti zanimljiv, dosadan, već viđen, funkcionalan ili nedovršen.</p>
-    <p>Sadržaj ove stranice nema "burden" završenosti, funkcionalnosti, svrhe.</p>
-
-    <h3>Thoughts on declarative code in JavaScript / Small example of declarative thinking</h3>
-
-    * Introduction
-        * A sentence about declarative paradigm
-        * A question: How could we approach to writing and refactoring a complex codebase with these ideas in mind? (in JS env)
-    * Approach to applying declarative stuff
-        * Let's start from the high-level, entry points to the code
-        * Starting from high-level is more beneficial to the team, we're making entry points understandable, therefore making it easier for everyone in the team to understand the bigger picture, while working with specifics that are in the ownership of every person
-        * Improve communication and cooperation
-    * Approach: layers and same level of abstraction on each layer
-        * Walkthrough - a higher-level function polluted with technical details, hard to grasp the main idea of the function
-        * Example: pure JS (NodeJS) - function refactoring - extraction to a close utility file
-        * Example: SPA framework - component refactoring
-    * Approach: don't be afraid of large files - sometimes the *what?* part of the code is quite verbose
-        * Nothing wrong if we have e.g. a router declaration file with 400 lines where almost every line is like a `register.something( "X", x );`
-        * Nothing wrong if a file has 50 small utility functions for working with web browser or NodeJS APIs
-        * Add spaces and empty lines, make reading easy, don't save on digital paper, but rather on physicial tree paper. Add empty lines to separate logic in a single function if needed.
-    * Approach: make use of _Hoisting_ to make the most important stuff visible
-        * JS works in a way that file is always read twice, so let's make use of that
-        * Let's put ourselves in the shoes of a human exploring the new codebase and trying to understand the bigger picture: it's easier when we open a file and we see the main functionality/idea of the file, rather than a random utility
-
-    <h3>Building a web frontend with native technologies</h3>
-
-    * *This is a WIP article that should be extended to cover all dimensions*
-    * *This is a live article that should be updated periodically*
-    * Introduction
-        * We all allegedly know that it's good to stay up-to-dated and literate in native technologies of platforms we work on
-        * The idea is to have a live article, that changes over time, that presents opinionated and reasonable approach of building web frontend apps using native web browser technologies and the most related environment - NodeJS
-    * Opinionated Architecture: what basically is an architecture of this web site
-        * **Major architecture components should be universal, e.g. templating, build system, environment, modules, styling, and similar**
-        * Web components but with a tool, compiling JS with babel to be safe
-        * We own the build system
-        * Primitive meta-programming/templating mechanism for views
-        * NodeJS,...
-        * ES modules
-        * Note on incompleteness for majority of product codebases
-            * Still missing stuff like routing and state management
-    * Short info about example, check out this repository to see it in action
-    * [Section for each architecture part]
-        * Example: ES modules (use importmaps, copy node modules in that way, and similar...)
-        * Bundles / modules / build system: add comparison between native modules and bundle build types, use retrovizor.xyz as comparison
-    * Note how this article is incomplete (not yet every part is covered, even though you can see it in the repository) AND how this is a live article
+    <retro-article-excerpt data-href="hello-world/" data-date="2025-03-01">
+        <span slot="title">Hello, world!</span>
+        <span slot="excerpt">Something like: what is retrovizor bla bla</span>
+    </retro-article-excerpt>
 {{/layout.page}}

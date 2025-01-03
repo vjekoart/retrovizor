@@ -4,6 +4,11 @@ export class RetroArticleExcerpt extends LitElement
 {
     static properties =
     {
+        articleDate:
+        {
+            attribute: "data-date",
+            type: String
+        },
         href:
         {
             attribute: "data-href",
@@ -93,15 +98,19 @@ export class RetroArticleExcerpt extends LitElement
     constructor ()
     {
         super();
+        this.articleDate = "1970-01-01";
         this.href = "https://www.example.com/";
     }
 
     render ()
     {
+        const renderDate = new Date( this.articleDate ).toLocaleDateString();
+
         return html`
             <h2>
                 <slot name="title">Dummy title</slot>
             </h2>
+            <time datetime="${ this.articleDate }">${ renderDate }</time>
             <p>
                 <slot name="excerpt">Dummy excerpt.</slot>
             </p>

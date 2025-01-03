@@ -16,13 +16,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * Skip homepage
-    * While going through every page, implement missing components, e.g. links for _User_, and article details for _Text_
-    * Pages
-        * Text
-        * Code
-            * Create image distorter for profile photo, and take a nice photo
-        * User
+    * Text
+        * Placeholders are in `src/views/text/*`
+        * Fix date/time UI element on article excerpt
+        * How to pass titles of articles? Hardcode or put in `data.json`? Maybe better to hardcode since actual content and list of articles is hardcoded?
+        * Make those subnested views work
+    * Code
+        * Create image distorter for profile photo, and take a nice photo
+    * User
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
@@ -42,7 +43,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: run Lighthouse and similar dev tools to ensure website quality
-* Phase 9: structure and clean `Readme.md`
+* Phase 9: final preparations
+    * Structure and clean `Readme.md`
+    * Adjust dates in text and code articles/content
 * PUBLISH
 * Phase 10: cycle of improvements from backlog after first feedback
 
