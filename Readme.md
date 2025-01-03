@@ -16,8 +16,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * `active` class logic for pages
-    * Revise design for pages - some element to "identify/visualize" the content width since everything is centered?
     * Skip homepage
     * While going through every page, implement missing components, e.g. links for _User_, and article details for _Text_
     * Pages
@@ -33,12 +31,15 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * General: apply patterns from the article Declarative thinking
     * Animation: loading state, computation logic to worker, rAF
     * Animation: what about those damn lines? Make them breathe
-    * Refactor `generateHTML` method to something more readable
+    * Refactor `generateHTML` method in build system to something more readable
+    * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * TODOs in the code, and console outputs
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
+    * **UI Style: terminal + markdown + eigengrau palette*
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
+    * Nav difference between active and non-active is bleak and weak
     * Title should transition and become part of the nav, max-width to read exp
-    * Try `text-align: justify` for long text
+    * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: run Lighthouse and similar dev tools to ensure website quality
 * Phase 9: structure and clean `Readme.md`

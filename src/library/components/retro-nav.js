@@ -1,7 +1,39 @@
 import { LitElement, html, css } from "lit";
 
+const ITEMS = [
+    {
+        name: "index",
+        path: "/",
+        text: "Home"
+    },
+    {
+        name: "text",
+        path: "/text/",
+        text: "Text"
+    },
+    {
+        name: "code",
+        path: "/code/",
+        text: "Code"
+    },
+    {
+        name: "user",
+        path: "/user/",
+        text: "User"
+    }
+];
+
 export class RetroNav extends LitElement
 {
+    static properties =
+    {
+        active:
+        {
+            attribute: "data-active",
+            type: String
+        }
+    };
+
     static styles = css`
         :host
         {
@@ -44,6 +76,7 @@ export class RetroNav extends LitElement
         :host a.active
         {
             border-color : var(--style-color-light-highlight);
+            cursor       : default;
         }
 
         :host a:last-child
@@ -52,13 +85,27 @@ export class RetroNav extends LitElement
         }
     `;
 
-    render ()
+    constructor ()
+    {
+        super();
+        this.active = "";
+    }
+
+    /* element := { name, path, text } */
+    renderElement ( element )
     {
         return html`
-            <a href="/">Home</a>
-            <a href="/text/" class="active">Text</a>
-            <a href="/code/">Code</a>
-            <a href="/user/">User</a>
+            <a
+                href="${ element.path }"
+                class="${ this.active === element.name ? "active" : "" }"
+            >
+                ${ element.text }
+            </a>
         `;
+    }
+
+    render ()
+    {
+        return ITEMS.map( x => this.renderElement( x ) );
     }
 }
