@@ -8,6 +8,12 @@ export class RetroTitle extends LitElement
             display : block;
             padding : var(--style-grid-full);
         }
+
+        :host([data-style="main"])
+        {
+            padding-top : calc(2 * var(--style-grid-full));
+        }
+
         :host h1
         {
             margin      : 0;

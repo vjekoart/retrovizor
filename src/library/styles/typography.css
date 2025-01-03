@@ -15,3 +15,16 @@ a:focus
 {
     color : var(--style-color-interactive-in);
 }
+
+/**
+ * Text content
+ */
+p
+{
+    margin : 0 0 var(--style-line-height) 0;
+}
+
+p:last-child
+{
+    margin-bottom : 0;
+}

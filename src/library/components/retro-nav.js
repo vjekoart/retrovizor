@@ -48,7 +48,7 @@ export class RetroNav extends LitElement
 
         :host a:last-child
         {
-            margin-right: 0;
+            margin-right : 0;
         }
     `;
 
@@ -56,9 +56,9 @@ export class RetroNav extends LitElement
     {
         return html`
             <a href="/">Home</a>
-            <a href="/text" class="active">Text</a>
-            <a href="/code">Code</a>
-            <a href="/user">User</a>
+            <a href="/text/" class="active">Text</a>
+            <a href="/code/">Code</a>
+            <a href="/user/">User</a>
         `;
     }
 }

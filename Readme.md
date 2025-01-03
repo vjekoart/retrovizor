@@ -14,18 +14,17 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
-* Phase 3: code extraction: library and web components with test mechanisms
-    * Extract existing HTML/CSS/JS code in the app to the library
-        * Homepage: only animation
-        * Nav: add `Home`
-        * page layout: nav (basically header), main and footer
-        * Use `typography.css` to define H-elements, P; use web components only to override those styles
-        * Refine/restructure styles to support this idea
+* ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * First logic
-        * `active` class logic for pages
-    * Create image distorter for profile photo, and take a nice photo
-    * Content, every page except homepage, should start with italic short description of the page
+    * `active` class logic for pages
+    * Revise design for pages - some element to "identify/visualize" the content width since everything is centered?
+    * Skip homepage
+    * While going through every page, implement missing components, e.g. links for _User_, and article details for _Text_
+    * Pages
+        * Text
+        * Code
+            * Create image distorter for profile photo, and take a nice photo
+        * User
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
@@ -35,7 +34,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Animation: loading state, computation logic to worker, rAF
     * Animation: what about those damn lines? Make them breathe
     * Refactor `generateHTML` method to something more readable
+    * TODOs in the code, and console outputs
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
+    * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Title should transition and become part of the nav, max-width to read exp
     * Try `text-align: justify` for long text
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
@@ -66,6 +67,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * `buildLibrary|buildScripts|buildStyles` in `dev` mode
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
+    * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
 
 ## File structure / Architecture (try to keep updated)
 

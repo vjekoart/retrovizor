@@ -1,20 +1,10 @@
-import
-{
-    CloseYourEyes,
-    Utilities
-}
-from "Library";
+import { Utilities } from "Library";
 
 function main ()
 {
-    // Testing
+    console.log( "index.js: executed first at every page load" );
+
     Utilities.dummyUtility();
-
-    const canvas        = document.querySelector( "canvas" );
-    const closeYourEyes = new CloseYourEyes( canvas );
-
-    closeYourEyes.setup();
-    closeYourEyes.run();
 }
 
 window.addEventListener( "DOMContentLoaded", main );

@@ -1,4 +1,14 @@
-header[role="main"]
+retro-title
 {
-    background-color: green;
+    text-align: center;
+}
+
+main
+{
+    display    : block;
+    min-height : calc(100vh - 10 * var(--style-grid-full) - 2px);
+    max-width  : calc(24 * var(--style-grid-full));
+
+    margin     : 0 auto;
+    padding    : var(--style-grid-full);
 }
