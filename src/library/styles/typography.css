@@ -3,7 +3,7 @@
  */
 a
 {
-    text-decoration : none;
+    text-decoration : underline;
  
     color           : var(--style-color-interactive);
     transition      : color var(--transition-duration-short) ease-in-out;
@@ -77,6 +77,13 @@ ol:last-child
 ul,
 ol
 {
-    list-style   : circle;
-    padding-left : var(--style-grid-full);
+    list-style-type : none;
+    padding-left    : 0;
+}
+
+li::before
+{
+    content       : "*";
+    padding-right : var(--style-grid-third);
+    color         : var(--style-color-accent);;
 }

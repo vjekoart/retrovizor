@@ -1,16 +1,16 @@
-import { renderComponent     } from "../test.utilities.js";
-import { RetroArticleExcerpt } from "./retro-article-excerpt.js";
+import { renderComponent   } from "../test.utilities.js";
+import { RetroContentBlock } from "./retro-content-block.js";
 
-describe( "RetroArticleExcerpt", () =>
+describe( "RetroContentBlock", () =>
 {
     beforeAll( () =>
     {
-        customElements.define( "retro-article-excerpt", RetroArticleExcerpt );
+        customElements.define( "retro-content-block", RetroContentBlock );
     } );
 
     it( "renders: default", async () =>
     {
-        const { shadowRoot } = await renderComponent( "retro-article-excerpt", "<retro-article-excerpt></retro-article-excerpt>" );
+        const { shadowRoot } = await renderComponent( "retro-content-block", "<retro-content-block></retro-content-block>" );
 
         expect( shadowRoot.innerHTML.includes( "Dummy title" ) ).toBeTruthy();
         expect( shadowRoot.innerHTML.includes( "1970-01-01"  ) ).toBeTruthy();
@@ -19,12 +19,12 @@ describe( "RetroArticleExcerpt", () =>
     it( "renders: content", async () =>
     {
         const { shadowRoot } = await renderComponent(
-            "retro-article-excerpt",
+            "retro-content-block",
             `
-                <retro-article-excerpt data-date="2025-01-01" data-href="/custom-url/">
+                <retro-content-block data-date="2025-01-01" data-href="/custom-url/">
                     <span slot="title">Article title</span>
                     <span slot="excerpt">A custom excerpt provided as slot.</span>
-                </retro-article-excerpt>
+                </retro-content-block>
             `
         );
 

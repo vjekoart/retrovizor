@@ -1,18 +1,20 @@
 import { CloseYourEyes } from "./services/close-your-eyes.service.js";
+import { PixelHoodlum  } from "./services/pixel-hoodlum.service.js";
 import { Utilities     } from "./utilities.js";
 
-import { RetroArticleExcerpt } from "./components/retro-article-excerpt.js";
-import { RetroFooter         } from "./components/retro-footer.js";
-import { RetroNav            } from "./components/retro-nav.js";
-import { RetroTitle          } from "./components/retro-title.js";
+import { RetroContentBlock } from "./components/retro-content-block.js";
+import { RetroFooter       } from "./components/retro-footer.js";
+import { RetroNav          } from "./components/retro-nav.js";
+import { RetroTitle        } from "./components/retro-title.js";
 
-customElements.define( "retro-article-excerpt", RetroArticleExcerpt );
-customElements.define( "retro-footer",          RetroFooter         );
-customElements.define( "retro-nav",             RetroNav            );
-customElements.define( "retro-title",           RetroTitle          );
+customElements.define( "retro-content-block", RetroContentBlock );
+customElements.define( "retro-footer",        RetroFooter       );
+customElements.define( "retro-nav",           RetroNav          );
+customElements.define( "retro-title",         RetroTitle        );
 
 export
 {
     CloseYourEyes,
+    PixelHoodlum,
     Utilities
 };

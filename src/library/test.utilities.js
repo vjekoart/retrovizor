@@ -5,6 +5,7 @@ const renderComponent = ( selector, content ) => new Promise( resolve =>
     function requestSelector ()
     {
         const element = document.querySelector( selector );
+
         if ( element )
         {
             resolve( element );

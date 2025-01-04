@@ -1,0 +1,15 @@
+.experiment
+{
+    display       : block;
+    width         : 100%;
+    height        : auto;
+    aspect-ratio  : 16 / 9;
+    margin-bottom : var(--style-grid-full);
+    border        : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+.experiment:last-child
+{
+    margin-bottom : 0;
+}
+

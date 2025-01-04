@@ -38,13 +38,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * **UI Style: terminal + markdown + eigengrau palette*
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
-    * Title should transition and become part of the nav, max-width to read exp
+    * Homepage: hide everything except animation if user is idle
     * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: content fine-tune
     * Go through text articles
     * Go through code and coding styles
     * Go through user page
+    * Proofreading
 * Phase 9: run Lighthouse and similar dev tools to ensure website quality
     * For example, HTML validator
     * Don't forget to run this on every page since this is not a SPA

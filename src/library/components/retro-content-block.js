@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-export class RetroArticleExcerpt extends LitElement
+export class RetroContentBlock extends LitElement
 {
     static properties =
     {
@@ -44,7 +44,6 @@ export class RetroArticleExcerpt extends LitElement
 
         :host h2 a
         {
-            display         : inline-block;
             margin-left     : calc(-1* var(--style-grid-third));
             color           : inherit;
             text-decoration : none;
@@ -67,7 +66,7 @@ export class RetroArticleExcerpt extends LitElement
 
         :host p
         {
-            margin    : 0;
+            margin    : 0 0 var(--style-grid-third) 0;
             font-size : var(--style-font-size-text);
         }
 
@@ -118,7 +117,6 @@ export class RetroArticleExcerpt extends LitElement
         super();
 
         this.articleDate = "1970-01-01";
-        // this.articleHref = "https://www.example.com/";
     }
 
     renderFooter ( articleHref )
