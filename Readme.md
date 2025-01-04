@@ -16,6 +16,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
+    * Is there something like `TextFragment` that I can pass to slots instead of `span` elements?
     * Text
         * Placeholders are in `src/views/text/*`
         * Fix date/time UI element on article excerpt
@@ -42,12 +43,18 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Title should transition and become part of the nav, max-width to read exp
     * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
-* Phase 8: run Lighthouse and similar dev tools to ensure website quality
-* Phase 9: final preparations
+* Phase 8: content fine-tune
+    * Go through text articles
+    * Go through code and coding styles
+    * Go through user page
+* Phase 9: run Lighthouse and similar dev tools to ensure website quality
+* Phase 10: repository preparations
     * Structure and clean `Readme.md`
-    * Adjust dates in text and code articles/content
+* Phase 11: public image
+    * Revise (delete and archive) GitHub repositories
+    * Revise (delete and make private) gist.github
 * PUBLISH
-* Phase 10: cycle of improvements from backlog after first feedback
+* Phase 12: cycle of improvements from backlog after the first feedback
 
 ### Roadmap stuff (not part of the first version)
 
