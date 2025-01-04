@@ -17,7 +17,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * Text
-        * Fix date/time UI element on article excerpt
         * Expand article by article
     * Code
         * Create image distorter for profile photo, and take a nice photo
@@ -45,6 +44,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Go through code and coding styles
     * Go through user page
 * Phase 9: run Lighthouse and similar dev tools to ensure website quality
+    * For example, HTML validator
+    * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean `Readme.md`
 * Phase 11: public image

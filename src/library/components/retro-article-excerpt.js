@@ -19,14 +19,13 @@ export class RetroArticleExcerpt extends LitElement
     static styles = css`
         :host
         {
-            position       : relative;
-            display        : block;
-            margin-bottom  : var(--style-grid-full);
+            display       : block;
+            margin-bottom : var(--style-grid-full);
         }
 
         :host h2
         {
-            margin  : 0 0 var(--style-grid-third) 0;
+            margin      : 0 0 var(--style-grid-third) 0;
 
             font-family : var(--style-font-family-strong);
             font-weight : var(--style-font-weight-strong);
@@ -36,35 +35,51 @@ export class RetroArticleExcerpt extends LitElement
             color       : var(--style-color-light-highlight);
         }
 
+        :host h2 a
+        {
+            color           : inherit;
+            text-decoration : none;
+        }
+
         :host h2::before
         {
-            content       : "#";
-            padding-right : calc(0.33 * var(--style-font-size-text));
-            color         : var(--style-color-accent);
+            content : "#";
+            color   : var(--style-color-accent);
+        }
+
+        :host time,
+        :host p
+        {
+            font-family : var(--style-font-family-content);
+            font-weight : var(--style-font-weight-normal);
+            line-height : var(--style-line-height);
+        }
+
+        :host time
+        {
+            font-style : italic;
+            font-size  : var(--style-font-size-footer-link);
+            color      : var(--style-color-light-faded);
         }
 
         :host p
         {
-            margin      : 0;
-
-            font-family : var(--style-font-family-content);
-            font-weight : var(--style-font-weight-normal);
-            font-size   : var(--style-font-size-text);
-            line-height : var(--style-line-height);
+            margin    : 0;
+            font-size : var(--style-font-size-text);
         }
 
         :host footer
         {
-            text-align: right;
+            text-align : right;
         }
 
         :host footer a
         {
-            color           : var(--style-color-light);
             font-family     : var(--style-font-family-content);
             font-weight     : var(--style-font-weight-title);
             font-size       : var(--style-font-size-footer-link);
             line-height     : var(--style-line-height);
+            color           : var(--style-color-light);
             text-decoration : none;
         }
 
@@ -109,14 +124,14 @@ export class RetroArticleExcerpt extends LitElement
 
         return html`
             <h2>
-                <slot name="title">Dummy title</slot>
+                <a href="${ this.articleHref }"><slot name="title">Dummy title</slot></a>
             </h2>
             <time datetime="${ this.articleDate }">${ renderDate }</time>
             <p>
                 <slot name="excerpt">Dummy excerpt.</slot>
             </p>
             <footer>
-                <a href="${ this.articleHref }">More</a>
+                <a href="${ this.articleHref }">Full text</a>
             </footer>
         `;
     }
