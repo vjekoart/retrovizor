@@ -17,6 +17,5 @@
         "browserTestIncludes": ".test.",
         "serverPort": 4321
     },
-    "viewsPath": "src/views",
-    "viewsBuild": "views"
+    "viewsPath": "src/views"
 }

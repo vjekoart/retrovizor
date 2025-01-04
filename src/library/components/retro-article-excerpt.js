@@ -9,7 +9,7 @@ export class RetroArticleExcerpt extends LitElement
             attribute: "data-date",
             type: String
         },
-        href:
+        articleHref:
         {
             attribute: "data-href",
             type: String
@@ -98,8 +98,9 @@ export class RetroArticleExcerpt extends LitElement
     constructor ()
     {
         super();
+
         this.articleDate = "1970-01-01";
-        this.href = "https://www.example.com/";
+        this.articleHref = "https://www.example.com/";
     }
 
     render ()
@@ -115,7 +116,7 @@ export class RetroArticleExcerpt extends LitElement
                 <slot name="excerpt">Dummy excerpt.</slot>
             </p>
             <footer>
-                <a href="${ this.href }">More</a>
+                <a href="${ this.articleHref }">More</a>
             </footer>
         `;
     }

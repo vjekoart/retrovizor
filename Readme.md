@@ -16,12 +16,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * Is there something like `TextFragment` that I can pass to slots instead of `span` elements?
     * Text
-        * Placeholders are in `src/views/text/*`
         * Fix date/time UI element on article excerpt
-        * How to pass titles of articles? Hardcode or put in `data.json`? Maybe better to hardcode since actual content and list of articles is hardcoded?
-        * Make those subnested views work
+        * Expand article by article
     * Code
         * Create image distorter for profile photo, and take a nice photo
     * User
@@ -111,6 +108,15 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
                        # from `index.css`
 ```
 
-### Notes
+### Known limitations / Problems
 
-* Tests: files with `*.unit.test.js` are run as basic unit tests, while files with `*.component.test.js` are run inside a web browser
+* Build system: in the `dev` mode, when removing a file from `src` directory, the file won't be removed from the `dist` folder. User needs to manually stop the `dev` mode, delete the `dist` folder, and start again.
+* Build system: in case of a compliation/transpilation error, the process will die.
+* Build system: native: it's not possible to have URL/view with name `templates`, or `library`, or `assets` since these folders are reserved for code. Doesn't sound very good.
+* Build system: native: when adding a dedicated script and style file for homepage view (`src/views/index.html`), using `viewStyle` and `viewScript`, files should not be named `index.js` or `index.css`, because those file names are reserved for `src/index.js` and `src/index.css` files - global style/script files that are loaded on every page.
+
+## Stuff
+
+* Author bla bla
+* License is MIT or something bla bla
+* Contributions, comments, opinions are welcome bla bla

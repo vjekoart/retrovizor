@@ -5,14 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="{{ data.meta.description }}">
 
-        <title>retrovizor.xyz | {{ title }}</title>
+        <title>{{ title }} | retrovizor.xyz</title>
 
         <link rel="stylesheet" type="text/css" href="/{{ configuration.internals.indexStyleBuild }}">
         {{#if templateStyle}}
         <link rel="stylesheet" type="text/css" href="/{{ templateStyle }}">
         {{/if}}
         {{#if viewStyle}}
-        <link rel="stylesheet" type="text/css" href="/{{ viewStyle }}">
+        <link rel="stylesheet" type="text/css" href="{{ viewStyle }}">
         {{/if}}
     </head>
     <body>
@@ -34,7 +34,7 @@
         <script type="module" src="/{{ templateScript }}"></script>
         {{/if}}
         {{#if viewScript}}
-        <script type="module" src="/{{ viewScript }}"></script>
+        <script type="module" src="{{ viewScript }}"></script>
         {{/if}}
     </body>
 </html>

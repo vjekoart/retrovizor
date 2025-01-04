@@ -27,8 +27,6 @@ export function checkPath( path, isDirectory = false )
 
 export async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
 {
-    console.info( `[compileAndMoveScript] Starting Babel process for '${ inputFilePath }'...` );
-
     const babelOptions = {
         compact: !dev,
         presets: [ "@babel/preset-env" ],
@@ -51,14 +49,10 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
     {
         await writeFile( `${ outputFilePath }.map`, results.map.toString() );
     }
-
-    console.info( "[compileAndMoveScript] Done." );
 }
 
 export async function compileAndMoveStyle ( inputFilePath, outputFilePath, buildType, dev = false )
 {
-    console.info( `[compileAndMoveStyle] Starting PostCSS process for '${ inputFilePath }'...` );
-
     const postPlugins = [ Autoprefixer ];
 
     if ( dev === false )
@@ -78,14 +72,6 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
     {
         await writeFile( `${ outputFilePath }.map`, results.map.toString() );
     }
-
-    console.info( "[compileAndMoveStyle] Done." );
-}
-
-/** "homepage.html.hbs" to "homepage" */
-export function getOutputViewName ( file )
-{
-    return file.replace( ".html", "" ).replace( ".hbs", "" );
 }
 
 /** "layout.homepage.html.hbs" to "layout.homepage" */
@@ -111,37 +97,12 @@ export async function getTestFiles ( path, includes )
     return files.filter( x => x.includes( includes ) );
 }
 
-/**
- * @param {Array<string>} folders
- */
-export async function makeFolders ( buildPath, folders )
-{
-    for ( const folder of folders )
-    {
-        console.info( `[makeFolders] Making folder '${ folder }'...` );
-        await FS.mkdir( Path.join( buildPath, folder ), { recursive: true } );
-    }
-}
-
-/**
- * @param { key: content } files Every key represents filename, while content is textual
- *                               content that should be written to a file.
- */
-export async function writeBuildFiles ( buildPath, files )
-{
-    for ( const file in files )
-    {
-        console.info( `[writeBuildFiles] Writing file '${ file }'...` );
-        await FS.writeFile( Path.join( buildPath, file ), files[ file ] );
-    }
-}
-
 export async function writeFile ( path, content )
 {
     console.info( `[writeFile] Writing a file to '${ path }'...` );
 
     await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
-    await FS.writeFile( path,                                         content             );
+    await FS.writeFile( path, content );
 }
 
 export class WatchPool
