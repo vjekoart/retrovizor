@@ -1,25 +1,27 @@
 {{#> layout.page
-    title="Thoughts on declarative code in JavaScript"
-    view="text"
+    title="Thoughts on declarative code in Javascript"
+    view="declarative-javascript"
 }}
-    <h3>Thoughts on declarative code in JavaScript / Small example of declarative thinking</h3>
+    <retro-article-excerpt data-date="2025-01-09">
+        <span slot="title">Thoughts on declarative code in Javascript</span>
+    </retro-article-excerpt>
 
-    * Introduction
-        * A sentence about declarative paradigm
-        * A question: How could we approach to writing and refactoring a complex codebase with these ideas in mind? (in JS env)
-    * Approach to applying declarative stuff
-        * Let's start from the high-level, entry points to the code
-        * Starting from high-level is more beneficial to the team, we're making entry points understandable, therefore making it easier for everyone in the team to understand the bigger picture, while working with specifics that are in the ownership of every person
-        * Improve communication and cooperation
-    * Approach: layers and same level of abstraction on each layer
-        * Walkthrough - a higher-level function polluted with technical details, hard to grasp the main idea of the function
-        * Example: pure JS (NodeJS) - function refactoring - extraction to a close utility file
-        * Example: SPA framework - component refactoring
-    * Approach: don't be afraid of large files - sometimes the *what?* part of the code is quite verbose
-        * Nothing wrong if we have e.g. a router declaration file with 400 lines where almost every line is like a `register.something( "X", x );`
-        * Nothing wrong if a file has 50 small utility functions for working with web browser or NodeJS APIs
-        * Add spaces and empty lines, make reading easy, don't save on digital paper, but rather on physicial tree paper. Add empty lines to separate logic in a single function if needed.
-    * Approach: make use of _Hoisting_ to make the most important stuff visible
-        * JS works in a way that file is always read twice, so let's make use of that
-        * Let's put ourselves in the shoes of a human exploring the new codebase and trying to understand the bigger picture: it's easier when we open a file and we see the main functionality/idea of the file, rather than a random utility
+    <p>A couple of words how this text intends to be a collection of declarative-inspired approaches and patterns for improving code readability in large codebases.</p>
+    <p>A couple of words about declarative paradigm and how to improve the codebase readability by following principles of *what?* first, and *how?* later.</p>
+
+    <h3>Layers and abstractions</h3>
+    <p>Walkthrough - a higher-level function polluted with technical details, hard to grasp the main idea of the function</p>
+    <p>Example: pure JS (NodeJS) - function refactoring - extraction to a close utility file</p>
+    <p>Example: SPA framework - component refactoring</p>
+
+    <h3>Embracing large files</h3>
+    <p>Approach: don't be afraid of large files - sometimes the *what?* part of the code is quite verbose</p>
+    <p>Nothing wrong if we have e.g. a router declaration file with 400 lines where almost every line is like a `register.something( "X", x );`</p>
+    <p>Nothing wrong if a file has 50 small utility functions for working with web browser or NodeJS APIs</p>
+    <p>Add spaces and empty lines, make reading easy, don't save on digital paper, but rather on physicial tree paper. Add empty lines to separate logic in a single function if needed.</p>
+
+    <h3>Respecting chronology with hoisting</h3>
+    <p>Approach: make use of _Hoisting_ to make the most important stuff visible</p>
+    <p>JS works in a way that file is always read twice, so let's make use of that</p>
+    <p>Let's put ourselves in the shoes of a human exploring the new codebase and trying to understand the bigger picture: it's easier when we open a file and we see the main functionality/idea of the file, rather than a random utility</p>
 {{/layout.page}}

@@ -1,26 +1,51 @@
 {{#> layout.page
     title="Building a web frontend with native technologies"
-    view="text"
+    view="native-web-frontend"
 }}
-    <h3>Building a web frontend with native technologies</h3>
+    <retro-article-excerpt data-date="2025-01-11">
+        <span slot="title">Building a web frontend with native technologies</span>
+    </retro-article-excerpt>
 
-    * *This is a WIP article that should be extended to cover all dimensions*
-    * *This is a live article that should be updated periodically*
-    * Introduction
-        * We all allegedly know that it's good to stay up-to-dated and literate in native technologies of platforms we work on
-        * The idea is to have a live article, that changes over time, that presents opinionated and reasonable approach of building web frontend apps using native web browser technologies and the most related environment - NodeJS
-    * Opinionated Architecture: what basically is an architecture of this web site
-        * **Major architecture components should be universal, e.g. templating, build system, environment, modules, styling, and similar**
-        * Web components but with a tool, compiling JS with babel to be safe
-        * We own the build system
-        * Primitive meta-programming/templating mechanism for views
-        * NodeJS,...
-        * ES modules
-        * Note on incompleteness for majority of product codebases
-            * Still missing stuff like routing and state management
-    * Short info about example, check out this repository to see it in action
-    * [Section for each architecture part]
-        * Example: ES modules (use importmaps, copy node modules in that way, and similar...)
-        * Bundles / modules / build system: add comparison between native modules and bundle build types, use retrovizor.xyz as comparison
-    * Note how this article is incomplete (not yet every part is covered, even though you can see it in the repository) AND how this is a live article
+    <p>The goal of this text is to contain, and explain, methods and technologies for building a functional website by using native web technologies.</p>
+    <p>Another goal is to keep this article up-to-date as web browsers evolve.</p>
+
+    <h3>Approach</h3>
+    <p>Even though the goal is to write code that works natively in modern web browsers, the idea is to produce production-ready web applications that can survive if they're opened in different and/or older web browsers.</p>
+    <p>For that reason, NodeJS is used as a development environment to improve developer experience and the served code.</p>
+
+    <h3>Opinionated architecture</h3>
+    <p>This text explores building of a web application thinking about an architecture with following components:</p>
+    <ul>
+        <li>Build system</li>
+        <li>Skeleton of the website</li>
+        <li>SSR templates</li>
+        <li>Modules</li>
+        <li>Routing</li>
+        <li>Reusable UI components</li>
+    </ul>
+    <p>Current version of the architecture is missing (at least) the following elements that are common in complex applications:</p>
+    <ul>
+        <li>Authentication</li>
+        <li>State management</li>
+        <li>Type checking</li>
+    </ul>
+    <p><strong>Note:</strong> this approach can be seen in action by exploring <a href="https://github.com/vjekoart/retrovizor" target="_blank">github.com/vjekoart/retrovizor</a> repository.</p>
+
+    <h3>Build system</h3>
+    <p>TBD</p>
+
+    <h3>Skeleton of the website</h3>
+    <p>TBD</p>
+
+    <h3>SSR templates</h3>
+    <p>TBD</p>
+
+    <h3>Modules</h3>
+    <p>TBD</p>
+
+    <h3>Routing</h3>
+    <p>TBD</p>
+
+    <h3>Reusable UI components</h3>
+    <p>TBD</p>
 {{/layout.page}}

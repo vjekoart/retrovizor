@@ -35,16 +35,19 @@ export class RetroArticleExcerpt extends LitElement
             color       : var(--style-color-light-highlight);
         }
 
-        :host h2 a
-        {
-            color           : inherit;
-            text-decoration : none;
-        }
-
         :host h2::before
         {
-            content : "#";
-            color   : var(--style-color-accent);
+            content       : "#";
+            color         : var(--style-color-accent);
+            padding-right : var(--style-grid-third);
+        }
+
+        :host h2 a
+        {
+            display         : inline-block;
+            margin-left     : calc(-1* var(--style-grid-third));
+            color           : inherit;
+            text-decoration : none;
         }
 
         :host time,
@@ -115,24 +118,48 @@ export class RetroArticleExcerpt extends LitElement
         super();
 
         this.articleDate = "1970-01-01";
-        this.articleHref = "https://www.example.com/";
+        // this.articleHref = "https://www.example.com/";
+    }
+
+    renderFooter ( articleHref )
+    {
+        if ( !articleHref )
+        {
+            return "";
+        }
+
+        return html`
+            <footer>
+                <a href="${ this.articleHref }">Full text</a>
+            </footer>
+        `;
+    }
+
+    renderTitleContent ( articleHref )
+    {
+        if ( !articleHref )
+        {
+            return html`<slot name="title">Dummy title</slot>`;
+        }
+
+        return html`
+            <a href="${ this.articleHref }"><slot name="title">Dummy title</slot></a>
+        `;
     }
 
     render ()
     {
-        const renderDate = new Date( this.articleDate ).toLocaleDateString();
+        const renderDate   = new Date( this.articleDate ).toLocaleDateString();
+        const titleContent = this.renderTitleContent( this.articleHref );
+        const footer       = this.renderFooter( this.articleHref );
 
         return html`
-            <h2>
-                <a href="${ this.articleHref }"><slot name="title">Dummy title</slot></a>
-            </h2>
+            <h2>${ titleContent }</h2>
             <time datetime="${ this.articleDate }">${ renderDate }</time>
             <p>
-                <slot name="excerpt">Dummy excerpt.</slot>
+                <slot name="excerpt"></slot>
             </p>
-            <footer>
-                <a href="${ this.articleHref }">Full text</a>
-            </footer>
+            ${ footer }
         `;
     }
 }

@@ -16,6 +16,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
+    * *3 runs* put existing in actual structure : refine : refine
+    * 4th run: image distorter, make empty class for first 3 runs
     * Text
         * Expand article by article
     * Code
