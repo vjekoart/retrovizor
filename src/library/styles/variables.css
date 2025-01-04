@@ -12,6 +12,8 @@
     --color-orange-accent         : #f6a63d;
     --color-red                   : #c6361d;
     --color-red-accent            : #e6361d;
+    --color-blue                  : #3d9de6;
+    --color-blue-accent           : #6dbde6;
 
     --style-color-dark            : var(--color-eigengrau);
     --style-color-dark-lighter    : var(--color-eigengrau-lighter);
@@ -19,8 +21,8 @@
     --style-color-light-faded     : var(--color-gray);
     --style-color-light-highlight : var(--color-white);
     --style-color-accent          : var(--color-orange);
-    --style-color-interactive     : var(--color-orange);
-    --style-color-interactive-in  : var(--color-orange-accent);
+    --style-color-interactive     : var(--color-blue);
+    --style-color-interactive-in  : var(--color-blue-accent);
 
     --style-font-family-strong    : "Julia Mono", monospace;
     --style-font-family-content   : "Julia Mono", monospace;
