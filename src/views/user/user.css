@@ -1,0 +1,24 @@
+section
+{
+    display         : flex;
+    justify-content : space-between;
+    margin-bottom   : var(--style-grid-full);
+}
+
+#profile
+{
+    display : block;
+    width   : 33%;
+    height  : auto;
+    border        : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+#professional-career li
+{
+    margin-bottom : var(--style-grid-half);
+}
+
+#professional-career li:last-child
+{
+    margin-bottom : 0;
+}

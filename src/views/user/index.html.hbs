@@ -1,9 +1,44 @@
 {{#> layout.page
     title=data.views.user.title
     view="user"
+    viewStyle="user.css"
 }}
-    <p>Present artsy profile picture, name</p>
-    <p>career keypoints, detail career stuff with product|people|tech stuff</p>
-    <p>Link to social profiles</p>
-    <p>At the bottom add section with "products" or something where Filthy Fingers and other proprietary products are shown.</p>
+    <section>
+        <p>
+            Vjekoslav Artić<br />
+            Zagreb, Croatia<br />
+            ---<br />
+            vjekoart@pm.me<br />
+            ---<br />
+            <a href="#" target="_blank">GitHub</a><br />
+            <a href="#" target="_blank">LinkedIn</a><br />
+            <a href="#" target="_blank">Instagram</a>
+        </p>
+        <img id="profile" src="https://avatars.githubusercontent.com/u/7541149?v=4" />
+    </section>
+
+    <h3>Professional career</h3>
+    <ul id="professional-career">
+        <li>
+            <a href="https://www.vumedi.com/" target="_blank"><strong>VuMedi</strong></a>
+            <br /><span class="faded">2024 - present</span>
+            <br />Building a web video platform for doctor education.
+        </li>
+        <li>
+            <a href="https://microblink.com/" target="_blank"><strong>Microblink</strong></a>
+            <br /><span class="faded">2020 - 2023</span>
+            <br />Building in-browser tools for image recognition.
+        </li>
+        <li>
+            <a href="https://www.uniqcast.com/" target="_blank"><strong>UniqCast</strong></a>
+            <br /><span class="faded">2015 - 2020</span>
+            <br />Building various apps for watching movies, series and TV.
+        </li>
+    </ul>
+
+    <h3>Personal work</h3>
+    <ul>
+        <li><a href="https://retrovizor.xyz">retrovizor.xyz</a></li>
+        <li><a href="https://filthy-fingers.retrovizor.xyz" target="_blank">Filthy Fingers</a></li>
+    </ul>
 {{/layout.page}}

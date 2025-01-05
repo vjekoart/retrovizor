@@ -81,9 +81,24 @@ ol
     padding-left    : 0;
 }
 
+li
+{
+    position     : relative;
+    padding-left : calc(2 * var(--style-grid-third));
+}
+
 li::before
 {
     content       : "*";
-    padding-right : var(--style-grid-third);
-    color         : var(--style-color-accent);;
+
+    position      : absolute;
+    left          : 0;
+    top           : 0;
+
+    color         : var(--style-color-accent);
+}
+
+.faded
+{
+    color : var(--style-color-light-faded);
 }

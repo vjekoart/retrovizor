@@ -18,6 +18,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * *3 runs* put existing in actual structure : refine : refine
     * 4th run: image distorter, make empty class for first 3 runs
+    * 5th run: email protector that's used on the _User_ page
     * Text
         * Expand article by article
     * Code
@@ -35,7 +36,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * TODOs in the code, and console outputs
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
-    * **UI Style: terminal + markdown + eigengrau palette*
+    * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
     * Homepage: hide everything except animation if user is idle
