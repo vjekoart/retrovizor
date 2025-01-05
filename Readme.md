@@ -18,12 +18,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * *3 runs* put existing in actual structure : refine : refine
     * 4th run: image distorter, make empty class for first 3 runs
-    * 5th run: email protector that's used on the _User_ page
     * Text
         * Expand article by article
     * Code
         * Create image distorter for profile photo, and take a nice photo
     * User
+    * Ideja za kasnije: cat software: kada mačka sjedne za laptop, da taj sloj štiti od neželjenih akcija, a uz to generira sliku sa random tipkama koje mačka stišće (otvara se i zatvara kompleksnom kombinacijom tipki)
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
