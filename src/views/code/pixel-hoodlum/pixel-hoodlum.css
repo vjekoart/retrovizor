@@ -1,0 +1,51 @@
+.experiment
+{
+    padding : var(--style-grid-full);
+}
+
+.experiment .images,
+.experiment .controls
+{
+    display         : flex;
+    justify-content : space-between;
+    margin-bottom   : var(--style-grid-full);
+}
+
+.experiment .images img,
+.experiment .controls button
+{
+    width  : calc(50% - var(--style-grid-half));
+    height : auto;
+}
+
+.experiment .images img
+{
+    background : var(--style-color-dark-lighter);
+    border     : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+fieldset
+{
+    width      : 100%;
+    min-width  : unset;
+    margin     : 0 0 var(--style-grid-full) 0;
+    padding    : 0;
+
+    text-align : center;
+    border     : var(--style-line-width-light) solid var(--style-color-light);
+
+    cursor     : pointer;
+    overflow   : hidden;
+}
+
+fieldset label
+{
+    display : block;
+    padding : var(--style-grid-full);
+    cursor  : inherit;
+}
+
+fieldset input[type="file"]
+{
+    display : none;
+}

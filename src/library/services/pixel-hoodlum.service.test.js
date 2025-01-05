@@ -4,8 +4,7 @@ describe( "PixelHoodlum suite", () =>
 {
     it( "constructor", () =>
     {
-        const canvas   = document.createElement( "canvas" );
-        const instance = new PixelHoodlum( canvas );
+        const instance = new PixelHoodlum();
 
         expect( instance instanceof PixelHoodlum ).toBe( true );        
     } );

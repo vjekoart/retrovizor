@@ -16,14 +16,15 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * *3 runs* put existing in actual structure : refine : refine
-    * 4th run: image distorter, make empty class for first 3 runs
-    * Text
-        * Expand article by article
-    * Code
-        * Create image distorter for profile photo, and take a nice photo
-    * User
-    * Ideja za kasnije: cat software: kada mačka sjedne za laptop, da taj sloj štiti od neželjenih akcija, a uz to generira sliku sa random tipkama koje mačka stišće (otvara se i zatvara kompleksnom kombinacijom tipki)
+    * Pixel Hoodlum
+        * Always center the operation, and then fill borders that are still identical to the original image with lightest/some bright shade of the color
+        * Maybe randomlly add "protected areas" within borders where patches of similar colours are skipped in both iterations (function calls)?
+        * Implement "Download" action on the _Code page_
+        * Show loading state on the _Code page_
+        * Add slider for factor on the _Code page_
+        * Rename to _Image degradator_
+    * Iteration: content is complete (reasonbly)
+    * Iteration: proof reading and minor improvements
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?

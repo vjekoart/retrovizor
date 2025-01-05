@@ -13,3 +13,30 @@
     margin-bottom : 0;
 }
 
+/**
+ * Forms
+ */
+button
+{
+    margin        : 0;
+    padding       : 0 var(--style-grid-full);
+
+    font-family   : var(--style-font-family-content);
+    font-weight   : var(--style-font-weight-normal);
+    font-size     : var(--style-font-size-text);
+    line-height   : var(--style-grid-full);
+
+    color         : var(--style-color-light);
+    background    : var(--style-color-interactive);
+    border        : var(--style-line-width-light) solid var(--style-color-interactive-dark);
+    border-radius : 0;
+    cursor        : pointer;
+
+    transition    : background-color var(--transition-duration-short) ease-in-out;
+}
+
+button:hover,
+button:active
+{
+    background : var(--style-color-interactive-in);
+}

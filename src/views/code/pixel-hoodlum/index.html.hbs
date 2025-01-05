@@ -2,13 +2,29 @@
     title="Pixel hoodlum"
     view="pixel-hoodlum"
     viewScript="pixel-hoodlum.js"
+    viewStyle="pixel-hoodlum.css"
 }}
-    <canvas id="pixel-hoodlum" class="experiment"></canvas>
+    <form class="experiment">
+        <section class="images">
+            <img id="image-input" alt="Input image" />
+            <img id="image-output" alt="Output image" />
+        </section>
+
+        <fieldset>
+            <label for="input-image">Click to select an image</label>
+            <input id="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
+        </fieldset>
+
+        <section class="controls">
+            <button id="button-generate" type="button">Degenerate</button>
+            <button id="button-download" type="button">Download</button>
+        </section>
+    </form>
 
     <retro-content-block data-date="2025-01-01">
         <span slot="title">Pixel hoodlum</span>
         <span slot="excerpt">
-            Image degradation tool that creates a monochrome, poster-like version of the original image.
+            Image degradation tool that creates a monochrome, pixelated version of the original image.
             <br /><br />
             Source: <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/services/pixel-hoodlum.service.js" target="_blank">pixel-hoodlum.service.js</a>
         </span>
