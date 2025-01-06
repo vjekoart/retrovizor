@@ -24,41 +24,41 @@
         like the following:
     </p>
     <pre>
-        <code>/* main.js */</code>
-        <code>import { importantModule } from "Y";</code>
-        <code></code>
-        <code>function someUtility () { ... }</code>
-        <code></code>
-        <code>importantModule.register( "N-1" );</code>
-        <code>importantModule.register( "N-2" );</code>
-        <code>...</code>
-        <code>importantModule.register( "N-N" );</code>
-        <code></code>
-        <code>server.start()</code>
-        <code>      .then ( () => { ... } )</code>
-        <code>      .catch( () => { ... } );</code></pre>
+        /* main.js */
+        import { importantModule } from "Y";
+
+        function someUtility () { ... }
+
+        importantModule.register( "N-1" );
+        importantModule.register( "N-2" );
+        ...
+        importantModule.register( "N-N" );
+
+        server.start()
+              .then ( () => { ... } )
+              .catch( () => { ... } );</pre>
     <p>
         With so many technical details it's hard to grasp the general idea of what the program does. To reduce the cognitive
         load and to improve both extensibility and stability of the code, lower-level logic should be extracted to separate
         files:
     </p>
     <pre>
-        <code>/* main.js */</code>
-        <code>import { importantModule } from "Y";</code>
-        <code>import { someUtility     } from "Z";</code>
-        <code>import {</code>
-        <code>    handleServerErrors,</code>
-        <code>    handleServerStart</code>
-        <code>} from "main.bits.js";</code>
-        <code></code>
-        <code>importantModule.register( "N-1" );</code>
-        <code>importantModule.register( "N-2" );</code>
-        <code>...</code>
-        <code>importantModule.register( "N-N" );</code>
-        <code></code>
-        <code>server.start()</code>
-        <code>      .then ( handleServerStart  )</code>
-        <code>      .catch( handleServerErrors );</code></pre>
+        /* main.js */
+        import { importantModule } from "Y";
+        import { someUtility     } from "Z";
+        import {
+            handleServerErrors,
+            handleServerStart
+        } from "main.bits.js";
+
+        importantModule.register( "N-1" );
+        importantModule.register( "N-2" );
+        ...
+        importantModule.register( "N-N" );
+        
+        server.start()
+              .then ( handleServerStart  )
+              .catch( handleServerErrors );</pre>
     <p>To conclude, techniques to improve readability by using layers and abstractions:</p>
     <ul>
         <li>Ensuring that content of every file, and specially every function, is on the same level of abstraction.</p>
@@ -77,18 +77,18 @@
         For example, there's nothing wrong with having a large router file:
     </p>
     <pre>
-        <code>/* router.js */</code>
-        <code>Router.routes(</code>
-        <code>    {</code>
-        <code>        path: "/",</code>
-        <code>        controller: HomeController</code>
-        <code>    },</code>
-        <code>    {</code>
-        <code>        path: "/projects/",</code>
-        <code>        controller: ProjectsController</code>
-        <code>    },</code>
-        <code>    ...</code>
-        <code>);</code></pre>
+        /* router.js */
+        Router.routes(
+            {
+                path: "/",
+                controller: HomeController
+            },
+            {
+                path: "/projects/",
+                controller: ProjectsController
+            },
+            ...
+        );</pre>
     <p>
         This kind of files, however large, are still clear and don't produce too much cognitive load. The main
         reason for that is predictability of their structure.
@@ -102,23 +102,23 @@
     </p>
     <p>We can easily go from this:</p>
     <pre>
-        <code>function myFunction(x) {</code>
-        <code>    const data = getData();</code>
-        <code>    data.transformWith(x);</code>
-        <code>    data.secure();</code>
-        <code>    return data.pretty();</code>
-        <code>}</code></pre>
+        function myFunction(x) {
+            const data = getData();
+            data.transformWith(x);
+            data.secure();
+            return data.pretty();
+        }</pre>
     <p>...to this version that breathes and has clear visual indicators about different logical operations:</p>
     <pre>
-        <code>function myFunction ( x )</code>
-        <code>{</code>
-        <code>    const data = getData();</code>
-        <code></code>
-        <code>    data.transformWith( x );</code>
-        <code>    data.secure();</code>
-        <code></code>
-        <code>    return data.pretty();</code>
-        <code>}</code></pre>
+        function myFunction ( x )
+        {
+            const data = getData();
+
+            data.transformWith( x );
+            data.secure();
+
+            return data.pretty();
+        }</pre>
     <p>
         With combination of predictable structure and code with enough whitespace, it's possible to
         drastically improve code readability.
@@ -136,35 +136,35 @@
     </p>
     <p>This can be useful to refactor something like this:</p>
     <pre>
-        <code>/* main.js */</code>
-        <code>function someRandomUtility    () { ... }</code>
-        <code>function anotherRandomUtility () { ... }</code>
-        <code></code>
-        <code>function main ()</code>
-        <code>{</code>
-        <code>    ...</code>
-        <code>    someRandomUtility();</code>
-        <code>    ...</code>
-        <code>    anotherRandomUtility();</code>
-        <code>    ...</code>
-        <code>}</code></pre>
+        /* main.js */
+        function someRandomUtility    () { ... }
+        function anotherRandomUtility () { ... }
+
+        function main ()
+        {
+            ...
+            someRandomUtility();
+            ...
+            anotherRandomUtility();
+            ...
+        }</pre>
     <p>
         ...into something where the main idea of the file is explicitly present at the top,
         making it easier to spot when initially opening the file:
     </p>
     <pre>
-        <code>/* main.js */</code>
-        <code>function main ()</code>
-        <code>{</code>
-        <code>    ...</code>
-        <code>    someRandomUtility();</code>
-        <code>    ...</code>
-        <code>    anotherRandomUtility();</code>
-        <code>    ...</code>
-        <code>}</code>
-        <code></code>
-        <code>function someRandomUtility    () { ... }</code>
-        <code>function anotherRandomUtility () { ... }</code></pre>
+        /* main.js */
+        function main ()
+        {
+            ...
+            someRandomUtility();
+            ...
+            anotherRandomUtility();
+            ...
+        }
+
+        function someRandomUtility    () { ... }
+        function anotherRandomUtility () { ... }</pre>
     <p>
         <strong>Note:</strong> hoisting
         <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting" target="_blank">

@@ -128,19 +128,11 @@ pre
     line-height   : var(--style-line-height-code);
     border-top    : var(--style-line-width) solid var(--style-color-accent);
     border-radius : 0;
+    overflow      : hidden;
+    overflow-x    : auto;
 }
 
 pre:last-child
 {
     margin-bottom : 0;
-}
-
-pre code
-{
-    padding : 0;
-}
-
-pre .line
-{
-
 }

@@ -6,48 +6,156 @@
         <span slot="title">Building a web frontend with native technologies</span>
     </retro-content-block>
 
-    <p>The goal of this text is to contain, and explain, methods and technologies for building a functional website by using native web technologies.</p>
-    <p>Another goal is to keep this text up-to-date as web browsers evolve.</p>
+    <p>There are many resources in the wilderness of the internet about using native technologies to build programs.</p>
+    <p>
+        This one is not special. This is an opinionated approach to building a web frontend using native technologies
+        as a basis, but also by adding a couple of useful tools on top to improve both developer experience and
+        performance of the program.
+    </p>
 
-    <h3>Approach</h3>
-    <p>Even though the goal is to write code that works natively in modern web browsers, the idea is to produce production-ready web applications that can survive if they're opened in different and/or older web browsers.</p>
-    <p>For that reason, NodeJS is used as a development environment to improve developer experience and the served code.</p>
-
-    <h3>Opinionated architecture</h3>
-    <p>This text explores building of a web application thinking about an architecture with following components:</p>
+    <h3>Architecture</h3>
+    <p>
+        The main idea is to use vanilla Javascript, web browser APIs, CSS and HTML to produce a usable and performant
+        web frontend.
+    </p>
+    <p>
+        To improve developer experience, and to ensure that code works as expected on various web browsers, NodeJS is
+        used as an environment, while <a href="https://lit.dev/" target="_blank">lit.dev</a> is used for easier
+        development of Web components.
+    </p>
+    <p>Components:</p>
     <ul>
+        <li>Structure</li>
         <li>Build system</li>
-        <li>Skeleton of the website</li>
-        <li>SSR templates</li>
-        <li>Modules</li>
+        <li>Templates and views</li>
         <li>Routing</li>
+        <li>Modules</li>
         <li>Reusable UI components</li>
         <li>Testing</li>
     </ul>
     <p>Current version of the architecture is missing (at least) the following elements that are common in complex applications:</p>
     <ul>
-        <li>Authentication</li>
-        <li>State management</li>
         <li>Type checking</li>
+        <li>State management</li>
+        <li>Authentication</li>
     </ul>
-    <p><strong>Note:</strong> this approach can be seen in action by exploring <a href="https://github.com/vjekoart/retrovizor" target="_blank">github.com/vjekoart/retrovizor</a> repository.</p>
+    <p>
+        <strong>Note:</strong> this approach can be seen in action by exploring
+        <a href="https://github.com/vjekoart/retrovizor" target="_blank">github.com/vjekoart/retrovizor</a> repository.
+    </p>
+
+    <h3>Structure</h3>
+    <pre>
+        dist/          # Build files intended for serving
+        src/           # Source code
+            library/   # Shared code like UI components and services
+            templates/ # Shared templates, e.g. headers and footers
+            views/     # Views, e.g. homepage, about page and similar</pre>
 
     <h3>Build system</h3>
-    <p>A couple of sentences explaining the idea</p>
-    <p>Link to a relevant file on GitHub</p>
+    <p>A build system is responsible for both developer experience and code performance.</p>
+    <p>Developer experience:</p>
+    <ul>
+        <li>Actions like <code>npm run dev</code>, <code>npm run build</code> and <code>npm run test</code>.</li>
+        <li>Code quality analysis with <code>eslint</code> or similar tools.</li>
+    </ul>
+    <p>Code performance:</p>
+    <ul>
+        <li>Applying tools like Babel and PostCSS to transpile and minify the production code.</li>
+        <li>Running tests and reporting results.</li>
+    </ul>
+    <p>
+        Examples:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/index.js" target="_blank">index.js</a>,
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a>
+    </p>
 
-    <h3>Skeleton of the website</h3>
-    <p>TBD</p>
-
-    <h3>SSR templates</h3>
-    <p>TBD</p>
-
-    <h3>Modules</h3>
-    <p>TBD</p>
+    <h3>Templates and views</h3>
+    <p>
+        To simplify the architecture, this approach relies on identical structure of the <code>views/</code>
+        folder in both <code>src/</code> and <code>dist/</code> directories.
+    </p>
+    <p>
+        To add a view, it's enough to create a new file at desired location, for example file
+        <code>src/views/about/index.html</code> serves as a view file for <code>app.com/about/</code> page.
+    </p>
+    <p>
+        To enable shared templates and to reduce code repetition,
+        <a href="https://handlebarsjs.com/" target="_blank">HandlebarsJS</a> has been introduced and integrated
+        into the build system.
+    </p>
+    <p>
+        Furthermore, build system has been expanded to link dedicated script and style files for each view, if
+        specified.
+    </p>
+    <p>
+        Examples:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/text/index.html.hbs" target="_blank">views/text/index.html.hbs</a>,
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/index.html.hbs" target="_blank">views/index.html.hbs</a>
+    </p>
 
     <h3>Routing</h3>
-    <p>TBD</p>
+    <p>
+        When having views in the format above, there's no need for routing in the classic sense. Web browser takes care
+        of navigating between the sites.
+    </p>
+    <p>
+        In the code, programmer would specify the href attribute, e.g. <code>href="/about/"</code>, while existance of
+        <code>views/about/index.html</code> ensures that URL is displayed as <code>app.com/about/</code> in the web browser.
+    </p>
+
+    <h3>Modules</h3>
+    <p>
+        The current approach doesn't include a bundler. That means that native ES and CSS modules are used. So when a user
+        lands on a page that has <code>import X from "Y";</code> statement, the browser will load the appropriate file.
+    </p>
+    <p>
+        While CSS modules are quite straightforward, it's enough to copy the files in the <code>dist/</code> folder, ES
+        modules require a couple of code changes to work as expected.
+    </p>
+    <p>
+        Firstly, it's important to explicitly state that script files are modules with
+        <code>&lt;script type="module" src="script.js"&gt;&lt;/script&gt;</code>.
+    </p>
+    <p>
+        Secondly, it's possible to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps" target="_blank">import maps</a> to simplify import statements in the Javascript code.
+    </p>
+    <p>
+        Examples:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/index.js" target="_blank">src/library.js</a>,
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/homepage.js" target="_blank">views/homepage.js</a>
+    </p>
 
     <h3>Reusable UI components</h3>
-    <p>TBD</p>
+    <p>
+        One of the main advantages of using a framework for building UIs is the extensive support for reusable UI components.
+    </p>
+    <p>
+        This approach relies on native Web components, although with a couple of caveats:
+    </p>
+    <ul>
+        <li>Instead of writing native web components, a tool <a href="https://lit.dev/" target="_blank">lit.dev</a> is used to simplify the development.</li>
+        <li>Native components don't have built-in mechanism for state management, nor the tool comes with advanced templating system - components are quite verbose.</li>
+    </ul>
+    <p>
+        Examples:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-nav.js" target="_blank">retro-nav.js</a>,
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-content-block.js" target="_blank">retro-content-block.js</a>
+    </p>
+
+    <h3>Testing</h3>
+    <p>
+        Since testing of the web frontend doesn't make sense outside the web browser,
+        <a href="https://www.npmjs.com/package/jasmine-browser-runner" target="_blank">package <code>jasmine-browser-runner</code></a>
+        is used to enable in-browser tests.
+    </p>
+    <p>
+        Every component, utility and service, can have adjecent <code>*.test.js</code> file that's executed during the <code>npm run test</code>
+        action.
+    </p>
+    <p>
+        Examples:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-nav.test.js" target="_blank">retro-nav.test.js</a>,
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a> (<code>runWebBrowser</code>)
+    </p>
 {{/layout.page}}
