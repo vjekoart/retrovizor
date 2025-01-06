@@ -8,7 +8,7 @@ class PixelHoodlum
         };
 
         // Internals
-        this.canvas  = null; // HTMLCanvasElement
+        this.canvas  = null; // OffscreenCanvas
         this.context = null; // CanvasRenderingContext2D
         this.image   =
         {
@@ -27,7 +27,7 @@ class PixelHoodlum
         this.internalToMonochrome();
         this.internalToPrimitive();
 
-        return this.internalToBase64();
+        return await this.internalToBase64();
     }
 
     /**
@@ -71,9 +71,22 @@ class PixelHoodlum
 
     internalToBase64 ()
     {
-        this.context.putImageData( this.image.data, 0, 0 );
+        return new Promise( ( resolve, reject ) =>
+        {
+            this.context.putImageData( this.image.data, 0, 0 );
 
-        return this.canvas.toDataURL();
+            this.canvas.convertToBlob()
+                .then( blob =>
+                {
+                    const reader = new FileReader();
+
+                    reader.onloadend = () => resolve( reader.result );
+                    reader.onerror = error => reject( error );
+
+                    reader.readAsDataURL( blob );
+                } )
+                .catch( error => reject( error ) );
+        } );
     }
 
     /**
@@ -129,11 +142,7 @@ class PixelHoodlum
 
     loadImage ()
     {
-        this.canvas = document.createElement( "canvas" );
-
-        this.canvas.width  = this.image.width;
-        this.canvas.height = this.image.height;
-
+        this.canvas  = new OffscreenCanvas( this.image.width, this.image.height );
         this.context = this.canvas.getContext( "2d" );
 
         this.context.drawImage( this.image.element, 0, 0 );

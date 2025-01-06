@@ -37,8 +37,15 @@ function main ()
 
         pixelHoodlum
             .degenerate( base64 )
-            .then( degenerated => renderBase64ToImage( degenerated, dom.image.output ) )
-            .catch( error => alert( "There was an error!" ) );
+            .then( degenerated =>
+            {
+                renderBase64ToImage( degenerated, dom.image.output );
+            } )
+            .catch( error =>
+            {
+                console.warn( error );
+                alert( "There was an error!" );
+            } );
     } );
 
     dom.input.image.addEventListener( "change", ev =>
