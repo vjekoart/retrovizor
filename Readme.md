@@ -16,8 +16,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * Iteration: content is complete (reasonbly)
-    * Iteration: proof reading and minor improvements
+    * Iteration: complete the content (text, coding style and user page)
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
@@ -30,6 +29,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Refactor `generateHTML` method in build system to something more readable
     * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * TODOs in the code, and console outputs
+    * Write a test for `formatCodeBlocks` utility
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?

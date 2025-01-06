@@ -4,7 +4,7 @@
 :root
 {
     --color-eigengrau              : #16161d;
-    --color-eigengrau-lighter      : #46464d;
+    --color-eigengrau-lighter      : #26262d;
     --color-white                  : #f6f6fd;
     --color-gray                   : #a6a6ad;
     --color-gray-light             : #e6e6ed;
@@ -29,15 +29,19 @@
     --style-font-family-strong     : "Julia Mono", monospace;
     --style-font-family-content    : "Julia Mono", monospace;
     --style-font-family-title      : "Julia Mono", monospace;
+    --style-font-family-code       : "Julia Mono", monospace;
     --style-font-weight-title      : 600;
     --style-font-weight-strong     : 600;
-    --style-font-weight-normal     : 500;
+    --style-font-weight-normal     : 400;
+    --style-font-weight-code       : 400;
 
     --style-font-size-text         : 16px;
     --style-font-size-title        : 26px;
+    --style-font-size-code         : 14px;
     --style-font-size-footer-link  : 14px;
     --style-line-height            : 26px;
     --style-line-height-title      : 36.5px;
+    --style-line-height-code       : 22px;
 
     --style-line-width             : 4px;
     --style-line-width-light       : 2.5px;
@@ -82,4 +86,22 @@
     font-family : "Julia Mono";
     font-style  : italic;
     font-weight : 500;
+}
+
+@font-face
+{
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Regular.woff2");
+
+    font-family : "Julia Mono";
+    font-style  : normal;
+    font-weight : 400;
+}
+
+@font-face
+{
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-RegularItalic.woff2");
+
+    font-family : "Julia Mono";
+    font-style  : italic;
+    font-weight : 400;
 }

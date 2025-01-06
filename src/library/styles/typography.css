@@ -102,3 +102,45 @@ li::before
 {
     color : var(--style-color-light-faded);
 }
+
+code,
+pre
+{
+    font-family      : var(--style-font-family-code);
+    font-weight      : var(--style-font-weight-code);
+    font-size        : var(--style-font-size-code);
+
+    color            : var(--style-color-light);
+    background-color : var(--style-color-dark-lighter);
+}
+
+code
+{
+    display     : inline-block;
+    padding     : 0 var(--style-grid-third);
+    line-height : var(--style-grid-full);
+}
+
+pre
+{
+    margin        : 0 0 var(--style-grid-full);
+    padding       : var(--style-grid-third);
+    line-height   : var(--style-line-height-code);
+    border-top    : var(--style-line-width) solid var(--style-color-accent);
+    border-radius : 0;
+}
+
+pre:last-child
+{
+    margin-bottom : 0;
+}
+
+pre code
+{
+    padding : 0;
+}
+
+pre .line
+{
+
+}

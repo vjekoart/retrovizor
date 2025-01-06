@@ -6,22 +6,171 @@
         <span slot="title">Thoughts on declarative code in Javascript</span>
     </retro-content-block>
 
-    <p>A couple of words how this text intends to be a collection of declarative-inspired approaches and patterns for improving code readability in large codebases.</p>
-    <p>A couple of words about declarative paradigm and how to improve the codebase readability by following principles of *what?* first, and *how?* later.</p>
+    <p>
+        This text intends to be a live collection of thoughts for writing readable Javascript code, and programming
+        code in general. The main inspiration is declarative paradigm, but also an experience from working on
+        different codebases, and in different teams.
+    </p>
+    <p>
+        As noted on the <a href="https://en.wikipedia.org/wiki/Declarative_programming" target="_blank">Wikipedia page</a>,
+        declarative paradigm focuses on "expressing the logic of a computation without describing its control flow".
+        The idea of describing <em>what our program does</em>, instead of polluting entry code with technical details, has
+        proven many times to be the most important aspect when writing a code in a shared codebase.
+    </p>
 
     <h3>Layers and abstractions</h3>
-    <p>Walkthrough - a higher-level function polluted with technical details, hard to grasp the main idea of the function</p>
-    <p>Example: pure JS (NodeJS) - function refactoring - extraction to a close utility file</p>
-    <p>Example: SPA framework - component refactoring</p>
+    <p>
+        It's not uncommon for a newcomer on the team to open the entry file of a complex codebase, and to find something
+        like the following:
+    </p>
+    <pre>
+        <code>/* main.js */</code>
+        <code>import { importantModule } from "Y";</code>
+        <code></code>
+        <code>function someUtility () { ... }</code>
+        <code></code>
+        <code>importantModule.register( "N-1" );</code>
+        <code>importantModule.register( "N-2" );</code>
+        <code>...</code>
+        <code>importantModule.register( "N-N" );</code>
+        <code></code>
+        <code>server.start()</code>
+        <code>      .then ( () => { ... } )</code>
+        <code>      .catch( () => { ... } );</code></pre>
+    <p>
+        With so many technical details it's hard to grasp the general idea of what the program does. To reduce the cognitive
+        load and to improve both extensibility and stability of the code, lower-level logic should be extracted to separate
+        files:
+    </p>
+    <pre>
+        <code>/* main.js */</code>
+        <code>import { importantModule } from "Y";</code>
+        <code>import { someUtility     } from "Z";</code>
+        <code>import {</code>
+        <code>    handleServerErrors,</code>
+        <code>    handleServerStart</code>
+        <code>} from "main.bits.js";</code>
+        <code></code>
+        <code>importantModule.register( "N-1" );</code>
+        <code>importantModule.register( "N-2" );</code>
+        <code>...</code>
+        <code>importantModule.register( "N-N" );</code>
+        <code></code>
+        <code>server.start()</code>
+        <code>      .then ( handleServerStart  )</code>
+        <code>      .catch( handleServerErrors );</code></pre>
+    <p>To conclude, techniques to improve readability by using layers and abstractions:</p>
+    <ul>
+        <li>Ensuring that content of every file, and specially every function, is on the same level of abstraction.</p>
+        <li>Using (hopefully) native modules to extract unnecessary logic from files.</li>
+        <li>Using common code organization approaches like modules, services and utilities to put logic in appropriate places.</li>
+        <li>Using utility files attached to higher-level files, e.g. if there's <code>index.js</code> there can be <code>index.{bits|helpers|utils}.js</code>.</li>
+    </ul>
 
-    <h3>Embracing large files</h3>
-    <p>Approach: don't be afraid of large files - sometimes the *what?* part of the code is quite verbose</p>
-    <p>Nothing wrong if we have e.g. a router declaration file with 400 lines where almost every line is like a `register.something( "X", x );`</p>
-    <p>Nothing wrong if a file has 50 small utility functions for working with web browser or NodeJS APIs</p>
-    <p>Add spaces and empty lines, make reading easy, don't save on digital paper, but rather on physicial tree paper. Add empty lines to separate logic in a single function if needed.</p>
+    <h3>Embracing large files and whitespace</h3>
+    <p>Another common characteristic is that programmers tend to shy away from large files.</p>
+    <p>
+        Although it's problematic to have complex and large files with tons of unfathomable code, it's perfectly
+        fine to have large files with simple and straightforward structure.
+    </p>
+    <p>
+        For example, there's nothing wrong with having a large router file:
+    </p>
+    <pre>
+        <code>/* router.js */</code>
+        <code>Router.routes(</code>
+        <code>    {</code>
+        <code>        path: "/",</code>
+        <code>        controller: HomeController</code>
+        <code>    },</code>
+        <code>    {</code>
+        <code>        path: "/projects/",</code>
+        <code>        controller: ProjectsController</code>
+        <code>    },</code>
+        <code>    ...</code>
+        <code>);</code></pre>
+    <p>
+        This kind of files, however large, are still clear and don't produce too much cognitive load. The main
+        reason for that is predictability of their structure.
+    </p>
+    <p>
+        Sometimes it's more beneficial to have all glue-logic at one place, rather than scattered around modules.
+    </p>
+    <p>
+        Another caveat that's connected with large files is whitespace. Trying to make the code look optimised,
+        programmers tend to remove whitespace that improves readability and separates different logical operations.
+    </p>
+    <p>We can easily go from this:</p>
+    <pre>
+        <code>function myFunction(x) {</code>
+        <code>    const data = getData();</code>
+        <code>    data.transformWith(x);</code>
+        <code>    data.secure();</code>
+        <code>    return data.pretty();</code>
+        <code>}</code></pre>
+    <p>...to this version that breathes and has clear visual indicators about different logical operations:</p>
+    <pre>
+        <code>function myFunction ( x )</code>
+        <code>{</code>
+        <code>    const data = getData();</code>
+        <code></code>
+        <code>    data.transformWith( x );</code>
+        <code>    data.secure();</code>
+        <code></code>
+        <code>    return data.pretty();</code>
+        <code>}</code></pre>
+    <p>
+        With combination of predictable structure and code with enough whitespace, it's possible to
+        drastically improve code readability.
+    </p>
+    <p>Code, same as natural text, has a rhythm. A good programmer understands and follows the rhythm.</p>
 
-    <h3>Respecting chronology with hoisting</h3>
-    <p>Approach: make use of _Hoisting_ to make the most important stuff visible</p>
-    <p>JS works in a way that file is always read twice, so let's make use of that</p>
-    <p>Let's put ourselves in the shoes of a human exploring the new codebase and trying to understand the bigger picture: it's easier when we open a file and we see the main functionality/idea of the file, rather than a random utility</p>
+    <h3>Respecting chronology with function hoisting</h3>
+    <p>
+        Javascript has an interesting mechanism in <a href="https://developer.mozilla.org/en-US/docs/Glossary/Hoisting" target="_blank">hoisting</a>
+        that can be used to improve the readability in some cases.
+    </p>
+    <p>
+        In short, hoisting is a process that moves declaration of functions and some variables to the top of their scope,
+        prior to the execution of the code - enabling usage of functions before they're declared.
+    </p>
+    <p>This can be useful to refactor something like this:</p>
+    <pre>
+        <code>/* main.js */</code>
+        <code>function someRandomUtility    () { ... }</code>
+        <code>function anotherRandomUtility () { ... }</code>
+        <code></code>
+        <code>function main ()</code>
+        <code>{</code>
+        <code>    ...</code>
+        <code>    someRandomUtility();</code>
+        <code>    ...</code>
+        <code>    anotherRandomUtility();</code>
+        <code>    ...</code>
+        <code>}</code></pre>
+    <p>
+        ...into something where the main idea of the file is explicitly present at the top,
+        making it easier to spot when initially opening the file:
+    </p>
+    <pre>
+        <code>/* main.js */</code>
+        <code>function main ()</code>
+        <code>{</code>
+        <code>    ...</code>
+        <code>    someRandomUtility();</code>
+        <code>    ...</code>
+        <code>    anotherRandomUtility();</code>
+        <code>    ...</code>
+        <code>}</code>
+        <code></code>
+        <code>function someRandomUtility    () { ... }</code>
+        <code>function anotherRandomUtility () { ... }</code></pre>
+    <p>
+        <strong>Note:</strong> hoisting
+        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting" target="_blank">
+        doesn't work for classes</a>,
+        nor for
+        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variable_hoisting" target="_blank">
+        <code>let|const</code> keywords</a>.
+    </p>
 {{/layout.page}}

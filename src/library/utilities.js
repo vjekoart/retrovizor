@@ -1,10 +1,18 @@
-const Utilities =
+function formatCodeBlocks ()
 {
-    dummyUtility: ( a, b ) =>
+    const preElements = document.getElementsByTagName( "pre" );
+
+    Array.from( preElements ).forEach( preEl =>
     {
-        console.log( "I am a dummy utility." );
-        return a + b;
-    }
+        /* Indentation */
+        const content      = preEl.innerHTML;
+        const indentations = [ ...content.matchAll( /(\s+)\S+.*/gm ) ];
+        const purified     = content.replace( new RegExp( indentations[ 0 ][ 1 ], "gm" ), "" );
+
+        preEl.outerHTML = `<pre>${ purified }</pre>`;
+    } );
 }
 
-export { Utilities };
+export {
+    formatCodeBlocks
+};

@@ -1,9 +1,9 @@
-import { Utilities } from "./utilities.js";
+import { formatCodeBlocks } from "./utilities.js";
 
 describe( "Utilities suite", () =>
 {
-    it( "dummyUtility: dummy test", () =>
+    it( "formatCodeBlocks", () =>
     {
-        expect( Utilities.dummyUtility( 2, 3 )  ).toBe( 5 );
+        expect( formatCodeBlocks  ).toBeTruthy();
     } );
 } );

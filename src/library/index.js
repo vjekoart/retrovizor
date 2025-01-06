@@ -1,6 +1,10 @@
 import { CloseYourEyes   } from "./services/close-your-eyes.service.js";
 import { ImageDegradator } from "./services/image-degradator.service.js";
-import { Utilities       } from "./utilities.js";
+
+import
+{
+    formatCodeBlocks
+} from "./utilities.js";
 
 import { RetroContentBlock } from "./components/retro-content-block.js";
 import { RetroFooter       } from "./components/retro-footer.js";
@@ -14,7 +18,10 @@ customElements.define( "retro-title",         RetroTitle        );
 
 export
 {
+    // Services
     CloseYourEyes,
     ImageDegradator,
-    Utilities
+
+    // Utilities
+    formatCodeBlocks
 };

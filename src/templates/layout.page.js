@@ -1,1 +1,8 @@
-console.log( "layout.page.js" );
+import { formatCodeBlocks } from "Library";
+
+function main ()
+{
+    formatCodeBlocks();
+}
+
+window.addEventListener( "DOMContentLoaded", main );
