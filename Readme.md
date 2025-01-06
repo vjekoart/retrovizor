@@ -17,8 +17,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * Pixel Hoodlum
-        * Maybe use a couple of different hues (from blue to purple), existing warmn pixels to something, cold to something else
-        * Maybe randomlly add "protected areas" within borders where patches of similar colours are skipped in both iterations (function calls)?
+        * Add progress callback, on which image can be rendered so a user can see the process of degradation
         * Implement "Download" action on the _Code page_
         * Show loading state on the _Code page_
         * Add slider for factor on the _Code page_
