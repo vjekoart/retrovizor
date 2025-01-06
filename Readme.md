@@ -17,7 +17,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
     * Pixel Hoodlum
-        * Always center the operation, and then fill borders that are still identical to the original image with lightest/some bright shade of the color
         * Maybe use a couple of different hues (from blue to purple), existing warmn pixels to something, cold to something else
         * Maybe randomlly add "protected areas" within borders where patches of similar colours are skipped in both iterations (function calls)?
         * Implement "Download" action on the _Code page_

@@ -8,6 +8,14 @@ class PixelHoodlum
         };
 
         // Internals
+        this.bounds  =       // During the primitivisation image is centered
+        {
+            left   : 0,
+            right  : 0,
+            top    : 0,
+            bottom : 0
+        };
+
         this.canvas  = null; // OffscreenCanvas
         this.context = null; // CanvasRenderingContext2D
         this.image   =
@@ -24,6 +32,7 @@ class PixelHoodlum
         await this.prepareImage( base64 );
         await this.loadImage();
 
+        this.internalPrepareBounds();
         this.internalToMonochrome();
         this.internalToPrimitive();
 
@@ -35,24 +44,17 @@ class PixelHoodlum
      */
 
     /**
-     * Returns an imaginary box during the primitivisation iteration.
+     * Returns an array of pixels in the specified area.
      *
-     * Returns an array of scaleDownFactor^2 pixels.
-     * 
-     * { r, g, b, index } // Index in ImageData array
+     * { r, g, b, index } // Pixel index in ImageData array
      */
-    getBoxPixels( x, y )
+    getAreaPixels ( x, y, xOffset, yOffset )
     {
-        const xStart = x * this.options.scaleDownFactor;
-        const yStart = y * this.options.scaleDownFactor;
-        const xEnd   = xStart + this.options.scaleDownFactor;
-        const yEnd   = yStart + this.options.scaleDownFactor;
-
         const pixels = [];
 
-        for ( let i = yStart; i < yEnd; ++i )
+        for ( let i = y; i < yOffset; ++i )
         {
-            for ( let j = xStart; j < xEnd; ++j )
+            for ( let j = x; j < xOffset; ++j )
             {
                 const pixelIndex = j + i * this.image.width;
                 const byteIndex  = pixelIndex * 4;
@@ -109,34 +111,57 @@ class PixelHoodlum
         }
     }
 
+    internalPrepareBounds ()
+    {
+        const factor = this.options.scaleDownFactor;
+        const xValue = this.image.width  % factor;
+        const yValue = this.image.height % factor;
+
+        this.bounds.left   = Math.floor( xValue / 2 ) + xValue % 2;
+        this.bounds.right  = Math.floor( xValue / 2 );
+        this.bounds.top    = Math.floor( yValue / 2 ) + yValue % 2;
+        this.bounds.bottom = Math.floor( yValue / 2 );
+    }
+
     /**
      * Break the whole image, i.e. merge nearby pixels in a single box where each pixel has the same
      * color.
      *
      * The color that will affect the whole box, e.g. 4 adjecent pixels, is the average of all pixel
-     * color.
+     * colors.
      */
     internalToPrimitive ()
     {
-        const pixelsX = this.image.width  - ( this.image.width  % this.options.scaleDownFactor );
-        const pixelsY = this.image.height - ( this.image.height % this.options.scaleDownFactor );
-        const boxesX  = pixelsX / this.options.scaleDownFactor;
-        const boxesY  = pixelsY / this.options.scaleDownFactor;
+        const bounds  = this.bounds;
+        const factor  = this.options.scaleDownFactor;
+        const width   = this.image.width;
+        const height  = this.image.height;
 
-        for ( let i = 0; i < boxesY; ++i )
+        // Central box of the image within the bounds
+        for ( let i = bounds.top; i < height - bounds.bottom; i += factor )
         {
-            for ( let j = 0; j < boxesX; ++j )
+            for ( let j = bounds.left; j < width - bounds.right; j += factor )
             {
-                const pixels  = this.getBoxPixels( i, j );
-                const average = Eigen.getAveragePixelColor( pixels );
-
-                pixels.forEach( pixel =>
-                {
-                    this.image.data.data[ pixel.index     ] = average.r;
-                    this.image.data.data[ pixel.index + 1 ] = average.g;
-                    this.image.data.data[ pixel.index + 2 ] = average.b;
-                } );
+                this.primitivisePixels( this.getAreaPixels( j, i, j + factor, i + factor ) );
             }
+        }
+
+        // Corners
+        this.primitivisePixels( this.getAreaPixels( 0                   , 0                     , bounds.left, bounds.top ) );
+        this.primitivisePixels( this.getAreaPixels( width - bounds.right, 0                     , width      , bounds.top ) );
+        this.primitivisePixels( this.getAreaPixels( width - bounds.right, height - bounds.bottom, width      , height     ) );
+        this.primitivisePixels( this.getAreaPixels( 0                   , height - bounds.bottom, bounds.left, height     ) );
+
+        // Sides
+        for ( let i = bounds.left; i < width - bounds.right; i += factor )
+        {
+            this.primitivisePixels( this.getAreaPixels( i, 0                     , i + factor, bounds.top ) );
+            this.primitivisePixels( this.getAreaPixels( i, height - bounds.bottom, i + factor, height     ) );
+        }
+        for ( let i = bounds.top; i < height - bounds.bottom; i += factor )
+        {
+            this.primitivisePixels( this.getAreaPixels( 0                   , i, bounds.left, i + factor ) );
+            this.primitivisePixels( this.getAreaPixels( width - bounds.right, i, width      , i + factor ) );
         }
     }
 
@@ -162,6 +187,18 @@ class PixelHoodlum
             };
 
             this.image.element.src = base64;
+        } );
+    }
+
+    primitivisePixels( pixels )
+    {
+        const average = Eigen.getAveragePixelColor( pixels );
+
+        pixels.forEach( pixel =>
+        {
+            this.image.data.data[ pixel.index     ] = average.r;
+            this.image.data.data[ pixel.index + 1 ] = average.g;
+            this.image.data.data[ pixel.index + 2 ] = average.b;
         } );
     }
 }
