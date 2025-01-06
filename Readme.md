@@ -15,8 +15,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 1: simple build system~
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
-* Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * Iteration: complete the content (text, coding style and user page)
+* ~Phase 4: content & pages, incl. related logic~
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
