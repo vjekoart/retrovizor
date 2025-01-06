@@ -1,6 +1,6 @@
-import { CloseYourEyes } from "./services/close-your-eyes.service.js";
-import { PixelHoodlum  } from "./services/pixel-hoodlum.service.js";
-import { Utilities     } from "./utilities.js";
+import { CloseYourEyes   } from "./services/close-your-eyes.service.js";
+import { ImageDegradator } from "./services/image-degradator.service.js";
+import { Utilities       } from "./utilities.js";
 
 import { RetroContentBlock } from "./components/retro-content-block.js";
 import { RetroFooter       } from "./components/retro-footer.js";
@@ -15,6 +15,6 @@ customElements.define( "retro-title",         RetroTitle        );
 export
 {
     CloseYourEyes,
-    PixelHoodlum,
+    ImageDegradator,
     Utilities
 };

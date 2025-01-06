@@ -24,28 +24,49 @@
     border     : var(--style-line-width-light) solid var(--style-color-light);
 }
 
-fieldset
+.input-image,
+.configuration
 {
     width      : 100%;
     min-width  : unset;
     margin     : 0 0 var(--style-grid-full) 0;
     padding    : 0;
 
-    text-align : center;
     border     : var(--style-line-width-light) solid var(--style-color-light);
+}
 
+.input-image
+{
+
+    text-align : center;
     cursor     : pointer;
     overflow   : hidden;
 }
 
-fieldset label
+.input-image label
 {
     display : block;
     padding : var(--style-grid-full);
     cursor  : inherit;
 }
 
-fieldset input[type="file"]
+.input-image input[type="file"]
 {
     display : none;
+}
+
+.configuration
+{
+    padding : var(--style-grid-full);
+}
+
+.configuration-value
+{
+    display       : block;
+    margin-bottom : var(--style-grid-half);
+}
+
+.configuration-value:last-child
+{
+    margin-bottom : 0;
 }

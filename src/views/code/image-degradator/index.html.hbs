@@ -1,0 +1,43 @@
+{{#> layout.page
+    title="Image degradator"
+    view="image-degradator"
+    viewScript="image-degradator.js"
+    viewStyle="image-degradator.css"
+}}
+    <form class="experiment">
+        <section class="images">
+            <img id="image-input" alt="Input image" />
+            <img id="image-output" alt="Output image" />
+        </section>
+
+        <fieldset class="input-image">
+            <label for="input-image">Click to select an image<br />(everything happens inside a web browser)</label>
+            <input id="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
+        </fieldset>
+
+        <fieldset class="configuration">
+            <div class="configuration-value">
+                <label for="configuration-factor">Factor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="range" min="2" max="128" id="configuration-factor" name="configuration-factor" />
+            </div>
+            <div class="configuration-value">
+                <label for="configuration-lightness">Max lightness</label>
+                <input type="range" min="2" max="255" id="configuration-lightness" name="configuration-lightness" />
+            </div>
+        </fieldset>
+
+        <section class="controls">
+            <button id="button-generate" type="button">Degenerate</button>
+            <button id="button-download" type="button">Download</button>
+        </section>
+    </form>
+
+    <retro-content-block data-date="2025-01-01">
+        <span slot="title">Image degradator</span>
+        <span slot="excerpt">
+            Image degradation tool that creates a color-modified, pixelated version of the original image.
+            <br /><br />
+            Source: <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/services/image-degradator.service.js" target="_blank">pixel-hoodlum.service.js</a>
+        </span>
+    </retro-content-block>
+{{/layout.page}}

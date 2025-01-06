@@ -1,4 +1,4 @@
-class PixelHoodlum
+class ImageDegradator
 {
     constructor ( scaleDownFactor )
     {
@@ -38,6 +38,16 @@ class PixelHoodlum
         this.internalToPrimitive();
 
         return await this.internalToBase64();
+    }
+
+    getOptions ()
+    {
+        return this.options;
+    }
+
+    setOptions ( options )
+    {
+        this.options = options;
     }
 
     /**
@@ -327,4 +337,4 @@ class Eigen
     }
 }
 
-export { PixelHoodlum };
+export { ImageDegradator };

@@ -16,12 +16,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * Phase 4: content & pages, incl. related logic eg view-specific styles/scripts
-    * Pixel Hoodlum
-        * Add progress callback, on which image can be rendered so a user can see the process of degradation
-        * Implement "Download" action on the _Code page_
-        * Show loading state on the _Code page_
-        * Add slider for factor on the _Code page_
-        * Rename to _Image degradator_
     * Iteration: content is complete (reasonbly)
     * Iteration: proof reading and minor improvements
 * Phase 5: Add single E2E test - user journey (Jasmine, BDD)
@@ -30,8 +24,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.2: build system fine tune
         * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
     * General: apply patterns from the article Declarative thinking
-    * Animation: loading state, computation logic to worker, rAF
-    * Animation: what about those damn lines? Make them breathe
+    * CloseYourEyes: loading state, computation logic to worker, rAF
+    * CloseYourEyes: what about those damn lines? Make them breathe
+    * ImageDegradator: maybe processing to work or leave for later?
     * Refactor `generateHTML` method in build system to something more readable
     * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * TODOs in the code, and console outputs
@@ -56,6 +51,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Revise (delete and archive) GitHub repositories
     * Revise (delete and make private) gist.github
 * PUBLISH
+    * Rename instagram to retrovizor.xyz - the same day the website is published
 * Phase 12: cycle of improvements from backlog after the first feedback
 
 ### Roadmap stuff (not part of the first version)

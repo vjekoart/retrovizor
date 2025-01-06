@@ -40,3 +40,8 @@ button:active
 {
     background : var(--style-color-interactive-in);
 }
+
+button[disabled="disabled"]
+{
+    opacity : 0.5;
+}
