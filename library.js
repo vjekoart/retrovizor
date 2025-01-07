@@ -23,15 +23,13 @@ import * as Bits      from "./library.bits.js";
  */
 function expose ( functions, fallback )
 {
-    // Map functions
     const exposed = {};
 
     functions.forEach( x => exposed[ x.name ] = x );
 
-    // Execute desired function
     const target = Process.argv[ 2 ];
 
-    if ( target !== undefined && !( target in exposed ) )
+    if ( !target && !( target in exposed ) )
     {
         console.error( "Unknown function target:", target );
         return;        
@@ -78,9 +76,6 @@ async function buildLibrary ( configuration, dev = false )
     }
 
     await Promise.all( compilePromises );
-
-    // What about web components? They import node modules, so need to handle that
-    // Handle with Babel, it's possible to know if something is e.g. CJS module or native
 
     console.info( "[buildLibrary] Done." );
 }
@@ -362,8 +357,8 @@ const tests =
             },
             importMap:
             {
-                moduleRootDir: ".",
-                imports: dependencies
+                moduleRootDir : ".",
+                imports       : dependencies
             },
             listenAddress : "localhost",
             hostname      : "localhost",

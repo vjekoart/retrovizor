@@ -171,7 +171,8 @@ export class WatchPool
         }
 
         this.timerId = setTimeout(
-            () => {
+            () =>
+            {
                 this.publishChanges();
                 this.timerId = null;
             },

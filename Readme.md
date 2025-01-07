@@ -21,6 +21,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Phase 6.2: build system fine tune
         * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
+        * Add bundle hash to JS/CSS asssets to avoid caching
     * General: apply patterns from the article Declarative thinking
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
@@ -41,6 +42,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Go through code and coding styles
     * Go through user page
     * Proofreading
+    * Add link to gist "Code Poetry"
 * Phase 9: run Lighthouse and similar dev tools to ensure website quality
     * For example, HTML validator
     * Don't forget to run this on every page since this is not a SPA
@@ -61,6 +63,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Environment
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
+    * Dockerisation
 * Build system
     * Compare `buildType:native` and `buildType:bundle` performance
     * `buildType`: for now native web module, but later enable bundling
