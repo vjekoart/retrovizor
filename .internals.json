@@ -16,6 +16,7 @@
     {
         "browserTestIncludes": ".test.",
         "e2eTestIncludes": ".e2e.",
+        "testUtilityIncludes": "test.utilities.js",
         "jasmineBrowserServerPort": 4321,
         "e2eHostname": "localhost",
         "e2ePort": 4322

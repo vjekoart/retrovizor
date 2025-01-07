@@ -19,16 +19,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
-    * Phase 6.2: build system fine tune
-        * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
-        * Add bundle hash to JS/CSS asssets to avoid caching
-    * General: apply patterns from the text Declarative thinking
+    * Add bundle hash to JS/CSS asssets to avoid caching
+    * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
-    * ImageDegradator: maybe processing to work or leave for later?
-    * Refactor `generateHTML` method in build system to something more readable
-    * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
+    * ImageDegradator: maybe processing to worker or leave for later?
+    * ---
     * TODOs in the code, and console outputs
+    * Apply patterns from the text Declarative thinking
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
@@ -69,17 +67,15 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Compare `buildType:native` and `buildType:bundle` performance
     * `buildType`: for now native web module, but later enable bundling
     * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder
-    * Improve error reporting, e.g. for CSS, don't die when there's an error
     * Handle file rename in the loop
+    * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
     * Add something like `npm run dev:test` to support test development
-    * Add support for multiple CSS and JS files on the app level
     * Performance
         * Try streams instead of `writeFile` and similar to improve performance 
         * Try keeping open handles in dev mode to decrease rebuild time
         * `buildLibrary|buildScripts|buildStyles` in `dev` mode
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
-    * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
 
 ## Usage
 

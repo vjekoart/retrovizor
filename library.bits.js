@@ -30,23 +30,40 @@ export function checkPath( path, isDirectory = false )
 
 export async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
 {
-    const babelOptions = {
-        compact: !dev,
-        presets: [ "@babel/preset-env" ],
-        sourceMaps: true,
-        // TODO: related to "Configuration.buildType" === "native"
-        caller:
-        {
-            // TODO: generalize this logic, i.e. protect the `library` namespace based on the internals location
-            name: "Library",
-            supportsStaticESM: true
-        }
+    const babelOptions =
+    {
+        compact    : !dev,
+        presets    : [ "@babel/preset-env" ],
+        sourceMaps : true
     };
 
-    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
-    const results = await Babel.transformAsync( content, babelOptions );
+    if ( buildType === "native" )
+    {
+        babelOptions.caller =
+        {
+            name: "Library",
+            supportsStaticESM: true
+        };
+    }
 
-    await writeFile( outputFilePath, results.code );
+    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
+
+    let results;
+    let code;
+
+    try
+    {
+        results = await Babel.transformAsync( content, babelOptions );
+        code    = results.code;
+    }
+    catch ( error )
+    {
+        console.info ( `\n[FILE] ${ inputFilePath }` );
+        console.error( error.message, "\n" );
+        return;
+    }
+
+    await writeFile( outputFilePath, code );
 
     if ( results.map )
     {
@@ -67,9 +84,23 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
     const from    = inputFilePath;
     const to      = outputFilePath;
     const map     = true;
-    const results = await PostCSS( postPlugins ).process( content, { from, to, map } );
 
-    await writeFile( outputFilePath, results.css );
+    let results;
+    let css;
+
+    try
+    {
+        results = await PostCSS( postPlugins ).process( content, { from, to, map } );
+        css    = results.css;
+    }
+    catch ( error )
+    {
+        console.info ( `\n[FILE] ${ inputFilePath }` );
+        console.error( error.message, "\n" );
+        return;
+    }
+
+    await writeFile( outputFilePath, css );
 
     if ( results.map )
     {
@@ -98,6 +129,26 @@ export function getRootPath ()
     return Path.dirname( URL.fileURLToPath( import.meta.url ) );
 }
 
+/**
+ * @param path {string} Full path of the folder with files.
+ * @param modifiers { filter: x => x, input: x => x, output: x => x }
+ * @return Array<{ input: fileNamePath, output: fileNamePath }>
+ */
+export async function getTargetFiles ( path, modifiers )
+{
+    const files = await FS.readdir( path, { recursive: true } );
+
+    return files
+        .filter( modifiers.filter )
+        .map( x =>
+        {
+            return {
+                input  : modifiers.input ( x ),
+                output : modifiers.output( x )
+            }
+        } );
+}
+
 export async function getTestFiles ( path, includes )
 {
     const files = await FS.readdir( path, { recursive: true } );
@@ -111,6 +162,10 @@ export function isScriptFile ( file )
     {
         return false;
     }
+    if ( file.includes( _INTERNALS.tests.testUtilityIncludes ) )
+    {
+        return false;
+    }
     if ( file.includes( _INTERNALS.tests.browserTestIncludes ) )
     {
         return false;
@@ -121,6 +176,67 @@ export function isScriptFile ( file )
     }
 
     return true;
+}
+
+export async function readTemplates ()
+{
+    const {
+        indexTemplate,
+        layoutPrefix,
+        templatesPath
+    } = _INTERNALS;
+
+    const fullIndexPath     = Path.join( getRootPath(), indexTemplate );
+    const fullTemplatesPath = Path.join( getRootPath(), templatesPath );
+
+    const partials =
+    {
+        index : await FS.readFile( fullIndexPath, { encoding : "utf8" } )
+    };
+
+    const templateFiles     = await FS.readdir( fullTemplatesPath );
+    const htmlTemplateFiles = templateFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
+
+    for ( const file of htmlTemplateFiles )
+    {
+        if ( file.startsWith( layoutPrefix ) )
+        {
+            const name    = getPartialNameFromFileName( file );
+            const content = await FS.readFile( Path.join( fullTemplatesPath, file ), { encoding : "utf8" } );
+
+            partials[ name ] = content;
+        }
+    }
+
+    return partials;
+}
+
+export async function writeViews ( Handlebars, configuration, buildPath, dataFile, dev )
+{
+    const {
+        indexTemplate,
+        layoutPrefix,
+        templatesPath,
+        viewsPath
+    } = _INTERNALS;
+
+    const fullBuildPath     = Path.join( getRootPath(), buildPath     );
+    const fullViewsPath     = Path.join( getRootPath(), viewsPath     );
+    const fullDataFilePath  = Path.join( getRootPath(), dataFile      );
+
+    const data          = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
+    const templateData  = { data, configuration };
+    const viewFiles     = await FS.readdir( fullViewsPath, { recursive: true } );
+    const htmlViewFiles = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
+
+    for ( const file of htmlViewFiles )
+    {
+        const content  = await FS.readFile( Path.join( fullViewsPath, file ), { encoding: "utf8" } );
+        const template = Handlebars.compile( content );
+        const fileName = file.endsWith( ".hbs" ) && file.replace( ".hbs", "" ) || file;
+
+        await writeFile( Path.join( fullBuildPath, fileName ), template( templateData ) );
+    }
 }
 
 export async function writeFile ( path, content )
@@ -166,7 +282,6 @@ export class WatchPool
     {
         this.resetTimer();
 
-        // TODO: add suport for "node_modules", right now this is relevant only for buildType = "native"
         if ( path.includes( "/assets/" ) )
         {
             this.changes.copyAssets = true;

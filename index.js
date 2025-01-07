@@ -40,28 +40,32 @@ export async function dev ()
         await Library.frontend.ensureBuildFolder( Configuration );
         Library.frontend.startServer( Configuration );
 
-        Library.frontend.watchLoop( Configuration, changes =>
+        Library.frontend.watchLoop( Configuration, async changes =>
         {
+            console.info( "\nStarting the loop...\n" );
+
             if ( changes.copyAssets )
             {
-                Library.frontend.copyAssets( Configuration );
+                await Library.frontend.copyAssets( Configuration );
             }
             if ( changes.generateHTML )
             {
-                Library.frontend.generateHTML( Configuration, true );
+                await Library.frontend.generateHTML( Configuration, true );
             }
             if ( changes.buildLibrary )
             {
-                Library.frontend.buildLibrary( Configuration, true );
+                await Library.frontend.buildLibrary( Configuration, true );
             }
             if ( changes.buildScripts )
             {
-                Library.frontend.buildScripts( Configuration, true );
+                await Library.frontend.buildScripts( Configuration, true );
             }
             if ( changes.buildStyles )
             {
-                Library.frontend.buildStyles( Configuration, true );
+                await Library.frontend.buildStyles( Configuration, true );
             }
+
+            console.log( "\nLoop completed." );
         } );
     }
     catch ( error )
