@@ -1,3 +1,5 @@
+import * as Configuration from "./configuration.js";
+
 import { CloseYourEyes   } from "./services/close-your-eyes.service.js";
 import { ImageDegradator } from "./services/image-degradator.service.js";
 
@@ -18,6 +20,8 @@ customElements.define( "retro-title",         RetroTitle        );
 
 export
 {
+    Configuration,
+
     // Services
     CloseYourEyes,
     ImageDegradator,

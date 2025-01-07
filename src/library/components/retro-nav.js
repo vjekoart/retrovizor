@@ -1,27 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-const ITEMS = [
-    {
-        name: "index",
-        path: "/",
-        text: "Home"
-    },
-    {
-        name: "text",
-        path: "/text/",
-        text: "Text"
-    },
-    {
-        name: "code",
-        path: "/code/",
-        text: "Code"
-    },
-    {
-        name: "user",
-        path: "/user/",
-        text: "User"
-    }
-];
+import { Configuration } from "Library";
 
 export class RetroNav extends LitElement
 {
@@ -107,6 +86,6 @@ export class RetroNav extends LitElement
 
     render ()
     {
-        return ITEMS.map( x => this.renderElement( x ) );
+        return Configuration.navigationItems.map( x => this.renderElement( x ) );
     }
 }
