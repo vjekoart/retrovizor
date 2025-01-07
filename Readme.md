@@ -29,7 +29,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Refactor `generateHTML` method in build system to something more readable
     * See `retro-nav.js:ITEMS`, how and where to store client-side code data? Like `data.json` but for the client code
     * TODOs in the code, and console outputs
-    * Write a test for `formatCodeBlocks` utility
 * Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?

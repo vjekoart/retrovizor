@@ -1,22 +1,25 @@
 const renderComponent = ( selector, content ) => new Promise( resolve =>
 {
     document.body.innerHTML = content;
-
-    function requestSelector ()
-    {
-        const element = document.querySelector( selector );
-
-        if ( element )
-        {
-            resolve( element );
-        }
-        else
-        {
-            window.requestAnimationFrame( requestSelector );
-        }
-    }
-
-    requestSelector();
+    requestSelector( selector ).then( element => resolve( element ) );
 } );
 
-export { renderComponent };
+const requestSelector = ( selector ) => new Promise( resolve => 
+{
+    const element = document.querySelector( selector );
+
+    if ( element )
+    {
+        resolve( element );
+    }
+    else
+    {
+        window.requestAnimationFrame( requestSelector );
+    }
+} );
+
+export
+{
+    renderComponent,
+    requestSelector
+};

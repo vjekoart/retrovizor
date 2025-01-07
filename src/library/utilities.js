@@ -13,6 +13,7 @@ function formatCodeBlocks ()
     } );
 }
 
-export {
+export
+{
     formatCodeBlocks
 };
