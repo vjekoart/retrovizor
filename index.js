@@ -80,6 +80,11 @@ export function test ()
     Library.frontend.tests.runWebBrowser( Configuration );
 }
 
+export function e2e ()
+{
+    Library.frontend.tests.runE2E( Configuration );
+}
+
 /* Expose component methods, to others and to the CLI */
 Library.general.expose(
     [
@@ -87,7 +92,8 @@ Library.general.expose(
         deploy,
         dev,
         start,
-        test
+        test,
+        e2e
     ],
     dev
 );

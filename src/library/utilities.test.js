@@ -4,6 +4,6 @@ describe( "Utilities suite", () =>
 {
     it( "formatCodeBlocks", () =>
     {
-        expect( formatCodeBlocks  ).toBeTruthy();
+        expect( formatCodeBlocks ).toBeTruthy();
     } );
 } );

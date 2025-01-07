@@ -16,13 +16,13 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * ~Phase 4: content & pages, incl. related logic~
-* Phase 5: Add single E2E test - user journey (Jasmine, BDD)
+* ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Phase 6.2: build system fine tune
         * Remove `*.test.*` files and test utilities from JS build functions (both actual test code, and test utilities)
         * Add bundle hash to JS/CSS asssets to avoid caching
-    * General: apply patterns from the article Declarative thinking
+    * General: apply patterns from the text Declarative thinking
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: maybe processing to work or leave for later?
@@ -38,7 +38,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: content fine-tune
-    * Go through text articles
+    * Go through texts
     * Go through code and coding styles
     * Go through user page
     * Proofreading
@@ -58,12 +58,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 ### Roadmap stuff (not part of the first version)
 
 * Website functionalities
-    * Add support for linkable headings, like in Confluence
-    * Add support for _Table of contents_
+    * Add support for linkable headings
+    * Add support for "Table of contents" on text pages
 * Environment
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
     * Dockerisation
+    * GitHub PR workflow
+    * Write E2E tests using Gherkin syntax
 * Build system
     * Compare `buildType:native` and `buildType:bundle` performance
     * `buildType`: for now native web module, but later enable bundling
@@ -79,6 +81,10 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
     * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
+
+## Usage
+
+* `npm run e2e`, make sure to run `npm run build` or `npm run dev` beforehand
 
 ## File structure / Architecture (try to keep updated)
 

@@ -154,8 +154,15 @@
         action.
     </p>
     <p>
+        Furthermore, there's an E2E test mechanism for <code>*.e2e.js</code> files provided with the combination of Jasmine and Puppeteer.
+        Executed with <code>npm run e2e</code> action, that assumes there's an existing <code>dist/</code> directory. Running the test
+        server is part of the action.
+    <p>
         Examples:
         <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-nav.test.js" target="_blank">retro-nav.test.js</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a> (<code>runWebBrowser</code>)
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/journey.e2e.js" target="_blank">journey.e2e.js</a>,
+        <br />
+        Build system:
+        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a> (<code>tests</code>)
     </p>
 {{/layout.page}}

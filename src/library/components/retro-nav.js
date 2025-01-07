@@ -96,6 +96,7 @@ export class RetroNav extends LitElement
     {
         return html`
             <a
+                data-name="${ element.name }"
                 href="${ element.path }"
                 class="${ this.active === element.name ? "active" : "" }"
             >

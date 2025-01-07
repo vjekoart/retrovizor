@@ -7,6 +7,7 @@ import FS             from "fs/promises";
 import FSSync         from "fs";
 import Handlebars     from "handlebars";
 import HTTP           from "http";
+import Jasmine        from "jasmine";
 import JasmineBrowser from "jasmine-browser-runner";
 import Path           from "path";
 import Process        from "node:process";
@@ -29,13 +30,19 @@ function expose ( functions, fallback )
 
     const target = Process.argv[ 2 ];
 
-    if ( !target && !( target in exposed ) )
+    if ( !target )
+    {
+        fallback();
+        return;
+    }
+
+    if ( !( target in exposed ) )
     {
         console.error( "Unknown function target:", target );
         return;        
     }
 
-    ( exposed[ target ] || fallback )();
+    exposed[ target ]();
 }
 
 /**
@@ -69,7 +76,7 @@ async function buildLibrary ( configuration, dev = false )
         {
             compilePromises.push( Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev ) );
         }
-        if ( file.endsWith( ".js" ) )
+        if ( Bits.isScriptFile( file ) )
         {
             compilePromises.push( Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev ) );
         }
@@ -105,7 +112,7 @@ async function buildScripts ( configuration, dev = false )
     const templateFiles       = await FS.readdir( fullTemplatesPath );
     const viewFiles           = await FS.readdir( fullViewsPath, { recursive: true } );
     const scriptTemplateFiles = templateFiles
-                                    .filter( x => x.endsWith( ".js" ) )
+                                    .filter( x => Bits.isScriptFile( x ) )
                                     .map( x =>
                                     {
                                         return {
@@ -114,7 +121,7 @@ async function buildScripts ( configuration, dev = false )
                                         }
                                     } );
     const scriptViewFiles     = viewFiles
-                                    .filter( x => x.endsWith( ".js" ) )
+                                    .filter( x => Bits.isScriptFile( x ) )
                                     .map( x =>
                                     {
                                         return {
@@ -286,7 +293,7 @@ async function generateHTML ( configuration, dev = false )
     console.info( "[generateHTML] Done." );
 }
 
-function startServer( configuration )
+function startServer ( configuration )
 {
     const { buildPath } = configuration;
     const { devPort   } = configuration.internals;
@@ -333,6 +340,42 @@ function watchLoop ( configuration, onChange )
 
 const tests =
 {
+    getE2ELocation: () =>
+    {
+        return Bits.getE2ELocation();
+    },
+
+    runE2E: async ( configuration ) =>
+    {
+        const { buildPath }         = configuration;
+        const { sourcePath, tests } = configuration.internals;
+        const fullBuildPath         = Path.join( Bits.getRootPath(), buildPath );
+
+        const server = HTTP.createServer( ( request, response ) =>
+        {
+            ServeHandler( request, response, { public: fullBuildPath } );
+        } );
+
+        server.listen( tests.e2ePort, () =>
+        {
+            console.info( `[startServer] Listening on port ${ tests.e2ePort }...` );
+        } );
+
+        const root   = Path.join( Bits.getRootPath(), sourcePath );
+        const units  = await Bits.getTestFiles( root, tests.e2eTestIncludes );
+        const runner = new Jasmine();
+        const config =
+        {
+            random     : false,
+            spec_dir   : sourcePath,
+            spec_files : units
+        };
+
+        runner.loadConfig( config );
+
+        const results = await runner.execute();
+        console.info( results );
+    },
     runWebBrowser: async ( configuration ) =>
     {
         const { dependencies      } = configuration;
@@ -341,7 +384,8 @@ const tests =
         const root   = Path.join( Bits.getRootPath(), sourcePath );
         const units  = await Bits.getTestFiles( root, tests.browserTestIncludes );
 
-        const config = {
+        const config =
+        {
             projectBaseDir       : Bits.getRootPath(),
             srcDir               : sourcePath,
             specDir              : sourcePath,
@@ -362,6 +406,7 @@ const tests =
             },
             listenAddress : "localhost",
             hostname      : "localhost",
+            port          : tests.jasmineBrowserServerPort,
             browser       :
             {
                 name : "headlessFirefox"

@@ -15,7 +15,10 @@
     "tests":
     {
         "browserTestIncludes": ".test.",
-        "serverPort": 4321
+        "e2eTestIncludes": ".e2e.",
+        "jasmineBrowserServerPort": 4321,
+        "e2eHostname": "localhost",
+        "e2ePort": 4322
     },
     "viewsPath": "src/views"
 }

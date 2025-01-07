@@ -2,9 +2,12 @@ import Autoprefixer   from "autoprefixer";
 import Babel          from "@babel/core";
 import CSSNano        from "cssnano";
 import FS             from "fs/promises";
+import FSSync         from "fs";
 import Path           from "path";
 import PostCSS        from "postcss";
 import URL            from "url";
+
+const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
 
 export function checkPath( path, isDirectory = false )
 {
@@ -74,6 +77,11 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
     }
 }
 
+export function getE2ELocation ()
+{
+    return `http://${ _INTERNALS.tests.e2eHostname }:${ _INTERNALS.tests.e2ePort }/`;
+}
+
 /** "layout.homepage.html.hbs" to "layout.homepage" */
 export function getPartialNameFromFileName ( file )
 {
@@ -97,6 +105,24 @@ export async function getTestFiles ( path, includes )
     return files.filter( x => x.includes( includes ) );
 }
 
+export function isScriptFile ( file )
+{
+    if ( !file.endsWith( ".js" ) )
+    {
+        return false;
+    }
+    if ( file.includes( _INTERNALS.tests.browserTestIncludes ) )
+    {
+        return false;
+    }
+    if ( file.includes( _INTERNALS.tests.e2eTestIncludes ) )
+    {
+        return false;
+    }
+
+    return true;
+}
+
 export async function writeFile ( path, content )
 {
     console.info( `[writeFile] Writing a file to '${ path }'...` );
@@ -111,7 +137,8 @@ export class WatchPool
     {
         this.delayBeforePublishingChanges = 1000;
         this.timerId = null;
-        this.changes = {
+        this.changes =
+        {
             buildLibrary : false,
             buildStyles  : false,
             buildScripts : false,
@@ -125,7 +152,8 @@ export class WatchPool
     publishChanges ()
     {
         this.onChange( this.changes );
-        this.changes = {
+        this.changes =
+        {
             buildLibrary : false,
             buildStyles  : false,
             buildScripts : false,

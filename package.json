@@ -8,7 +8,8 @@
     "deploy": "node index.js deploy",
     "dev": "node index.js dev",
     "start": "node index.js",
-    "test": "node index.js test"
+    "test": "node index.js test",
+    "e2e": "node index.js e2e"
   },
   "type": "module",
   "author": "vjekoart@pm.me",
@@ -20,10 +21,12 @@
     "chokidar": "~4.0.3",
     "cssnano": "~7.0.6",
     "handlebars": "~4.7.8",
+    "jasmine": "^5.5.0",
     "jasmine-browser-runner": "~2.5.0",
     "jasmine-core": "~5.5.0",
     "lit": "~3.2.1",
     "postcss": "~8.4.49",
+    "puppeteer": "^23.11.1",
     "serve-handler": "~6.1.6"
   }
 }
