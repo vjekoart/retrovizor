@@ -15,12 +15,15 @@ export async function build ()
         await Promise.all(
             [
                 Library.frontend.copyAssets  ( Configuration ),
-                Library.frontend.generateHTML( Configuration ),
                 Library.frontend.buildLibrary( Configuration ),
                 Library.frontend.buildScripts( Configuration ),
                 Library.frontend.buildStyles ( Configuration )
             ]
         );
+        await Library.frontend.generateHTML( Configuration );
+
+        // TODO: missing implementation for clearBuild
+        await Library.frontend.clearBuild( Configuration );
     }
     catch ( error )
     {
@@ -48,10 +51,6 @@ export async function dev ()
             {
                 await Library.frontend.copyAssets( Configuration );
             }
-            if ( changes.generateHTML )
-            {
-                await Library.frontend.generateHTML( Configuration, true );
-            }
             if ( changes.buildLibrary )
             {
                 await Library.frontend.buildLibrary( Configuration, true );
@@ -63,6 +62,10 @@ export async function dev ()
             if ( changes.buildStyles )
             {
                 await Library.frontend.buildStyles( Configuration, true );
+            }
+            if ( changes.generateHTML )
+            {
+                await Library.frontend.generateHTML( Configuration, true );
             }
 
             console.log( "\nLoop completed." );

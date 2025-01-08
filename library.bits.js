@@ -5,6 +5,7 @@ import FS             from "fs/promises";
 import FSSync         from "fs";
 import Path           from "path";
 import PostCSS        from "postcss";
+import { cwd }        from "node:process";
 import URL            from "url";
 
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
@@ -63,11 +64,17 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
         return;
     }
 
-    await writeFile( outputFilePath, code );
+    const hashedPath = getFileHash( { path : outputFilePath, content : code } );
+
+    await writeFile( hashedPath, code );
 
     if ( results.map )
     {
-        await writeFile( `${ outputFilePath }.map`, results.map.toString() );
+        const content    = results.map.toString();
+        const path       = `${ outputFilePath }.map`;
+        const hashedPath = getFileHash( { path, content } );
+
+        await writeFile( hashedPath, content );
     }
 }
 
@@ -100,17 +107,61 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
         return;
     }
 
-    await writeFile( outputFilePath, css );
+    const hashedPath = getFileHash( { path : outputFilePath, content : css } );
+
+    await writeFile( hashedPath, css );
 
     if ( results.map )
     {
-        await writeFile( `${ outputFilePath }.map`, results.map.toString() );
+        const content    = results.map.toString();
+        const path       = `${ outputFilePath }.map`;
+        const hashedPath = getFileHash( { path, content } );
+
+        await writeFile( hashedPath, content );
     }
 }
 
 export function getE2ELocation ()
 {
     return `http://${ _INTERNALS.tests.e2eHostname }:${ _INTERNALS.tests.e2ePort }/`;
+}
+
+/**
+ * Define a `path` where's located a file for which hash needs to be calculated.
+ *
+ * Optionally, provide a file content to skip reading from the file.
+ */
+export function getFileHash ( { content, path } = {} )
+{
+    // TODO
+    console.log( "[MISSING] getFileHash implementation");
+
+    // If not content, read from path
+
+    // Calculate hash
+
+    // Generate file name taking into consideration path
+
+    // Write an entry to hash file
+    //writeHashFileName( originalPath, hashPath );
+
+    // Return file name
+
+    return path;
+}
+
+export function getHashFileName ( path )
+{
+    // TODO
+    console.log( "[MISSING] getHashFileName: read from hash file and return the value" );
+
+    return path;
+}
+
+export function writeHashFileName ( originalPath, hashPath )
+{
+    // TODO
+    console.log( "[MISSING] writeHashFileName: should write to hash file" );
 }
 
 /** "layout.homepage.html.hbs" to "layout.homepage" */
@@ -241,7 +292,7 @@ export async function writeViews ( Handlebars, configuration, buildPath, dataFil
 
 export async function writeFile ( path, content )
 {
-    console.info( `[writeFile] Writing a file to '${ path }'...` );
+    console.info( `Writing '${ path.replace( process.cwd(), "" ) }'...` );
 
     await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
     await FS.writeFile( path, content );

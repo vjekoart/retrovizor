@@ -21,19 +21,24 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
+    * Handlebars (generateHTML) error handling in case of syntax error
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: maybe processing to worker or leave for later?
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Apply patterns from the text Declarative thinking
-* Phase 7: UI fine-tune (transitions, assets, favicons, SEO,...)
+* Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
     * Homepage: hide everything except animation if user is idle
     * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
     * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
+    * Transitions
+    * Assets
+    * Favicons
+    * SEO
 * Phase 8: content fine-tune
     * Go through texts
     * Go through code and coding styles

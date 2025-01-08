@@ -169,6 +169,11 @@ async function buildStyles ( configuration, dev = false )
     }
 }
 
+async function clearBuild ( configuration )
+{
+    console.log( "[MISSING] clearBuild: remove hash file from build directory" );
+}
+
 async function copyAssets ( configuration )
 {
     const { buildPath, buildType } = configuration;
@@ -205,6 +210,12 @@ async function ensureBuildFolder ( configuration )
 async function generateHTML ( configuration, dev = false )
 {
     const { buildPath, dataFile } = configuration;
+
+    Handlebars.registerHelper( "getHashFileName" , ( ...args ) =>
+    {
+        args.pop();
+        return Bits.getHashFileName( args.join( "" ) );
+    } );
 
     Handlebars.registerPartial( await Bits.readTemplates() );
     await Bits.writeViews(
@@ -352,6 +363,7 @@ const frontend = {
     buildScripts,
     buildStyles,
     copyAssets,
+    clearBuild,
     ensureBuildFolder,
     generateHTML,
     startServer,

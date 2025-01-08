@@ -7,12 +7,12 @@
 
         <title>{{ title }} | retrovizor.xyz</title>
 
-        <link rel="stylesheet" type="text/css" href="/{{ configuration.internals.indexStyleBuild }}">
+        <link rel="stylesheet" type="text/css" href="/{{ getHashFileName configuration.internals.indexStyleBuild }}">
         {{#if templateStyle}}
-        <link rel="stylesheet" type="text/css" href="/{{ templateStyle }}">
+        <link rel="stylesheet" type="text/css" href="/{{ getHashFileName templateStyle }}">
         {{/if}}
         {{#if viewStyle}}
-        <link rel="stylesheet" type="text/css" href="{{ viewStyle }}">
+        <link rel="stylesheet" type="text/css" href="{{ getHashFileName viewStyle }}">
         {{/if}}
     </head>
     <body>
@@ -21,7 +21,7 @@
             {
                 "imports":
                 {
-                    "Library": "/{{ configuration.internals.libraryBuild }}/index.js",
+                    "Library": "/{{ getHashFileName configuration.internals.libraryBuild "/index.js" }}",
                 {{#each configuration.dependencies}}
                     "{{@key}}": "/{{this}}"{{#unless @last}},{{/unless}}
                 {{/each}}
@@ -29,12 +29,12 @@
             }
         </script>
         {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
-        <script type="module" src="/{{ configuration.internals.indexScriptBuild }}"></script>
+        <script type="module" src="/{{ getHashFileName configuration.internals.indexScriptBuild }}"></script>
         {{#if templateScript}}
-        <script type="module" src="/{{ templateScript }}"></script>
+        <script type="module" src="/{{ getHashFileName templateScript }}"></script>
         {{/if}}
         {{#if viewScript}}
-        <script type="module" src="{{ viewScript }}"></script>
+        <script type="module" src="{{ getHashFileName viewScript }}"></script>
         {{/if}}
     </body>
 </html>
