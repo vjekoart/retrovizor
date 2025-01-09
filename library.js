@@ -72,11 +72,11 @@ async function buildLibrary ( configuration, dev = false )
 
         if ( file.endsWith( ".css" ) )
         {
-            compilePromises.push( Bits.compileAndMoveStyle( buildPath, inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev ) );
         }
         if ( Bits.isScriptFile( file ) )
         {
-            compilePromises.push( Bits.compileAndMoveScript( buildPath, inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev ) );
         }
     }
 
@@ -122,7 +122,7 @@ async function buildScripts ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveScript( buildPath, file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
     }
 }
 
@@ -165,13 +165,8 @@ async function buildStyles ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveStyle( buildPath, file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
     }
-}
-
-async function clearBuild ( configuration )
-{
-    console.log( "[MISSING] clearBuild: remove hash file from build directory" );
 }
 
 async function copyAssets ( configuration )
@@ -192,7 +187,7 @@ async function ensureBuildFolder ( configuration )
 
     try
     {
-        await Bits.checkPath( fullBuildPath, true );    
+        await Bits.checkPath( fullBuildPath, true );
     }
     catch ( error )
     {
@@ -207,6 +202,28 @@ async function ensureBuildFolder ( configuration )
     }
 }
 
+async function ensureTempFolder ( configuration )
+{
+    const { tempPath } = configuration.internals;
+    const fullTempPath = Path.join( Bits.getRootPath(), tempPath );
+
+    try
+    {
+        await Bits.checkPath( fullTempPath, true );
+    }
+    catch ( error )
+    {
+        if ( error.code === "ENOENT" )
+        {
+            await FS.mkdir( fullTempPath, { recursive: true } );
+            console.info( "Temp folder created." );
+            return;
+        }
+
+        throw error;
+    }
+}
+
 async function generateHTML ( configuration, dev = false )
 {
     const { buildPath, dataFile } = configuration;
@@ -214,7 +231,13 @@ async function generateHTML ( configuration, dev = false )
     Handlebars.registerHelper( "getHashFileName" , ( ...args ) =>
     {
         args.pop();
-        return Bits.getHashFileName( configuration.buildPath, args.join( "" ) );
+
+        if ( dev )
+        {
+            return args.join( "" );
+        }
+
+        return Bits.getHashFileName( configuration, args.join( "" ) );
     } );
 
     Handlebars.registerPartial( await Bits.readTemplates() );
@@ -363,8 +386,8 @@ const frontend = {
     buildScripts,
     buildStyles,
     copyAssets,
-    clearBuild,
     ensureBuildFolder,
+    ensureTempFolder,
     generateHTML,
     startServer,
     watchLoop,

@@ -30,7 +30,7 @@ export function checkPath( path, isDirectory = false )
     } );
 }
 
-export async function compileAndMoveScript ( buildPath, inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
 {
     const babelOptions =
     {
@@ -65,7 +65,7 @@ export async function compileAndMoveScript ( buildPath, inputFilePath, outputFil
         return;
     }
 
-    const hashedPath = getFileHash( buildPath, { path : outputFilePath, content : code } );
+    const hashedPath = await getFileHash( { path : outputFilePath, content : code } );
 
     await writeFile( hashedPath, code );
 
@@ -73,13 +73,13 @@ export async function compileAndMoveScript ( buildPath, inputFilePath, outputFil
     {
         const content    = results.map.toString();
         const path       = `${ outputFilePath }.map`;
-        const hashedPath = getFileHash( buildPath, { path, content } );
+        const hashedPath = await getFileHash( { path, content } );
 
         await writeFile( hashedPath, content );
     }
 }
 
-export async function compileAndMoveStyle ( buildPath, inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileAndMoveStyle ( inputFilePath, outputFilePath, buildType, dev = false )
 {
     const postPlugins = [ Autoprefixer ];
 
@@ -108,7 +108,7 @@ export async function compileAndMoveStyle ( buildPath, inputFilePath, outputFile
         return;
     }
 
-    const hashedPath = getFileHash( buildPath, { path : outputFilePath, content : css } );
+    const hashedPath = await getFileHash( { path : outputFilePath, content : css } );
 
     await writeFile( hashedPath, css );
 
@@ -116,7 +116,7 @@ export async function compileAndMoveStyle ( buildPath, inputFilePath, outputFile
     {
         const content    = results.map.toString();
         const path       = `${ outputFilePath }.map`;
-        const hashedPath = getFileHash( buildPath, { path, content } );
+        const hashedPath = await getFileHash( { path, content } );
 
         await writeFile( hashedPath, content );
     }
@@ -133,38 +133,73 @@ export function getE2ELocation ()
  *
  * Returns new path with hash.
  */
-export function getFileHash ( buildPath, { content, path } = {} )
+export async function getFileHash ( { content, path } = {} )
 {
-    const hash = createHash( "md2" );
+    const hash = createHash( "sha1" );
 
     hash.setEncoding( "hex" );
     hash.write( content );
     hash.end();
 
-    const sha1sum = hash.read();
+    const sha1sum  = hash.read();
     const filename = path.split( "/" ).pop();
 
-    console.log( "TODO: I should generate a new filename", filename, sha1sum );
+    let hashFileName;
 
-    // writeHashFileName( buildPath, originalPath, hashPath );
+    if ( filename.endsWith( ".js.map" ) )
+    {
+        hashFileName = filename.replace( /\.js\.map$/, `.${ sha1sum }.js.map` );
+    }
+    if ( filename.endsWith( ".js" ) )
+    {
+        hashFileName = filename.replace( /\.js$/, `.${ sha1sum }.js` );
+    }
+    if ( filename.endsWith( ".css.map" ) )
+    {
+        hashFileName = filename.replace( /\.css\.map$/, `.${ sha1sum }.css.map` );
+    }
+    if ( filename.endsWith( ".css" ) )
+    {
+        hashFileName = filename.replace( /\.css$/, `.${ sha1sum }.css` );
+    }
 
-    //return hashPath;
+    const units = path.split( "/" );
 
-    return path;
+    units.pop();
+    units.push( hashFileName );
+
+    const hashPath = units.join( "/" );
+
+    await writeHashFileName( path, hashPath );
+
+    return hashPath;
 }
 
-export function getHashFileName ( buildPath, path )
+export function getHashFileName ( configuration, path )
 {
-    const hashFilePath = Path.join( getRootPath(), buildPath, _INTERNALS.hashFile );
-    const hashFile     = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) ) ?? {};
+    const { buildPath } = configuration;
+
+    const hashFilePath  = Path.join( getRootPath(), _INTERNALS.tempPath, _INTERNALS.hashFile );
+    const hashFile      = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) ) ?? {};
 
     return hashFile[ path ];
 }
 
-export function writeHashFileName ( buildPath, originalPath, hashPath )
+export async function writeHashFileName ( originalPath, hashPath )
 {
-    const hashFilePath = Path.join( getRootPath(), buildPath, _INTERNALS.hashFile );
-    const hashFile     = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) ) ?? {};
+    const hashFilePath = Path.join( getRootPath(), _INTERNALS.tempPath, _INTERNALS.hashFile );
+
+    let hashFile;
+
+    try
+    {
+        await checkPath( hashFilePath, true );
+        hashFile = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) );
+    }
+    catch ( error )
+    {
+        hashFile = {};
+    }
 
     hashFile[ originalPath ] = hashPath;
 

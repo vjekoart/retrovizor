@@ -13,6 +13,7 @@
     "sourcePath": "src",
     "templatesPath": "src/templates",
     "templatesBuild": "templates",
+    "tempPath": "tmp",
     "tests":
     {
         "browserTestIncludes": ".test.",

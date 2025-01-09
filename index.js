@@ -11,7 +11,12 @@ export async function build ()
 {
     try
     {
-        await Library.frontend.ensureBuildFolder( Configuration );
+        await Promise.all(
+            [
+            await Library.frontend.ensureBuildFolder( Configuration ),
+            await Library.frontend.ensureTempFolder ( Configuration )
+            ]
+        );
         await Promise.all(
             [
                 Library.frontend.copyAssets  ( Configuration ),
@@ -21,9 +26,6 @@ export async function build ()
             ]
         );
         await Library.frontend.generateHTML( Configuration );
-
-        // TODO: missing implementation for clearBuild
-        await Library.frontend.clearBuild( Configuration );
     }
     catch ( error )
     {
@@ -40,7 +42,13 @@ export async function dev ()
 {
     try
     {
-        await Library.frontend.ensureBuildFolder( Configuration );
+        await Promise.all(
+            [
+                await Library.frontend.ensureBuildFolder( Configuration ),
+                await Library.frontend.ensureTempFolder ( Configuration )
+            ]
+        );
+
         Library.frontend.startServer( Configuration );
 
         Library.frontend.watchLoop( Configuration, async changes =>

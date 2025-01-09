@@ -21,7 +21,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
-        * !!! Use only for `npm run build`
+        * Make it work
+        * Optimise `library.bits.js:getFileHash` function
+        * Reduce the hash length
+        * `buildType = native`: change JS and CSS imports to include hash names
+        * `buildType = native-library-bundle`: don't change imports of library files since they're going to be bundled
+        * Try to remove the need for `tmp` folder, if not possible, delete it at the end of the build cycle
     * Handlebars (generateHTML) error handling in case of syntax error
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
@@ -82,6 +87,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * `buildLibrary|buildScripts|buildStyles` in `dev` mode
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
+
+## Configuration
+
+```
+{
+    "buildType": "native|native-library-bundle"
+}
+```
 
 ## Usage
 
