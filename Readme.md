@@ -21,6 +21,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
+        * !!! Use only for `npm run build`
     * Handlebars (generateHTML) error handling in case of syntax error
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe

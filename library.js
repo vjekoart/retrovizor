@@ -72,11 +72,11 @@ async function buildLibrary ( configuration, dev = false )
 
         if ( file.endsWith( ".css" ) )
         {
-            compilePromises.push( Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveStyle( buildPath, inputPath, outputPath, buildType, dev ) );
         }
         if ( Bits.isScriptFile( file ) )
         {
-            compilePromises.push( Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveScript( buildPath, inputPath, outputPath, buildType, dev ) );
         }
     }
 
@@ -122,7 +122,7 @@ async function buildScripts ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveScript( buildPath, file.input, file.output, buildType, dev );
     }
 }
 
@@ -165,7 +165,7 @@ async function buildStyles ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveStyle( buildPath, file.input, file.output, buildType, dev );
     }
 }
 
@@ -214,7 +214,7 @@ async function generateHTML ( configuration, dev = false )
     Handlebars.registerHelper( "getHashFileName" , ( ...args ) =>
     {
         args.pop();
-        return Bits.getHashFileName( args.join( "" ) );
+        return Bits.getHashFileName( configuration.buildPath, args.join( "" ) );
     } );
 
     Handlebars.registerPartial( await Bits.readTemplates() );
