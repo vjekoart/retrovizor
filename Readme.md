@@ -21,7 +21,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
-        * Use import maps to cover the whole library imports
         * Find a way to use something like import maps for CSS files
         * Optimise `library.bits.js:getFileHash` function
         * Reduce the hash length

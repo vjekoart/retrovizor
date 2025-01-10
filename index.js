@@ -37,6 +37,11 @@ export async function dev ()
 {
     try
     {
+        const loopState =
+        {
+            libraryMappings: {}
+        };
+
         await Library.frontend.ensureBuildFolder( Configuration );
         Library.frontend.startServer( Configuration );
 
@@ -50,7 +55,7 @@ export async function dev ()
             }
             if ( changes.buildLibrary )
             {
-                await Library.frontend.buildLibrary( Configuration, true );
+                loopState.libraryMappings = await Library.frontend.buildLibrary( Configuration, true );
             }
             if ( changes.buildScripts )
             {
@@ -62,7 +67,7 @@ export async function dev ()
             }
             if ( changes.generateHTML )
             {
-                await Library.frontend.generateHTML( Configuration, true );
+                await Library.frontend.generateHTML( Configuration, loopState.libraryMappings, true );
             }
 
             console.log( "\nLoop completed." );

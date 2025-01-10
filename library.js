@@ -72,15 +72,26 @@ async function buildLibrary ( configuration, dev = false )
 
         if ( file.endsWith( ".css" ) )
         {
-            compilePromises.push( Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveStyle( configuration, inputPath, outputPath, buildType, dev ) );
         }
         if ( Bits.isScriptFile( file ) )
         {
-            compilePromises.push( Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev ) );
+            compilePromises.push( Bits.compileAndMoveScript( configuration, inputPath, outputPath, buildType, dev ) );
         }
     }
 
-    await Promise.all( compilePromises );
+    const compiledFiles   = await Promise.all( compilePromises );
+    const libraryMappings = {};
+
+    compiledFiles.filter( x => !!x ).forEach( x =>
+    {
+        const key     = Object.keys( x ).pop();
+        const mapping = key.replace( `/${ libraryBuild }`, "Library" );
+
+        libraryMappings[ mapping ] = x[ key ];
+    } );
+
+    return libraryMappings;
 }
 
 async function buildScripts ( configuration, dev = false )
@@ -122,7 +133,7 @@ async function buildScripts ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveScript( configuration, file.input, file.output, buildType, dev );
     }
 }
 
@@ -165,7 +176,7 @@ async function buildStyles ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveStyle( configuration, file.input, file.output, buildType, dev );
     }
 }
 
@@ -202,7 +213,7 @@ async function ensureBuildFolder ( configuration )
     }
 }
 
-async function generateHTML ( configuration, dev = false )
+async function generateHTML ( configuration, libraryMappings, dev = false )
 {
     const { buildPath, dataFile } = configuration;
 
@@ -223,8 +234,7 @@ async function generateHTML ( configuration, dev = false )
     (
         Handlebars,
         configuration,
-        buildPath,
-        dataFile,
+        libraryMappings,
         dev
     );
 }
