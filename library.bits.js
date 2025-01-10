@@ -106,7 +106,7 @@ export async function compileAndMoveStyle ( configuration, inputFilePath, output
     try
     {
         results = await PostCSS( postPlugins ).process( content, { from, to, map } );
-        css    = results.css;
+        css     = results.css;
     }
     catch ( error )
     {

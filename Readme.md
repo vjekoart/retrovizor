@@ -22,6 +22,22 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
         * Find a way to use something like import maps for CSS files
+
+            Function `Bits.compileAndMoveStyle` should return an object that
+            contains `{ input, output }` path informations, where input is 
+            is relative location in `src|dist`, while output is final output
+            location in the `dist`, including hash if not in dev mode.
+
+            Library: after calling the `Bits.compileAndMoveStyle` function,
+            another function should be called that will get all path information
+            as input, and change `@import` statements in the `dist/` directory.
+
+            Function `buildLibrary` should return the `{ input, output }` path
+            information for the entry CSS file of the library. That information
+            should be provided to the `buildStyles` function, so the main
+            `@import` statement for the library CSS file can be changed - same
+            function that's used when building a library.
+
         * Optimise `library.bits.js:getFileHash` function
         * Reduce the hash length
         * Clear `dist/` folder before the build action
@@ -31,6 +47,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: maybe processing to worker or leave for later?
     * ---
+    * Rename `templates` to `layouts` because every template is a layout
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Apply patterns from the text Declarative thinking
 * Phase 7: UI fine-tune
@@ -53,6 +70,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Add link to gist "Code Poetry"
 * Phase 9: run Lighthouse and similar dev tools to ensure website quality
     * For example, HTML validator
+    * Check which attributes to put on `<link>` and `<script>` elements
     * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean `Readme.md`
@@ -99,6 +117,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 ## Usage
 
 * `npm run e2e`, make sure to run `npm run build` or `npm run dev` beforehand
+* Index library scripts: use `import "Library/configuration.js";` and similar
+* Other library and index/layout/views scripts: use `import { x } from "Library";`
+* Library CSS: only once include library index CSS file, e.g. in index style. Other library CSS files are included by the library index CSS file. There's not on-demand loading of the library styles.
 
 ## File structure / Architecture (try to keep updated)
 

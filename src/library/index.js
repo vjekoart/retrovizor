@@ -13,10 +13,14 @@ import { RetroFooter       } from "Library/components/retro-footer.js";
 import { RetroNav          } from "Library/components/retro-nav.js";
 import { RetroTitle        } from "Library/components/retro-title.js";
 
-customElements.define( "retro-content-block", RetroContentBlock );
-customElements.define( "retro-footer",        RetroFooter       );
-customElements.define( "retro-nav",           RetroNav          );
-customElements.define( "retro-title",         RetroTitle        );
+
+function initialize ()
+{
+    customElements.define( "retro-content-block", RetroContentBlock );
+    customElements.define( "retro-footer",        RetroFooter       );
+    customElements.define( "retro-nav",           RetroNav          );
+    customElements.define( "retro-title",         RetroTitle        );
+}
 
 export
 {
@@ -27,5 +31,7 @@ export
     ImageDegradator,
 
     // Utilities
-    formatCodeBlocks
+    formatCodeBlocks,
+
+    initialize
 };

@@ -1,6 +1,8 @@
+import { initialize } from "Library";
+
 function main ()
 {
-    console.log( "index.js: executed first at every page load" );
+    initialize();
 }
 
 window.addEventListener( "DOMContentLoaded", main );
