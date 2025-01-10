@@ -7,12 +7,12 @@
 
         <title>{{ title }} | retrovizor.xyz</title>
 
-        <link rel="stylesheet" type="text/css" href="/{{ getHashFileName configuration.internals.indexStyleBuild }}">
+        <link rel="stylesheet" type="text/css" href="/{{ getFilePath configuration.internals.indexStyleBuild }}">
         {{#if templateStyle}}
-        <link rel="stylesheet" type="text/css" href="/{{ getHashFileName templateStyle }}">
+        <link rel="stylesheet" type="text/css" href="/{{ getFilePath templateStyle }}">
         {{/if}}
         {{#if viewStyle}}
-        <link rel="stylesheet" type="text/css" href="{{ getHashFileName viewStyle }}">
+        <link rel="stylesheet" type="text/css" href="{{ getFilePath viewStyle }}">
         {{/if}}
     </head>
     <body>
@@ -21,7 +21,7 @@
             {
                 "imports":
                 {
-                    "Library": "/{{ getHashFileName configuration.internals.libraryBuild "/index.js" }}",
+                    "Library": "/{{ getFilePath configuration.internals.libraryBuild "/index.js" }}",
                 {{#each configuration.dependencies}}
                     "{{@key}}": "/{{this}}"{{#unless @last}},{{/unless}}
                 {{/each}}
@@ -29,12 +29,12 @@
             }
         </script>
         {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
-        <script type="module" src="/{{ getHashFileName configuration.internals.indexScriptBuild }}"></script>
+        <script type="module" src="/{{ getFilePath configuration.internals.indexScriptBuild }}"></script>
         {{#if templateScript}}
-        <script type="module" src="/{{ getHashFileName templateScript }}"></script>
+        <script type="module" src="/{{ getFilePath templateScript }}"></script>
         {{/if}}
         {{#if viewScript}}
-        <script type="module" src="{{ getHashFileName viewScript }}"></script>
+        <script type="module" src="{{ getFilePath viewScript }}"></script>
         {{/if}}
     </body>
 </html>

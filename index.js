@@ -11,12 +11,7 @@ export async function build ()
 {
     try
     {
-        await Promise.all(
-            [
-            await Library.frontend.ensureBuildFolder( Configuration ),
-            await Library.frontend.ensureTempFolder ( Configuration )
-            ]
-        );
+        await Library.frontend.ensureBuildFolder( Configuration );
         await Promise.all(
             [
                 Library.frontend.copyAssets  ( Configuration ),
@@ -42,13 +37,7 @@ export async function dev ()
 {
     try
     {
-        await Promise.all(
-            [
-                await Library.frontend.ensureBuildFolder( Configuration ),
-                await Library.frontend.ensureTempFolder ( Configuration )
-            ]
-        );
-
+        await Library.frontend.ensureBuildFolder( Configuration );
         Library.frontend.startServer( Configuration );
 
         Library.frontend.watchLoop( Configuration, async changes =>

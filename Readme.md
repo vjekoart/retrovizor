@@ -21,12 +21,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
-        * Make it work
+        * Use import maps to cover the whole library imports
+        * Find a way to use something like import maps for CSS files
         * Optimise `library.bits.js:getFileHash` function
         * Reduce the hash length
-        * `buildType = native`: change JS and CSS imports to include hash names
-        * `buildType = native-library-bundle`: don't change imports of library files since they're going to be bundled
-        * Try to remove the need for `tmp` folder, if not possible, delete it at the end of the build cycle
+        * Clear `dist/` folder before the build action
+        * Use content hashes during the build action
     * Handlebars (generateHTML) error handling in case of syntax error
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
@@ -47,6 +47,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * SEO
 * Phase 8: content fine-tune
     * Go through texts
+        * Native web: architecture: explain approach with index/layout/views + library
     * Go through code and coding styles
     * Go through user page
     * Proofreading

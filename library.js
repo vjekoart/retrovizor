@@ -202,33 +202,11 @@ async function ensureBuildFolder ( configuration )
     }
 }
 
-async function ensureTempFolder ( configuration )
-{
-    const { tempPath } = configuration.internals;
-    const fullTempPath = Path.join( Bits.getRootPath(), tempPath );
-
-    try
-    {
-        await Bits.checkPath( fullTempPath, true );
-    }
-    catch ( error )
-    {
-        if ( error.code === "ENOENT" )
-        {
-            await FS.mkdir( fullTempPath, { recursive: true } );
-            console.info( "Temp folder created." );
-            return;
-        }
-
-        throw error;
-    }
-}
-
 async function generateHTML ( configuration, dev = false )
 {
     const { buildPath, dataFile } = configuration;
 
-    Handlebars.registerHelper( "getHashFileName" , ( ...args ) =>
+    Handlebars.registerHelper( "getFilePath" , ( ...args ) =>
     {
         args.pop();
 
@@ -241,7 +219,8 @@ async function generateHTML ( configuration, dev = false )
     } );
 
     Handlebars.registerPartial( await Bits.readTemplates() );
-    await Bits.writeViews(
+    await Bits.writeViews
+    (
         Handlebars,
         configuration,
         buildPath,
@@ -387,7 +366,6 @@ const frontend = {
     buildStyles,
     copyAssets,
     ensureBuildFolder,
-    ensureTempFolder,
     generateHTML,
     startServer,
     watchLoop,

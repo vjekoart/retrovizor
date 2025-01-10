@@ -65,7 +65,7 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
         return;
     }
 
-    const hashedPath = await getFileHash( { path : outputFilePath, content : code } );
+    const hashedPath = await getFileHash( dev, { path : outputFilePath, content : code } );
 
     await writeFile( hashedPath, code );
 
@@ -73,7 +73,7 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
     {
         const content    = results.map.toString();
         const path       = `${ outputFilePath }.map`;
-        const hashedPath = await getFileHash( { path, content } );
+        const hashedPath = await getFileHash( dev, { path, content } );
 
         await writeFile( hashedPath, content );
     }
@@ -108,7 +108,7 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
         return;
     }
 
-    const hashedPath = await getFileHash( { path : outputFilePath, content : css } );
+    const hashedPath = await getFileHash( dev, { path : outputFilePath, content : css } );
 
     await writeFile( hashedPath, css );
 
@@ -116,7 +116,7 @@ export async function compileAndMoveStyle ( inputFilePath, outputFilePath, build
     {
         const content    = results.map.toString();
         const path       = `${ outputFilePath }.map`;
-        const hashedPath = await getFileHash( { path, content } );
+        const hashedPath = await getFileHash( dev, { path, content } );
 
         await writeFile( hashedPath, content );
     }
@@ -133,8 +133,13 @@ export function getE2ELocation ()
  *
  * Returns new path with hash.
  */
-export async function getFileHash ( { content, path } = {} )
+export async function getFileHash ( dev, { content, path } = {} )
 {
+    if ( dev )
+    {
+        return path;
+    }
+
     const hash = createHash( "sha1" );
 
     hash.setEncoding( "hex" );
