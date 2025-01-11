@@ -61,7 +61,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * SEO
 * Phase 8: content fine-tune
     * Go through texts
-        * Native web: architecture: explain approach with index/layout/views + library
+        * Native web:
+            * Architecture: explain approach with index/layout/views + library
+            * Approach: crafting a build system
+        * Declarative Javascript
+            * Define readable code and context at the beginning: working in large teams, where team members change,... workplace/industry context
     * Go through code and coding styles
     * Go through user page
     * Proofreading
