@@ -62,36 +62,39 @@ async function buildLibrary ( configuration, dev = false )
     const { libraryBuild, libraryPath } = configuration.internals;
 
     const fullLibraryPath = Path.join( Bits.getRootPath(), libraryPath );
-    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true } );
-    const compilePromises = [];
-
-    for ( const file of libraryFiles )
+    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true, withFileTypes: true } );
+    const fileMappings    =
     {
+        scripts : {},
+        styles  : {}
+    };
+
+    for ( const dirent of libraryFiles )
+    {
+        if ( dirent.isDirectory() )
+        {
+            continue;
+        }
+
+        const file       = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
         const inputPath  = Path.join( fullLibraryPath, file );
         const outputPath = Path.join( Bits.getRootPath(), buildPath, libraryBuild, file );
 
         if ( file.endsWith( ".css" ) )
         {
-            compilePromises.push( Bits.compileAndMoveStyle( configuration, inputPath, outputPath, buildType, dev ) );
+            const fileName = await Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev );
+            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
+            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = filePath;
         }
         if ( Bits.isScriptFile( file ) )
         {
-            compilePromises.push( Bits.compileAndMoveScript( configuration, inputPath, outputPath, buildType, dev ) );
+            const fileName = await Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev );
+            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
+            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = filePath;
         }
     }
 
-    const compiledFiles   = await Promise.all( compilePromises );
-    const libraryMappings = {};
-
-    compiledFiles.filter( x => !!x ).forEach( x =>
-    {
-        const key     = Object.keys( x ).pop();
-        const mapping = key.replace( `/${ libraryBuild }`, "Library" );
-
-        libraryMappings[ mapping ] = x[ key ];
-    } );
-
-    return libraryMappings;
+    return fileMappings;
 }
 
 async function buildScripts ( configuration, dev = false )
@@ -133,7 +136,7 @@ async function buildScripts ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveScript( configuration, file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
     }
 }
 
@@ -176,7 +179,7 @@ async function buildStyles ( configuration, dev = false )
 
     for ( const file of [ indexFile, ...templates, ...views ] )
     {
-        await Bits.compileAndMoveStyle( configuration, file.input, file.output, buildType, dev );
+        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
     }
 }
 

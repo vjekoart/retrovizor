@@ -23,11 +23,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Add bundle hash to JS/CSS asssets to avoid caching
         * Find a way to use something like import maps for CSS files
 
-            Function `Bits.compileAndMoveStyle` should return an object that
-            contains `{ input, output }` path informations, where input is 
-            is relative location in `src|dist`, while output is final output
-            location in the `dist`, including hash if not in dev mode.
-
             Library: after calling the `Bits.compileAndMoveStyle` function,
             another function should be called that will get all path information
             as input, and change `@import` statements in the `dist/` directory.
@@ -38,8 +33,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
             `@import` statement for the library CSS file can be changed - same
             function that's used when building a library.
 
+        * Extract all file related functions from `library.bits.js` to `library.fs.js`
+        * Add hashing logic to `buildStyles` and `buildScripts`
         * Optimise `library.bits.js:getFileHash` function
         * Reduce the hash length
+        * Dependency versioning so newer versions are loaded if changed
         * Clear `dist/` folder before the build action
         * Use content hashes during the build action
     * Handlebars (generateHTML) error handling in case of syntax error
@@ -71,6 +69,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 9: run Lighthouse and similar dev tools to ensure website quality
     * For example, HTML validator
     * Check which attributes to put on `<link>` and `<script>` elements
+    * Head (`<meta>`) tags
     * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean `Readme.md`
@@ -108,7 +107,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ## Configuration
 
-```
+```json
 {
     "buildType": "native|native-library-bundle"
 }
@@ -120,6 +119,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Index library scripts: use `import "Library/configuration.js";` and similar
 * Other library and index/layout/views scripts: use `import { x } from "Library";`
 * Library CSS: only once include library index CSS file, e.g. in index style. Other library CSS files are included by the library index CSS file. There's not on-demand loading of the library styles.
+* There's no content hashing for assets, add versioning manually. For example, `font-file.v01.woff` and similar.
 
 ## File structure / Architecture (try to keep updated)
 
@@ -139,7 +139,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * views/           # Views organised in acutal hierarchy of the website
         * index.html   # HTML file that has `<style>` and `<script>` elements
                        # if needed
-        * about.html   # Transformed to `dist/about/index.html\
+        * about.html   # Transformed to `dist/about/index.html`
         * ...
     * library/
         * index.js     # Provide entry point, register components, expose and

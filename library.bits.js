@@ -30,11 +30,8 @@ export function checkPath( path, isDirectory = false )
     } );
 }
 
-export async function compileAndMoveScript ( configuration, inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
 {
-    const { buildPath  } = configuration;
-    const { sourcePath } = _INTERNALS;
-
     const babelOptions =
     {
         compact    : !dev,
@@ -68,25 +65,21 @@ export async function compileAndMoveScript ( configuration, inputFilePath, outpu
         return;
     }
 
-    const safeOutputFilePath = dev ? outputFilePath : await getFileHash( { path : outputFilePath, content : code } );
+    const hash      = dev ? null : await getFileHash( { path : outputFilePath, content : code } );
+    const finalName = dev ? outputFilePath.split( "/" ).pop() : addHashToFileName( outputFilePath.split( "/" ).pop(), hash );
+    const finalPath = dev ? outputFilePath : replaceFileName( outputFilePath, finalName );
 
-    await writeFile( safeOutputFilePath, code );
+    await writeFile( finalPath, code );
 
     if ( results.map )
     {
-        await writeFile( `${ safeOutputFilePath }.map`, results.map.toString() );
+        await writeFile( `${ finalPath }.map`, results.map.toString() );
     }
 
-    const fileMapping            = {};
-    const relativeInputFilePath  = Path.normalize( inputFilePath.replace( Path.join( getRootPath(), sourcePath ), "" ) );
-    const relativeOutputFilePath = Path.normalize( safeOutputFilePath.replace( Path.join( getRootPath(), buildPath ), "" ) );
-
-    fileMapping[ relativeInputFilePath ] = relativeOutputFilePath;
-
-    return fileMapping;
+    return finalName;
 }
 
-export async function compileAndMoveStyle ( configuration, inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileAndMoveStyle ( inputFilePath, outputFilePath, buildType, dev = false )
 {
     const postPlugins = [ Autoprefixer ];
 
@@ -115,14 +108,18 @@ export async function compileAndMoveStyle ( configuration, inputFilePath, output
         return;
     }
 
-    const safeOutputFilePath = dev ? outputFilePath : await getFileHash( { path : outputFilePath, content : css } );
+    const hash      = dev ? null : await getFileHash( { path : outputFilePath, content : css } );
+    const finalName = dev ? outputFilePath.split( "/" ).pop() : addHashToFileName( outputFilePath.split( "/" ).pop(), hash );
+    const finalPath = dev ? outputFilePath : replaceFileName( outputFilePath, finalName );
 
-    await writeFile( safeOutputFilePath, css );
+    await writeFile( finalPath, css );
 
     if ( results.map )
     {
-        await writeFile( `${ safeOutputFilePath }.map`, results.map.toString() );
+        await writeFile( `${ finalPath }.map`, results.map.toString() );
     }
+
+    return finalName;
 }
 
 export function getE2ELocation ()
@@ -131,6 +128,33 @@ export function getE2ELocation ()
 }
 
 /**
+ * fileName = `random.file.js`
+ * hash = `256.js`
+ * @returns `random.file.256.js`
+ */
+function addHashToFileName ( fileName, hash )
+{
+    const units = fileName.split( "." );
+    const ext   = units.pop();
+
+    return units.concat( [ hash, ext ] ).join( "." );
+}
+
+/**
+ * fullPath = `/home/random.file.js`
+ * fileName = `random.file.256.js`
+ * @returns `/home/random.file.256.js`
+ */
+export function replaceFileName ( fullPath, fileName )
+{
+    // TODO: return LFS.replaceFileName( fullPath, fileName );
+    const units = Path.normalize( fullPath ).split( "/" );
+    units.pop();
+    return units.concat( [ fileName ] ).join( "/" );
+}
+
+/**
+ * TODO: Return only hash
  * Define a `path` where's located a file for which hash needs to be calculated.
  * Provide a file content based on which hash is calculated.
  *
@@ -307,7 +331,7 @@ export async function readTemplates ()
     return partials;
 }
 
-export async function writeViews ( Handlebars, configuration, libraryScripts, dev )
+export async function writeViews ( Handlebars, configuration, libraryMappings, dev )
 {
     const { buildPath, dataFile } = configuration;
     const { viewsPath }    = _INTERNALS;
@@ -317,7 +341,7 @@ export async function writeViews ( Handlebars, configuration, libraryScripts, de
     const fullDataFilePath = Path.join( getRootPath(), dataFile  );
 
     const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
-    const templateData     = { data, configuration, libraryScripts };
+    const templateData     = { data, configuration, libraryMappings };
     const viewFiles        = await FS.readdir( fullViewsPath, { recursive: true } );
     const htmlViewFiles    = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
 
@@ -333,7 +357,7 @@ export async function writeViews ( Handlebars, configuration, libraryScripts, de
 
 export async function writeFile ( path, content )
 {
-    console.info( `Writing '${ path.replace( process.cwd(), "" ) }'...` );
+    console.info( `Writing '...${ path.replace( process.cwd(), "" ) }' ...` );
 
     await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
     await FS.writeFile( path, content );

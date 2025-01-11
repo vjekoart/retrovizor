@@ -22,7 +22,7 @@
                 "imports":
                 {
                     "Library": "/{{ getFilePath configuration.internals.libraryBuild "/index.js" }}",
-                {{#each libraryScripts }}
+                {{#each libraryMappings.scripts }}
                     "{{@key}}": "{{this}}",
                 {{/each}}
                 {{#each configuration.dependencies}}
