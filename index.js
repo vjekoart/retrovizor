@@ -56,6 +56,9 @@ export async function dev ()
             if ( changes.buildLibrary )
             {
                 loopState.libraryMappings = await Library.frontend.buildLibrary( Configuration, true );
+                const altLibraryMappings = await Library.frontend.altBuildLibrary( Configuration, false );
+
+                console.log( "altLibraryMappings", altLibraryMappings );
             }
             if ( changes.buildScripts )
             {

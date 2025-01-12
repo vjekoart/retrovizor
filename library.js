@@ -50,10 +50,126 @@ function expose ( functions, fallback )
  */
 function getConfiguration ()
 {
-    const internals     = JSON.parse( FSSync.readFileSync( ".internals.json",    { encoding: "utf8" } ) );
+    const internals     = JSON.parse( FSSync.readFileSync( ".internals.json"   , { encoding: "utf8" } ) );
     const configuration = JSON.parse( FSSync.readFileSync( "configuration.json", { encoding: "utf8" } ) );
 
     return Object.assign( configuration, { internals } );
+}
+
+async function altBuildLibrary ( configuration, dev = false )
+{
+    // Read files
+    const { buildPath, buildType      } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    // TODO: this block to something like Bits.readDirectoryContent( fullLibraryPath )
+    const fullLibraryPath = Path.join( Bits.getRootPath(), libraryPath );
+    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true, withFileTypes: true } );
+    const fileContent     = {};
+
+    for ( const dirent of libraryFiles )
+    {
+        if ( dirent.isDirectory() )
+        {
+            continue;
+        }
+
+        const file = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
+
+        fileContent[ file ] = await FS.readFile( `${ dirent.path }/${ dirent.name }`, { encoding: "utf8" } );
+    }
+
+    // Define relative output paths with filenames, and calculate hashes if necessary
+    const fileMappings =
+    {
+        scripts : {},
+        styles  : {}
+    };
+
+    for ( const file in fileContent )
+    {
+        // TODO: this block to something like Bits.getSafeRelativePath( file, fileContent[ file ] )
+        const hash         = dev ? null : Bits.getContentHash( fileContent[ file ] );
+        const fileName     = dev ? file.split( "/" ).pop() : Bits.addHashToFileName( file.split( "/" ).pop(), hash );
+        const relativePath = Bits.replaceFileName( file, fileName );
+
+        if ( Bits.isScriptFile( file ) )
+        {
+            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = relativePath;
+        }
+
+        if ( Bits.isStyleFile( file ) )
+        {
+            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = relativePath;
+        }
+    }
+
+    // Compile each file, including @import changes
+
+    // Write files to target destinations
+
+    // Return file mappings
+    // - instead of `"Library/index.js": "/library/index.js"` return `"Library": "/library/index.js"`
+
+    return fileMappings;
+
+    for ( const dirent of libraryFiles )
+    {
+        if ( dirent.isDirectory() )
+        {
+            continue;
+        }
+
+        const file       = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
+        const inputPath  = Path.join( fullLibraryPath, file );
+        const outputPath = Path.join( Bits.getRootPath(), buildPath, libraryBuild, file );
+
+        if ( file.endsWith( ".css" ) )
+        {
+            const fileName = await Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev );
+            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
+            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = filePath;
+        }
+        if ( Bits.isScriptFile( file ) )
+        {
+            const fileName = await Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev );
+            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
+            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = filePath;
+        }
+    }
+}
+
+// TODO: merge buildScripts and buildStyles to a single function, like build library
+
+async function altBuildScripts ( configuration, libraryMappings, dev = false )
+{
+    // Read files
+
+    // Calculate hashes and output paths including filenames
+
+    // Compile each file, including @import changes
+
+    // Write files to target destinations
+
+    // Return file mappings
+}
+
+async function altBuildStyles ( configuration, libraryMappings, dev = false )
+{
+    // Read files
+
+    // Calculate hashes and output paths including filenames
+
+    // Compile each file, including @import changes
+
+    // Write files to target destinations
+
+    // Return file mappings
+}
+
+async function altGenerateHTML ( configuration, fileMappings, dev = false )
+{
+    // Same as now, but instead of getHashFileName, fileMappings is used
 }
 
 async function buildLibrary ( configuration, dev = false )
@@ -374,6 +490,7 @@ const general = {
 }
 
 const frontend = {
+    altBuildLibrary,
     buildLibrary,
     buildScripts,
     buildStyles,

@@ -132,7 +132,7 @@ export function getE2ELocation ()
  * hash = `256.js`
  * @returns `random.file.256.js`
  */
-function addHashToFileName ( fileName, hash )
+export function addHashToFileName ( fileName, hash )
 {
     const units = fileName.split( "." );
     const ext   = units.pop();
@@ -200,6 +200,17 @@ export async function getFileHash ( { content, path } = {} )
     await writeHashFileName( path, hashPath );
 
     return hashPath;
+}
+
+export function getContentHash ( content )
+{
+    const hash = createHash( "sha1" );
+
+    hash.setEncoding( "hex" );
+    hash.write( content );
+    hash.end();
+
+    return hash.read().slice( 0, 8 );
 }
 
 export function getHashFileName ( configuration, path )
@@ -296,6 +307,11 @@ export function isScriptFile ( file )
     }
 
     return true;
+}
+
+export function isStyleFile ( file )
+{
+    return file.endsWith( ".css" );
 }
 
 export async function readTemplates ()
