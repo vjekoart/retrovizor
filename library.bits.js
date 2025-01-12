@@ -9,6 +9,8 @@ import PostCSS        from "postcss";
 import { cwd }        from "node:process";
 import URL            from "url";
 
+import LibraryPostCSS from "./library.postcss.js";
+
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
 
 export function checkPath ( path, isDirectory = false )
@@ -70,9 +72,7 @@ export async function compileScript ( from, content, buildType, dev = false )
 
 export async function compileStyle ( from, to, content, fileMappings, buildType, dev = false )
 {
-    console.log( "TODO: compileStyle: implement @import rule overrides" );
-
-    const postPlugins = [ Autoprefixer ];
+    const postPlugins = [ Autoprefixer, LibraryPostCSS( { fileMappings } ) ];
 
     if ( !dev )
     {
@@ -109,7 +109,7 @@ export async function compileStyle ( from, to, content, fileMappings, buildType,
 export function getCompiledPath ( path, content, dev )
 {
     const pathUnits = Path.normalize( path ).split( "/" );
-    let fileName    = units.pop();
+    let fileName    = pathUnits.pop();
 
     if ( !dev )
     {

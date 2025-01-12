@@ -64,6 +64,8 @@ async function buildLibrary ( configuration, dev = false )
     const dirPath = Path.join( Bits.getRootPath(), libraryPath );
     const content = await Bits.readDirectoryContent( dirPath );
 
+    const toLibraryNameSpace = x => Path.normalize( `Library/${ x }` );
+
     const fileMappings =
     {
         scripts : {},
@@ -74,11 +76,11 @@ async function buildLibrary ( configuration, dev = false )
     {
         const relativePath = Path.join( "/", libraryBuild, Bits.getCompiledPath( file, content[ file ], dev ) );
 
-        Bits.isScriptFile( file ) && ( fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = relativePath );
-        Bits.isStyleFile ( file ) && ( fileMappings.styles [ Path.normalize( `Library/${ file }` ) ] = relativePath );
+        Bits.isScriptFile( file ) && ( fileMappings.scripts[ toLibraryNameSpace( file ) ] = relativePath );
+        Bits.isStyleFile ( file ) && ( fileMappings.styles [ toLibraryNameSpace( file ) ] = relativePath );
     }
 
-    const outputBase = Path.join( Bits.getRootPath(), buildPath, libraryBuild );
+    const outputBase = Path.join( Bits.getRootPath(), buildPath );
 
     for ( const file in content )
     {
@@ -87,8 +89,13 @@ async function buildLibrary ( configuration, dev = false )
         Bits.isScriptFile( file ) && ( compiled = await Bits.compileScript( file, content[ file ], buildType, dev ) );
         Bits.isStyleFile ( file ) && ( compiled = await Bits.compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
 
-        compiled?.code && await Bits.writeFile( Path.join( outputBase, file            ), compiled.code );
-        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ file }.map` ), compiled.map  );
+        let output;
+
+        Bits.isScriptFile( file ) && ( output = fileMappings.scripts[ toLibraryNameSpace( file ) ] );
+        Bits.isStyleFile ( file ) && ( output = fileMappings.styles [ toLibraryNameSpace( file ) ] );
+
+        compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
+        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
     }
 
     if ( "Library/index.js" in fileMappings.scripts )
@@ -217,21 +224,27 @@ async function copyAssets ( configuration )
     await FS.cp( fullAssetsPath, fullOutputPath, { recursive: true } );
 }
 
-async function ensureBuildFolder ( configuration )
+async function ensureBuildFolder ( configuration, clear = false )
 {
     const { buildPath } = configuration;
     const fullBuildPath = Path.join( Bits.getRootPath(), buildPath );
+    const createFolder  = () => FS.mkdir( fullBuildPath, { recursive : true } );
 
     try
     {
         await Bits.checkPath( fullBuildPath, true );
+
+        if ( clear )
+        {
+            await FS.rm( fullBuildPath, { recursive : true, force : true } );
+            await createFolder();
+        }
     }
     catch ( error )
     {
         if ( error.code === "ENOENT" )
         {
-            await FS.mkdir( fullBuildPath, { recursive: true } );
-            console.info( "Build folder created." );
+            await createFolder();
             return;
         }
 

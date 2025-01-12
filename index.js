@@ -11,16 +11,21 @@ export async function build ()
 {
     try
     {
-        await Library.frontend.ensureBuildFolder( Configuration );
-        await Promise.all(
-            [
-                Library.frontend.copyAssets  ( Configuration ),
-                Library.frontend.buildLibrary( Configuration ),
-                Library.frontend.buildScripts( Configuration ),
-                Library.frontend.buildStyles ( Configuration )
-            ]
-        );
-        await Library.frontend.generateHTML( Configuration );
+        await Library.frontend.ensureBuildFolder( Configuration, true );
+        await Library.frontend.copyAssets       ( Configuration );
+
+        const loopState =
+        {
+            library : {},
+            scripts : {},
+            styles  : {}
+        };
+
+        loopState.library = await Library.frontend.buildLibrary( Configuration );
+        loopState.scripts = await Library.frontend.buildScripts( Configuration );
+        loopState.styles  = await Library.frontend.buildStyles ( Configuration, loopState.library.styles );
+
+        await Library.frontend.generateHTML( Configuration, loopState );
     }
     catch ( error )
     {
