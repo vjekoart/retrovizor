@@ -56,158 +56,45 @@ function getConfiguration ()
     return Object.assign( configuration, { internals } );
 }
 
-async function altBuildLibrary ( configuration, dev = false )
+async function buildLibrary ( configuration, dev = false )
 {
-    // Read files
     const { buildPath, buildType      } = configuration;
     const { libraryBuild, libraryPath } = configuration.internals;
 
-    // TODO: this block to something like Bits.readDirectoryContent( fullLibraryPath )
-    const fullLibraryPath = Path.join( Bits.getRootPath(), libraryPath );
-    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true, withFileTypes: true } );
-    const fileContent     = {};
+    const dirPath = Path.join( Bits.getRootPath(), libraryPath );
+    const content = await Bits.readDirectoryContent( dirPath );
 
-    for ( const dirent of libraryFiles )
-    {
-        if ( dirent.isDirectory() )
-        {
-            continue;
-        }
-
-        const file = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
-
-        fileContent[ file ] = await FS.readFile( `${ dirent.path }/${ dirent.name }`, { encoding: "utf8" } );
-    }
-
-    // Define relative output paths with filenames, and calculate hashes if necessary
     const fileMappings =
     {
         scripts : {},
         styles  : {}
     };
 
-    for ( const file in fileContent )
+    for ( const file in content )
     {
-        // TODO: this block to something like Bits.getSafeRelativePath( file, fileContent[ file ] )
-        const hash         = dev ? null : Bits.getContentHash( fileContent[ file ] );
-        const fileName     = dev ? file.split( "/" ).pop() : Bits.addHashToFileName( file.split( "/" ).pop(), hash );
-        const relativePath = Bits.replaceFileName( file, fileName );
+        const relativePath = Path.join( "/", libraryBuild, Bits.getCompiledPath( file, content[ file ], dev ) );
 
-        if ( Bits.isScriptFile( file ) )
-        {
-            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = relativePath;
-        }
-
-        if ( Bits.isStyleFile( file ) )
-        {
-            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = relativePath;
-        }
+        Bits.isScriptFile( file ) && ( fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = relativePath );
+        Bits.isStyleFile ( file ) && ( fileMappings.styles [ Path.normalize( `Library/${ file }` ) ] = relativePath );
     }
 
-    // Compile each file, including @import changes
+    const outputBase = Path.join( Bits.getRootPath(), buildPath, libraryBuild );
 
-    // Write files to target destinations
-
-    // Return file mappings
-    // - instead of `"Library/index.js": "/library/index.js"` return `"Library": "/library/index.js"`
-
-    return fileMappings;
-
-    for ( const dirent of libraryFiles )
+    for ( const file in content )
     {
-        if ( dirent.isDirectory() )
-        {
-            continue;
-        }
+        let compiled;
 
-        const file       = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
-        const inputPath  = Path.join( fullLibraryPath, file );
-        const outputPath = Path.join( Bits.getRootPath(), buildPath, libraryBuild, file );
+        Bits.isScriptFile( file ) && ( compiled = await Bits.compileScript( file, content[ file ], buildType, dev ) );
+        Bits.isStyleFile ( file ) && ( compiled = await Bits.compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
 
-        if ( file.endsWith( ".css" ) )
-        {
-            const fileName = await Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev );
-            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
-            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = filePath;
-        }
-        if ( Bits.isScriptFile( file ) )
-        {
-            const fileName = await Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev );
-            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
-            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = filePath;
-        }
+        compiled?.code && await Bits.writeFile( Path.join( outputBase, file            ), compiled.code );
+        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ file }.map` ), compiled.map  );
     }
-}
 
-// TODO: merge buildScripts and buildStyles to a single function, like build library
-
-async function altBuildScripts ( configuration, libraryMappings, dev = false )
-{
-    // Read files
-
-    // Calculate hashes and output paths including filenames
-
-    // Compile each file, including @import changes
-
-    // Write files to target destinations
-
-    // Return file mappings
-}
-
-async function altBuildStyles ( configuration, libraryMappings, dev = false )
-{
-    // Read files
-
-    // Calculate hashes and output paths including filenames
-
-    // Compile each file, including @import changes
-
-    // Write files to target destinations
-
-    // Return file mappings
-}
-
-async function altGenerateHTML ( configuration, fileMappings, dev = false )
-{
-    // Same as now, but instead of getHashFileName, fileMappings is used
-}
-
-async function buildLibrary ( configuration, dev = false )
-{
-    const { buildPath, buildType      } = configuration;
-    const { libraryBuild, libraryPath } = configuration.internals;
-
-    const fullLibraryPath = Path.join( Bits.getRootPath(), libraryPath );
-    const libraryFiles    = await FS.readdir( fullLibraryPath, { recursive: true, withFileTypes: true } );
-    const fileMappings    =
+    if ( "Library/index.js" in fileMappings.scripts )
     {
-        scripts : {},
-        styles  : {}
-    };
-
-    for ( const dirent of libraryFiles )
-    {
-        if ( dirent.isDirectory() )
-        {
-            continue;
-        }
-
-        const file       = `${ dirent.path.replace( fullLibraryPath, "" ) }/${ dirent.name }`;
-        const inputPath  = Path.join( fullLibraryPath, file );
-        const outputPath = Path.join( Bits.getRootPath(), buildPath, libraryBuild, file );
-
-        if ( file.endsWith( ".css" ) )
-        {
-            const fileName = await Bits.compileAndMoveStyle( inputPath, outputPath, buildType, dev );
-            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
-            fileMappings.styles[ Path.normalize( `Library/${ file }` ) ] = filePath;
-        }
-        if ( Bits.isScriptFile( file ) )
-        {
-            const fileName = await Bits.compileAndMoveScript( inputPath, outputPath, buildType, dev );
-            const filePath = Bits.replaceFileName( Path.normalize( `/${ libraryBuild }/${ file }` ), fileName );
-            fileMappings.scripts[ Path.normalize( `Library/${ file }` ) ] = filePath;
-        }
+        fileMappings.scripts[ "Library" ] = fileMappings.scripts[ "Library/index.js" ];
+        delete fileMappings.scripts[ "Library/index.js" ];
     }
 
     return fileMappings;
@@ -217,86 +104,106 @@ async function buildScripts ( configuration, dev = false )
 {
     const { buildPath, buildType } = configuration;
     const {
-        indexScript,
-        indexScriptBuild,
+        sourcePath,
         templatesBuild,
         templatesPath,
         viewsPath
     } = configuration.internals;
 
-    const fullIndexPath     = Path.join( Bits.getRootPath(), indexScript      );
-    const fullBuildPath     = Path.join( Bits.getRootPath(), buildPath        );
-    const fullOutputPath    = Path.join( fullBuildPath     , indexScriptBuild ); 
-    const fullTemplatesPath = Path.join( Bits.getRootPath(), templatesPath    );
-    const fullViewsPath     = Path.join( Bits.getRootPath(), viewsPath        );
+    const fullIndexPath     = Path.join( Bits.getRootPath(), sourcePath, "index.js" );
+    const fullTemplatesPath = Path.join( Bits.getRootPath(), templatesPath          );
+    const fullViewsPath     = Path.join( Bits.getRootPath(), viewsPath              );
 
-    const indexFile = { input : fullIndexPath, output : fullOutputPath };
+    const contentTemplates  = await Bits.readDirectoryContent( fullTemplatesPath, Bits.isScriptFile );
+    const contentViews      = await Bits.readDirectoryContent( fullViewsPath    , Bits.isScriptFile );
 
-    const templates = await Bits.getTargetFiles(
-        fullTemplatesPath,
-        {
-            filter : x => Bits.isScriptFile( x ),
-            input  : x => Path.join( fullTemplatesPath, x ),
-            output : x => Path.join( fullBuildPath, templatesBuild, x )
-        }
-    );
-
-    const views = await Bits.getTargetFiles(
-        fullViewsPath,
-        {
-            filter : x => Bits.isScriptFile( x ),
-            input  : x => Path.join( fullViewsPath, x ),
-            output : x => Path.join( fullBuildPath, x )
-        }
-    );
-
-    for ( const file of [ indexFile, ...templates, ...views ] )
+    const content =
     {
-        await Bits.compileAndMoveScript( file.input, file.output, buildType, dev );
+        "index.js" : await FS.readFile( fullIndexPath, { encoding: "utf8" } )
+    };
+
+    Object
+        .keys( contentTemplates )
+        .forEach( x => content[ Path.normalize( `templates/${ x }` ) ] = contentTemplates[ x ] );
+
+    Object
+        .keys( contentViews )
+        .forEach( x => content[ Path.normalize( `views/${ x }` ) ] = contentViews[ x ] );
+
+    const fileMappings = {};
+
+    for ( const file in content )
+    {
+        const relativePath = Path.join( "/", Bits.getCompiledPath( file, content[ file ], dev ) );
+
+        fileMappings[ file ] = relativePath.replace( "views/", "" );
     }
+
+    const outputBase = Path.join( Bits.getRootPath(), buildPath );
+
+    for ( const file in content )
+    {
+        const compiled = await Bits.compileScript( file, content[ file ], buildType, dev );
+        const output   = fileMappings[ file ];
+
+        compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
+        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
+    }
+
+    return fileMappings;
 }
 
-async function buildStyles ( configuration, dev = false )
+async function buildStyles ( configuration, additionalMappings, dev = false )
 {
     const { buildPath, buildType } = configuration;
     const {
-        indexStyle,
-        indexStyleBuild,
+        sourcePath,
         templatesBuild,
         templatesPath,
         viewsPath
     } = configuration.internals;
 
-    const fullIndexPath     = Path.join( Bits.getRootPath(), indexStyle      );
-    const fullBuildPath     = Path.join( Bits.getRootPath(), buildPath       );
-    const fullOutputPath    = Path.join( fullBuildPath     , indexStyleBuild );
-    const fullTemplatesPath = Path.join( Bits.getRootPath(), templatesPath   );
-    const fullViewsPath     = Path.join( Bits.getRootPath(), viewsPath       );
+    const fullIndexPath     = Path.join( Bits.getRootPath(), sourcePath, "index.css" );
+    const fullTemplatesPath = Path.join( Bits.getRootPath(), templatesPath           );
+    const fullViewsPath     = Path.join( Bits.getRootPath(), viewsPath               );
 
-    const indexFile = { input : fullIndexPath, output : fullOutputPath };
+    const contentTemplates  = await Bits.readDirectoryContent( fullTemplatesPath, Bits.isStyleFile );
+    const contentViews      = await Bits.readDirectoryContent( fullViewsPath    , Bits.isStyleFile );
 
-    const templates = await Bits.getTargetFiles(
-        fullTemplatesPath,
-        {
-            filter : x => x.endsWith( ".css" ),
-            input  : x => Path.join( fullTemplatesPath, x ),
-            output : x => Path.join( fullBuildPath, templatesBuild, x )
-        }
-    );
-
-    const views = await Bits.getTargetFiles(
-        fullViewsPath,
-        {
-            filter : x => x.endsWith( ".css" ),
-            input  : x => Path.join( fullViewsPath, x ),
-            output : x => Path.join( fullBuildPath, x )
-        }
-    );
-
-    for ( const file of [ indexFile, ...templates, ...views ] )
+    const content =
     {
-        await Bits.compileAndMoveStyle( file.input, file.output, buildType, dev );
+        "index.css" : await FS.readFile( fullIndexPath, { encoding: "utf8" } )
+    };
+
+    Object
+        .keys( contentTemplates )
+        .forEach( x => content[ Path.normalize( `templates/${ x }` ) ] = contentTemplates[ x ] );
+
+    Object
+        .keys( contentViews )
+        .forEach( x => content[ Path.normalize( `views/${ x }` ) ] = contentViews[ x ] );
+
+    const fileMappings = {};
+
+    for ( const file in content )
+    {
+        const relativePath = Path.join( "/", Bits.getCompiledPath( file, content[ file ], dev ) );
+
+        fileMappings[ file ] = relativePath.replace( "views/", "" );
     }
+
+    const outputBase = Path.join( Bits.getRootPath(), buildPath );
+
+    for ( const file in content )
+    {
+        const compiled = await Bits.compileStyle( file, file, content[ file ], additionalMappings, buildType, dev );
+        const output   = fileMappings[ file ];
+
+        compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
+        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
+    }
+
+    return fileMappings;
 }
 
 async function copyAssets ( configuration )
@@ -332,7 +239,7 @@ async function ensureBuildFolder ( configuration )
     }
 }
 
-async function generateHTML ( configuration, libraryMappings, dev = false )
+async function generateHTML ( configuration, loopState, dev = false )
 {
     const { buildPath, dataFile } = configuration;
 
@@ -340,12 +247,14 @@ async function generateHTML ( configuration, libraryMappings, dev = false )
     {
         args.pop();
 
-        if ( dev )
-        {
-            return args.join( "" );
-        }
+        const path = args.join( "" );
 
-        return Bits.getHashFileName( configuration, args.join( "" ) );
+        if ( loopState.library.scripts[ path ] ) return loopState.library.scripts[ path ];
+        if ( loopState.library.styles [ path ] ) return loopState.library.styles [ path ];
+        if ( loopState.scripts        [ path ] ) return loopState.scripts        [ path ];
+        if ( loopState.styles         [ path ] ) return loopState.styles         [ path ];
+
+        throw new Error( `Could not find path for ${ path }!` );
     } );
 
     Handlebars.registerPartial( await Bits.readTemplates() );
@@ -353,7 +262,7 @@ async function generateHTML ( configuration, libraryMappings, dev = false )
     (
         Handlebars,
         configuration,
-        libraryMappings,
+        loopState,
         dev
     );
 }
@@ -438,6 +347,7 @@ const tests =
         const results = await runner.execute();
         console.info( results );
     },
+
     runWebBrowser: async ( configuration ) =>
     {
         const { dependencies      } = configuration;
@@ -490,7 +400,6 @@ const general = {
 }
 
 const frontend = {
-    altBuildLibrary,
     buildLibrary,
     buildScripts,
     buildStyles,

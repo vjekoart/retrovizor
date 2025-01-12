@@ -21,22 +21,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * Add bundle hash to JS/CSS asssets to avoid caching
-        * Find a way to use something like import maps for CSS files
-
-            Library: after calling the `Bits.compileAndMoveStyle` function,
-            another function should be called that will get all path information
-            as input, and change `@import` statements in the `dist/` directory.
-
-            Function `buildLibrary` should return the `{ input, output }` path
-            information for the entry CSS file of the library. That information
-            should be provided to the `buildStyles` function, so the main
-            `@import` statement for the library CSS file can be changed - same
-            function that's used when building a library.
-
-        * Extract all file related functions from `library.bits.js` to `library.fs.js`
-        * Add hashing logic to `buildStyles` and `buildScripts`
-        * Optimise `library.bits.js:getFileHash` function
-        * Reduce the hash length
+        * Extend `compileStyle` to rewrite `@import` content based on mappings
         * Dependency versioning so newer versions are loaded if changed
         * Clear `dist/` folder before the build action
         * Use content hashes during the build action
@@ -124,6 +109,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Other library and index/layout/views scripts: use `import { x } from "Library";`
 * Library CSS: only once include library index CSS file, e.g. in index style. Other library CSS files are included by the library index CSS file. There's not on-demand loading of the library styles.
 * There's no content hashing for assets, add versioning manually. For example, `font-file.v01.woff` and similar.
+* When adding a template or view script/style, use relative paths in `src` directory. For example, file `src/views/code/image-degradator/image-degradator.js` should be defined in `src/views/code/image-degradator/index.html.hbs` file as `viewScript="views/code/image-degradator/image-degradator.js"`. Same goes for `viewStyle`. For templates, similar, e.g. `templateScript="templates/my-template.js"`.
 
 ## File structure / Architecture (try to keep updated)
 

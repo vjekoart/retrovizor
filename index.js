@@ -39,7 +39,9 @@ export async function dev ()
     {
         const loopState =
         {
-            libraryMappings: {}
+            library : {},
+            scripts : {},
+            styles  : {}
         };
 
         await Library.frontend.ensureBuildFolder( Configuration );
@@ -55,22 +57,19 @@ export async function dev ()
             }
             if ( changes.buildLibrary )
             {
-                loopState.libraryMappings = await Library.frontend.buildLibrary( Configuration, true );
-                const altLibraryMappings = await Library.frontend.altBuildLibrary( Configuration, false );
-
-                console.log( "altLibraryMappings", altLibraryMappings );
+                loopState.library = await Library.frontend.buildLibrary( Configuration, true );
             }
             if ( changes.buildScripts )
             {
-                await Library.frontend.buildScripts( Configuration, true );
+                loopState.scripts = await Library.frontend.buildScripts( Configuration, true );
             }
             if ( changes.buildStyles )
             {
-                await Library.frontend.buildStyles( Configuration, true );
+                loopState.styles  = await Library.frontend.buildStyles ( Configuration, loopState.library.styles, true );
             }
             if ( changes.generateHTML )
             {
-                await Library.frontend.generateHTML( Configuration, loopState.libraryMappings, true );
+                await Library.frontend.generateHTML( Configuration, loopState, true );
             }
 
             console.log( "\nLoop completed." );

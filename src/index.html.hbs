@@ -7,9 +7,9 @@
 
         <title>{{ title }} | retrovizor.xyz</title>
 
-        <link rel="stylesheet" type="text/css" href="/{{ getFilePath configuration.internals.indexStyleBuild }}">
+        <link rel="stylesheet" type="text/css" href="{{ getFilePath "index.css" }}">
         {{#if templateStyle}}
-        <link rel="stylesheet" type="text/css" href="/{{ getFilePath templateStyle }}">
+        <link rel="stylesheet" type="text/css" href="{{ getFilePath templateStyle }}">
         {{/if}}
         {{#if viewStyle}}
         <link rel="stylesheet" type="text/css" href="{{ getFilePath viewStyle }}">
@@ -21,8 +21,7 @@
             {
                 "imports":
                 {
-                    "Library": "/{{ getFilePath configuration.internals.libraryBuild "/index.js" }}",
-                {{#each libraryMappings.scripts }}
+                {{#each fileMappings.library.scripts }}
                     "{{@key}}": "{{this}}",
                 {{/each}}
                 {{#each configuration.dependencies}}
@@ -32,9 +31,9 @@
             }
         </script>
         {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
-        <script type="module" src="/{{ getFilePath configuration.internals.indexScriptBuild }}"></script>
+        <script type="module" src="{{ getFilePath "index.js" }}"></script>
         {{#if templateScript}}
-        <script type="module" src="/{{ getFilePath templateScript }}"></script>
+        <script type="module" src="{{ getFilePath templateScript }}"></script>
         {{/if}}
         {{#if viewScript}}
         <script type="module" src="{{ getFilePath viewScript }}"></script>

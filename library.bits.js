@@ -11,7 +11,7 @@ import URL            from "url";
 
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
 
-export function checkPath( path, isDirectory = false )
+export function checkPath ( path, isDirectory = false )
 {
     return new Promise( ( resolve, reject ) =>
     {
@@ -30,7 +30,7 @@ export function checkPath( path, isDirectory = false )
     } );
 }
 
-export async function compileAndMoveScript ( inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileScript ( from, content, buildType, dev = false )
 {
     const babelOptions =
     {
@@ -43,12 +43,10 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
     {
         babelOptions.caller =
         {
-            name: "Library",
-            supportsStaticESM: true
+            name              : "Library",
+            supportsStaticESM : true
         };
     }
-
-    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
 
     let results;
     let code;
@@ -60,188 +58,78 @@ export async function compileAndMoveScript ( inputFilePath, outputFilePath, buil
     }
     catch ( error )
     {
-        console.info ( `\n[FILE] ${ inputFilePath }` );
+        console.info ( `\n[FILE] ${ from }` );
         console.error( error.message, "\n" );
         return;
     }
 
-    const hash      = dev ? null : await getFileHash( { path : outputFilePath, content : code } );
-    const finalName = dev ? outputFilePath.split( "/" ).pop() : addHashToFileName( outputFilePath.split( "/" ).pop(), hash );
-    const finalPath = dev ? outputFilePath : replaceFileName( outputFilePath, finalName );
+    const map = results.map?.toString();
 
-    await writeFile( finalPath, code );
-
-    if ( results.map )
-    {
-        await writeFile( `${ finalPath }.map`, results.map.toString() );
-    }
-
-    return finalName;
+    return { code, map };
 }
 
-export async function compileAndMoveStyle ( inputFilePath, outputFilePath, buildType, dev = false )
+export async function compileStyle ( from, to, content, fileMappings, buildType, dev = false )
 {
+    console.log( "TODO: compileStyle: implement @import rule overrides" );
+
     const postPlugins = [ Autoprefixer ];
 
-    if ( dev === false )
+    if ( !dev )
     {
         postPlugins.push( CSSNano );
     }
 
-    const content = await FS.readFile( inputFilePath, { encoding: "utf8" } );
-    const from    = inputFilePath;
-    const to      = outputFilePath;
-    const map     = true;
+    const options =
+    {
+        from,
+        to,
+        map : true
+    };
 
     let results;
-    let css;
+    let code;
 
     try
     {
-        results = await PostCSS( postPlugins ).process( content, { from, to, map } );
-        css     = results.css;
+        results = await PostCSS( postPlugins ).process( content, options );
+        code    = results.css;
     }
     catch ( error )
     {
-        console.info ( `\n[FILE] ${ inputFilePath }` );
+        console.info ( `\n[FILE] ${ from }` );
         console.error( error.message, "\n" );
         return;
     }
 
-    const hash      = dev ? null : await getFileHash( { path : outputFilePath, content : css } );
-    const finalName = dev ? outputFilePath.split( "/" ).pop() : addHashToFileName( outputFilePath.split( "/" ).pop(), hash );
-    const finalPath = dev ? outputFilePath : replaceFileName( outputFilePath, finalName );
+    const map = results.map?.toString();
 
-    await writeFile( finalPath, css );
+    return { code, map };
+}
 
-    if ( results.map )
+export function getCompiledPath ( path, content, dev )
+{
+    const pathUnits = Path.normalize( path ).split( "/" );
+    let fileName    = units.pop();
+
+    if ( !dev )
     {
-        await writeFile( `${ finalPath }.map`, results.map.toString() );
+        const units = fileName.split( "." );
+        const ext   = units.pop();
+        const hash  = createHash( "sha1" );
+
+        hash.setEncoding( "hex" );
+        hash.write( content );
+        hash.end();
+
+        fileName = units.concat( [ hash.read().slice( 0, 8 ), ext ] ).join( "." );
     }
 
-    return finalName;
+    return pathUnits.concat( [ fileName ] ).join( "/" );
 }
 
 export function getE2ELocation ()
 {
     return `http://${ _INTERNALS.tests.e2eHostname }:${ _INTERNALS.tests.e2ePort }/`;
-}
-
-/**
- * fileName = `random.file.js`
- * hash = `256.js`
- * @returns `random.file.256.js`
- */
-export function addHashToFileName ( fileName, hash )
-{
-    const units = fileName.split( "." );
-    const ext   = units.pop();
-
-    return units.concat( [ hash, ext ] ).join( "." );
-}
-
-/**
- * fullPath = `/home/random.file.js`
- * fileName = `random.file.256.js`
- * @returns `/home/random.file.256.js`
- */
-export function replaceFileName ( fullPath, fileName )
-{
-    // TODO: return LFS.replaceFileName( fullPath, fileName );
-    const units = Path.normalize( fullPath ).split( "/" );
-    units.pop();
-    return units.concat( [ fileName ] ).join( "/" );
-}
-
-/**
- * TODO: Return only hash
- * Define a `path` where's located a file for which hash needs to be calculated.
- * Provide a file content based on which hash is calculated.
- *
- * Returns new path with hash.
- */
-export async function getFileHash ( { content, path } = {} )
-{
-    const hash = createHash( "sha1" );
-
-    hash.setEncoding( "hex" );
-    hash.write( content );
-    hash.end();
-
-    const sha1sum  = hash.read();
-    const filename = path.split( "/" ).pop();
-
-    let hashFileName;
-
-    if ( filename.endsWith( ".js.map" ) )
-    {
-        hashFileName = filename.replace( /\.js\.map$/, `.${ sha1sum }.js.map` );
-    }
-    if ( filename.endsWith( ".js" ) )
-    {
-        hashFileName = filename.replace( /\.js$/, `.${ sha1sum }.js` );
-    }
-    if ( filename.endsWith( ".css.map" ) )
-    {
-        hashFileName = filename.replace( /\.css\.map$/, `.${ sha1sum }.css.map` );
-    }
-    if ( filename.endsWith( ".css" ) )
-    {
-        hashFileName = filename.replace( /\.css$/, `.${ sha1sum }.css` );
-    }
-
-    const units = path.split( "/" );
-
-    units.pop();
-    units.push( hashFileName );
-
-    const hashPath = units.join( "/" );
-
-    await writeHashFileName( path, hashPath );
-
-    return hashPath;
-}
-
-export function getContentHash ( content )
-{
-    const hash = createHash( "sha1" );
-
-    hash.setEncoding( "hex" );
-    hash.write( content );
-    hash.end();
-
-    return hash.read().slice( 0, 8 );
-}
-
-export function getHashFileName ( configuration, path )
-{
-    const { buildPath } = configuration;
-
-    const hashFilePath  = Path.join( getRootPath(), _INTERNALS.tempPath, _INTERNALS.hashFile );
-    const hashFile      = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) ) ?? {};
-
-    return hashFile[ path ];
-}
-
-export async function writeHashFileName ( originalPath, hashPath )
-{
-    const hashFilePath = Path.join( getRootPath(), _INTERNALS.tempPath, _INTERNALS.hashFile );
-
-    let hashFile;
-
-    try
-    {
-        await checkPath( hashFilePath, true );
-        hashFile = JSON.parse( FSSync.readFileSync( hashFilePath, { encoding: "utf8" } ) );
-    }
-    catch ( error )
-    {
-        hashFile = {};
-    }
-
-    hashFile[ originalPath ] = hashPath;
-
-    FSSync.writeFileSync( hashFilePath, JSON.stringify( hashFile ) );
 }
 
 /** "layout.homepage.html.hbs" to "layout.homepage" */
@@ -258,26 +146,6 @@ export function getPartialNameFromFileName ( file )
 export function getRootPath ()
 {
     return Path.dirname( URL.fileURLToPath( import.meta.url ) );
-}
-
-/**
- * @param path {string} Full path of the folder with files.
- * @param modifiers { filter: x => x, input: x => x, output: x => x }
- * @return Array<{ input: fileNamePath, output: fileNamePath }>
- */
-export async function getTargetFiles ( path, modifiers )
-{
-    const files = await FS.readdir( path, { recursive: true } );
-
-    return files
-        .filter( modifiers.filter )
-        .map( x =>
-        {
-            return {
-                input  : modifiers.input ( x ),
-                output : modifiers.output( x )
-            }
-        } );
 }
 
 export async function getTestFiles ( path, includes )
@@ -314,6 +182,34 @@ export function isStyleFile ( file )
     return file.endsWith( ".css" );
 }
 
+/**
+ * Returns { [relativeFilePath] : "File content..." }
+ */
+export async function readDirectoryContent ( path, filter = null )
+{
+    const files   = await FS.readdir( path, { recursive: true, withFileTypes: true } );
+    const content = {};
+
+    for ( const dirent of files )
+    {
+        if ( dirent.isDirectory() )
+        {
+            continue;
+        }
+
+        const file = `${ dirent.path.replace( path, "" ) }/${ dirent.name }`;
+
+        if ( filter instanceof Function && !filter( file ) )
+        {
+            continue;
+        }
+
+        content[ file ] = await FS.readFile( `${ dirent.path }/${ dirent.name }`, { encoding: "utf8" } );
+    }
+
+    return content;
+}
+
 export async function readTemplates ()
 {
     const {
@@ -347,7 +243,15 @@ export async function readTemplates ()
     return partials;
 }
 
-export async function writeViews ( Handlebars, configuration, libraryMappings, dev )
+export async function writeFile ( path, content )
+{
+    console.info( `Writing '...${ path.replace( process.cwd(), "" ) }' ...` );
+
+    await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
+    await FS.writeFile( path, content );
+}
+
+export async function writeViews ( Handlebars, configuration, fileMappings, dev )
 {
     const { buildPath, dataFile } = configuration;
     const { viewsPath }    = _INTERNALS;
@@ -357,7 +261,7 @@ export async function writeViews ( Handlebars, configuration, libraryMappings, d
     const fullDataFilePath = Path.join( getRootPath(), dataFile  );
 
     const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
-    const templateData     = { data, configuration, libraryMappings };
+    const templateData     = { data, configuration, fileMappings };
     const viewFiles        = await FS.readdir( fullViewsPath, { recursive: true } );
     const htmlViewFiles    = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
 
@@ -369,14 +273,6 @@ export async function writeViews ( Handlebars, configuration, libraryMappings, d
 
         await writeFile( Path.join( fullBuildPath, fileName ), template( templateData ) );
     }
-}
-
-export async function writeFile ( path, content )
-{
-    console.info( `Writing '...${ path.replace( process.cwd(), "" ) }' ...` );
-
-    await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
-    await FS.writeFile( path, content );
 }
 
 export class WatchPool

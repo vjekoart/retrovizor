@@ -1,11 +1,6 @@
 {
     "assetsPath": "assets",
     "devPort": 8090,
-    "hashFile": ".build.hash.json",
-    "indexScript": "src/index.js",
-    "indexScriptBuild": "index.js",
-    "indexStyle": "src/index.css",
-    "indexStyleBuild": "index.css",
     "indexTemplate": "src/index.html.hbs",
     "layoutPrefix": "layout.",
     "libraryPath": "src/library",
