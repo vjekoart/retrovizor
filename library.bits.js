@@ -268,10 +268,19 @@ export async function writeViews ( Handlebars, configuration, fileMappings, dev 
     for ( const file of htmlViewFiles )
     {
         const content  = await FS.readFile( Path.join( fullViewsPath, file ), { encoding: "utf8" } );
-        const template = Handlebars.compile( content );
         const fileName = file.endsWith( ".hbs" ) && file.replace( ".hbs", "" ) || file;
 
-        await writeFile( Path.join( fullBuildPath, fileName ), template( templateData ) );
+        try
+        {
+            const template = Handlebars.compile( content );
+            await writeFile( Path.join( fullBuildPath, fileName ), template( templateData ) );
+        }
+        catch ( error )
+        {
+            console.info ( `\n[FILE] ${ file }` );
+            console.error( error.message, "\n" );
+            return;
+        }
     }
 }
 
