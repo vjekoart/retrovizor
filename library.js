@@ -311,10 +311,15 @@ const tests =
     runWebBrowser: async ( configuration ) =>
     {
         const { nativeDependencies } = configuration;
-        const { sourcePath, tests  } = configuration.internals;
+        const {
+            sourcePath,
+            tests,
+            libraryPath
+        } = configuration.internals;
 
-        const root   = Path.join( Bits.getRootPath(), sourcePath );
-        const units  = await Bits.getTestFiles( root, tests.browserTestIncludes );
+        const root            = Path.join( Bits.getRootPath(), sourcePath );
+        const units           = await Bits.getTestFiles( root, tests.browserTestIncludes );
+        const libraryMappings = await Bits.getTestLibraryMappings( Bits.getRootPath(), libraryPath );
 
         const config =
         {
@@ -334,7 +339,7 @@ const tests =
             importMap:
             {
                 moduleRootDir : ".",
-                imports       : nativeDependencies
+                imports       : Object.assign( nativeDependencies, libraryMappings )
             },
             listenAddress : "localhost",
             hostname      : "localhost",

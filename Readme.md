@@ -54,6 +54,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean `Readme.md`
+    * Enable GitHub workflow for PRs (tests for now)
 * Phase 11: public image
     * Revise (delete and archive) GitHub repositories
     * Revise (delete and make private) gist.github
@@ -70,7 +71,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase
     * Dockerisation
-    * GitHub PR workflow
     * Write E2E tests using Gherkin syntax
 * Build system
     * Compare `buildType:native` and `buildType:bundle` performance
@@ -85,6 +85,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * `buildLibrary|buildScripts|buildStyles` in `dev` mode
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
+* Testing
+    * Enable tests for views, and maybe templates?
 
 ## Configuration
 

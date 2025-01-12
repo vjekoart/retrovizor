@@ -278,6 +278,32 @@ export async function getTestFiles ( path, includes )
     return files.filter( x => x.includes( includes ) );
 }
 
+export async function getTestLibraryMappings ( path, libraryPath )
+{
+    const files    = await FS.readdir( Path.join( path, libraryPath ), { recursive: true, withFileTypes: true } );
+    const mappings = {};
+
+    for ( const dirent of files )
+    {
+        if ( dirent.isDirectory() || !isScriptFile( dirent.name ) )
+        {
+            continue;
+        }
+
+        const file = `${ dirent.path.replace( path, "" ).replace( `${ libraryPath }`, "" ) }/${ dirent.name }`;
+
+        mappings[ Path.normalize( `Library/${ file }` ) ] = `${ dirent.path.replace( `${ path }/`, "" ) }/${ dirent.name }`;
+    }
+
+    if ( "Library/index.js" in mappings )
+    {
+        mappings[ "Library" ] = mappings[ "Library/index.js" ];
+        delete mappings[ "Library/index.js" ];
+    }
+
+    return mappings;
+}
+
 export function isScriptFile ( file )
 {
     if ( !file.endsWith( ".js" ) )
