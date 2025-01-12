@@ -1,8 +1,8 @@
 {
     "buildPath": "dist",
-    "buildType": "native",
+    "buildType": "native-library-bundle",
     "dataFile": "src/data.json",
-    "dependencies":
+    "nativeDependencies":
     {
         "lit": "assets/lit-core.min.js"
     }

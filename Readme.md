@@ -19,12 +19,10 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
-    * Performance: `native-library-bundle`: build type where library is bundled, but views and general JS are not -- if this is too slow
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: maybe processing to worker or leave for later?
     * ---
-    * Rename `templates` to `layouts` because every template is a layout
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Apply patterns from the text Declarative thinking
 * Phase 7: UI fine-tune

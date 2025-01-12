@@ -58,51 +58,10 @@ function getConfiguration ()
 
 async function buildLibrary ( configuration, dev = false )
 {
-    const { buildPath, buildType      } = configuration;
-    const { libraryBuild, libraryPath } = configuration.internals;
+    let fileMappings = {};
 
-    const dirPath = Path.join( Bits.getRootPath(), libraryPath );
-    const content = await Bits.readDirectoryContent( dirPath );
-
-    const toLibraryNameSpace = x => Path.normalize( `Library/${ x }` );
-
-    const fileMappings =
-    {
-        scripts : {},
-        styles  : {}
-    };
-
-    for ( const file in content )
-    {
-        const relativePath = Path.join( "/", libraryBuild, Bits.getCompiledPath( file, content[ file ], dev ) );
-
-        Bits.isScriptFile( file ) && ( fileMappings.scripts[ toLibraryNameSpace( file ) ] = relativePath );
-        Bits.isStyleFile ( file ) && ( fileMappings.styles [ toLibraryNameSpace( file ) ] = relativePath );
-    }
-
-    const outputBase = Path.join( Bits.getRootPath(), buildPath );
-
-    for ( const file in content )
-    {
-        let compiled;
-
-        Bits.isScriptFile( file ) && ( compiled = await Bits.compileScript( file, content[ file ], buildType, dev ) );
-        Bits.isStyleFile ( file ) && ( compiled = await Bits.compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
-
-        let output;
-
-        Bits.isScriptFile( file ) && ( output = fileMappings.scripts[ toLibraryNameSpace( file ) ] );
-        Bits.isStyleFile ( file ) && ( output = fileMappings.styles [ toLibraryNameSpace( file ) ] );
-
-        compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
-        compiled?.map  && await Bits.writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
-    }
-
-    if ( "Library/index.js" in fileMappings.scripts )
-    {
-        fileMappings.scripts[ "Library" ] = fileMappings.scripts[ "Library/index.js" ];
-        delete fileMappings.scripts[ "Library/index.js" ];
-    }
+    configuration.buildType === "native"                && ( fileMappings = await Bits.buildNativeLibrary( configuration, dev ) );
+    configuration.buildType === "native-library-bundle" && ( fileMappings = await Bits.buildBundleLibrary( configuration, dev ) );
 
     return fileMappings;
 }
@@ -256,21 +215,9 @@ async function generateHTML ( configuration, loopState, dev = false )
 {
     const { buildPath, dataFile } = configuration;
 
-    Handlebars.registerHelper( "getFilePath" , ( ...args ) =>
-    {
-        args.pop();
+    await Bits.registerHelpers ( Handlebars, configuration, loopState );
+    await Bits.registerPartials( Handlebars );
 
-        const path = args.join( "" );
-
-        if ( loopState.library.scripts[ path ] ) return loopState.library.scripts[ path ];
-        if ( loopState.library.styles [ path ] ) return loopState.library.styles [ path ];
-        if ( loopState.scripts        [ path ] ) return loopState.scripts        [ path ];
-        if ( loopState.styles         [ path ] ) return loopState.styles         [ path ];
-
-        throw new Error( `Could not find path for ${ path }!` );
-    } );
-
-    Handlebars.registerPartial( await Bits.readTemplates() );
     await Bits.writeViews
     (
         Handlebars,
@@ -363,8 +310,8 @@ const tests =
 
     runWebBrowser: async ( configuration ) =>
     {
-        const { dependencies      } = configuration;
-        const { sourcePath, tests } = configuration.internals;
+        const { nativeDependencies } = configuration;
+        const { sourcePath, tests  } = configuration.internals;
 
         const root   = Path.join( Bits.getRootPath(), sourcePath );
         const units  = await Bits.getTestFiles( root, tests.browserTestIncludes );
@@ -387,7 +334,7 @@ const tests =
             importMap:
             {
                 moduleRootDir : ".",
-                imports       : dependencies
+                imports       : nativeDependencies
             },
             listenAddress : "localhost",
             hostname      : "localhost",

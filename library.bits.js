@@ -2,6 +2,7 @@ import Autoprefixer   from "autoprefixer";
 import Babel          from "@babel/core";
 import CSSNano        from "cssnano";
 import { createHash } from "crypto";
+import ESBuild        from "esbuild";
 import FS             from "fs/promises";
 import FSSync         from "fs";
 import Path           from "path";
@@ -12,6 +13,124 @@ import URL            from "url";
 import LibraryPostCSS from "./library.postcss.js";
 
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
+
+export async function buildNativeLibrary ( configuration, dev = false )
+{
+    console.info( "Building a native library..." );
+
+    const { buildPath, buildType      } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    const dirPath = Path.join( getRootPath(), libraryPath );
+    const content = await readDirectoryContent( dirPath );
+
+    const toLibraryNameSpace = x => Path.normalize( `Library/${ x }` );
+
+    const fileMappings =
+    {
+        scripts : {},
+        styles  : {}
+    };
+
+    for ( const file in content )
+    {
+        const relativePath = Path.join( "/", libraryBuild, getCompiledPath( file, content[ file ], dev ) );
+
+        isScriptFile( file ) && ( fileMappings.scripts[ toLibraryNameSpace( file ) ] = relativePath );
+        isStyleFile ( file ) && ( fileMappings.styles [ toLibraryNameSpace( file ) ] = relativePath );
+    }
+
+    const outputBase = Path.join( getRootPath(), buildPath );
+
+    for ( const file in content )
+    {
+        let compiled;
+
+        isScriptFile( file ) && ( compiled = await compileScript( file, content[ file ], buildType, dev ) );
+        isStyleFile ( file ) && ( compiled = await compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
+
+        let output;
+
+        isScriptFile( file ) && ( output = fileMappings.scripts[ toLibraryNameSpace( file ) ] );
+        isStyleFile ( file ) && ( output = fileMappings.styles [ toLibraryNameSpace( file ) ] );
+
+        compiled?.code && await writeFile( Path.join( outputBase, output            ), compiled.code );
+        compiled?.map  && await writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
+    }
+
+    if ( "Library/index.js" in fileMappings.scripts )
+    {
+        fileMappings.scripts[ "Library" ] = fileMappings.scripts[ "Library/index.js" ];
+        delete fileMappings.scripts[ "Library/index.js" ];
+    }
+
+    return fileMappings;
+}
+
+export async function buildBundleLibrary ( configuration, dev = false )
+{
+    console.info( "Building a bundle library..." );
+
+    const { buildPath                 } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    const outputBundlePath  = Path.join( getRootPath(), buildPath, libraryBuild );
+
+    const libraryScriptPath = Path.join( getRootPath(), libraryPath, "index.js"  );
+    const libraryStylePath  = Path.join( getRootPath(), libraryPath, "index.css" );
+
+    const scriptName  = dev ? `index.js`  : `index.[hash].js`;
+    const styleName   = dev ? `index.css` : `index.[hash].css`;
+
+    const scriptBuild = await ESBuild.build( {
+        entryPoints : [ libraryScriptPath ],
+        entryNames  : `${ libraryBuild }/${ scriptName }`,
+        bundle      : true,
+        minify      : !dev,
+        sourcemap   : true,
+        target      : [ "es2020" ],
+        outfile     : outputBundlePath,
+        format      : "esm",
+        metafile    : true,
+        alias       :
+        {
+            "Library": Path.join( getRootPath(), libraryPath )
+        }
+    } );
+
+    const styleBuild = await ESBuild.build( {
+        entryPoints : [ libraryStylePath ],
+        entryNames  : `${ libraryBuild }/${ styleName }`,
+        bundle      : true,
+        minify      : !dev,
+        sourcemap   : true,
+        outfile     : outputBundlePath,
+        metafile    : true,
+        alias       :
+        {
+            "Library": Path.join( getRootPath(), libraryPath )
+        }
+    } );
+
+    const getOutputFile = files => Object.keys( files ).find( el => !el.endsWith( ".map" ) );
+
+    const outputScript  = getOutputFile( scriptBuild.metafile.outputs );
+    const outputStyle   = getOutputFile( styleBuild.metafile.outputs  );
+
+    const fileMappings  =
+    {
+        scripts :
+        {
+            "Library" : outputScript.replace( buildPath, "" )
+        },
+        styles  :
+        {
+            "Library/index.css" : outputStyle.replace( buildPath, "" )
+        }
+    };
+
+    return fileMappings;
+}
 
 export function checkPath ( path, isDirectory = false )
 {
@@ -34,6 +153,8 @@ export function checkPath ( path, isDirectory = false )
 
 export async function compileScript ( from, content, buildType, dev = false )
 {
+    console.info( `Compiling a script '${ from }'...` );
+
     const babelOptions =
     {
         compact    : !dev,
@@ -41,7 +162,7 @@ export async function compileScript ( from, content, buildType, dev = false )
         sourceMaps : true
     };
 
-    if ( buildType === "native" )
+    if ( buildType === "native" || buildType === "native-library-bundle" )
     {
         babelOptions.caller =
         {
@@ -72,6 +193,8 @@ export async function compileScript ( from, content, buildType, dev = false )
 
 export async function compileStyle ( from, to, content, fileMappings, buildType, dev = false )
 {
+    console.info( `Compiling a style file '${ from }'...` );
+
     const postPlugins = [ Autoprefixer, LibraryPostCSS( { fileMappings } ) ];
 
     if ( !dev )
@@ -210,7 +333,31 @@ export async function readDirectoryContent ( path, filter = null )
     return content;
 }
 
-export async function readTemplates ()
+export function registerHelpers ( Handlebars, configuration, loopState )
+{
+    const { buildType } = configuration;
+
+    Handlebars.registerHelper( "ifBuildType", function ( buildType, options )
+    {
+        return configuration.buildType === buildType ? options.fn( this ) : options.inverse( this );
+    } );
+
+    Handlebars.registerHelper( "getFilePath", ( ...args ) =>
+    {
+        args.pop();
+
+        const path = args.join( "" );
+
+        if ( loopState.library.scripts[ path ] ) return loopState.library.scripts[ path ];
+        if ( loopState.library.styles [ path ] ) return loopState.library.styles [ path ];
+        if ( loopState.scripts        [ path ] ) return loopState.scripts        [ path ];
+        if ( loopState.styles         [ path ] ) return loopState.styles         [ path ];
+
+        throw new Error( `Could not find path for ${ path }!` );
+    } );
+}
+
+export async function registerPartials ( Handlebars )
 {
     const {
         indexTemplate,
@@ -240,19 +387,19 @@ export async function readTemplates ()
         }
     }
 
-    return partials;
+    Handlebars.registerPartial( partials );
 }
 
 export async function writeFile ( path, content )
 {
-    console.info( `Writing '...${ path.replace( process.cwd(), "" ) }' ...` );
-
     await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );
     await FS.writeFile( path, content );
 }
 
 export async function writeViews ( Handlebars, configuration, fileMappings, dev )
 {
+    console.info( `Writing views...` );
+
     const { buildPath, dataFile } = configuration;
     const { viewsPath }    = _INTERNALS;
 

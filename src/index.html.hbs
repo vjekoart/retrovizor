@@ -21,16 +21,17 @@
             {
                 "imports":
                 {
+                {{#ifBuildType "native"}}
+                    {{#each configuration.nativeDependencies}}
+                    "{{@key}}": "/{{this}}",
+                    {{/each}}
+                {{/ifBuildType}}
                 {{#each fileMappings.library.scripts }}
-                    "{{@key}}": "{{this}}",
-                {{/each}}
-                {{#each configuration.dependencies}}
-                    "{{@key}}": "/{{this}}"{{#unless @last}},{{/unless}}
+                    "{{@key}}": "{{this}}"{{#unless @last}},{{/unless}}
                 {{/each}}
                 }
             }
         </script>
-        {{! TODO: set "type" to "module" only if "Configuration.buildType" is "native" }}
         <script type="module" src="{{ getFilePath "index.js" }}"></script>
         {{#if templateScript}}
         <script type="module" src="{{ getFilePath templateScript }}"></script>
