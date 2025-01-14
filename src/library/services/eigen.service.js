@@ -36,7 +36,7 @@ class Eigen
      * @param hsl { h: number, s: number, l: number }
      * @param maxLightness, integer, max 255
      */
-    static getColorFromHSL ( hsl, maxLightness )
+    static getDegradedColor ( hsl, maxLightness )
     {
         const selectedColor = ( () =>
         {

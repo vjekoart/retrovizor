@@ -21,7 +21,13 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
-    * ImageDegradator: maybe processing to worker or leave for later?
+    * ImageDegradator: move processing to worker
+        * Native buildType
+            * Support `new Worker( "Library/services/..." );`, same as ES modules
+            * Am I limited in a way that I cant import stuff via importmaps inside a worker? I must get this to work to support Eigen
+        * Library bundle buildType: someone has to move worker file to dist
+        * Library bundle buildType: what if I want to import something into worker? Handle that case
+        * Implement the full worker
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Standardize function comments that explain params and return values (JSDoc)

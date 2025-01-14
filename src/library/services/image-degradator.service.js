@@ -28,10 +28,18 @@ class ImageDegradator
             data    : null,  // ImageData
             element : null   // HTMLImageElement
         }
+
+        /* TODO: move initialization logic to separate sync function */
+        /* TODO: add some kind of resolving to use "Library/services/image-degradator.worker.js" */
+        this.worker  = new Worker( "/library/services/image-degradator.worker.js", { type : "module" } );
     }
 
+    /* TODO: majority of this stuff should happen on the Worker */
     async degenerate ( base64 )
     {
+        this.worker.onmessage = ev => console.log( "Message from worker", ev );
+        this.worker.postMessage( { some : "message" } );
+
         await this.prepareImage( base64 );
         await this.loadImage();
 
@@ -120,7 +128,7 @@ class ImageDegradator
         for ( let i = 0; i < byteCount; i += 4 )
         {
             const hsl   = Eigen.getHSLFromRGB( { r : data[ i ], g : data[ i + 1 ], b : data[ i + 2 ] } );
-            const color = Eigen.getColorFromHSL( hsl, this.options.maxLightness );
+            const color = Eigen.getDegradedColor( hsl, this.options.maxLightness );
 
             data[ i     ] = color.r;
             data[ i + 1 ] = color.g;

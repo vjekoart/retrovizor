@@ -23,9 +23,9 @@ describe( "Eigen suite", () =>
         expect( result ).toEqual( { r : 200, g : 183, b : 167 } );
     } );
 
-    it( "getColorFromHSL", () =>
+    it( "getDegradedColor", () =>
     {
-        const result = Eigen.getColorFromHSL( { h : 100, s : 200, l : 200 }, 150 );
+        const result = Eigen.getDegradedColor( { h : 100, s : 200, l : 200 }, 150 );
 
         expect( result.r ).toBeGreaterThanOrEqual( 0 );
         expect( result.g ).toBeGreaterThanOrEqual( 0 );
