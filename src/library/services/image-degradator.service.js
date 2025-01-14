@@ -1,12 +1,14 @@
+import { Eigen } from "Library/services/eigen.service.js";
+
 class ImageDegradator
 {
     constructor ( scaleDownFactor )
     {
         this.options =
         {
-            maxLightness    : 200,
-            scaleDownFactor : scaleDownFactor ?? 16
-        };
+            maxLightness    : 200,                  // 0 - 255
+            scaleDownFactor : scaleDownFactor ?? 16 // 1 - Math.min( image.width, image.height )
+        }
 
         // Internals
         this.bounds  =       // Used during the primitivisation
@@ -15,7 +17,7 @@ class ImageDegradator
             right  : 0,
             top    : 0,
             bottom : 0
-        };
+        }
 
         this.canvas  = null; // OffscreenCanvas
         this.context = null; // CanvasRenderingContext2D
@@ -25,7 +27,7 @@ class ImageDegradator
             height  : 0,
             data    : null,  // ImageData
             element : null   // HTMLImageElement
-        };
+        }
     }
 
     async degenerate ( base64 )
@@ -117,7 +119,7 @@ class ImageDegradator
 
         for ( let i = 0; i < byteCount; i += 4 )
         {
-            const hsl   = Eigen.getHSLFromRGB( data[ i ], data[ i + 1 ], data[ i + 2 ] );
+            const hsl   = Eigen.getHSLFromRGB( { r : data[ i ], g : data[ i + 1 ], b : data[ i + 2 ] } );
             const color = Eigen.getColorFromHSL( hsl, this.options.maxLightness );
 
             data[ i     ] = color.r;
@@ -199,7 +201,7 @@ class ImageDegradator
                 this.image.width  = this.image.element.naturalWidth;
                 this.image.height = this.image.element.naturalHeight;
                 resolve();
-            };
+            }
 
             this.image.element.src = base64;
         } );
@@ -218,123 +220,4 @@ class ImageDegradator
     }
 }
 
-/**
- * Color operations that work in favor of the eigengrau color: #16161d
- *
- * If color hue >= 75 and hue <= 270 it's cold, where the cooldest is 170
- * If color hue < 75 and hue > 270 it's warm, where the warmest is 350
- */
-class Eigen
-{
-    static colorCold = { r : 61 , g : 157, b : 230 }; // #3d9de6
-    static colorWarm = { r : 230, g : 134, b : 61  }; // #e6863d
-
-    /**
-     * @param pixels Array<{ r: number, g: number, b: number }>
-     */
-    static getAveragePixelColor ( pixels )
-    {
-        const average = { r : 0, g : 0, b : 0 };
-
-        pixels.forEach( pixel =>
-        {
-            average.r += pixel.r;
-            average.g += pixel.g;
-            average.b += pixel.b;
-        } );
-
-        average.r /= pixels.length;
-        average.g /= pixels.length;
-        average.b /= pixels.length;
-
-        return average;
-    }
-
-    static getColorFromHSL ( hsl, maxLightness )
-    {
-        const selectedColor = ( () =>
-        {
-            if ( hsl.h > 75 && hsl.h < 270 ) return this.colorCold;
-
-            return this.colorWarm;
-        } )();
-
-        const selectedColorHSL = this.getHSLFromRGB( selectedColor.r, selectedColor.g, selectedColor.b );
-
-        const newColor =
-        {
-            h : selectedColorHSL.h,
-            s : selectedColorHSL.s,
-            l : Math.min( hsl.l, maxLightness )
-        }
-
-        return this.getRGBFromHSL( newColor );
-    }
-
-    /**
-     * Returns {
-     *   h: 0-360, // Hue
-     *   s: 0-255, // Saturation
-     *   l: 0-255  // Lightness
-     * }
-     */
-    static getHSLFromRGB ( r, g, b )
-    {
-        const rDec  = r / 255;
-        const gDec  = g / 255;
-        const bDec  = b / 255;
-        const cmin  = Math.min( rDec, gDec, bDec );
-        const cmax  = Math.max( rDec, gDec, bDec );
-        const delta = cmax - cmin;
-
-        let hue;
-
-        if ( delta === 0 )        hue = 0;
-        else if ( cmax === rDec ) hue = ( ( gDec - bDec ) / delta ) % 6;
-        else if ( cmax === gDec ) hue = ( bDec - rDec ) / delta + 2;
-        else                      hue = ( rDec - gDec ) / delta + 4;
-
-        hue = Math.round( hue * 60 );
-
-        if ( hue < 0 ) hue += 360;
-
-        const lightness  = ( ( cmin + cmax ) / 2 );
-        const saturation = delta === 0 ? 0 : delta / ( 1 - Math.abs( 2 * lightness - 1 ) );
-
-        return {
-            h: hue,
-            s: saturation * 255,
-            l: lightness * 255
-        }
-    }
-
-    static getRGBFromHSL ( hsl )
-    {
-        const hue        = hsl.h;
-        const saturation = hsl.s / 255;
-        const lightness  = hsl.l / 255;
-
-        const c = ( 1 - Math.abs( 2 * lightness - 1 ) ) * saturation;
-        const x = c * ( 1 - Math.abs( ( hue / 60 ) % 2 - 1 ) );
-        const m = lightness - c / 2;
-
-        let r = 0;
-        let g = 0;
-        let b = 0;
-
-        if ( 0 <= hue && hue < 60 )         { r = c; g = x; b = 0; }
-        else if ( 60  <= hue && hue < 120 ) { r = x; g = c; b = 0; }
-        else if ( 120 <= hue && hue < 180 ) { r = 0; g = c; b = x; }
-        else if ( 180 <= hue && hue < 240 ) { r = 0; g = x; b = c; }
-        else if ( 240 <= hue && hue < 300 ) { r = x; g = 0; b = c; }
-        else if ( 300 <= hue && hue < 360 ) { r = c; g = 0; b = x; }
-
-        r = Math.round( ( r + m ) * 255 );
-        g = Math.round( ( g + m ) * 255 );
-        b = Math.round( ( b + m ) * 255 );
-
-        return { r, g, b };
-    }
-}
-
-export { ImageDegradator };
+export { ImageDegradator }

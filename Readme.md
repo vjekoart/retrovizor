@@ -24,6 +24,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * ImageDegradator: maybe processing to worker or leave for later?
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
+    * Standardize function comments that explain params and return values (JSDoc)
     * Apply patterns from the text Declarative thinking
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
@@ -86,6 +87,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
             * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
         * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
 * Testing
+    * Complete test coverage for services and components
     * Enable tests for views, and maybe templates?
 
 ## Configuration
