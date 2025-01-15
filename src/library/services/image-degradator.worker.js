@@ -1,5 +1,4 @@
-// import { Eigen } from "Library/services/eigen.service.js";
-import { Eigen } from "/library/services/eigen.service.js";
+import { Eigen } from "Library/services/eigen.service.js";
 
 function main ()
 {    
@@ -23,5 +22,3 @@ self.onmessage = ev =>
 }
 
 main();
-
-console.log( "import.meta", import.meta );

@@ -19,15 +19,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
+    * ESBuild calls are missing error handling
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: move processing to worker
-        * Native buildType
-            * Support relative import statements inside the worker, by always using bundle build for a worker file: build system, add worker build step after all other JS files are built
-        * Library bundle buildType
-            * Someone has to move worker file to dist and add a content hash
         * Implement the full worker
-        * Add note that workers are supported
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Standardize function comments that explain params and return values (JSDoc)
@@ -112,6 +108,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Library CSS: only once include library index CSS file, e.g. in index style. Other library CSS files are included by the library index CSS file. There's not on-demand loading of the library styles.
 * There's no content hashing for assets, add versioning manually. For example, `font-file.v01.woff` and similar.
 * When adding a template or view script/style, use relative paths in `src` directory. For example, file `src/views/code/image-degradator/image-degradator.js` should be defined in `src/views/code/image-degradator/index.html.hbs` file as `viewScript="views/code/image-degradator/image-degradator.js"`. Same goes for `viewStyle`. For templates, similar, e.g. `templateScript="templates/my-template.js"`.
+* [CHECK] It's not possible to load CSS library files from view/template style files. I assume that's because missing import maps when building a bundle library.
 
 ### Workers inside a library
 
@@ -125,6 +122,8 @@ this.worker = new Worker( url, { type : "module" } );
 Use relative import statements inside a worker, same as in other scripts.
 
 Workers are always built as a bundle, due to [missing support for import maps inside workers](https://github.com/WICG/import-maps/issues/2).
+
+Convention for worker file names is `*.worker.js`.
 
 ## File structure / Architecture (try to keep updated)
 

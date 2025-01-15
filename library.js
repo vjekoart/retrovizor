@@ -63,6 +63,10 @@ async function buildLibrary ( configuration, dev = false )
     configuration.buildType === "native"                && ( fileMappings = await Bits.buildNativeLibrary( configuration, dev ) );
     configuration.buildType === "native-library-bundle" && ( fileMappings = await Bits.buildBundleLibrary( configuration, dev ) );
 
+    const workerMappings = await Bits.buildLibraryWorkers( configuration, dev );
+
+    fileMappings.scripts = Object.assign( fileMappings.scripts, workerMappings );
+
     return fileMappings;
 }
 

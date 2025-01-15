@@ -14,59 +14,6 @@ import LibraryPostCSS from "./library.postcss.js";
 
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
 
-export async function buildNativeLibrary ( configuration, dev = false )
-{
-    console.info( "Building a native library..." );
-
-    const { buildPath, buildType      } = configuration;
-    const { libraryBuild, libraryPath } = configuration.internals;
-
-    const dirPath = Path.join( getRootPath(), libraryPath );
-    const content = await readDirectoryContent( dirPath );
-
-    const toLibraryNameSpace = x => Path.normalize( `Library/${ x }` );
-
-    const fileMappings =
-    {
-        scripts : {},
-        styles  : {}
-    };
-
-    for ( const file in content )
-    {
-        const relativePath = Path.join( "/", libraryBuild, getCompiledPath( file, content[ file ], dev ) );
-
-        isScriptFile( file ) && ( fileMappings.scripts[ toLibraryNameSpace( file ) ] = relativePath );
-        isStyleFile ( file ) && ( fileMappings.styles [ toLibraryNameSpace( file ) ] = relativePath );
-    }
-
-    const outputBase = Path.join( getRootPath(), buildPath );
-
-    for ( const file in content )
-    {
-        let compiled;
-
-        isScriptFile( file ) && ( compiled = await compileScript( file, content[ file ], buildType, dev ) );
-        isStyleFile ( file ) && ( compiled = await compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
-
-        let output;
-
-        isScriptFile( file ) && ( output = fileMappings.scripts[ toLibraryNameSpace( file ) ] );
-        isStyleFile ( file ) && ( output = fileMappings.styles [ toLibraryNameSpace( file ) ] );
-
-        compiled?.code && await writeFile( Path.join( outputBase, output            ), compiled.code );
-        compiled?.map  && await writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
-    }
-
-    if ( "Library/index.js" in fileMappings.scripts )
-    {
-        fileMappings.scripts[ "Library" ] = fileMappings.scripts[ "Library/index.js" ];
-        delete fileMappings.scripts[ "Library/index.js" ];
-    }
-
-    return fileMappings;
-}
-
 export async function buildBundleLibrary ( configuration, dev = false )
 {
     console.info( "Building a bundle library..." );
@@ -74,10 +21,9 @@ export async function buildBundleLibrary ( configuration, dev = false )
     const { buildPath                 } = configuration;
     const { libraryBuild, libraryPath } = configuration.internals;
 
-    const outputBundlePath  = Path.join( getRootPath(), buildPath, libraryBuild );
-
-    const libraryScriptPath = Path.join( getRootPath(), libraryPath, "index.js"  );
-    const libraryStylePath  = Path.join( getRootPath(), libraryPath, "index.css" );
+    const outputBundlePath  = Path.join( getRootPath(), buildPath  , libraryBuild );
+    const libraryScriptPath = Path.join( getRootPath(), libraryPath, "index.js"   );
+    const libraryStylePath  = Path.join( getRootPath(), libraryPath, "index.css"  );
 
     const scriptName  = dev ? `index.js`  : `index.[hash].js`;
     const styleName   = dev ? `index.css` : `index.[hash].css`;
@@ -128,6 +74,108 @@ export async function buildBundleLibrary ( configuration, dev = false )
             "Library/index.css" : outputStyle.replace( buildPath, "" )
         }
     };
+
+    return fileMappings;
+}
+
+export async function buildLibraryWorkers ( configuration, dev = false )
+{
+    console.info( "Building library workers..." );
+
+    const { buildPath                 } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    const outputPath = Path.join( getRootPath(), buildPath, libraryBuild );
+    const dirPath    = Path.join( getRootPath(), libraryPath );
+    const content    = await readDirectoryContent( dirPath, isWorkerFile );
+
+    const fileMappings = {}
+
+    for ( const file in content )
+    {
+        const fileName = (() =>
+        {
+            const units = file.split( "." );
+            units.pop();
+            return units.join( "." );
+        })();
+
+        const scriptName = dev ? `${ fileName }.js` : `${ fileName }.[hash].js`;
+        const filePath   = Path.join( getRootPath(), libraryPath, file );
+
+        const build = await ESBuild.build( {
+            entryPoints : [ filePath ],
+            entryNames  : `${ libraryBuild }/${ scriptName }`,
+            bundle      : true,
+            minify      : !dev,
+            sourcemap   : true,
+            target      : [ "es2020" ],
+            outfile     : outputPath,
+            format      : "esm",
+            metafile    : true,
+            alias       :
+            {
+                "Library": Path.join( getRootPath(), libraryPath )
+            }
+        } );
+
+        const output  = Object.keys( build.metafile.outputs ).find( el => !el.endsWith( ".map" ) );
+
+        fileMappings[ `Library${ file }` ] = output.replace( buildPath, "" );
+    }
+
+    return fileMappings;
+}
+
+export async function buildNativeLibrary ( configuration, dev = false )
+{
+    console.info( "Building a native library..." );
+
+    const { buildPath, buildType      } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    const dirPath = Path.join( getRootPath(), libraryPath );
+    const content = await readDirectoryContent( dirPath );
+
+    const toLibraryNameSpace = x => Path.normalize( `Library/${ x }` );
+
+    const fileMappings =
+    {
+        scripts : {},
+        styles  : {}
+    };
+
+    for ( const file in content )
+    {
+        const relativePath = Path.join( "/", libraryBuild, getCompiledPath( file, content[ file ], dev ) );
+
+        isScriptFile( file ) && ( fileMappings.scripts[ toLibraryNameSpace( file ) ] = relativePath );
+        isStyleFile ( file ) && ( fileMappings.styles [ toLibraryNameSpace( file ) ] = relativePath );
+    }
+
+    const outputBase = Path.join( getRootPath(), buildPath );
+
+    for ( const file in content )
+    {
+        let compiled;
+
+        isScriptFile( file ) && ( compiled = await compileScript( file, content[ file ], buildType, dev ) );
+        isStyleFile ( file ) && ( compiled = await compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
+
+        let output;
+
+        isScriptFile( file ) && ( output = fileMappings.scripts[ toLibraryNameSpace( file ) ] );
+        isStyleFile ( file ) && ( output = fileMappings.styles [ toLibraryNameSpace( file ) ] );
+
+        compiled?.code && await writeFile( Path.join( outputBase, output            ), compiled.code );
+        compiled?.map  && await writeFile( Path.join( outputBase, `${ output }.map` ), compiled.map  );
+    }
+
+    if ( "Library/index.js" in fileMappings.scripts )
+    {
+        fileMappings.scripts[ "Library" ] = fileMappings.scripts[ "Library/index.js" ];
+        delete fileMappings.scripts[ "Library/index.js" ];
+    }
 
     return fileMappings;
 }
@@ -322,6 +370,10 @@ export function isScriptFile ( file )
     {
         return false;
     }
+    if ( file.endsWith( ".worker.js" ) )
+    {
+        return false;
+    }
 
     return true;
 }
@@ -329,6 +381,11 @@ export function isScriptFile ( file )
 export function isStyleFile ( file )
 {
     return file.endsWith( ".css" );
+}
+
+export function isWorkerFile ( file )
+{
+    return file.endsWith( ".worker.js" );
 }
 
 /**
