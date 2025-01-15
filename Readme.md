@@ -23,11 +23,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: move processing to worker
         * Native buildType
-            * Support `new Worker( "Library/services/..." );`, same as ES modules
-            * Am I limited in a way that I cant import stuff via importmaps inside a worker? I must get this to work to support Eigen
-        * Library bundle buildType: someone has to move worker file to dist
-        * Library bundle buildType: what if I want to import something into worker? Handle that case
+            * Support relative import statements inside the worker, by always using bundle build for a worker file: build system, add worker build step after all other JS files are built
+        * Library bundle buildType
+            * Someone has to move worker file to dist and add a content hash
         * Implement the full worker
+        * Add note that workers are supported
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Standardize function comments that explain params and return values (JSDoc)
@@ -112,6 +112,19 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Library CSS: only once include library index CSS file, e.g. in index style. Other library CSS files are included by the library index CSS file. There's not on-demand loading of the library styles.
 * There's no content hashing for assets, add versioning manually. For example, `font-file.v01.woff` and similar.
 * When adding a template or view script/style, use relative paths in `src` directory. For example, file `src/views/code/image-degradator/image-degradator.js` should be defined in `src/views/code/image-degradator/index.html.hbs` file as `viewScript="views/code/image-degradator/image-degradator.js"`. Same goes for `viewStyle`. For templates, similar, e.g. `templateScript="templates/my-template.js"`.
+
+### Workers inside a library
+
+Load workers using resolved URLs from import maps to support build system features:
+
+```javascript
+const url = import.meta.resolve( "Library/services/some.worker.js" );
+this.worker = new Worker( url, { type : "module" } );
+```
+
+Use relative import statements inside a worker, same as in other scripts.
+
+Workers are always built as a bundle, due to [missing support for import maps inside workers](https://github.com/WICG/import-maps/issues/2).
 
 ## File structure / Architecture (try to keep updated)
 

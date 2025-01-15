@@ -29,9 +29,10 @@ class ImageDegradator
             element : null   // HTMLImageElement
         }
 
-        /* TODO: move initialization logic to separate sync function */
-        /* TODO: add some kind of resolving to use "Library/services/image-degradator.worker.js" */
-        this.worker  = new Worker( "/library/services/image-degradator.worker.js", { type : "module" } );
+        this.worker  = new Worker(
+            import.meta.resolve( "Library/services/image-degradator.worker.js" ),
+            { type : "module" }
+        );
     }
 
     /* TODO: majority of this stuff should happen on the Worker */

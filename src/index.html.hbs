@@ -14,9 +14,6 @@
         {{#if viewStyle}}
         <link rel="stylesheet" type="text/css" href="{{ getFilePath viewStyle }}">
         {{/if}}
-    </head>
-    <body>
-    {{> @partial-block }}
         <script type="importmap">
             {
                 "imports":
@@ -32,6 +29,9 @@
                 }
             }
         </script>
+    </head>
+    <body>
+    {{> @partial-block }}
         <script type="module" src="{{ getFilePath "index.js" }}"></script>
         {{#if templateScript}}
         <script type="module" src="{{ getFilePath templateScript }}"></script>
