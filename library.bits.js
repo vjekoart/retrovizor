@@ -17,7 +17,7 @@ const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encodin
 
 export async function buildBundleLibrary ( configuration, dev = false )
 {
-    console.info( "Building a bundle library..." );
+    console.info( "Building bundle library..." );
 
     const { buildPath                 } = configuration;
     const { libraryBuild, libraryPath } = configuration.internals;
@@ -26,55 +26,23 @@ export async function buildBundleLibrary ( configuration, dev = false )
     const libraryScriptPath = Path.join( getRootPath(), libraryPath, "index.js"   );
     const libraryStylePath  = Path.join( getRootPath(), libraryPath, "index.css"  );
 
-    const scriptName  = dev ? `index.js`  : `index.[hash].js`;
-    const styleName   = dev ? `index.css` : `index.[hash].css`;
+    const scriptName        = dev ? `index.js`  : `index.[hash].js`;
+    const styleName         = dev ? `index.css` : `index.[hash].css`;
 
-    const scriptBuild = await ESBuild.build( {
-        entryPoints : [ libraryScriptPath ],
-        entryNames  : `${ libraryBuild }/${ scriptName }`,
-        bundle      : true,
-        minify      : !dev,
-        sourcemap   : true,
-        target      : [ "es2020" ],
-        outfile     : outputBundlePath,
-        format      : "esm",
-        metafile    : true,
-        alias       :
-        {
-            "Library": Path.join( getRootPath(), libraryPath )
-        }
-    } );
+    const outputScript      = await compileBundle( libraryScriptPath, `${ libraryBuild }/${ scriptName }`, outputBundlePath, libraryPath, dev );
+    const outputStyle       = await compileBundle( libraryStylePath , `${ libraryBuild }/${ styleName }` , outputBundlePath, libraryPath, dev );
 
-    const styleBuild = await ESBuild.build( {
-        entryPoints : [ libraryStylePath ],
-        entryNames  : `${ libraryBuild }/${ styleName }`,
-        bundle      : true,
-        minify      : !dev,
-        sourcemap   : true,
-        outfile     : outputBundlePath,
-        metafile    : true,
-        alias       :
-        {
-            "Library": Path.join( getRootPath(), libraryPath )
-        }
-    } );
-
-    const getOutputFile = files => Object.keys( files ).find( el => !el.endsWith( ".map" ) );
-
-    const outputScript  = getOutputFile( scriptBuild.metafile.outputs );
-    const outputStyle   = getOutputFile( styleBuild.metafile.outputs  );
-
-    const fileMappings  =
+    const fileMappings =
     {
         scripts :
         {
-            "Library" : outputScript.replace( buildPath, "" )
+            "Library" : outputScript?.replace( buildPath, "" )
         },
         styles  :
         {
-            "Library/index.css" : outputStyle.replace( buildPath, "" )
+            "Library/index.css" : outputStyle?.replace( buildPath, "" )
         }
-    };
+    }
 
     return fileMappings;
 }
@@ -103,26 +71,9 @@ export async function buildBundleWorkers ( configuration, dev = false )
 
         const scriptName = dev ? `${ fileName }.js` : `${ fileName }.[hash].js`;
         const filePath   = Path.join( getRootPath(), libraryPath, file );
+        const bundlePath = await compileBundle( filePath, `${ libraryBuild }/${ scriptName }`, outputPath, libraryPath, dev );
 
-        const build = await ESBuild.build( {
-            entryPoints : [ filePath ],
-            entryNames  : `${ libraryBuild }/${ scriptName }`,
-            bundle      : true,
-            minify      : !dev,
-            sourcemap   : true,
-            target      : [ "es2020" ],
-            outfile     : outputPath,
-            format      : "esm",
-            metafile    : true,
-            alias       :
-            {
-                "Library": Path.join( getRootPath(), libraryPath )
-            }
-        } );
-
-        const output  = Object.keys( build.metafile.outputs ).find( el => !el.endsWith( ".map" ) );
-
-        fileMappings[ `Library${ file }` ] = output.replace( buildPath, "" );
+        fileMappings[ `Library${ file }` ] = bundlePath?.replace( buildPath, "" );
     }
 
     return fileMappings;
@@ -130,7 +81,7 @@ export async function buildBundleWorkers ( configuration, dev = false )
 
 export async function buildNativeLibrary ( configuration, dev = false )
 {
-    console.info( "Building a native library..." );
+    console.info( "Building native library..." );
 
     const { buildPath, buildType      } = configuration;
     const { libraryBuild, libraryPath } = configuration.internals;
@@ -158,10 +109,12 @@ export async function buildNativeLibrary ( configuration, dev = false )
 
     for ( const file in content )
     {
+        const param = { name : file, content : content[ file ] };
+
         let compiled;
 
-        isScriptFile( file ) && ( compiled = await compileScript( file, content[ file ], buildType, dev ) );
-        isStyleFile ( file ) && ( compiled = await compileStyle ( file, file, content[ file ], fileMappings.styles, buildType, dev ) );
+        isScriptFile( file ) && ( compiled = await compileScript( param, null               , buildType, dev ) );
+        isStyleFile ( file ) && ( compiled = await compileStyle ( param, fileMappings.styles, buildType, dev ) );
 
         let output;
 
@@ -200,7 +153,8 @@ export async function buildNativeWorkers ( configuration, scriptMappings, dev = 
 
         fileMappings[ `Library${ file }` ] = fileOutputPath;
 
-        const compiled = await compileScript( file, content[ file ], buildType, dev, scriptMappings );
+        const param    = { name : file, content : content[ file ] };
+        const compiled = await compileScript( param, scriptMappings, buildType, dev );
 
         compiled?.code && await writeFile( Path.join( outputBase, fileOutputPath            ), compiled.code );
         compiled?.map  && await writeFile( Path.join( outputBase, `${ fileOutputPath }.map` ), compiled.map  );
@@ -228,9 +182,56 @@ export function checkPath ( path, isDirectory = false )
     } );
 }
 
-export async function compileScript ( from, content, buildType, dev = false, importMap = null )
+/**
+ * Creates an ESBuild bundle on desired location. Returns an output path of the compiled bundle.
+ */
+export async function compileBundle ( entryPoint, entryName, outputPath, libraryPath, dev = false )
 {
-    console.info( `Compiling a script '${ from }'...` );
+    console.info( `Compiling bundle '${ entryName }'...` );
+
+    const config =
+    {
+        entryPoints : [ entryPoint ],
+        entryNames  : entryName,
+        bundle      : true,
+        minify      : !dev,
+        sourcemap   : true,
+        outfile     : outputPath,
+        metafile    : true,
+        alias       :
+        {
+            "Library": Path.join( getRootPath(), libraryPath )
+        }
+    }
+
+    if ( isScriptFile( entryName ) || isWorkerFile( entryName ) )
+    {
+        config.target = [ "es2020" ];
+        config.format = "esm";
+    }
+
+    try
+    {
+        const build = await ESBuild.build( config );
+
+        return Object.keys( build.metafile.outputs ).find( el => !el.endsWith( ".map" ) );
+    }
+    catch ( error )
+    {
+        console.info ( `\n[FILE] ${ entryName }` );
+        console.error( error.message, "\n" );
+    }
+}
+
+/**
+ * TODO describe rest of the parameters
+ *
+ * @param file { name : string, content : string }
+ * @return { code : string, map : string }
+ */
+export async function compileScript ( file = {}, importMap = null, buildType = "native", dev = false )
+{
+    console.info( `Compiling script '${ file.name }'...` );
 
     const plugins = [];
 
@@ -262,12 +263,12 @@ export async function compileScript ( from, content, buildType, dev = false, imp
 
     try
     {
-        results = await Babel.transformAsync( content, babelOptions );
+        results = await Babel.transformAsync( file.content, babelOptions );
         code    = results.code;
     }
     catch ( error )
     {
-        console.info ( `\n[FILE] ${ from }` );
+        console.info ( `\n[FILE] ${ file.name }` );
         console.error( error.message, "\n" );
         return;
     }
@@ -277,11 +278,17 @@ export async function compileScript ( from, content, buildType, dev = false, imp
     return { code, map };
 }
 
-export async function compileStyle ( from, to, content, fileMappings, buildType, dev = false )
+/**
+ * TODO describe rest of the parameters
+ *
+ * @param file { name : string, content : string }
+ * @return { code : string, map : string }
+ */
+export async function compileStyle ( file = {}, importMap = null, buildType = "native", dev = false )
 {
-    console.info( `Compiling a style file '${ from }'...` );
+    console.info( `Compiling style file '${ file.name }'...` );
 
-    const postPlugins = [ Autoprefixer, LibraryPostCSS( { fileMappings } ) ];
+    const postPlugins = [ Autoprefixer, LibraryPostCSS( { importMap } ) ];
 
     if ( !dev )
     {
@@ -290,9 +297,9 @@ export async function compileStyle ( from, to, content, fileMappings, buildType,
 
     const options =
     {
-        from,
-        to,
-        map : true
+        from : file.name,
+        to   : file.name,
+        map  : true
     };
 
     let results;
@@ -300,12 +307,12 @@ export async function compileStyle ( from, to, content, fileMappings, buildType,
 
     try
     {
-        results = await PostCSS( postPlugins ).process( content, options );
+        results = await PostCSS( postPlugins ).process( file.content, options );
         code    = results.css;
     }
     catch ( error )
     {
-        console.info ( `\n[FILE] ${ from }` );
+        console.info ( `\n[FILE] ${ file.name }` );
         console.error( error.message, "\n" );
         return;
     }

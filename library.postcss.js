@@ -21,12 +21,12 @@ const exportObject = ( options = {} ) =>
             {
                 const key = getKey( rule.params );
 
-                if ( !( key in options.fileMappings ) )
+                if ( !( key in options.importMap ) )
                 {
                     return;
                 }
 
-                rule.params = `url("${ options.fileMappings[ key ] }")`;
+                rule.params = `url("${ options.importMap[ key ] }")`;
             }
         }
     }

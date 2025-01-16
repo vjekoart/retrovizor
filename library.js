@@ -24,7 +24,7 @@ import * as Bits      from "./library.bits.js";
  */
 function expose ( functions, fallback )
 {
-    const exposed = {};
+    const exposed = {}
 
     functions.forEach( x => exposed[ x.name ] = x );
 
@@ -77,7 +77,7 @@ async function buildLibrary ( configuration, dev = false )
 
 async function buildScripts ( configuration, dev = false )
 {
-    const { buildPath, buildType } = configuration;
+    const { buildPath } = configuration;
     const {
         sourcePath,
         templatesBuild,
@@ -95,7 +95,7 @@ async function buildScripts ( configuration, dev = false )
     const content =
     {
         "index.js" : await FS.readFile( fullIndexPath, { encoding: "utf8" } )
-    };
+    }
 
     Object
         .keys( contentTemplates )
@@ -105,7 +105,7 @@ async function buildScripts ( configuration, dev = false )
         .keys( contentViews )
         .forEach( x => content[ Path.normalize( `views/${ x }` ) ] = contentViews[ x ] );
 
-    const fileMappings = {};
+    const fileMappings = {}
 
     for ( const file in content )
     {
@@ -118,7 +118,8 @@ async function buildScripts ( configuration, dev = false )
 
     for ( const file in content )
     {
-        const compiled = await Bits.compileScript( file, content[ file ], buildType, dev );
+        const param    = { name : file, content : content[ file ] }
+        const compiled = await Bits.compileScript( param, null, "native", dev );
         const output   = fileMappings[ file ];
 
         compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
@@ -130,7 +131,7 @@ async function buildScripts ( configuration, dev = false )
 
 async function buildStyles ( configuration, additionalMappings, dev = false )
 {
-    const { buildPath, buildType } = configuration;
+    const { buildPath } = configuration;
     const {
         sourcePath,
         templatesBuild,
@@ -148,7 +149,7 @@ async function buildStyles ( configuration, additionalMappings, dev = false )
     const content =
     {
         "index.css" : await FS.readFile( fullIndexPath, { encoding: "utf8" } )
-    };
+    }
 
     Object
         .keys( contentTemplates )
@@ -158,7 +159,7 @@ async function buildStyles ( configuration, additionalMappings, dev = false )
         .keys( contentViews )
         .forEach( x => content[ Path.normalize( `views/${ x }` ) ] = contentViews[ x ] );
 
-    const fileMappings = {};
+    const fileMappings = {}
 
     for ( const file in content )
     {
@@ -171,7 +172,8 @@ async function buildStyles ( configuration, additionalMappings, dev = false )
 
     for ( const file in content )
     {
-        const compiled = await Bits.compileStyle( file, file, content[ file ], additionalMappings, buildType, dev );
+        const param    = { name : file, content : content[ file ] }
+        const compiled = await Bits.compileStyle( param, additionalMappings, "native", dev );
         const output   = fileMappings[ file ];
 
         compiled?.code && await Bits.writeFile( Path.join( outputBase, output            ), compiled.code );
@@ -307,7 +309,7 @@ const tests =
             random     : false,
             spec_dir   : sourcePath,
             spec_files : units
-        };
+        }
 
         runner.loadConfig( config );
 
@@ -355,12 +357,12 @@ const tests =
             {
                 name : "headlessFirefox"
             }
-        };
+        }
 
         const results = await JasmineBrowser.runSpecs( config );
         console.info( results );
     },
-};
+}
 
 
 /**
@@ -383,4 +385,4 @@ const frontend = {
     tests
 }
 
-export { general, frontend };
+export { general, frontend }
