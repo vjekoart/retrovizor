@@ -78,9 +78,9 @@ export async function buildBundleLibrary ( configuration, dev = false )
     return fileMappings;
 }
 
-export async function buildLibraryWorkers ( configuration, dev = false )
+export async function buildBundleWorkers ( configuration, dev = false )
 {
-    console.info( "Building library workers..." );
+    console.info( "Building bundle workers..." );
 
     const { buildPath                 } = configuration;
     const { libraryBuild, libraryPath } = configuration.internals;
@@ -180,6 +180,34 @@ export async function buildNativeLibrary ( configuration, dev = false )
     return fileMappings;
 }
 
+export async function buildNativeWorkers ( configuration, scriptMappings, dev = false )
+{
+    console.info( "Building native workers..." );
+
+    const { buildPath, buildType      } = configuration;
+    const { libraryBuild, libraryPath } = configuration.internals;
+
+    const dirPath    = Path.join( getRootPath(), libraryPath );
+    const outputBase = Path.join( getRootPath(), buildPath   );
+    const content    = await readDirectoryContent( dirPath, isWorkerFile );
+
+    const fileMappings = {}
+
+    for ( const file in content )
+    {
+        const fileOutputPath = Path.join( "/", libraryBuild, getCompiledPath( file, content[ file ], dev ) );
+
+        fileMappings[ `Library${ file }` ] = fileOutputPath;
+
+        const compiled = await compileScript( file, content[ file ], buildType, dev, scriptMappings );
+
+        compiled?.code && await writeFile( Path.join( outputBase, fileOutputPath            ), compiled.code );
+        compiled?.map  && await writeFile( Path.join( outputBase, `${ fileOutputPath }.map` ), compiled.map  );
+    }
+
+    return fileMappings;
+}
+
 export function checkPath ( path, isDirectory = false )
 {
     return new Promise( ( resolve, reject ) =>
@@ -199,13 +227,14 @@ export function checkPath ( path, isDirectory = false )
     } );
 }
 
-export async function compileScript ( from, content, buildType, dev = false )
+export async function compileScript ( from, content, buildType, dev = false, importMappings = null )
 {
     console.info( `Compiling a script '${ from }'...` );
 
     const babelOptions =
     {
-        compact    : !dev,
+        comments   : dev,
+        minified   : !dev,
         presets    : [ "@babel/preset-env" ],
         sourceMaps : true
     };
@@ -234,7 +263,12 @@ export async function compileScript ( from, content, buildType, dev = false )
         return;
     }
 
-    const map = results.map?.toString();
+    if ( importMappings )
+    {
+        console.log( "I should apply import mappings", from );
+    }
+
+    const map = JSON.stringify( results.map ?? {} );
 
     return { code, map };
 }
@@ -272,7 +306,7 @@ export async function compileStyle ( from, to, content, fileMappings, buildType,
         return;
     }
 
-    const map = results.map?.toString();
+    const map = JSON.stringify( results.map ?? {} );
 
     return { code, map };
 }

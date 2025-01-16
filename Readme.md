@@ -20,9 +20,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * ESBuild calls are missing error handling
+    * Add main configuration.json file check at the beginning of every action
+    * Add bundle support to `compileScript` and `compileStyle`, and use them in `buildBundle*` functions instead of direct ESBuild calls
     * CloseYourEyes: loading state, computation logic to worker, rAF
-    * CloseYourEyes: what about those damn lines? Make them breathe
     * ImageDegradator: move processing to worker
+        * Implement workers for buildType:native, change worker imports location (mapping from file mappings to relative); update usage notes
         * Implement the full worker
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
@@ -30,6 +32,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Apply patterns from the text Declarative thinking
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
+    * CloseYourEyes art: what about those damn lines? Make them breathe
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
     * Homepage: hide everything except animation if user is idle
@@ -112,7 +115,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ### Workers inside a library
 
-Load workers using resolved URLs from import maps to support build system features:
+Create workers using resolved URLs from import maps to support build system features:
 
 ```javascript
 const url = import.meta.resolve( "Library/services/some.worker.js" );
@@ -124,6 +127,8 @@ Use relative import statements inside a worker, same as in other scripts.
 Workers are always built as a bundle, due to [missing support for import maps inside workers](https://github.com/WICG/import-maps/issues/2).
 
 Convention for worker file names is `*.worker.js`.
+
+Build system only supports workers inside a library folder.
 
 ## File structure / Architecture (try to keep updated)
 

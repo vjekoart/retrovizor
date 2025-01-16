@@ -1,6 +1,6 @@
 {
     "buildPath": "dist",
-    "buildType": "native-library-bundle",
+    "buildType": "native",
     "dataFile": "src/data.json",
     "nativeDependencies":
     {

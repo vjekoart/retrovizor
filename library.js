@@ -58,12 +58,15 @@ function getConfiguration ()
 
 async function buildLibrary ( configuration, dev = false )
 {
-    let fileMappings = {};
+    let fileMappings = {}
 
     configuration.buildType === "native"                && ( fileMappings = await Bits.buildNativeLibrary( configuration, dev ) );
     configuration.buildType === "native-library-bundle" && ( fileMappings = await Bits.buildBundleLibrary( configuration, dev ) );
 
-    const workerMappings = await Bits.buildLibraryWorkers( configuration, dev );
+    let workerMappings = {}
+
+    configuration.buildType === "native"                && ( workerMappings = await Bits.buildNativeWorkers( configuration, fileMappings.scripts, dev ) );
+    configuration.buildType === "native-library-bundle" && ( workerMappings = await Bits.buildBundleWorkers( configuration, dev ) );
 
     fileMappings.scripts = Object.assign( fileMappings.scripts, workerMappings );
 
