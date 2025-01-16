@@ -20,7 +20,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * ESBuild calls are missing error handling
-    * Add main configuration.json file check at the beginning of every action
     * Add bundle support to `compileScript` and `compileStyle`, and use them in `buildBundle*` functions instead of direct ESBuild calls
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * ImageDegradator: move processing to worker

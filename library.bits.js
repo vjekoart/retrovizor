@@ -511,6 +511,44 @@ export async function registerPartials ( Handlebars )
     Handlebars.registerPartial( partials );
 }
 
+export function validateConfiguration ( configuration )
+{
+    const requiredFields =
+    [
+        "buildPath",
+        "buildType"
+    ];
+
+    for ( const field of requiredFields )
+    {
+        if ( typeof configuration[ field ] === "undefined" )
+        {
+            throw new Error( `Configuration: missing '${ field }'!` );
+        }
+    }
+
+    if ( typeof configuration.buildPath !== "string" ) throw new Error( `Configuration: 'buildPath' must be a string!` );
+
+    const buildTypeValues = [ "native", "native-library-bundle" ];
+
+    if ( buildTypeValues.indexOf( configuration.buildType ) === -1 )
+    {
+        throw new Error( `Configuration: 'buildType' must be one of the following: ${ buildTypeValues }` );
+    }
+
+    const optionalFields =
+    [
+        "dataFile",
+        "nativeDependencies"
+    ];
+
+    if ( configuration.dataFile && typeof configuration.dataFile !== "string" )
+        throw new Error( `Configuration: 'dataFile' must be a string!` );
+
+    if ( configuration.nativeDependencies && typeof configuration.nativeDependencies !== "object" )
+        throw new Error( `Configuration: 'nativeDependencies' must be an object!` );
+}
+
 export async function writeFile ( path, content )
 {
     await FS.mkdir    ( path.split( "/" ).slice( 0, -1 ).join( "/" ), { recursive: true } );

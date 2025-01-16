@@ -77,7 +77,7 @@ export async function dev ()
                 await Library.frontend.generateHTML( Configuration, loopState, true );
             }
 
-            console.log( "\nLoop completed." );
+            console.info( "\nLoop completed." );
         } );
     }
     catch ( error )

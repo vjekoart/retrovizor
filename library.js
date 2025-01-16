@@ -53,6 +53,8 @@ function getConfiguration ()
     const internals     = JSON.parse( FSSync.readFileSync( ".internals.json"   , { encoding: "utf8" } ) );
     const configuration = JSON.parse( FSSync.readFileSync( "configuration.json", { encoding: "utf8" } ) );
 
+    Bits.validateConfiguration( configuration );
+
     return Object.assign( configuration, { internals } );
 }
 
@@ -220,8 +222,6 @@ async function ensureBuildFolder ( configuration, clear = false )
 
 async function generateHTML ( configuration, loopState, dev = false )
 {
-    const { buildPath, dataFile } = configuration;
-
     await Bits.registerHelpers ( Handlebars, configuration, loopState );
     await Bits.registerPartials( Handlebars );
 
