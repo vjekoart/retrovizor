@@ -24,7 +24,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Add bundle support to `compileScript` and `compileStyle`, and use them in `buildBundle*` functions instead of direct ESBuild calls
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * ImageDegradator: move processing to worker
-        * Implement workers for buildType:native, change worker imports location (mapping from file mappings to relative); update usage notes
         * Implement the full worker
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
@@ -122,13 +121,11 @@ const url = import.meta.resolve( "Library/services/some.worker.js" );
 this.worker = new Worker( url, { type : "module" } );
 ```
 
-Use relative import statements inside a worker, same as in other scripts.
+Worker specifics:
 
-Workers are always built as a bundle, due to [missing support for import maps inside workers](https://github.com/WICG/import-maps/issues/2).
-
-Convention for worker file names is `*.worker.js`.
-
-Build system only supports workers inside a library folder.
+* Use relative import statements inside a worker, same as in other scripts.
+* Convention for worker file names is `*.worker.js`.
+* Build system only supports workers inside a library folder.
 
 ## File structure / Architecture (try to keep updated)
 

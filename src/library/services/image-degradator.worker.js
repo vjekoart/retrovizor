@@ -14,7 +14,6 @@ function main ()
     console.log( "Results from Eigen", result );
 }
 
-/* TODO: doesn't work when the code above is included? */
 self.onmessage = ev =>
 {
     console.log( "[WORKER] I got a message", ev );

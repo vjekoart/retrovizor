@@ -10,7 +10,8 @@ import PostCSS        from "postcss";
 import { cwd }        from "node:process";
 import URL            from "url";
 
-import LibraryPostCSS from "./library.postcss.js";
+import LibraryPostCSS          from "./library.postcss.js";
+import TransformApplyImportMap from "./library.babel.js";
 
 const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
 
@@ -227,16 +228,24 @@ export function checkPath ( path, isDirectory = false )
     } );
 }
 
-export async function compileScript ( from, content, buildType, dev = false, importMappings = null )
+export async function compileScript ( from, content, buildType, dev = false, importMap = null )
 {
     console.info( `Compiling a script '${ from }'...` );
+
+    const plugins = [];
+
+    if ( importMap )
+    {
+        plugins.push( [ TransformApplyImportMap, { importMap } ] );
+    }
 
     const babelOptions =
     {
         comments   : dev,
         minified   : !dev,
         presets    : [ "@babel/preset-env" ],
-        sourceMaps : true
+        sourceMaps : true,
+        plugins
     };
 
     if ( buildType === "native" || buildType === "native-library-bundle" )
@@ -261,11 +270,6 @@ export async function compileScript ( from, content, buildType, dev = false, imp
         console.info ( `\n[FILE] ${ from }` );
         console.error( error.message, "\n" );
         return;
-    }
-
-    if ( importMappings )
-    {
-        console.log( "I should apply import mappings", from );
     }
 
     const map = JSON.stringify( results.map ?? {} );
