@@ -63,10 +63,10 @@ function main ()
         }
 
         imageDegradator
-            .degenerate( base64 )
-            .then( degenerated =>
+            .degrade( base64 )
+            .then( degraded =>
             {
-                renderBase64ToImage( degenerated, dom.image.output );
+                renderBase64ToImage( degraded, dom.image.output );
             } )
             .catch( error =>
             {
@@ -89,7 +89,7 @@ function extractFileName ( original )
 {
     const originalName = original.split( "." ).toSpliced( -1, 1 ).join( "." );
 
-    return [ originalName, "degenerated", "png" ].join( "." );
+    return [ originalName, "degraded", "png" ].join( "." );
 }
 
 function getBase64FromImage ( imageElement )
@@ -149,7 +149,7 @@ function setProcessing ( state )
         return;
     }
 
-    dom.button.generate.innerText = "Degenerate";
+    dom.button.generate.innerText = "Degrade";
     dom.button.generate.removeAttribute( "disabled" );
 }
 

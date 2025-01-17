@@ -21,10 +21,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes: loading state, computation logic to worker, rAF
     * ImageDegradator: move processing to worker
+        * Clear `image-degradator.service.js`
+        * Generalise and if makes sense, extract image/canvas manipulation logic from `image-degradator.worker.js` to utility file or a service, depending on requirements
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Standardize function comments that explain params and return values (JSDoc)
-    * Apply patterns from the text Declarative thinking
+    * Apply patterns from the text Declarative thinking and coding style
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * CloseYourEyes art: what about those damn lines? Make them breathe

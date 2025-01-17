@@ -36,19 +36,35 @@ class ImageDegradator
     }
 
     /* TODO: majority of this stuff should happen on the Worker */
-    async degenerate ( base64 )
+    degrade ( base64 )
     {
-        this.worker.onmessage = ev => console.log( "Message from worker", ev );
-        this.worker.postMessage( { some : "message" } );
+        return new Promise(( resolve, reject ) => {
+            this.worker.postMessage
+            ({
+                action  : "start",
+                content : base64,
+                options : this.options
+            });
 
-        await this.prepareImage( base64 );
-        await this.loadImage();
+            this.worker.onmessage = ev =>
+            {
+                if ( ev.data?.action === "end" )
+                {
+                    resolve( ev.data.content );
+                    return;
+                }
 
-        this.internalPrepareBounds();
-        this.internalColorAdjust();
-        this.internalToPrimitive();
+                reject({ message : "Error in worker", content : ev });
+            }
+        });
+        // await this.prepareImage( base64 );
+        // await this.loadImage();
 
-        return await this.internalToBase64();
+        // this.internalPrepareBounds();
+        // this.internalColorAdjust();
+        // this.internalToPrimitive();
+
+        // return await this.internalToBase64();
     }
 
     getOptions ()
