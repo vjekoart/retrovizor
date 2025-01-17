@@ -18,16 +18,16 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 4: content & pages, incl. related logic~
 * ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
-    * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
+    * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes
         * Format
         * Tests
-        * Introduce worker
-        * Try rAF
+        * Introduce worker - add performance measurements before
+        * Try rAF - add performance measurements before
         * Loading state
     * ---
-    * TODOs in the code, and console outputs and placeholder code (visible in browser console)
-    * Standardize function comments that explain params and return values (JSDoc)
+    * TODOs in the code, console outputs
+    * Standardize function comments; explain params and return values (JSDoc)
     * Apply patterns from the text Declarative thinking and coding style
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
@@ -63,8 +63,10 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 11: public image
     * Revise (delete and archive) GitHub repositories
     * Revise (delete and make private) gist.github
+    * Revise LinkedIn and update links
+    * Revise GitHub profile and update links
 * PUBLISH
-    * Rename instagram to retrovizor.xyz - the same day the website is published
+    * Rename instagram to retrovizor.xyz and update info - the same day the website is published
 * Phase 12: cycle of improvements from backlog after the first feedback
 
 ### Roadmap stuff (not part of the first version)
