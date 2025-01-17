@@ -13,13 +13,15 @@ self.onmessage = async ev =>
         }
         catch ( error )
         {
-            console.log( error );
             self.postMessage({ action : "error", content : error });
         }
     }
 }
 
-async function degrade ( base64, options )
+/**
+ * TODO: move to single abstraction level.
+ */
+async function degrade ( base64, options = {} )
 {
     const image = await getImageBitmapFromBase64( base64 );
 
@@ -112,12 +114,13 @@ function getAreaPixels ( image, imageData, x, y, xOffset, yOffset )
             const pixelIndex = j + i * image.width;
             const byteIndex  = pixelIndex * 4;
 
-            pixels.push( {
+            pixels.push
+            ({
                 index : byteIndex,
                 r     : imageData.data[ byteIndex     ],
                 g     : imageData.data[ byteIndex + 1 ],
                 b     : imageData.data[ byteIndex + 2 ]
-            } );
+            });
         }
     }
 
@@ -158,7 +161,7 @@ function getImageBitmapFromBase64 ( base64 )
 
         for ( let i = 0; i < count; ++i ) uint8Array[ i ] = decoded.charCodeAt( i );
 
-        const blob = new Blob( [ buffer ], { type : imageType });
+        const blob = new Blob( [ buffer ], { type : imageType } );
 
         self.createImageBitmap( blob )
             .then( bitmap => resolve( bitmap ) );
