@@ -1,3 +1,6 @@
+const getRandomFromInterval = ( min, max ) => Math.floor( Math.random() * ( max - min ) + min );
+const getRandomArray        = ( n, min, max ) => Array.from( { length: n }, () => getRandomFromInterval( min, max ) );
+
 function formatCodeBlocks ()
 {
     const preElements = document.getElementsByTagName( "pre" );
@@ -15,5 +18,7 @@ function formatCodeBlocks ()
 
 export
 {
+    getRandomArray,
+    getRandomFromInterval,
     formatCodeBlocks
 };

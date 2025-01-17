@@ -19,7 +19,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Phase 6.1: Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
-    * CloseYourEyes: loading state, computation logic to worker, rAF
+    * CloseYourEyes
+        * Format
+        * Tests
+        * Introduce worker
+        * Try rAF
+        * Loading state
     * ---
     * TODOs in the code, and console outputs and placeholder code (visible in browser console)
     * Standardize function comments that explain params and return values (JSDoc)
