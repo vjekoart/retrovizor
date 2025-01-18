@@ -1,28 +1,12 @@
 import { CanvasManager } from "Library/services/canvas-manager.service.js";
-import { ImageManager }  from "Library/services/image-manager.service.js";
+import { ImageManager  } from "Library/services/image-manager.service.js";
 
 import { getRandomFromInterval } from "Library/utilities.js";
 
 /**
- * CloseYourEyes - what we see when we close our eyes
+ * @CloseYourEyes
  *
- * @What?
- * It's not going well with blurred stuff, and testing showed that it may not look so interesting.
- * 
- * It seems that good idea is to create a ImageManager function that will expand given background, e.g. bolden some lines
- * that follow white points in the background
- * 
- * Create cool effect by building on broken distorted pixels that create some kind of hallucination
- * 
- * Try to add something like broken non-straight lines, because they seem like a natural thing that comes out of this
- * hallucination. Closed-eyes are just inspiration, I should not try to copy that because I cant and it's not necessary.
- * 
- * @Tech
- * - extract managers to module files
- * - generate stuff on worker? initialization part has an impact on performance and UX
- * - clean up and prettify code
- * - create a TypeScript build system for this project
- * - this may be a custom web element that has verbose configuration (everything is optional)
+ * An experiment trying to depict what a human see when eyes are closed, in the dark.
  */
 class CloseYourEyes
 {
@@ -53,6 +37,7 @@ class CloseYourEyes
             imaginaryLineDotOpacityIncrease: 120
         }
 
+        // TODO: register to window 'resize' event and stop the animation, recalculate frames and restart
         this.canvasManager = new CanvasManager( canvas, this.options.drawPadding );
         this.imageManager  = new ImageManager(
             this.options.accentColor,
@@ -99,9 +84,6 @@ class CloseYourEyes
         let lineIndex       = 0;
         let machineIndex    = 0;
 
-        // States: "BG", "BLANK", "LINE"
-        //const machine = [ "BG", "BLANK", "BLANK", "BLANK", "LINE", "BLANK", "BLANK", "BLANK", "BLANK", "BLANK" ];
-        //const machine = [ "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
         const machine = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
 
         // TODO: draw lines rarely, so they really make an impact
@@ -139,12 +121,6 @@ class CloseYourEyes
                     }
                 }
 
-                if ( step === "BLANK" )
-                {
-                    // TODO: just lower the opacity of all canvas
-                    this.canvasManager.fadeImage( this.options.alphaDeltaFade );
-                }
-
                 ++machineIndex;
             },
             this.options.frameDelay
@@ -152,4 +128,4 @@ class CloseYourEyes
     }
 }
 
-export { CloseYourEyes };
+export { CloseYourEyes }

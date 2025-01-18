@@ -25,6 +25,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Introduce worker - add performance measurements before
         * Try rAF - add performance measurements before
         * Loading state
+    * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
     * ---
     * TODOs in the code, console outputs
     * Standardize function comments; explain params and return values (JSDoc)

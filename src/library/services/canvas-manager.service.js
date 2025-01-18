@@ -1,17 +1,6 @@
 class CanvasManager
 {
-    canvas;
-    context;
-    padding = 24;
-    pixelCountX = 0;
-    pixelCountY = 0;
-
-    get pixelCount()
-    {
-        return this.pixelCountX * this.pixelCountY;
-    }
-
-    constructor( canvas, padding )
+    constructor( canvas, padding = null )
     {
         if ( !canvas )
         {
@@ -19,8 +8,16 @@ class CanvasManager
         }
 
         this.canvas  = canvas;
-        this.context = this.canvas.getContext( "2d", { willReadFrequently: true } );
-        this.padding = padding;
+        this.context = this.canvas.getContext( "2d", { willReadFrequently : true } );
+        this.padding = padding ?? 24;
+
+        this.pixelCountX = 0;
+        this.pixelCountY = 0;
+    }
+
+    get pixelCount()
+    {
+        return this.pixelCountX * this.pixelCountY;
     }
 
     setup()
@@ -34,7 +31,7 @@ class CanvasManager
         this.canvas.width  = document.body.clientWidth;
         this.canvas.height = window.innerHeight;
 
-        this.context.clearRect( 0, 0, document.body.clientWidth, window.innerHeight );
+        this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
 
         this.pixelCountX = this.canvas.width  - 2 * this.padding;
         this.pixelCountY = this.canvas.height - 2 * this.padding;
@@ -42,7 +39,8 @@ class CanvasManager
 
     clearImage()
     {
-        this.context.clearRect(
+        this.context.clearRect
+        (
             this.padding,
             this.padding,
             this.pixelCountX,
@@ -52,17 +50,18 @@ class CanvasManager
 
     drawImage( imageDataArray )
     {
-        const imageData = new ImageData(
+        const imageData = new ImageData
+        (
             imageDataArray,
             this.pixelCountX,
             this.pixelCountY
         );
 
+        // TODO: check if this method can be optimised, or if there's an alternative method
         this.context.putImageData( imageData, this.padding, this.padding );
     }
 
-    // TODO: this should be splittable to two different functions, but I have a problem with internal
-    //       data structures
+    // TODO: this should be splittable to two different functions, but I have a problem with internal data structures
     mergeAndDrawImage( imageDataArray, alphaDelta )
     {
         if ( !imageDataArray )
@@ -70,41 +69,27 @@ class CanvasManager
             return;
         }
 
-        const existingImageData = this.context.getImageData(
+        const existing = this.context.getImageData
+        (
             this.padding,
             this.padding,
             this.pixelCountX,
             this.pixelCountY
         );
 
-        // TODO: optimise the main loop as much as possible
-        for ( let i = 0; i < existingImageData.data.length; i += 4 )
+        const dataLength = existing.data.length;
+        const imageData  = existing.data;
+
+        for ( let i = 0; i < dataLength; i += 4 )
         {
-            existingImageData.data[ i + 0 ] = Math.min( 255, existingImageData.data[ i + 0 ] + imageDataArray[ i + 0 ] );
-            existingImageData.data[ i + 1 ] = Math.min( 255, existingImageData.data[ i + 1 ] + imageDataArray[ i + 1 ] );
-            existingImageData.data[ i + 2 ] = Math.min( 255, existingImageData.data[ i + 2 ] + imageDataArray[ i + 2 ] );
-            existingImageData.data[ i + 3 ] = Math.min( 255, Math.max( 0, existingImageData.data[ i + 3 ] - alphaDelta + imageDataArray[ i + 3 ] ) );
+            imageData[ i + 0 ] = Math.min( 255, imageData[ i + 0 ] + imageDataArray[ i + 0 ] );
+            imageData[ i + 1 ] = Math.min( 255, imageData[ i + 1 ] + imageDataArray[ i + 1 ] );
+            imageData[ i + 2 ] = Math.min( 255, imageData[ i + 2 ] + imageDataArray[ i + 2 ] );
+            imageData[ i + 3 ] = Math.min( 255, Math.max( 0, imageData[ i + 3 ] - alphaDelta + imageDataArray[ i + 3 ] ) );
         }
 
-        this.context.putImageData( existingImageData, this.padding, this.padding );
-    }
-
-    fadeImage( alphaDelta )
-    {
-        const existingImageData = this.context.getImageData(
-            this.padding,
-            this.padding,
-            this.pixelCountX,
-            this.pixelCountY
-        );
-
-        // TODO: optimise the main loop as much as possible
-        for ( let i = 0; i < existingImageData.data.length; i += 4 )
-        {
-            existingImageData.data[ i + 3 ] = Math.min( 255, Math.max( 0, existingImageData.data[ i + 3 ] - alphaDelta ) );
-        }
-
-        this.context.putImageData( existingImageData, this.padding, this.padding );
+        // TODO: check if this method can be optimised, or if there's an alternative method
+        this.context.putImageData( existing, this.padding, this.padding );
     }
 }
 

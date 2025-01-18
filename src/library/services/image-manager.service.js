@@ -92,14 +92,14 @@ class ImageManager
             const endY   = Math.floor( imageHeight - startY );
 
             const startIndex = 4 * ( ( startY - 1 ) * imageWidth + ( startX - 1 ) );
-            const brightest  = { x: startX, y: startY, a: frame[ startIndex + 3 ] };
+            const brightest  = { x: startX, y: startY, a: frame[ startIndex + 3 ] }
 
             for ( let xi = startX; xi < endX; ++xi )
             {
                 for ( let yi = startY; yi < endY; ++yi )
                 {
                     const index = 4 * ( ( yi - 1 ) * imageWidth + ( xi - 1 ) );
-                    const currentPixel = { x: xi, y: yi, a: frame[ index + 3 ] };
+                    const currentPixel = { x: xi, y: yi, a: frame[ index + 3 ] }
 
                     if ( currentPixel.a > brightest.a )
                     {
@@ -167,7 +167,7 @@ class ImageManager
 
             const findBrightestNearbySpot = ( focalPoint, searchXLength, searchYLength ) =>
             {
-                const brightest = { x: null, y: null, a: null };
+                const brightest = { x: null, y: null, a: null }
 
                 getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( ( spot ) =>
                 {

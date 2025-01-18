@@ -1,5 +1,12 @@
-const getRandomFromInterval = ( min, max ) => Math.floor( Math.random() * ( max - min ) + min );
-const getRandomArray        = ( n, min, max ) => Array.from( { length: n }, () => getRandomFromInterval( min, max ) );
+function getRandomFromInterval ( min, max )
+{
+    return Math.floor( Math.random() * ( max - min ) + min );
+}
+
+function getRandomArray ( length, min, max )
+{
+    return Array.from( { length }, () => getRandomFromInterval( min, max ) );
+}
 
 function formatCodeBlocks ()
 {
@@ -21,4 +28,4 @@ export
     getRandomArray,
     getRandomFromInterval,
     formatCodeBlocks
-};
+}
