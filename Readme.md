@@ -20,12 +20,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes
-        * Format
         * Tests
         * Introduce worker - add performance measurements before
         * Try rAF - add performance measurements before
-        * Loading state
+        * Expose options in the experiment view
+        * Loading state, handled by the homepage view
+        * Code todos
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
+        * What to do with `deploy` and `start` actions in `index.js`?
     * ---
     * TODOs in the code, console outputs
     * Standardize function comments; explain params and return values (JSDoc)
@@ -86,6 +88,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder
     * Handle file rename in the loop
     * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
+    * Testing web workers?
     * Add something like `npm run dev:test` to support test development
     * Performance
         * Try streams instead of `writeFile` and similar to improve performance 

@@ -1,35 +1,49 @@
 import { getRandomArray } from "Library/utilities.js";
 
+/**
+ * Generates dots and imaginary lines.
+ *
+ * @constructor options
+ * {
+ *     colors :
+ *     {
+ *         noise : { r : 255, g : 255, b : 255 }
+ *     },
+ *     dot :
+ *     {
+ *         opacity :
+ *         {
+ *             min : 0,
+ *             max : 255
+ *         }
+ *     },
+ *     imaginaryLineDotOpacityIncrease : 0
+ * }
+ */
 class ImageManager
 {
-    accentColor =
+    constructor( options = {} )
     {
-        r: 255,
-        g: 255,
-        b: 255
-    }
+        this.colors =
+        {
+            noise : options.colors?.noise ?? { r : 255, g : 255, b : 255 }
+        }
 
-    noiseColor =
-    {
-        r: 255,
-        g: 255,
-        b: 255
-    }
+        this.dot =
+        {
+            opacity :
+            {
+                min : options.dot?.opacity?.min ?? 0,
+                max : options.dot?.opacity?.max ?? 255
+            }
+        }
 
-    minDotOpacity = 0;
-    maxDotOpacity = 255;
-    imaginaryLineDotOpacityIncrease = 0;
-
-    constructor( accentColor, noiseColor, minDotOpacity, maxDotOpacity, imaginaryLineDotOpacityIncrease )
-    {
-        this.accentColor   = accentColor;
-        this.noiseColor    = noiseColor;
-        this.minDotOpacity = minDotOpacity;
-        this.maxDotOpacity = maxDotOpacity;
-        this.imaginaryLineDotOpacityIncrease = imaginaryLineDotOpacityIncrease;
+        this.imaginaryLineDotOpacityIncrease = options.imaginaryLineDotOpacityIncrease ?? 0;
     }
 
     /**
+     * Generates a frame with randomly placed bright dots.
+     *
      * @param pixelCount Number of pixels in an image, e.g. 100x50 image has 5000 pixels.
      * @param coverage   Percentage of how many of total pixels should have a non-transparent value.
      *                   For example pass 50 for 50% percent, i.e. 2500 pixels in 100x50 image.
@@ -40,66 +54,71 @@ class ImageManager
     generateDistortedArray( pixelCount, coverage, maxStep )
     {
         const byteCount = 4 * pixelCount;
-        const arr = new Uint8ClampedArray( byteCount );
+        const array     = new Uint8ClampedArray( byteCount );
 
-        // Generate random sequences
-        const opacitySequence = getRandomArray( 300, this.minDotOpacity, this.maxDotOpacity );
-        const pixelSequence   = Array.from(
+        const opacitySequence = getRandomArray( 300, this.dot.opacity.min, this.dot.opacity.max );
+        const pixelSequence   = Array.from
+        (
             { length: ( coverage / 100 ) * pixelCount },
             () => Math.floor( Math.random() * maxStep )
         );
 
-        // Iterate over all pixels using a custom sequence and opacity values based on the another sequence
         for (
-            let iterator = 4 * pixelSequence[ 0 ], pixelIndex = 0, opacityIndex = 0;
+            let iterator = 4 * pixelSequence[ 0 ],
+            pixelIndex   = 0,
+            opacityIndex = 0;
             iterator < byteCount;
-            iterator += 4 * pixelSequence[ pixelIndex ],
-            pixelIndex = pixelIndex < pixelSequence.length - 1 ? ++pixelIndex : 0,
+            iterator    += 4 * pixelSequence[ pixelIndex ],
+            pixelIndex   = pixelIndex   < pixelSequence.length - 1   ? ++pixelIndex   : 0,
             opacityIndex = opacityIndex < opacitySequence.length - 1 ? ++opacityIndex : 0
         ) {
-            arr[ iterator + 0 ] = this.noiseColor.r;
-            arr[ iterator + 1 ] = this.noiseColor.g;
-            arr[ iterator + 2 ] = this.noiseColor.b;
-            arr[ iterator + 3 ] = opacitySequence[ opacityIndex ];
+            array[ iterator + 0 ] = this.colors.noise.r;
+            array[ iterator + 1 ] = this.colors.noise.g;
+            array[ iterator + 2 ] = this.colors.noise.b;
+            array[ iterator + 3 ] = opacitySequence[ opacityIndex ];
         }
 
-        return arr;
+        return array;
     }
 
     /**
-     * Algorithm: how to find adjecent points that have the strongest opacity.
-     *      1. Choose random bright point from the array.
-     *      2. Look around you (first circle) and choose the brightest point. If all points are completely dark, step out to another circle.
-     *      3. Using this approach, repeat and create a path that consists of max N bright points, or if you go outside the canvas.
-     *      4. You can't choose point that was already selected.
+     * Generates a frame with randomly selected imaginary line, based on the adjecent points with the strongest
+     * opacity.
+     *
+     * 1. Choose random bright point from the array.
+     * 2. Look around the starting point (first circle) and choose the brightest point. If all points are completely dark,
+     *    step out to another circle.
+     * 3. Using this approach, repeat and create a path that consists of max N bright points. Stop if outside the canvas.
+     * 4. Skip points that are already selected.
      * 
      * @param frame       Uint8ClampedArray where each element represents a pixel.
      * @param imageWidth
      * @param imageHeight
      * @param maxLength   Number representing max length of the imaginary line in pixels.
+     * @return frame
      */
     generateImaginaryLine( frame, imageWidth, imageHeight, maxLength )
     {
-        const _startingPointPaddingFactor = 0.4; // Starting box from where the brightest point should be selected
-        const _deadEndPaddingFactor = 0.05;      // Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side
+        const _startingPointPaddingFactor = 0.4;  /* Starting box from where the brightest point should be selected                     */
+        const _deadEndPaddingFactor       = 0.05; /* Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side */
 
-        // Find the brightest point in the starting box, influenced by _startingPointPaddingFactor
+        /* Find the brightest point in the starting box, influenced by _startingPointPaddingFactor */
         const getStartingPoint = () =>
         {
-            const startX = Math.ceil( _startingPointPaddingFactor * imageWidth );
-            const startY = Math.ceil( _startingPointPaddingFactor * imageHeight );
-            const endX   = Math.floor( imageWidth - startX );
+            const startX = Math.ceil ( _startingPointPaddingFactor * imageWidth  );
+            const startY = Math.ceil ( _startingPointPaddingFactor * imageHeight );
+            const endX   = Math.floor( imageWidth - startX  );
             const endY   = Math.floor( imageHeight - startY );
 
             const startIndex = 4 * ( ( startY - 1 ) * imageWidth + ( startX - 1 ) );
-            const brightest  = { x: startX, y: startY, a: frame[ startIndex + 3 ] }
+            const brightest  = { x : startX, y : startY, a : frame[ startIndex + 3 ] }
 
             for ( let xi = startX; xi < endX; ++xi )
             {
                 for ( let yi = startY; yi < endY; ++yi )
                 {
-                    const index = 4 * ( ( yi - 1 ) * imageWidth + ( xi - 1 ) );
-                    const currentPixel = { x: xi, y: yi, a: frame[ index + 3 ] }
+                    const index        = 4 * ( ( yi - 1 ) * imageWidth + ( xi - 1 ) );
+                    const currentPixel = { x : xi, y : yi, a : frame[ index + 3 ] }
 
                     if ( currentPixel.a > brightest.a )
                     {
@@ -136,26 +155,23 @@ class ImageManager
 
                 const spots = [];
 
-                // Top and bottom sides
-                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x: xi, y: startY } );
-                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x: xi, y: endY   } );
+                /* Top and bottom sides    */
+                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x : xi, y : startY } );
+                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x : xi, y : endY   } );
 
-                // Left and right sides
-                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x: startX, y: yi } );
-                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x: endX,   y: yi } );
+                /* Left and right sides    */
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x : startX, y : yi } );
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x : endX,   y : yi } );
 
-                // Remove duplicates
+                /* Remove duplicates       */
                 for ( const index in spots )
                 {
-                    const isDuplicate = line.find( ( point ) =>
-                    {
-                        return spots[ index ].x === point.x && spots[ index ].y === point.y;
-                    } );
+                    const isDuplicate = line.find( point => spots[ index ].x === point.x && spots[ index ].y === point.y );
 
                     if ( isDuplicate ) spots.splice( index, 1 );
                 }
 
-                // Add opacity information
+                /* Add opacity information */
                 for ( const spot of spots )
                 {
                     const index = 4 * ( ( spot.y - 1 ) * imageWidth + ( spot.x - 1 ) );
@@ -167,9 +183,9 @@ class ImageManager
 
             const findBrightestNearbySpot = ( focalPoint, searchXLength, searchYLength ) =>
             {
-                const brightest = { x: null, y: null, a: null }
+                const brightest = { x : null, y : null, a : null }
 
-                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( ( spot ) =>
+                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( spot =>
                 {
                     if ( spot.a > 0 && ( brightest === null || spot.a >= brightest.a ) )
                     {
@@ -182,7 +198,7 @@ class ImageManager
                 return brightest.x === null ? null : brightest;
             }
 
-            // At the beginning just look at nearest (1px distance) pixels to find the brightest one
+            /* At the beginning just look at nearest (1px distance) pixels to find the brightest one */
             let focalPoint    = startingPoint;
             let searchXLength = 1;
             let searchYLength = 1;
@@ -196,7 +212,8 @@ class ImageManager
                 if ( brightestNearbySpot )
                 {
                     line.push( brightestNearbySpot );
-                    focalPoint = brightestNearbySpot;
+
+                    focalPoint    = brightestNearbySpot;
                     searchXLength = 1;
                     searchYLength = 1;
 
@@ -210,29 +227,25 @@ class ImageManager
             return line;
         }
 
-        const generateFrameFromLine = ( lineArray ) =>
+        const generateFrameFromLine = lineArray =>
         {
             const byteCount = 4 * imageWidth * imageHeight;
-            const arr = new Uint8ClampedArray( byteCount );
+            const array     = new Uint8ClampedArray( byteCount );
 
             for ( const spot of lineArray )
             {
                 const index = 4 * ( ( spot.y - 1 ) * imageWidth + ( spot.x - 1 ) );
 
-                arr[ index + 0 ] = this.noiseColor.r;
-                arr[ index + 1 ] = this.noiseColor.g;
-                arr[ index + 2 ] = this.noiseColor.b;
-                arr[ index + 3 ] = spot.a;
+                array[ index + 0 ] = this.colors.noise.r;
+                array[ index + 1 ] = this.colors.noise.g;
+                array[ index + 2 ] = this.colors.noise.b;
+                array[ index + 3 ] = spot.a;
             }
 
-            return arr;
+            return array;
         }
 
-        return generateFrameFromLine(
-            findImaginaryLine(
-                getStartingPoint()
-            )
-        );
+        return generateFrameFromLine( findImaginaryLine( getStartingPoint() ) );
     }
 }
 

@@ -4,8 +4,7 @@ describe( "ImageManager suite", () =>
 {
     it( "constructor", () =>
     {
-        const canvas   = document.createElement( "canvas" );
-        const instance = new ImageManager( canvas );
+        const instance = new ImageManager();
 
         expect( instance instanceof ImageManager ).toBe( true );        
     } );

@@ -6,6 +6,7 @@ function main ()
     const closeYourEyes = new CloseYourEyes( canvas );
 
     closeYourEyes.setup();
+    closeYourEyes.generate();
     closeYourEyes.run();
 }
 
