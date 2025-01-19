@@ -25,8 +25,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Try rAF - add performance measurements before
         * Expose options in the experiment view
         * Loading state, handled by the homepage view
+        * Limit animation size to full HD on homepage, don't want to break someones PC
         * Code todos
-        * Dot size: default 1px, but possible to increase so the animation is more pixelated?
+        * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
         * Add `revizor/Readme.md` and extract relevant stuff there

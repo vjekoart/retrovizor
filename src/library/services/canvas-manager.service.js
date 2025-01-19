@@ -39,6 +39,8 @@ class CanvasManager
 
     resize()
     {
+        // TODO: don't do this, resize on parent size, or remove this logic from this file completely
+        // TODO: is CanvasManager responsizle for resizing? Yes, only for `canvas.width` and `canvas.height` properties based on CSS sizes of the canvas element
         this.canvas.width  = document.body.clientWidth;
         this.canvas.height = window.innerHeight;
 

@@ -32,6 +32,7 @@ class CloseYourEyes
         }
 
         // TODO: register to window 'resize' event and stop the animation, recalculate frames and restart
+        // TODO: resize to CSS width and height of the provided canvas element, i.e. take up all available space inteded for drawing
         this.canvasManager = new CanvasManager( canvas, this.options.drawPadding );
         this.imageManager  = new ImageManager
         ({
