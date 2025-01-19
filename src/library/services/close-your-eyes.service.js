@@ -7,6 +7,12 @@ import { getRandomFromInterval } from "Library/utilities.js";
  * @CloseYourEyes
  *
  * An experiment trying to depict what a human see when eyes are closed, in the dark.
+ *
+ * @usage
+ * TODO
+ *
+ * @constructor
+ * TODO
  */
 class CloseYourEyes
 {

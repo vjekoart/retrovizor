@@ -1,11 +1,20 @@
+/**
+ * @ImageDegradator
+ *
+ * Degrades an image by scaling-down the number of pixels and by changing original image colors. Currently,
+ * it transforms the image in duochrome format.
+ *
+ * @usage
+ * TODO
+ */
 class ImageDegradator
 {
     constructor ( scaleDownFactor )
     {
         this.options =
         {
-            maxLightness    : 200,                  // 0 - 255
-            scaleDownFactor : scaleDownFactor ?? 16 // 1 - Math.min( image.width, image.height )
+            maxLightness    : 200,                  /* 0 - 255                                   */
+            scaleDownFactor : scaleDownFactor ?? 16 /* 1 - Math.min( image.width, image.height ) */
         }
 
         this.worker  = new Worker
@@ -34,7 +43,7 @@ class ImageDegradator
                     return;
                 }
 
-                reject({ message : "Error in worker", content : ev });
+                reject({ message : "Error in the worker script.", errorEvent : ev });
             }
         });
     }

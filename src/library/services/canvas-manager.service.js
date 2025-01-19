@@ -1,3 +1,14 @@
+/**
+ * @CanvasManager
+ *
+ * Handles drawing frames in an animation-like way inside a canvas element.
+ *
+ * @usage
+ * TODO
+ *
+ * @constructor
+ * TODO
+ */
 class CanvasManager
 {
     constructor( canvas, padding = null )

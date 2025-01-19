@@ -1,7 +1,12 @@
 import { getRandomArray } from "Library/utilities.js";
 
 /**
- * Generates dots and imaginary lines.
+ * @ImageManager
+ *
+ * Generates dots and imaginary lines frames in the form of ImageData.data arrays.
+ *
+ * @usage
+ * TODO
  *
  * @constructor options
  * {

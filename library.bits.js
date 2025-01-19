@@ -187,7 +187,7 @@ export function checkPath ( path, isDirectory = false )
  */
 export async function compileBundle ( entryPoint, entryName, outputPath, libraryPath, dev = false )
 {
-    console.info( `Compiling bundle '${ entryName }'...` );
+    console.info( `Compiling bundle '${ Path.normalize( entryName ) }'...` );
 
     const config =
     {
@@ -378,7 +378,7 @@ export async function getTestLibraryMappings ( path, libraryPath )
 
     for ( const dirent of files )
     {
-        if ( dirent.isDirectory() || !isScriptFile( dirent.name ) )
+        if ( dirent.isDirectory() || !( isScriptFile( dirent.name ) || isWorkerFile( dirent.name ) ) )
         {
             continue;
         }

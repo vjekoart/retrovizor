@@ -64,19 +64,19 @@ function main ()
 
         imageDegradator
             .degrade( base64 )
-            .then( degraded =>
+            .then(( degraded ) =>
             {
                 renderBase64ToImage( degraded, dom.image.output );
-            } )
-            .catch( error =>
+            })
+            .catch(( error ) =>
             {
                 console.warn( error );
                 alert( "There was an error!" );
-            } )
-            .finally( () =>
+            })
+            .finally(() =>
             {
                 setProcessing( false );
-            } );
+            });
     } );
 
     dom.input.image.addEventListener( "change", ev =>
@@ -140,9 +140,9 @@ function renderBase64ToImage ( base64, imageElement )
     dom.image.output.src = base64;
 }
 
-function setProcessing ( state )
+function setProcessing ( isProcessing )
 {
-    if ( state )
+    if ( isProcessing )
     {
         dom.button.generate.innerText = "Processing...";
         dom.button.generate.setAttribute( "disabled", "disabled" );
