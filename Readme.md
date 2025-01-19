@@ -20,12 +20,11 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes
-        * Resize event, don't use full screen width/height in `CanvasManager`, but rather limit to parent size - user of the CloseYourEyes should provide boundaries
         * Introduce worker - add performance measurements before
         * Try rAF - add performance measurements before
         * Expose options in the experiment view
         * Loading state, handled by the homepage view
-        * Limit animation size to full HD on homepage, don't want to break someones PC
+        * Limit animation size to full HD on homepage, don't break someones PC
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Write tests for worker files

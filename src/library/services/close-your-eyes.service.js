@@ -30,7 +30,7 @@ class CloseYourEyes
             imaginaryLineDotOpacityIncrease : 120,
             maxDotOpacity                   : 120,
             minDotOpacity                   : 30,
-            maxImaginaryLineLength          : 200,
+            maxImaginaryLineLength          : Math.floor( 0.3 * window.innerWidth ),
             noiseColor                      : { r: 185 , g: 185 , b: 202 }
         }
 
@@ -39,9 +39,12 @@ class CloseYourEyes
         /* Internal */
         this.animationId         = null; /* Non-null when the animation is running            */
         this.backgrounds         = [];
-        this.delayBeforeResizing = 1000;
         this.imaginaryLines      = [];
         this.timerId             = null; /* Non-null when the resize is waiting for execution */
+
+        this.resizeCycleActive    = false;
+        this.resizeCycleShouldRun = false;
+        this.resizeDelay          = 1000;
 
         this.canvasManager       = new CanvasManager( canvas, this.options.drawPadding );
         this.imageManager        = new ImageManager
@@ -99,25 +102,24 @@ class CloseYourEyes
 
     resize ()
     {
-        console.log( "resize" );
-        const wasRunning = this.stop();
+        if ( !this.resizeCycleActive )
+        {
+            this.resizeCycleShouldRun = this.stop();
+            this.resizeCycleActive = true;
+        }
 
         this.canvasManager.clearImage();
-        this.resizeTimer( wasRunning );
+        this.resizeTimer();
     }
 
     resizeDo ( wasRunning )
     {
+        this.resizeCycleActive = false;
         this.generate();
-
-        // TODO: wasRunning is reset by subsequent calls of resize event, need to preserve the value in one cycle
-        //       But how to define a cycle? Resize evnt starts the cycle, while resizeDo stops the cycle
-        console.log( "wasRunning", wasRunning );
-        
-        wasRunning && this.run();
+        this.resizeCycleShouldRun && this.run();
     }
 
-    resizeTimer ( wasRunning )
+    resizeTimer ()
     {
         if ( this.timerId )
         {
@@ -127,10 +129,10 @@ class CloseYourEyes
         this.timerId = window.setTimeout(
             () =>
             {
-                this.resizeDo( wasRunning );
+                this.resizeDo();
                 this.timerId = null;
             },
-            this.delayBeforeResizing
+            this.resizeDelay
         );
     }
 
@@ -178,6 +180,9 @@ class CloseYourEyes
         window.addEventListener( "resize", () => this.resize() );
     }
 
+    /**
+     * Returns `true` if animation was running, and `false` otherwise.
+     */
     stop ()
     {
         if ( this.animationId )
