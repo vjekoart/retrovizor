@@ -27,7 +27,7 @@ import { getRandomArray } from "Library/utilities.js";
  */
 class ImageManager
 {
-    constructor( options = {} )
+    constructor ( options = {} )
     {
         this.colors =
         {
@@ -56,7 +56,7 @@ class ImageManager
      *                   Affects how condensed is the distorted array.
      * @return frame
      */
-    generateDistortedArray( pixelCount, coverage, maxStep )
+    generateDistortedArray ( pixelCount, coverage, maxStep )
     {
         const byteCount = 4 * pixelCount;
         const array     = new Uint8ClampedArray( byteCount );
@@ -102,7 +102,7 @@ class ImageManager
      * @param maxLength   Number representing max length of the imaginary line in pixels.
      * @return frame
      */
-    generateImaginaryLine( frame, imageWidth, imageHeight, maxLength )
+    generateImaginaryLine ( frame, imageWidth, imageHeight, maxLength )
     {
         const _startingPointPaddingFactor = 0.4;  /* Starting box from where the brightest point should be selected                     */
         const _deadEndPaddingFactor       = 0.05; /* Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side */
@@ -190,7 +190,7 @@ class ImageManager
             {
                 const brightest = { x : null, y : null, a : null }
 
-                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( spot =>
+                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach(( spot ) =>
                 {
                     if ( spot.a > 0 && ( brightest === null || spot.a >= brightest.a ) )
                     {
@@ -198,9 +198,9 @@ class ImageManager
                         brightest.y = spot.y;
                         brightest.a = Math.min( 255, spot.a + this.imaginaryLineDotOpacityIncrease );
                     }
-                } );
+                });
 
-                return brightest.x === null ? null : brightest;
+                return brightest.x && brightest;
             }
 
             /* At the beginning just look at nearest (1px distance) pixels to find the brightest one */

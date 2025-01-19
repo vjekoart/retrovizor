@@ -9,7 +9,10 @@ import { getRandomFromInterval } from "Library/utilities.js";
  * An experiment trying to depict what a human see when eyes are closed, in the dark.
  *
  * @usage
+ * ```javascript
  * TODO
+ * closeYourEyes.onEvent = ( name, data? ) => { ... }
+ * ```
  *
  * @constructor
  * TODO
@@ -24,17 +27,24 @@ class CloseYourEyes
             drawPadding                     : 0,
             frameCount                      : 24,
             frameDelay                      : 30,
-            noiseColor                      : { r: 185 , g: 185 , b: 202 },
-            minDotOpacity                   : 30,
+            imaginaryLineDotOpacityIncrease : 120,
             maxDotOpacity                   : 120,
+            minDotOpacity                   : 30,
             maxImaginaryLineLength          : 200,
-            imaginaryLineDotOpacityIncrease : 120
+            noiseColor                      : { r: 185 , g: 185 , b: 202 }
         }
 
-        // TODO: register to window 'resize' event and stop the animation, recalculate frames and restart
-        // TODO: resize to CSS width and height of the provided canvas element, i.e. take up all available space inteded for drawing
-        this.canvasManager = new CanvasManager( canvas, this.options.drawPadding );
-        this.imageManager  = new ImageManager
+        this.onEvent             = null; /* A user can set a callback to get service events   */
+
+        /* Internal */
+        this.animationId         = null; /* Non-null when the animation is running            */
+        this.backgrounds         = [];
+        this.delayBeforeResizing = 1000;
+        this.imaginaryLines      = [];
+        this.timerId             = null; /* Non-null when the resize is waiting for execution */
+
+        this.canvasManager       = new CanvasManager( canvas, this.options.drawPadding );
+        this.imageManager        = new ImageManager
         ({
             colors :
             {
@@ -50,18 +60,11 @@ class CloseYourEyes
             },
             imaginaryLineDotOpacityIncrease : this.options.imaginaryLineDotOpacityIncrease
         });
-
-        this.backgrounds    = [];
-        this.imaginaryLines = [];
-    }
-
-    setup ()
-    {
-        this.canvasManager.setup();
     }
 
     generate ()
     {
+        this.sendEvent( "generating" );
         this.backgrounds = [];
 
         for ( let i = 0; i < this.options.frameCount; ++i )
@@ -89,15 +92,59 @@ class CloseYourEyes
         }
     }
 
+    sendEvent ( name, data = null )
+    {
+        typeof this.onEvent === "function" && this.onEvent( name, data );
+    }
+
+    resize ()
+    {
+        console.log( "resize" );
+        const wasRunning = this.stop();
+
+        this.canvasManager.clearImage();
+        this.resizeTimer( wasRunning );
+    }
+
+    resizeDo ( wasRunning )
+    {
+        this.generate();
+
+        // TODO: wasRunning is reset by subsequent calls of resize event, need to preserve the value in one cycle
+        //       But how to define a cycle? Resize evnt starts the cycle, while resizeDo stops the cycle
+        console.log( "wasRunning", wasRunning );
+        
+        wasRunning && this.run();
+    }
+
+    resizeTimer ( wasRunning )
+    {
+        if ( this.timerId )
+        {
+            window.clearTimeout( this.timerId );
+        }
+
+        this.timerId = window.setTimeout(
+            () =>
+            {
+                this.resizeDo( wasRunning );
+                this.timerId = null;
+            },
+            this.delayBeforeResizing
+        );
+    }
+
     run ()
     {
         let backgroundIndex = 0;
         let lineIndex       = 0;
         let machineIndex    = 0;
 
-        const machine = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
+        // TODO: this shouldn't be defined here
+        const machine    = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
 
-        window.setInterval(
+        this.animationId = window.setInterval
+        (
             () =>
             {
                 machineIndex === machine.length && ( machineIndex = 0 );
@@ -122,6 +169,26 @@ class CloseYourEyes
             },
             this.options.frameDelay
         );
+    }
+
+    setup ()
+    {
+        this.canvasManager.setup();
+
+        window.addEventListener( "resize", () => this.resize() );
+    }
+
+    stop ()
+    {
+        if ( this.animationId )
+        {
+            window.clearInterval( this.animationId );
+            this.animationId = null;
+
+            return true;
+        }
+
+        return false;
     }
 }
 

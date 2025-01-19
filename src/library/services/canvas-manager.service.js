@@ -11,7 +11,7 @@
  */
 class CanvasManager
 {
-    constructor( canvas, padding = null )
+    constructor ( canvas, padding = null )
     {
         if ( !canvas )
         {
@@ -26,31 +26,12 @@ class CanvasManager
         this.pixelCountY = 0;
     }
 
-    get pixelCount()
+    get pixelCount ()
     {
         return this.pixelCountX * this.pixelCountY;
     }
 
-    setup()
-    {
-        this.resize();
-        window.addEventListener( "resize", () => this.resize() );
-    }
-
-    resize()
-    {
-        // TODO: don't do this, resize on parent size, or remove this logic from this file completely
-        // TODO: is CanvasManager responsizle for resizing? Yes, only for `canvas.width` and `canvas.height` properties based on CSS sizes of the canvas element
-        this.canvas.width  = document.body.clientWidth;
-        this.canvas.height = window.innerHeight;
-
-        this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
-
-        this.pixelCountX = this.canvas.width  - 2 * this.padding;
-        this.pixelCountY = this.canvas.height - 2 * this.padding;
-    }
-
-    clearImage()
+    clearImage ()
     {
         this.context.clearRect
         (
@@ -61,7 +42,7 @@ class CanvasManager
         );
     }
 
-    drawImage( imageDataArray )
+    drawImage ( imageDataArray )
     {
         const imageData = new ImageData
         (
@@ -75,7 +56,7 @@ class CanvasManager
     }
 
     // TODO: this should be splittable to two different functions, but I have a problem with internal data structures
-    mergeAndDrawImage( imageDataArray, alphaDelta )
+    mergeAndDrawImage ( imageDataArray, alphaDelta )
     {
         if ( !imageDataArray )
         {
@@ -103,6 +84,25 @@ class CanvasManager
 
         // TODO: check if this method can be optimised, or if there's an alternative method
         this.context.putImageData( existing, this.padding, this.padding );
+    }
+
+    resize ()
+    {
+        const computedStyle = window.getComputedStyle( this.canvas );
+
+        this.canvas.width   = parseInt( computedStyle.getPropertyValue( "width"  ), 10 );
+        this.canvas.height  = parseInt( computedStyle.getPropertyValue( "height" ), 10 );
+
+        this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
+
+        this.pixelCountX = this.canvas.width  - 2 * this.padding;
+        this.pixelCountY = this.canvas.height - 2 * this.padding;
+    }
+
+    setup ()
+    {
+        this.resize();
+        window.addEventListener( "resize", () => this.resize() );
     }
 }
 

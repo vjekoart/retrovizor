@@ -28,6 +28,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Limit animation size to full HD on homepage, don't want to break someones PC
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
+    * Write tests for worker files
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
         * Add `revizor/Readme.md` and extract relevant stuff there
@@ -91,7 +92,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder
     * Handle file rename in the loop
     * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
-    * Testing web workers
     * Add something like `npm run dev:test` to support test development
     * Performance
         * Try streams instead of `writeFile` and similar to improve performance 
