@@ -23,8 +23,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Introduce worker - add performance measurements before
         * Try rAF - add performance measurements before
         * Expose options in the experiment view
-        * Loading state, handled by the homepage view
-        * Limit animation size to full HD on homepage, don't break someones PC
+        * Loading state, for all views (not nice, raw)
+        * Homepage: limit animation size to full HD, don't break someones PC
+        * Homepage: handle error state (just log and keep a placeholder)
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Write tests for worker files
@@ -37,6 +38,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Apply patterns from the text Declarative thinking and coding style
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
+    * Homepage: make loading state nice
+    * Homepage: what to do in case of an error during CloseYourEyes generating error?
     * CloseYourEyes art: what about those damn lines? Make them breathe
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
