@@ -20,11 +20,10 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
     * CloseYourEyes
-        * Try rAF - add performance measurements before
         * Expose options in the experiment view
         * Loading state, for all views (not nice, raw)
         * Homepage: limit animation size to full HD, don't break someones PC
-        * Homepage: handle error state (just log and keep a placeholder)
+        * Homepage/CloseYourEyes: handle error state (just log and keep a placeholder)
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Write tests for worker files

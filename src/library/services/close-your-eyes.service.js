@@ -21,9 +21,9 @@ class CloseYourEyes
         this.options =
         {
             alphaDelta                      : 20,
+            drawFPS                         : 30,
             drawPadding                     : 0,
-            frameCount                      : 24,
-            frameDelay                      : 30,
+            frameCount                      : 15,
             imaginaryLineDotOpacityIncrease : 120,
             maxDotOpacity                   : 120,
             minDotOpacity                   : 30,
@@ -34,14 +34,21 @@ class CloseYourEyes
         this.onEvent              = null; /* A user can set a callback to get service events   */
 
         /* Internal */
-        this.animationId          = null; /* Non-null when the animation is running            */
+        this.isRunning            = false;
         this.backgrounds          = [];
         this.imaginaryLines       = [];
         this.timerId              = null; /* Non-null when the resize is waiting for execution */
 
         this.resizeCycleActive    = false;
         this.resizeCycleShouldRun = false;
-        this.resizeDelay          = 1000;
+        this.resizeDelay          = 500;
+        this.animationState       =
+        {
+            backgroundIndex : 0,
+            lineIndex       : 0,
+            machineIndex    : 0,
+            machine         : []
+        }
 
         this.canvasManager        = new CanvasManager( canvas, this.options.drawPadding );
         this.worker               = new Worker
@@ -49,6 +56,29 @@ class CloseYourEyes
             import.meta.resolve( "Library/services/close-your-eyes.worker.js" ),
             { type : "module" }
         );
+    }
+
+    drawFrame ()
+    {
+        this.animationState.machineIndex === this.animationState.machine.length && ( this.animationState.machineIndex = 0 );
+
+        const step = this.animationState.machine[ this.animationState.machineIndex ];
+
+        if ( step === "BG" )
+        {
+            this.canvasManager.mergeAndDrawImage( this.backgrounds[ this.animationState.backgroundIndex ], this.options.alphaDelta );
+
+            ( ++this.animationState.backgroundIndex ) === this.backgrounds.length && ( this.animationState.backgroundIndex = 0 );
+        }
+
+        if ( step === "LINE" )
+        {
+            this.canvasManager.mergeAndDrawImage( this.imaginaryLines[ this.animationState.lineIndex ], this.options.alphaDelta );
+
+            ( ++this.animationState.lineIndex ) === this.imaginaryLines.length && ( this.animationState.lineIndex = 0 );
+        }
+
+        ++this.animationState.machineIndex;
     }
 
     generate ()
@@ -134,39 +164,35 @@ class CloseYourEyes
 
     run ()
     {
-        let backgroundIndex = 0;
-        let lineIndex       = 0;
-        let machineIndex    = 0;
+        this.isRunning = true;
 
-        // TODO: this shouldn't be defined here
-        const machine    = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
+        this.animationState.backgroundIndex = 0;
+        this.animationState.lineIndex       = 0;
+        this.animationState.machineIndex    = 0;
+        this.animationState.machine         = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
 
-        this.animationId = window.setInterval
-        (
-            () =>
+        const fpsDelay = Math.floor( 1000 / this.options.drawFPS );
+
+        let previousTime = null;
+
+        const animationFrameWrapper = timestamp =>
+        {
+            if ( !this.isRunning )
             {
-                machineIndex === machine.length && ( machineIndex = 0 );
+                return;
+            }
 
-                const step = machine[ machineIndex ];
+            if ( !previousTime || ( timestamp - previousTime ) > fpsDelay )
+            {
+                previousTime = timestamp;
 
-                if ( step === "BG" )
-                {
-                    this.canvasManager.mergeAndDrawImage( this.backgrounds[ backgroundIndex ], this.options.alphaDelta );
+                this.drawFrame();
+            }
 
-                    ( ++backgroundIndex ) === this.backgrounds.length && ( backgroundIndex = 0 );
-                }
+            window.requestAnimationFrame( t => animationFrameWrapper( t ) );
+        }
 
-                if ( step === "LINE" )
-                {
-                    this.canvasManager.mergeAndDrawImage( this.imaginaryLines[ lineIndex ], this.options.alphaDelta );
-
-                    ( ++lineIndex ) === this.imaginaryLines.length && ( lineIndex = 0 );
-                }
-
-                ++machineIndex;
-            },
-            this.options.frameDelay
-        );
+        window.requestAnimationFrame( t => animationFrameWrapper( t ) );
     }
 
     setup ()
@@ -181,11 +207,9 @@ class CloseYourEyes
      */
     stop ()
     {
-        if ( this.animationId )
+        if ( this.isRunning )
         {
-            window.clearInterval( this.animationId );
-            this.animationId = null;
-
+            this.isRunning = false;
             return true;
         }
 
