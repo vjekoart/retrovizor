@@ -5,6 +5,50 @@
 }}
     <canvas id="close-your-eyes" class="experiment"></canvas>
 
+    <form class="experiment-control">
+        <div class="configuration-value">
+            <label for="configuration-alphaDelta">Fade-out alpha&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-alphaDelta" name="configuration-alphaDelta" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-drawFPS">FPS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-drawFPS" name="configuration-drawFPS" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-drawPadding">Padding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-drawPadding" name="configuration-drawPadding" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-frameCount">Number of frames</label>
+            <input type="range" min="0" max="255" id="configuration-frameCount" name="configuration-frameCount" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-imaginaryLineDotOpacityIncrease">Accent opacity&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-imaginaryLineDotOpacityIncrease" name="configuration-imaginaryLineDotOpacityIncrease" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-maxDotOpacity">Max dot opacity&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-maxDotOpacity" name="configuration-maxDotOpacity" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-minDotOpacity">Min dot opacity&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-minDotOpacity" name="configuration-minDotOpacity" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-maxImaginaryLineLength">Max line length&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-maxImaginaryLineLength" name="configuration-maxImaginaryLineLength" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-noiseColor">Noise color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-noiseColor" name="configuration-noiseColor" />
+        </div>
+
+        <section class="controls">
+            <button id="button-run" type="button">(Re)run</button>
+            <button id="button-stop" type="button">Stop</button>
+        </section>
+    </form>
+
     <retro-content-block data-date="2025-01-01">
         <span slot="title">Close your eyes</span>
         <span slot="excerpt">

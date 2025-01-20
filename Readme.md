@@ -16,18 +16,19 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 2: design prototype~
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * ~Phase 4: content & pages, incl. related logic~
-* ~Phase 5: Add single E2E test - user journey (Jasmine, BDD)~
-* Phase 6: code fine-tune (decoupling, style, remove comments, optimisations)
-    * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just a nginx configuration files?
+* ~Phase 5: Add single E2E test - user journey~
+* Phase 6: code fine-tune
+    * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
     * CloseYourEyes
         * Expose options in the experiment view
+        * Create `retro-experiment-control` web component for experiment settings and control
         * Loading state, for all views (not nice, raw)
         * Homepage: limit animation size to full HD, don't break someones PC
         * Homepage/CloseYourEyes: handle error state (just log and keep a placeholder)
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Write tests for worker files
-    * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1
+    * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
         * Enable source maps, possible because `sourceMappingURL=index.js.map`
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
@@ -42,6 +43,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Homepage: make loading state nice
     * Homepage: what to do in case of an error during CloseYourEyes generating error?
     * CloseYourEyes art: what about those damn lines? Make them breathe
+    * CloseYourEyes/ImageDegradator: responsive experiment controls
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
     * Nav difference between active and non-active is bleak and weak
     * Homepage: hide everything except animation if user is idle
@@ -52,13 +54,16 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Favicons
     * SEO
 * Phase 8: content fine-tune
+    * Adjust dates everywhere
     * Go through texts
         * Native web:
+            * **Maybe the idea is to present limitations, and build system workarounds for current native web technologies?**
+                * For example, precomposed web components since it's heavy to load the library, relying on SSR, sweet spot between bundles and native ES modules?
             * Architecture: explain approach with index/layout/views + library
             * Approach: crafting a build system
         * Declarative Javascript
             * Define readable code and context at the beginning: working in large teams, where team members change,... workplace/industry context
-    * Go through code and coding styles
+    * Go through code (in text pages, user-facing content) and coding styles
     * Go through user page
     * Proofreading
     * Add link to gist "Code Poetry"

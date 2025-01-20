@@ -1,1 +1,93 @@
 @import url( "Library/index.css" );
+
+/* TODO: to standalone component */
+.experiment-control
+{
+    display       : block;
+    width         : 100%;
+    height        : auto;
+    aspect-ratio  : 16 / 9;
+    margin-bottom : var(--style-grid-full);
+    padding       : var(--style-grid-full);
+    border        : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+.experiment-control:last-child
+{
+    margin-bottom : 0;
+}
+
+.experiment-control .images,
+.experiment-control .controls
+{
+    display         : flex;
+    justify-content : space-between;
+    margin-bottom   : var(--style-grid-full);
+}
+
+.experiment-control .images:last-child,
+.experiment-control .controls:last-child
+{
+    margin-bottom : 0;
+}
+
+.experiment-control .images img,
+.experiment-control .controls button
+{
+    width  : calc(50% - var(--style-grid-half));
+    height : auto;
+}
+
+.experiment-control .images img
+{
+    background : var(--style-color-dark-lighter);
+    border     : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+.experiment-control .input-image,
+.experiment-control .configuration
+{
+    width      : 100%;
+    min-width  : unset;
+    margin     : 0 0 var(--style-grid-full) 0;
+    padding    : 0;
+
+    border     : var(--style-line-width-light) solid var(--style-color-light);
+}
+
+.experiment-control .input-image
+{
+
+    text-align : center;
+    cursor     : pointer;
+    overflow   : hidden;
+}
+
+.experiment-control .input-image label
+{
+    display : block;
+    padding : var(--style-grid-full);
+    cursor  : inherit;
+}
+
+.experiment-control .input-image input[type="file"]
+{
+    display : none;
+}
+
+.experiment-control .configuration
+{
+    padding : var(--style-grid-full);
+}
+
+
+.experiment-control .configuration-value
+{
+    display       : block;
+    margin-bottom : var(--style-grid-half);
+}
+
+.experiment-control .configuration-value:last-child
+{
+    margin-bottom : 0;
+}
