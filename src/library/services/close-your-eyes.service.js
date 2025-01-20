@@ -1,7 +1,4 @@
 import { CanvasManager } from "Library/services/canvas-manager.service.js";
-import { ImageManager  } from "Library/services/image-manager.service.js";
-
-import { getRandomFromInterval } from "Library/utilities.js";
 
 /**
  * @CloseYourEyes
@@ -31,68 +28,67 @@ class CloseYourEyes
             maxDotOpacity                   : 120,
             minDotOpacity                   : 30,
             maxImaginaryLineLength          : Math.floor( 0.3 * window.innerWidth ),
-            noiseColor                      : { r: 185 , g: 185 , b: 202 }
+            noiseColor                      : { r : 185, g : 185, b : 202 }
         }
 
-        this.onEvent             = null; /* A user can set a callback to get service events   */
+        this.onEvent              = null; /* A user can set a callback to get service events   */
 
         /* Internal */
-        this.animationId         = null; /* Non-null when the animation is running            */
-        this.backgrounds         = [];
-        this.imaginaryLines      = [];
-        this.timerId             = null; /* Non-null when the resize is waiting for execution */
+        this.animationId          = null; /* Non-null when the animation is running            */
+        this.backgrounds          = [];
+        this.imaginaryLines       = [];
+        this.timerId              = null; /* Non-null when the resize is waiting for execution */
 
         this.resizeCycleActive    = false;
         this.resizeCycleShouldRun = false;
         this.resizeDelay          = 1000;
 
-        this.canvasManager       = new CanvasManager( canvas, this.options.drawPadding );
-        this.imageManager        = new ImageManager
-        ({
-            colors :
-            {
-                noise : this.options.noiseColor
-            },
-            dot :
-            {
-                opacity :
-                {
-                    min : this.options.minDotOpacity,
-                    max : this.options.maxDotOpacity
-                }
-            },
-            imaginaryLineDotOpacityIncrease : this.options.imaginaryLineDotOpacityIncrease
-        });
+        this.canvasManager        = new CanvasManager( canvas, this.options.drawPadding );
+        this.worker               = new Worker
+        (
+            import.meta.resolve( "Library/services/close-your-eyes.worker.js" ),
+            { type : "module" }
+        );
     }
 
     generate ()
     {
-        this.sendEvent( "generating" );
-        this.backgrounds = [];
-
-        for ( let i = 0; i < this.options.frameCount; ++i )
+        return new Promise(( resolve, reject ) =>
         {
-            const coverage   = getRandomFromInterval( 5 , 10  );
-            const maxStep    = getRandomFromInterval( 80, 120 );
-            const background = this.imageManager.generateDistortedArray( this.canvasManager.pixelCount, coverage, maxStep );
+            this.sendEvent( "generating" );
 
-            this.backgrounds.push( background );
-        }
+            this.backgrounds    = [];
+            this.imaginaryLines = [];
 
-        this.imaginaryLines = [];
-
-        for ( const background of this.backgrounds )
-        {
-            const imaginaryLine = this.imageManager.generateImaginaryLine
+            const action  = "start";
+            const options = Object.assign
             (
-                background,
-                this.canvasManager.pixelCountX,
-                this.canvasManager.pixelCountY,
-                this.options.maxImaginaryLineLength
-            )
+                this.options,
+                {
+                    pixelCountX : this.canvasManager.pixelCountX,
+                    pixelCountY : this.canvasManager.pixelCountY,
+                    pixelCount  : this.canvasManager.pixelCount
+                }
+            );
 
-            this.imaginaryLines.push( imaginaryLine );
-        }
+            this.worker.postMessage({ action, options });
+
+            this.worker.onmessage = ev =>
+            {
+                this.sendEvent( "generating-done" );
+
+                if ( ev.data?.action === "end" )
+                {
+                    this.backgrounds    = ev.data.content.backgrounds;
+                    this.imaginaryLines = ev.data.content.imaginaryLines;
+
+                    resolve();
+                    return;
+                }
+
+                reject({ message : "Error in the worker script.", errorEvent : ev });
+            }
+        });
     }
 
     sendEvent ( name, data = null )
@@ -112,10 +108,10 @@ class CloseYourEyes
         this.resizeTimer();
     }
 
-    resizeDo ( wasRunning )
+    async resizeDo ()
     {
         this.resizeCycleActive = false;
-        this.generate();
+        await this.generate();
         this.resizeCycleShouldRun && this.run();
     }
 

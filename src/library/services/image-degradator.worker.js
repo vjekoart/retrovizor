@@ -9,11 +9,12 @@ self.onmessage = async ev =>
             const { content, options } = ev.data;
 
             const degraded = await degrade( content, options );
+
             self.postMessage({ action : "end", content : degraded });
         }
         catch ( error )
         {
-            self.postMessage({ action : "error", content : error });
+            self.postMessage({ action : "error", error });
         }
     }
 }

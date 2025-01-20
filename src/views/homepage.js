@@ -6,8 +6,17 @@ function main ()
     const closeYourEyes = new CloseYourEyes( canvas );
 
     closeYourEyes.setup();
-    closeYourEyes.generate();
-    closeYourEyes.run();
+    closeYourEyes
+        .generate()
+        .then(() =>
+        {
+            closeYourEyes.run();
+        })
+        .catch(( error ) =>
+        {
+            console.warn( error );
+            alert( "There was an error!" );
+        });
 }
 
 window.addEventListener( "DOMContentLoaded", main );
