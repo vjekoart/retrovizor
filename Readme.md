@@ -29,6 +29,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Write tests for worker files
+    * Templates/views: like in Prospket, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
         * Add `revizor/Readme.md` and extract relevant stuff there
@@ -38,6 +39,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Apply patterns from the text Declarative thinking and coding style
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
+    * General: loading state: block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Homepage: make loading state nice
     * Homepage: what to do in case of an error during CloseYourEyes generating error?
     * CloseYourEyes art: what about those damn lines? Make them breathe
@@ -80,6 +82,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ### Roadmap stuff (not part of the first version)
 
+* Prioritise for Filthy Fingers (focus on performance)
+    * Precompose some web components during the build: for marked, logicless components, create full HTML/CSS on the server-side so TTI is as small as possible (like navigation and title components)
 * Website functionalities
     * Add support for linkable headings
     * Add support for "Table of contents" on text pages
