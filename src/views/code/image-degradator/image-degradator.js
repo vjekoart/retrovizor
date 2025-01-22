@@ -20,7 +20,8 @@ const dom =
     {
         factor    : document.querySelector( "#configuration-factor"    ),
         lightness : document.querySelector( "#configuration-lightness" )
-    }
+    },
+    experimentControl : document.querySelector( "retro-experiment-control" )
 }
 
 const state =
@@ -33,8 +34,53 @@ function main ()
     const imageDegradator = new ImageDegradator();
     const defaultOptions  = imageDegradator.getOptions();
 
-    dom.configuration.factor.value    = defaultOptions.scaleDownFactor;
-    dom.configuration.lightness.value = defaultOptions.maxLightness;
+    dom.experimentControl.controls =
+    [
+        {
+            key   : "generate",
+            label : "Degenerate"
+        }, {
+            key   : "download",
+            label : "Download"
+        }
+    ];
+
+    dom.experimentControl.options =
+    [
+        {
+            key     : "image",
+            type    : "file",
+            options : { accept : "image/png, image/jpeg, image/webp" },
+            label   : "Click to select an image\n(everything happens inside a web browser)",
+            value   : null
+        }, {
+            key     : "scaleDownFactor",
+            type    : "range",
+            options : { min : 2, max : 128 },
+            label   : "Factor",
+            value   : defaultOptions.scaleDownFactor
+        }, {
+            key     : "maxLightness",
+            type    : "range",
+            options : { min : 2, max : 255 },
+            label   : "Max lightness",
+            value   : defaultOptions.maxLightness
+        }
+    ];
+
+    dom.experimentControl.addEventListener( "controlClicked", ev =>
+    {
+        console.log( "controlClicked", ev.detail );
+        console.log( dom.experimentControl.values );
+    });
+
+    dom.experimentControl.addEventListener( "fileChange", ev =>
+    {
+        console.log( "fileChange", ev.detail );
+    });
+
+    // dom.configuration.factor.value    = defaultOptions.scaleDownFactor;
+    // dom.configuration.lightness.value = defaultOptions.maxLightness;
 
     dom.button.download.addEventListener( "click", ev =>
     {
@@ -47,12 +93,16 @@ function main ()
         ev.preventDefault();
         setProcessing( true );
 
-        imageDegradator.setOptions
-        ({
-            maxLightness    : parseInt( dom.configuration.lightness.value, 10 ),
-            scaleDownFactor : parseInt( dom.configuration.factor.value   , 10 )
-        });
+        // TODO : separate "image" and the rest from "getValues" return value
+        imageDegradator.setOptions( dom.experimentControl.getValues() );
 
+        // imageDegradator.setOptions
+        // ({
+        //     maxLightness    : parseInt( dom.configuration.lightness.value, 10 ),
+        //     scaleDownFactor : parseInt( dom.configuration.factor.value   , 10 )
+        // });
+
+        // TODO : instead of "dom.image.input" use value from dom.experimentControl.getValues()
         const base64 = getBase64FromImage( dom.image.input );
 
         if ( !base64 )

@@ -1,5 +1,5 @@
 import { renderComponent } from "../test.utilities.js";
-import { RetroTitle        } from "./retro-title.js";
+import { RetroTitle      } from "./retro-title.js";
 
 describe( "RetroTitle", () =>
 {

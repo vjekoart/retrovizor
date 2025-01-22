@@ -6,6 +6,9 @@
     <div class="experiment">
         <img id="image-output" alt="Output image" />
     </div>
+
+    <retro-experiment-control></retro-experiment-control>
+
     <form class="experiment-control">
         <section class="images">
             <img id="image-input" alt="Input image" />
@@ -13,16 +16,16 @@
 
         <fieldset class="input-image">
             <label for="input-image">Click to select an image<br />(everything happens inside a web browser)</label>
-            <input id="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
+            <input id="input-image" name="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
         </fieldset>
 
         <div class="configuration-value">
             <label for="configuration-factor">Factor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="range" min="2" max="128" id="configuration-factor" name="configuration-factor" />
+            <input id="configuration-factor" name="configuration-factor" type="range" min="2" max="128" />
         </div>
         <div class="configuration-value">
             <label for="configuration-lightness">Max lightness</label>
-            <input type="range" min="2" max="255" id="configuration-lightness" name="configuration-lightness" />
+            <input id="configuration-lightness" name="configuration-lightness" type="range" min="2" max="255" />
         </div>
 
         <section class="controls">
