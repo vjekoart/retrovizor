@@ -20,15 +20,15 @@ class CloseYourEyes
     {
         this.options =
         {
-            alphaDelta                      : 20,
-            drawFPS                         : 30,
-            drawPadding                     : 0,
-            frameCount                      : 15,
-            imaginaryLineDotOpacityIncrease : 120,
-            maxDotOpacity                   : 120,
-            minDotOpacity                   : 30,
-            maxImaginaryLineLength          : Math.floor( 0.3 * window.innerWidth ),
-            noiseColor                      : { r : 185, g : 185, b : 202 }
+            alphaDelta          : 20,
+            drawFPS             : 30,
+            drawPadding         : 0,
+            frameCount          : 15,
+            lineOpacityIncrease : 120,
+            maxDotOpacity       : 120,
+            minDotOpacity       : 30,
+            maxLineLength       : Math.min( Math.floor( 0.3 * window.innerWidth ), 1024 ),
+            noiseColor          : { r : 185, g : 185, b : 202 }
         }
 
         this.onEvent              = null; /* A user can set a callback to get service events   */
@@ -90,6 +90,9 @@ class CloseYourEyes
             this.backgrounds    = [];
             this.imaginaryLines = [];
 
+            this.canvasManager.clearImage();
+            this.canvasManager.setOptions({ padding : this.options.drawPadding });
+
             const action  = "start";
             const options = Object.assign
             (
@@ -119,6 +122,16 @@ class CloseYourEyes
                 reject({ message : "Error in the worker script.", errorEvent : ev });
             }
         });
+    }
+
+    getOptions ()
+    {
+        return this.options;
+    }
+
+    setOptions ( options )
+    {
+        this.options = options;
     }
 
     sendEvent ( name, data = null )

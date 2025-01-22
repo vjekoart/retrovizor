@@ -11,7 +11,7 @@
  */
 class CanvasManager
 {
-    constructor ( canvas, padding = null )
+    constructor ( canvas, padding = 24 )
     {
         if ( !canvas )
         {
@@ -20,7 +20,7 @@ class CanvasManager
 
         this.canvas  = canvas;
         this.context = this.canvas.getContext( "2d", { willReadFrequently : true } );
-        this.padding = padding ?? 24;
+        this.options = { padding };
 
         this.pixelCountX = 0;
         this.pixelCountY = 0;
@@ -35,8 +35,8 @@ class CanvasManager
     {
         this.context.clearRect
         (
-            this.padding,
-            this.padding,
+            this.options.padding,
+            this.options.padding,
             this.pixelCountX,
             this.pixelCountY
         );
@@ -52,7 +52,17 @@ class CanvasManager
         );
 
         // TODO: check if this method can be optimised, or if there's an alternative method
-        this.context.putImageData( imageData, this.padding, this.padding );
+        this.context.putImageData( imageData, this.options.padding, this.options.padding );
+    }
+
+    getOptions ()
+    {
+        return this.options;
+    }
+
+    setOptions ( options )
+    {
+        this.options = options;
     }
 
     // TODO: this should be splittable to two different functions, but I have a problem with internal data structures
@@ -65,8 +75,8 @@ class CanvasManager
 
         const existing = this.context.getImageData
         (
-            this.padding,
-            this.padding,
+            this.options.padding,
+            this.options.padding,
             this.pixelCountX,
             this.pixelCountY
         );
@@ -83,7 +93,7 @@ class CanvasManager
         }
 
         // TODO: check if this method can be optimised, or if there's an alternative method
-        this.context.putImageData( existing, this.padding, this.padding );
+        this.context.putImageData( existing, this.options.padding, this.options.padding );
     }
 
     resize ()
@@ -95,8 +105,8 @@ class CanvasManager
 
         this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
 
-        this.pixelCountX = this.canvas.width  - 2 * this.padding;
-        this.pixelCountY = this.canvas.height - 2 * this.padding;
+        this.pixelCountX = this.canvas.width  - 2 * this.options.padding;
+        this.pixelCountY = this.canvas.height - 2 * this.options.padding;
     }
 
     setup ()

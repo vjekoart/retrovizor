@@ -3,10 +3,12 @@
     view="image-degradator"
     viewScript="views/code/image-degradator/image-degradator.js"
 }}
+    <div class="experiment">
+        <img id="image-output" alt="Output image" />
+    </div>
     <form class="experiment-control">
         <section class="images">
             <img id="image-input" alt="Input image" />
-            <img id="image-output" alt="Output image" />
         </section>
 
         <fieldset class="input-image">
@@ -14,16 +16,14 @@
             <input id="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
         </fieldset>
 
-        <fieldset class="configuration">
-            <div class="configuration-value">
-                <label for="configuration-factor">Factor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="range" min="2" max="128" id="configuration-factor" name="configuration-factor" />
-            </div>
-            <div class="configuration-value">
-                <label for="configuration-lightness">Max lightness</label>
-                <input type="range" min="2" max="255" id="configuration-lightness" name="configuration-lightness" />
-            </div>
-        </fieldset>
+        <div class="configuration-value">
+            <label for="configuration-factor">Factor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="range" min="2" max="128" id="configuration-factor" name="configuration-factor" />
+        </div>
+        <div class="configuration-value">
+            <label for="configuration-lightness">Max lightness</label>
+            <input type="range" min="2" max="255" id="configuration-lightness" name="configuration-lightness" />
+        </div>
 
         <section class="controls">
             <button id="button-generate" type="button">Degenerate</button>

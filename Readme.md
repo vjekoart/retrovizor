@@ -20,7 +20,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
     * CloseYourEyes
-        * Expose options in the experiment view
         * Create `retro-experiment-control` web component for experiment settings and control
         * Loading state, for all views (not nice, raw)
         * Homepage: limit animation size to full HD, don't break someones PC
@@ -42,6 +41,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * General: loading state: block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Homepage: make loading state nice
     * Homepage: what to do in case of an error during CloseYourEyes generating error?
+    * ImageDegradator: merge input image preview and upload image control
     * CloseYourEyes art: what about those damn lines? Make them breathe
     * CloseYourEyes/ImageDegradator: responsive experiment controls
     * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?

@@ -23,10 +23,10 @@ function generate ( options )
     const
     {
         frameCount,
-        imaginaryLineDotOpacityIncrease,
+        lineOpacityIncrease,
         maxDotOpacity,
         minDotOpacity,
-        maxImaginaryLineLength,
+        maxLineLength,
         noiseColor,
         pixelCountX,
         pixelCountY,
@@ -50,7 +50,7 @@ function generate ( options )
                 min : minDotOpacity
             }
         },
-        imaginaryLineDotOpacityIncrease : imaginaryLineDotOpacityIncrease
+        lineOpacityIncrease : lineOpacityIncrease
     });
 
     for ( let i = 0; i < frameCount; ++i )
@@ -70,7 +70,7 @@ function generate ( options )
             background,
             pixelCountX,
             pixelCountY,
-            maxImaginaryLineLength
+            maxLineLength
         )
 
         imaginaryLines.push( imaginaryLine );

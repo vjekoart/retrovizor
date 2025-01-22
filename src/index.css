@@ -44,8 +44,7 @@
     border     : var(--style-line-width-light) solid var(--style-color-light);
 }
 
-.experiment-control .input-image,
-.experiment-control .configuration
+.experiment-control .input-image
 {
     width      : 100%;
     min-width  : unset;
@@ -74,12 +73,6 @@
 {
     display : none;
 }
-
-.experiment-control .configuration
-{
-    padding : var(--style-grid-full);
-}
-
 
 .experiment-control .configuration-value
 {

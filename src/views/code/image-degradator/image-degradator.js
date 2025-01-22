@@ -14,12 +14,12 @@ const dom =
     },
     input :
     {
-        image         : document.querySelector( "#input-image" ),
-        configuration :
-        {
-            factor    : document.querySelector( "#configuration-factor"    ),
-            lightness : document.querySelector( "#configuration-lightness" )
-        }
+        image : document.querySelector( "#input-image" )
+    },
+    configuration :
+    {
+        factor    : document.querySelector( "#configuration-factor"    ),
+        lightness : document.querySelector( "#configuration-lightness" )
     }
 }
 
@@ -33,8 +33,8 @@ function main ()
     const imageDegradator = new ImageDegradator();
     const defaultOptions  = imageDegradator.getOptions();
 
-    dom.input.configuration.factor.value    = defaultOptions.scaleDownFactor;
-    dom.input.configuration.lightness.value = defaultOptions.maxLightness;
+    dom.configuration.factor.value    = defaultOptions.scaleDownFactor;
+    dom.configuration.lightness.value = defaultOptions.maxLightness;
 
     dom.button.download.addEventListener( "click", ev =>
     {
@@ -47,11 +47,11 @@ function main ()
         ev.preventDefault();
         setProcessing( true );
 
-        imageDegradator.setOptions(
-        {
-            maxLightness    : parseInt( dom.input.configuration.lightness.value, 10 ),
-            scaleDownFactor : parseInt( dom.input.configuration.factor.value   , 10 )
-        } );
+        imageDegradator.setOptions
+        ({
+            maxLightness    : parseInt( dom.configuration.lightness.value, 10 ),
+            scaleDownFactor : parseInt( dom.configuration.factor.value   , 10 )
+        });
 
         const base64 = getBase64FromImage( dom.image.input );
 
@@ -77,12 +77,12 @@ function main ()
             {
                 setProcessing( false );
             });
-    } );
+    });
 
     dom.input.image.addEventListener( "change", ev =>
     {
         imageFileToImageElement( ev.target.files[ 0 ] );
-    } );
+    });
 }
 
 function extractFileName ( original )

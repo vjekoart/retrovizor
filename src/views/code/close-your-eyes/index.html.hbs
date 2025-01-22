@@ -3,7 +3,7 @@
     view="close-your-eyes"
     viewScript="views/code/close-your-eyes/close-your-eyes.js"
 }}
-    <canvas id="close-your-eyes" class="experiment"></canvas>
+    <canvas class="experiment"></canvas>
 
     <form class="experiment-control">
         <div class="configuration-value">
@@ -20,11 +20,11 @@
         </div>
         <div class="configuration-value">
             <label for="configuration-frameCount">Number of frames</label>
-            <input type="range" min="0" max="255" id="configuration-frameCount" name="configuration-frameCount" />
+            <input type="range" min="0" max="40" id="configuration-frameCount" name="configuration-frameCount" />
         </div>
         <div class="configuration-value">
-            <label for="configuration-imaginaryLineDotOpacityIncrease">Accent opacity&nbsp;&nbsp;</label>
-            <input type="range" min="0" max="255" id="configuration-imaginaryLineDotOpacityIncrease" name="configuration-imaginaryLineDotOpacityIncrease" />
+            <label for="configuration-lineOpacityIncrease">Accent opacity&nbsp;&nbsp;</label>
+            <input type="range" min="0" max="255" id="configuration-lineOpacityIncrease" name="configuration-lineOpacityIncrease" />
         </div>
         <div class="configuration-value">
             <label for="configuration-maxDotOpacity">Max dot opacity&nbsp;</label>
@@ -35,12 +35,12 @@
             <input type="range" min="0" max="255" id="configuration-minDotOpacity" name="configuration-minDotOpacity" />
         </div>
         <div class="configuration-value">
-            <label for="configuration-maxImaginaryLineLength">Max line length&nbsp;</label>
-            <input type="range" min="0" max="255" id="configuration-maxImaginaryLineLength" name="configuration-maxImaginaryLineLength" />
+            <label for="configuration-maxLineLength">Max line length&nbsp;</label>
+            <input type="range" min="0" max="1024" id="configuration-maxLineLength" name="configuration-maxLineLength" />
         </div>
         <div class="configuration-value">
             <label for="configuration-noiseColor">Noise color&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="range" min="0" max="255" id="configuration-noiseColor" name="configuration-noiseColor" />
+            <input type="text" id="configuration-noiseColor" name="configuration-noiseColor" />
         </div>
 
         <section class="controls">
