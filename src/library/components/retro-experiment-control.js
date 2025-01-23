@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { createRef, ref } from "lit/directives/ref.js";
 
 /**
  * retroExperimentControl.controls =
@@ -23,8 +24,11 @@ import { LitElement, html, css } from "lit";
  *     }
  * ];
  * 
+ * retroExperimentControl.values === [ { key : "key name", value : Value }, ... ];
+ *
+ * Value object for type === "file", has a "name" property.
+ * 
  * @event controlClicked { detail : "control key" }
- * @event fileChange     { detail : File          }
  *
  * Return value for `type : "file"` is a base64 string.
  */
@@ -95,6 +99,7 @@ export class RetroExperimentControl extends LitElement
             display    : block;
             width      : 100%;
             height     : auto;
+            min-height : var(--style-grid-full);
             background : var(--style-color-dark-lighter);
             border     : var(--style-line-width-light) solid var(--style-color-light);
             overflow   : hidden;
@@ -103,7 +108,7 @@ export class RetroExperimentControl extends LitElement
         :host .configuration-value.file label
         {
             display : block;
-            padding : 0 var(--style-grid-half) var(--style-grid-half) var(--style-grid-half);
+            padding : 0 0 var(--style-grid-half) 0;
             cursor  : pointer;
         }
 
@@ -147,42 +152,41 @@ export class RetroExperimentControl extends LitElement
     {
         super();
 
-        this.controls = [];
-        this.options  = [];
+        this.controls   = [];
+        this.options    = [];
+        this.values     = [];
+        this.references = {}
     }
 
-    renderControl ( control )
+    handleChangeFile ( ev )
     {
-        return html`<button id="${ control.key }" type="button" @click="${ this.reportControl }">${ control.label }</button>`;
+        const file = ev.target.files[ 0 ];
+
+        if ( !file )
+        {
+            return;
+        }
+
+        const key    = ev.target.getAttribute( "id" );
+        const target = this.values.find( x => x.key === key );
+        const reader = new FileReader();
+
+        reader.onload = () =>
+        {
+            target.value = reader.result;
+            this.references[ key ].value.src = reader.result;
+        }
+
+        reader.readAsDataURL( file );
+
+        target.name = file.name;
     }
 
-    renderOption ( option )
+    handleChangeRange ( ev )
     {
-        const renderRangeOption = option => html`
-            <input id="${ option.key }" name="${ option.key }" type="range" ${ this.spreadOptions( option.options ) } />
-        `;
+        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
 
-        const renderFileOption = option => html`
-            <input
-                id="${ option.key }"
-                name="${ option.key }"
-                type="file"
-                ${ this.spreadOptions( option.options ) }
-                @change="${ this.reportChange }" />
-            <img alt="${ option.label }" />
-        `;
-
-        let rendered;
-
-        option.type === "range" && ( rendered = renderRangeOption( option ) );
-        option.type === "file"  && ( rendered = renderFileOption ( option ) );
-
-        return html`
-            <div class="configuration-value ${ option.type }">
-                <label for="${ option.key }">${ option.label }</label>
-                ${ rendered }
-            </div>
-        `;
+        target.value = parseInt( ev.target.value, 10 );
     }
 
     render ()
@@ -196,27 +200,55 @@ export class RetroExperimentControl extends LitElement
         `;
     }
 
-    /**
-     * From { min : 0, max : 255 } to `min="0" max="255"`.
-     */
-    spreadOptions ( options )
+    renderControl ( control )
     {
-        const output = [];
-
-        for ( const key of Object.keys( options ) )
-        {
-            output.push( `${ key }=" ${ options[ key ].toString() }"` );
-        }
-
-        return output.join( " " );
+        return html`<button id="${ control.key }" type="button" @click="${ this.reportControl }">${ control.label }</button>`;
     }
 
-    reportChange ( ev )
+    renderOption ( option )
     {
-        this.dispatchEvent
-        (
-            new CustomEvent( "fileChange", { detail : ev.target.files[ 0 ] } )
-        );
+        this.values.push({ key : option.key, value : option.value });
+
+        const renderRangeOption = option => html`
+            <input
+                id="${ option.key }"
+                name="${ option.key }"
+                type="range"
+                min="${ option.options?.min ?? nothing }"
+                max="${ option.options?.max ?? nothing }"
+                .value=${ option.value }
+                @change="${ this.handleChangeRange }"
+            />
+        `;
+
+        const renderFileOption = option =>
+        {
+            this.references[ option.key ] = createRef();
+
+            return html`
+                <input
+                    id="${ option.key }"
+                    name="${ option.key }"
+                    type="file"
+                    accept="${ option.options?.accept ?? nothing }"
+                    .value=${ option.value }
+                    @change="${ this.handleChangeFile }"
+                />
+                <img ${ ref( this.references[ option.key ] ) } />
+            `
+        };
+
+        let rendered;
+
+        option.type === "range" && ( rendered = renderRangeOption( option ) );
+        option.type === "file"  && ( rendered = renderFileOption ( option ) );
+
+        return html`
+            <div class="configuration-value ${ option.type }">
+                <label for="${ option.key }">${ option.label }</label>
+                ${ rendered }
+            </div>
+        `;
     }
 
     reportControl ( ev )

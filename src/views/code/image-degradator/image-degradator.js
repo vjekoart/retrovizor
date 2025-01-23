@@ -51,7 +51,7 @@ function main ()
             key     : "image",
             type    : "file",
             options : { accept : "image/png, image/jpeg, image/webp" },
-            label   : "Click to select an image\n(everything happens inside a web browser)",
+            label   : "Click to select an image",
             value   : null
         }, {
             key     : "scaleDownFactor",
@@ -71,12 +71,50 @@ function main ()
     dom.experimentControl.addEventListener( "controlClicked", ev =>
     {
         console.log( "controlClicked", ev.detail );
-        console.log( dom.experimentControl.values );
-    });
+        console.log( "dom.experimentControl.values", dom.experimentControl.values );
+        return;
 
-    dom.experimentControl.addEventListener( "fileChange", ev =>
-    {
-        console.log( "fileChange", ev.detail );
+        switch ( ev.detail )
+        {
+            case "generate":
+                let base64 = null;
+                let name   = "";
+                let rest   = {}
+
+                dom.experimentControl.values.forEach( x => x.key === "image" ? [ base64, name ] = [ x.value, x.name ] : rest[ x.key ] = x.value );
+
+                if ( !base64 )
+                {
+                    setProcessing( false );
+                    alert( "Missing input image!" );
+                    return;
+                }
+
+                imageDegradator
+                    .degrade( base64 )
+                    .then(( degraded ) =>
+                    {
+                        state.fileName = extractFileName( name );
+                        renderBase64ToImage( degraded, dom.image.output );
+                    })
+                    .catch(( error ) =>
+                    {
+                        console.warn( error );
+                        alert( "There was an error!" );
+                    })
+                    .finally(() =>
+                    {
+                        setProcessing( false );
+                    });
+                break;
+
+            case "download":
+                imageToDownload( dom.image.output );
+                break;
+
+            default:
+                console.warn( "Unknown control", ev.detail );
+        }
     });
 
     // dom.configuration.factor.value    = defaultOptions.scaleDownFactor;
@@ -135,6 +173,7 @@ function main ()
     });
 }
 
+/* From "image.png" to "image.degraded.png" */
 function extractFileName ( original )
 {
     const originalName = original.split( "." ).toSpliced( -1, 1 ).join( "." );
