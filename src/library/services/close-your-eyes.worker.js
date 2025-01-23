@@ -62,7 +62,6 @@ function generate ( options )
         backgrounds.push( background );
     }
 
-
     for ( const background of backgrounds )
     {
         const imaginaryLine = imageManager.generateImaginaryLine

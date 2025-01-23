@@ -175,13 +175,6 @@ export class RetroExperimentControl extends LitElement
         this.values     = [];
     }
 
-    handleChange ( ev )
-    {
-        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
-
-        target.value = parseInt( ev.target.value, 10 );
-    }
-
     handleChangeFile ( ev )
     {
         const file = ev.target.files[ 0 ];
@@ -204,6 +197,20 @@ export class RetroExperimentControl extends LitElement
         reader.readAsDataURL( file );
 
         target.name = file.name;
+    }
+
+    handleChangeRange ( ev )
+    {
+        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
+
+        target.value = parseInt( ev.target.value, 10 );
+    }
+
+    handleChangeText ( ev )
+    {
+        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
+
+        target.value = ev.target.value;
     }
 
     render ()
@@ -251,7 +258,7 @@ export class RetroExperimentControl extends LitElement
                 min="${ option.options?.min ?? nothing }"
                 max="${ option.options?.max ?? nothing }"
                 .value=${ option.value }
-                @change="${ this.handleChange }"
+                @change="${ this.handleChangeRange }"
             />
         `;
 
@@ -261,7 +268,7 @@ export class RetroExperimentControl extends LitElement
                 name="${ option.key }"
                 type="text"
                 .value=${ option.value }
-                @change="${ this.handleChange }"
+                @change="${ this.handleChangeText }"
             />
         `;
 

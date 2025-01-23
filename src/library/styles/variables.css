@@ -50,6 +50,8 @@
     --style-grid-third             : 8.5px;
 
     --transition-duration-short    : 0.12s;
+    --transition-duration-medium   : 0.33s;
+    --transition-duration-long     : 0.66s;
 }
 
 @font-face

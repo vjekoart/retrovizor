@@ -19,11 +19,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey~
 * Phase 6: code fine-tune
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
-    * CloseYourEyes
-        * Loading state homepage: bright dot
-        * Homepage: limit animation size to full HD, don't break someones PC
-        * Code todos
-        * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Build system tests: when build type is `native-library-bundle` then create bundles in library when running tests, see `retro-experiment-control.js`
     * Write tests for worker files
     * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
