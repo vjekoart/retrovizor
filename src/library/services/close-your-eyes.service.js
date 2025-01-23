@@ -31,8 +31,6 @@ class CloseYourEyes
             noiseColor          : { r : 185, g : 185, b : 202 }
         }
 
-        this.onEvent              = null; /* A user can set a callback to get service events   */
-
         /* Internal */
         this.isRunning            = false;
         this.backgrounds          = [];
@@ -85,8 +83,6 @@ class CloseYourEyes
     {
         return new Promise(( resolve, reject ) =>
         {
-            this.sendEvent( "generating" );
-
             this.backgrounds    = [];
             this.imaginaryLines = [];
 
@@ -108,8 +104,6 @@ class CloseYourEyes
 
             this.worker.onmessage = ev =>
             {
-                this.sendEvent( "generating-done" );
-
                 if ( ev.data?.action === "end" )
                 {
                     this.backgrounds    = ev.data.content.backgrounds;
@@ -134,11 +128,6 @@ class CloseYourEyes
         this.options = options;
     }
 
-    sendEvent ( name, data = null )
-    {
-        typeof this.onEvent === "function" && this.onEvent( name, data );
-    }
-
     resize ()
     {
         if ( !this.resizeCycleActive )
@@ -147,7 +136,6 @@ class CloseYourEyes
             this.resizeCycleActive = true;
         }
 
-        this.canvasManager.clearImage();
         this.resizeTimer();
     }
 
@@ -192,6 +180,7 @@ class CloseYourEyes
         {
             if ( !this.isRunning )
             {
+                this.canvasManager.clearImage();
                 return;
             }
 

@@ -1,9 +1,9 @@
 // TODO: this works for native build, including tests for now, requires lit-all.min.js in configuration.json
-import { LitElement, html, css, createRef, ref } from "lit";
+// import { LitElement, html, css, createRef, ref } from "lit";
 
 // TODO: this works for native library bundle, but not for tests because they lack support for bundling
-// import { LitElement, html, css } from "lit";
-// import { createRef, ref } from "lit/directives/ref.js";
+import { LitElement, html, css } from "lit";
+import { createRef, ref } from "lit/directives/ref.js";
 
 /**
  * retroExperimentControl.controls =
@@ -25,6 +25,11 @@ import { LitElement, html, css, createRef, ref } from "lit";
  *         options : { min : 2, max : 128 },
  *         label   : "Factor",
  *         value   : defaultOptions.scaleDownFactor
+ *     }, {
+ *         key     : "noiseColor",
+ *         type    : "text",
+ *         label   : "Noise color",
+ *         value   : JSON.stringify( defaultOptions.noiseColor )
  *     }
  * ];
  * 
@@ -170,6 +175,13 @@ export class RetroExperimentControl extends LitElement
         this.values     = [];
     }
 
+    handleChange ( ev )
+    {
+        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
+
+        target.value = parseInt( ev.target.value, 10 );
+    }
+
     handleChangeFile ( ev )
     {
         const file = ev.target.files[ 0 ];
@@ -194,13 +206,6 @@ export class RetroExperimentControl extends LitElement
         target.name = file.name;
     }
 
-    handleChangeRange ( ev )
-    {
-        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
-
-        target.value = parseInt( ev.target.value, 10 );
-    }
-
     render ()
     {
         const controls = Object.keys( this.controls ).map( key => this.renderControl({ key, label : this.controls[ key ] }) );
@@ -221,18 +226,6 @@ export class RetroExperimentControl extends LitElement
     {
         this.values.push({ key : option.key, value : option.value });
 
-        const renderRangeOption = option => html`
-            <input
-                id="${ option.key }"
-                name="${ option.key }"
-                type="range"
-                min="${ option.options?.min ?? nothing }"
-                max="${ option.options?.max ?? nothing }"
-                .value=${ option.value }
-                @change="${ this.handleChangeRange }"
-            />
-        `;
-
         const renderFileOption = option =>
         {
             this.references[ option.key ] = createRef();
@@ -247,13 +240,36 @@ export class RetroExperimentControl extends LitElement
                     @change="${ this.handleChangeFile }"
                 />
                 <img ${ ref( this.references[ option.key ] ) } />
-            `
-        };
+            `;
+        }
+
+        const renderRangeOption = option => html`
+            <input
+                id="${ option.key }"
+                name="${ option.key }"
+                type="range"
+                min="${ option.options?.min ?? nothing }"
+                max="${ option.options?.max ?? nothing }"
+                .value=${ option.value }
+                @change="${ this.handleChange }"
+            />
+        `;
+
+        const renderTextOption = option => html`
+            <input
+                id="${ option.key }"
+                name="${ option.key }"
+                type="text"
+                .value=${ option.value }
+                @change="${ this.handleChange }"
+            />
+        `;
 
         let rendered;
 
-        option.type === "range" && ( rendered = renderRangeOption( option ) );
         option.type === "file"  && ( rendered = renderFileOption ( option ) );
+        option.type === "range" && ( rendered = renderRangeOption( option ) );
+        option.type === "text"  && ( rendered = renderTextOption ( option ) );
 
         return html`
             <div class="configuration-value ${ option.type }">

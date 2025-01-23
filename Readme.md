@@ -20,12 +20,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Phase 6: code fine-tune
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
     * CloseYourEyes
-        * Create `retro-experiment-control` web component for experiment settings and control
-            * Integration with CloseYourEyes view
         * Loading state homepage: bright dot
-        * Loading state ClseYourEyes: text
         * Homepage: limit animation size to full HD, don't break someones PC
-        * Homepage/CloseYourEyes: handle error state (just log and keep a placeholder) (For homepage always show bright dot)
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
     * Build system tests: when build type is `native-library-bundle` then create bundles in library when running tests, see `retro-experiment-control.js`

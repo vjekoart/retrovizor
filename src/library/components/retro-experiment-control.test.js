@@ -16,6 +16,11 @@ describe( "RetroExperimentControl", () =>
         element.options  =
         [
             {
+                key     : "color",
+                type    : "text",
+                label   : "Color",
+                value   : "#FFFFFF"
+            }, {
                 key     : "scaleDownFactor",
                 type    : "range",
                 options : { min : 2, max : 128 },
@@ -27,6 +32,7 @@ describe( "RetroExperimentControl", () =>
         await waitFor( 1000 );
 
         expect( element.shadowRoot.innerHTML ).toContain( "Start the experiment" );
+        expect( element.shadowRoot.innerHTML ).toContain( "Color"                );
         expect( element.shadowRoot.innerHTML ).toContain( "Factor"               );
     } );
 } );
