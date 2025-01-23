@@ -9,7 +9,7 @@ import
 } from "Library/utilities.js";
 
 import { RetroContentBlock      } from "Library/components/retro-content-block.js";
-import { RetroExperimentControl } from "Library/components/retro-experiment-control";
+import { RetroExperimentControl } from "Library/components/retro-experiment-control.js";
 import { RetroFooter            } from "Library/components/retro-footer.js";
 import { RetroNav               } from "Library/components/retro-nav.js";
 import { RetroTitle             } from "Library/components/retro-title.js";

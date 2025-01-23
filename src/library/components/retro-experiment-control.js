@@ -1,19 +1,23 @@
-import { LitElement, html, css } from "lit";
-import { createRef, ref } from "lit/directives/ref.js";
+// TODO: this works for native build, including tests for now, requires lit-all.min.js in configuration.json
+import { LitElement, html, css, createRef, ref } from "lit";
+
+// TODO: this works for native library bundle, but not for tests because they lack support for bundling
+// import { LitElement, html, css } from "lit";
+// import { createRef, ref } from "lit/directives/ref.js";
 
 /**
  * retroExperimentControl.controls =
- * [
- *     { key : "name" , label : "Label",  },
- *     { key : "start", label : "Start the animation" }
- * ];
+ * {
+ *     "name"  : "Label",
+ *     "start" : "Start the animation"
+ * }
  * retroExperimentControl.options  =
  * [
  *     {
  *         key     : "image"
  *         type    : "file",
  *         options : { accept : "image/png, image/jpeg, image/webp" },
- *         label   : "Click to select an image\n(everything happens inside a web browser)",
+ *         label   : "Click to select an image",
  *         value   : null
  *     }, {
  *         key     : "scaleDownFactor"
@@ -27,10 +31,9 @@ import { createRef, ref } from "lit/directives/ref.js";
  * retroExperimentControl.values === [ { key : "key name", value : Value }, ... ];
  *
  * Value object for type === "file", has a "name" property.
+ * Return value for `type : "file"` is a base64 string.
  * 
  * @event controlClicked { detail : "control key" }
- *
- * Return value for `type : "file"` is a base64 string.
  */
 export class RetroExperimentControl extends LitElement
 {
@@ -59,6 +62,15 @@ export class RetroExperimentControl extends LitElement
             margin-bottom : var(--style-grid-full);
             padding       : var(--style-grid-full);
             border        : var(--style-line-width-light) solid var(--style-color-light);
+            opacity       : 1;
+        }
+
+        :host([disabled="disabled"])
+        {
+            opacity        : 0.5;
+            cursor         : default;
+            pointer-events : none;
+            transition     : opacity var(--transition-duration-short) ease-in-out;
         }
 
         :host:last-child
@@ -152,10 +164,10 @@ export class RetroExperimentControl extends LitElement
     {
         super();
 
-        this.controls   = [];
+        this.controls   = {}
         this.options    = [];
-        this.values     = [];
         this.references = {}
+        this.values     = [];
     }
 
     handleChangeFile ( ev )
@@ -191,7 +203,7 @@ export class RetroExperimentControl extends LitElement
 
     render ()
     {
-        const controls = this.controls.map( x => this.renderControl( x ) );
+        const controls = Object.keys( this.controls ).map( key => this.renderControl({ key, label : this.controls[ key ] }) );
         const options  = this.options.map( x => this.renderOption( x ) );
 
         return html`

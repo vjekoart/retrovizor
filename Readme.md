@@ -21,14 +21,14 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
     * CloseYourEyes
         * Create `retro-experiment-control` web component for experiment settings and control
-            * I stopped at returning changed values from component to parent
-            * Tests
+            * Integration with CloseYourEyes view
         * Loading state homepage: bright dot
         * Loading state ClseYourEyes: text
         * Homepage: limit animation size to full HD, don't break someones PC
         * Homepage/CloseYourEyes: handle error state (just log and keep a placeholder) (For homepage always show bright dot)
         * Code todos
         * Dot size: default 1px, but possible to increase so the animation is more pixelated and less-heavy?
+    * Build system tests: when build type is `native-library-bundle` then create bundles in library when running tests, see `retro-experiment-control.js`
     * Write tests for worker files
     * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
         * Enable source maps, possible because `sourceMappingURL=index.js.map`

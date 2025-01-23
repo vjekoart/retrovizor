@@ -2,9 +2,9 @@ const renderComponent = ( selector, content ) => new Promise( resolve =>
 {
     document.body.innerHTML = content;
     requestSelector( selector ).then( element => resolve( element ) );
-} );
+});
 
-const requestSelector = ( selector ) => new Promise( resolve => 
+const requestSelector = selector => new Promise( resolve => 
 {
     const element = document.querySelector( selector );
 
@@ -16,10 +16,16 @@ const requestSelector = ( selector ) => new Promise( resolve =>
     {
         window.requestAnimationFrame( requestSelector );
     }
-} );
+});
+
+const waitFor = timeout => new Promise( resolve =>
+{
+    window.setTimeout( () => resolve(), timeout );
+});
 
 export
 {
     renderComponent,
-    requestSelector
-};
+    requestSelector,
+    waitFor
+}

@@ -9,31 +9,6 @@
 
     <retro-experiment-control></retro-experiment-control>
 
-    <form class="experiment-control">
-        <section class="images">
-            <img id="image-input" alt="Input image" />
-        </section>
-
-        <fieldset class="input-image">
-            <label for="input-image">Click to select an image<br />(everything happens inside a web browser)</label>
-            <input id="input-image" name="input-image" type="file" accept="image/png, image/jpeg, image/webp" />
-        </fieldset>
-
-        <div class="configuration-value">
-            <label for="configuration-factor">Factor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input id="configuration-factor" name="configuration-factor" type="range" min="2" max="128" />
-        </div>
-        <div class="configuration-value">
-            <label for="configuration-lightness">Max lightness</label>
-            <input id="configuration-lightness" name="configuration-lightness" type="range" min="2" max="255" />
-        </div>
-
-        <section class="controls">
-            <button id="button-generate" type="button">Degenerate</button>
-            <button id="button-download" type="button">Download</button>
-        </section>
-    </form>
-
     <retro-content-block data-date="2025-01-01">
         <span slot="title">Image degradator</span>
         <span slot="excerpt">

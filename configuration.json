@@ -4,6 +4,6 @@
     "dataFile": "src/data.json",
     "nativeDependencies":
     {
-        "lit": "assets/lit-core.min.js"
+        "lit": "assets/lit-all.min.js"
     }
 }
