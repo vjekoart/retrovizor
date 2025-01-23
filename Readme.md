@@ -23,6 +23,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Write tests for worker files
     * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
         * Enable source maps, possible because `sourceMappingURL=index.js.map`
+        * Architecture opinion: this approach forces views to be small, and to put utilities in the library
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
         * Add `revizor/Readme.md` and extract relevant stuff there
@@ -67,7 +68,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Head (`<meta>`) tags
     * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
-    * Structure and clean `Readme.md`
+    * Structure and clean both `Readme.md` and `revizor/Readme.md`
     * Enable GitHub workflow for PRs (tests for now)
 * Phase 11: public image
     * Revise (delete and archive) GitHub repositories
@@ -111,7 +112,13 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ```json
 {
+    "buildPath": "dist",
     "buildType": "native|native-library-bundle"
+    "dataFile": "path/to/data.json",
+    "nativeDependencies":
+    {
+        "lit": "assets/lit-all.min.js"
+    }
 }
 ```
 
