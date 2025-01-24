@@ -28,6 +28,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * When a file is removed from chokidar, remove that file from dist if present, e.g. user delets a file during development, nothing happens and that file is still present in the dist directory
 * Add something like `npm run dev:test` to support test development
 * Enable tests for views, and maybe templates?
+* Tests: enable running E2E tests in non-headless mode
 * Performance
     * Try streams instead of `writeFile` and similar to improve performance 
     * Try keeping open handles in dev mode to decrease rebuild time

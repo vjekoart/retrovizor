@@ -19,28 +19,26 @@ self.onmessage = async ev =>
     }
 }
 
-/**
- * TODO: move to single abstraction level, maybe create a dedicated class for this functionality
- */
 async function degrade ( base64, options = {} )
 {
     const image = await getImageBitmapFromBase64( base64 );
 
-    // Create canvas based on the image info
+    /* Create canvas */
     const canvas  = new OffscreenCanvas( image.width, image.height );
     const context = canvas.getContext( "2d" );
 
-    // Get image data
     context.drawImage( image, 0, 0 );
-    const imageData = context.getImageData( 0, 0, image.width, image.height );
 
-    colorAdjust( imageData, options.maxLightness );
+    /* Transform inside canvas */
+    const imageData       = context.getImageData( 0, 0, image.width, image.height );
+    const bounds          = getBounds( image, options.scaleDownFactor );
+    const maxLightness    = options.maxLightness;
+    const scaleDownFactor = options.scaleDownFactor;
 
-    const bounds = getBounds( image, options.scaleDownFactor );
+    colorAdjust( imageData, maxLightness );
+    primitivise( image, imageData, bounds, scaleDownFactor );
 
-    primitivise( image, imageData, bounds, options.scaleDownFactor );
-
-    // Get base64 for output
+    /* Convert transformed image to Base64 */
     context.putImageData( imageData, 0, 0 );
 
     return await canvasToBase64( canvas );
@@ -73,7 +71,7 @@ function canvasToBase64 ( canvas )
                 reader.readAsDataURL( blob );
             })
             .catch( error => reject( error ) );
-    } );
+    });
 }
 
 /**
@@ -102,7 +100,7 @@ function colorAdjust ( imageData, maxLightness )
 /**
  * Returns an array of pixels in the specified area.
  *
- * { r, g, b, index } // Pixel index in ImageData array
+ * @return { Array<{ r, g, b, index }> } Index is index of the pixel in the ImageData.data array.
  */
 function getAreaPixels ( image, imageData, x, y, xOffset, yOffset )
 {
@@ -143,9 +141,7 @@ function getBounds ( image, scaleDownFactor )
     return bounds;
 }
 
-/**
- * From "data:image/jpeg;base64,/9j/2wCEA..." to blob.
- */
+/** From "data:image/jpeg;base64,/9j/2wCEA..." to blob. */
 function getImageBitmapFromBase64 ( base64 )
 {
     return new Promise(( resolve, reject ) =>
@@ -162,7 +158,7 @@ function getImageBitmapFromBase64 ( base64 )
 
         for ( let i = 0; i < count; ++i ) uint8Array[ i ] = decoded.charCodeAt( i );
 
-        const blob = new Blob( [ buffer ], { type : imageType } );
+        const blob = new Blob([ buffer ], { type : imageType });
 
         self.createImageBitmap( blob )
             .then( bitmap => resolve( bitmap ) );
@@ -182,7 +178,7 @@ function primitivise ( image, imageData, bounds, scaleDownFactor )
     const width   = image.width;
     const height  = image.height;
 
-    // Central box of the image within the bounds
+    /* Central box of the image within the bounds */
     for ( let i = bounds.top; i < height - bounds.bottom; i += factor )
     {
         for ( let j = bounds.left; j < width - bounds.right; j += factor )
@@ -191,13 +187,13 @@ function primitivise ( image, imageData, bounds, scaleDownFactor )
         }
     }
 
-    // Corners
+    /* Corners */
     primitivisePixels( imageData, getAreaPixels( image, imageData, 0                   , 0                     , bounds.left, bounds.top ) );
     primitivisePixels( imageData, getAreaPixels( image, imageData, width - bounds.right, 0                     , width      , bounds.top ) );
     primitivisePixels( imageData, getAreaPixels( image, imageData, width - bounds.right, height - bounds.bottom, width      , height     ) );
     primitivisePixels( imageData, getAreaPixels( image, imageData, 0                   , height - bounds.bottom, bounds.left, height     ) );
 
-    // Sides
+    /* Sides */
     for ( let i = bounds.left; i < width - bounds.right; i += factor )
     {
         primitivisePixels( imageData, getAreaPixels( image, imageData, i, 0                     , i + factor, bounds.top ) );
@@ -219,5 +215,5 @@ function primitivisePixels( imageData, pixels )
         imageData.data[ pixel.index     ] = average.r;
         imageData.data[ pixel.index + 1 ] = average.g;
         imageData.data[ pixel.index + 2 ] = average.b;
-    } );
+    });
 }

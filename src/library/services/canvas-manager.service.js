@@ -1,16 +1,12 @@
 /**
- * @CanvasManager
- *
- * Handles drawing frames in an animation-like way inside a canvas element.
- *
- * @usage
- * TODO
- *
- * @constructor
- * TODO
+ * Class responsible for drawing inside a <canvas> element.
  */
 class CanvasManager
 {
+    /**
+     * @param { HTMLCanvasElement } canvas  - HTML canvas element for which the class is responsible.
+     * @param { number            } padding - Padding between canvas element and drawing area, in pixels.
+     */
     constructor ( canvas, padding = 24 )
     {
         if ( !canvas )
@@ -20,7 +16,7 @@ class CanvasManager
 
         this.canvas  = canvas;
         this.context = this.canvas.getContext( "2d", { willReadFrequently : true } );
-        this.options = { padding };
+        this.options = { padding }
 
         this.pixelCountX = 0;
         this.pixelCountY = 0;
@@ -31,6 +27,10 @@ class CanvasManager
         return this.pixelCountX * this.pixelCountY;
     }
 
+    /**
+     * Clears an existing drawing inside a canvas element. Takes into consideration
+     * predefined padding.
+     */
     clearImage ()
     {
         this.context.clearRect
@@ -42,6 +42,11 @@ class CanvasManager
         );
     }
 
+    /**
+     * Draw an image in the canvas element from provided ImageData array.
+     *
+     * @param { UInt8ClampedArray } imageDataArray
+     */
     drawImage ( imageDataArray )
     {
         const imageData = new ImageData
@@ -51,7 +56,6 @@ class CanvasManager
             this.pixelCountY
         );
 
-        // TODO: check if this method can be optimised, or if there's an alternative method
         this.context.putImageData( imageData, this.options.padding, this.options.padding );
     }
 
@@ -65,7 +69,13 @@ class CanvasManager
         this.options = options;
     }
 
-    // TODO: this should be splittable to two different functions, but I have a problem with internal data structures
+    /**
+     * Draw a provided image in the canvas element, by preserving but fading out the existing canvas
+     * content.
+     *
+     * @param { UInt8ClampedArray } imageDataArray
+     * @param { number            } alphaDelta     - Fade out amount for the existing canvas content; 0 - 255
+     */
     mergeAndDrawImage ( imageDataArray, alphaDelta )
     {
         if ( !imageDataArray )
@@ -92,10 +102,13 @@ class CanvasManager
             imageData[ i + 3 ] = Math.min( 255, Math.max( 0, imageData[ i + 3 ] - alphaDelta + imageDataArray[ i + 3 ] ) );
         }
 
-        // TODO: check if this method can be optimised, or if there's an alternative method
         this.context.putImageData( existing, this.options.padding, this.options.padding );
     }
 
+    /**
+     * Sets drawing area inside a canvas element taking into consideration canvas width, height and predefined
+     * drawing padding.
+     */
     resize ()
     {
         const computedStyle = window.getComputedStyle( this.canvas );
@@ -109,6 +122,10 @@ class CanvasManager
         this.pixelCountY = this.canvas.height - 2 * this.options.padding;
     }
 
+    /**
+     * Sets up a CanvasManager by registering window resize listeners and triggering
+     * the initial resize event.
+     */
     setup ()
     {
         this.resize();

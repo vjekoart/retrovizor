@@ -11,7 +11,7 @@ export class RetroNav extends LitElement
             attribute: "data-active",
             type: String
         }
-    };
+    }
 
     static styles = css`
         :host

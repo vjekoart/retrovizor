@@ -30,13 +30,15 @@ function main ()
             options : { accept : "image/png, image/jpeg, image/webp" },
             label   : "Click to select an image",
             value   : null
-        }, {
+        },
+        {
             key     : "scaleDownFactor",
             type    : "range",
             options : { min : 2, max : 128 },
             label   : "Factor",
             value   : defaultOptions.scaleDownFactor
-        }, {
+        },
+        {
             key     : "maxLightness",
             type    : "range",
             options : { min : 2, max : 255 },
@@ -85,7 +87,7 @@ function main ()
                 break;
 
             case "download":
-                imageToDownload( dom.image );
+                donwloadImage( dom.image );
                 break;
 
             default:
@@ -94,15 +96,8 @@ function main ()
     });
 }
 
-/* From "image.png" to "image.degraded.png" */
-function extractFileName ( original )
-{
-    const originalName = original.split( "." ).toSpliced( -1, 1 ).join( "." );
-
-    return [ originalName, "degraded", "png" ].join( "." );
-}
-
-function imageToDownload ( imageElement )
+/** Trigger download event for provided image element */
+function donwloadImage ( imageElement )
 {
     if ( !imageElement.src )
     {
@@ -116,6 +111,14 @@ function imageToDownload ( imageElement )
     a.download = state.fileName;
 
     a.click();
+}
+
+/** From "image.png" to "image.degraded.png" */
+function extractFileName ( original )
+{
+    const originalName = original.split( "." ).toSpliced( -1, 1 ).join( "." );
+
+    return [ originalName, "degraded", "png" ].join( "." );
 }
 
 window.addEventListener( "DOMContentLoaded", main );

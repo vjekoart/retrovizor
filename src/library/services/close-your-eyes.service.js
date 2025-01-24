@@ -1,21 +1,20 @@
 import { CanvasManager } from "Library/services/canvas-manager.service.js";
 
 /**
- * @CloseYourEyes
- *
  * An experiment trying to depict what a human see when eyes are closed, in the dark.
  *
  * @usage
- * ```javascript
- * TODO
- * closeYourEyes.onEvent = ( name, data? ) => { ... }
- * ```
+ * const canvas   = document.querySelector( "canvas" );
+ * const instance = new CloseYourEyes( canvas );
  *
- * @constructor
- * TODO
+ * instance.setup();
+ * instance.generate().then(() => instance.run());
  */
 class CloseYourEyes
 {
+    /**
+     * @param { HTMLCanvasElement } canvas  - HTML canvas element where the animation will be displayed.
+     */
     constructor ( canvas )
     {
         this.options =
@@ -133,7 +132,7 @@ class CloseYourEyes
         if ( !this.resizeCycleActive )
         {
             this.resizeCycleShouldRun = this.stop();
-            this.resizeCycleActive = true;
+            this.resizeCycleActive    = true;
         }
 
         this.resizeTimer();
@@ -142,7 +141,9 @@ class CloseYourEyes
     async resizeDo ()
     {
         this.resizeCycleActive = false;
+
         await this.generate();
+
         this.resizeCycleShouldRun && this.run();
     }
 
@@ -153,7 +154,8 @@ class CloseYourEyes
             window.clearTimeout( this.timerId );
         }
 
-        this.timerId = window.setTimeout(
+        this.timerId = window.setTimeout
+        (
             () =>
             {
                 this.resizeDo();
@@ -176,7 +178,7 @@ class CloseYourEyes
 
         let previousTime = null;
 
-        const animationFrameWrapper = timestamp =>
+        const wrapper = timestamp =>
         {
             if ( !this.isRunning )
             {
@@ -191,10 +193,10 @@ class CloseYourEyes
                 this.drawFrame();
             }
 
-            window.requestAnimationFrame( t => animationFrameWrapper( t ) );
+            window.requestAnimationFrame( t => wrapper( t ) );
         }
 
-        window.requestAnimationFrame( t => animationFrameWrapper( t ) );
+        window.requestAnimationFrame( t => wrapper( t ) );
     }
 
     setup ()
@@ -206,6 +208,8 @@ class CloseYourEyes
 
     /**
      * Returns `true` if animation was running, and `false` otherwise.
+     *
+     * @return { boolean }
      */
     stop ()
     {

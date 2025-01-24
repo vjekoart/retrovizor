@@ -1,32 +1,30 @@
 import { getRandomArray } from "Library/utilities.js";
 
 /**
- * @ImageManager
- *
- * Generates dots and imaginary lines frames in the form of ImageData.data arrays.
- *
- * @usage
- * TODO
- *
- * @constructor options
- * {
- *     colors :
- *     {
- *         noise : { r : 255, g : 255, b : 255 }
- *     },
- *     dot :
- *     {
- *         opacity :
- *         {
- *             min : 0,
- *             max : 255
- *         }
- *     },
- *     imaginaryLineDotOpacityIncrease : 0
- * }
+ * Class responsible for randomly generating dots and lines. Returns UInt8ClampedArray
+ * structures intended for usage inside ImageData.
  */
 class ImageManager
 {
+    /**
+     * @param { OptionsInterface } options
+     *
+     * OptionsInterface {
+     *     colors :
+     *     {
+     *         noise : { r : 255, g : 255, b : 255 }
+     *     },
+     *     dot :
+     *     {
+     *         opacity :
+     *         {
+     *             min : 0,
+     *             max : 255
+     *         }
+     *     },
+     *     imaginaryLineDotOpacityIncrease : 0
+     * }
+     */
     constructor ( options = {} )
     {
         this.colors =
@@ -49,12 +47,13 @@ class ImageManager
     /**
      * Generates a frame with randomly placed bright dots.
      *
-     * @param pixelCount Number of pixels in an image, e.g. 100x50 image has 5000 pixels.
-     * @param coverage   Percentage of how many of total pixels should have a non-transparent value.
-     *                   For example pass 50 for 50% percent, i.e. 2500 pixels in 100x50 image.
-     * @param maxStep    Maximum random seqeuence step, i.e. maximum distance between two pixels.
-     *                   Affects how condensed is the distorted array.
-     * @return frame
+     * @param { number             } pixelCount - Number of pixels in an image, e.g. 100x50 image has 5000 pixels.
+     * @param { number             } coverage   - Percentage of how many of total pixels should have a non-transparent value.
+     *                                            For example pass 50 for 50% percent, i.e. 2500 pixels in 100x50 image.
+     * @param { number             } maxStep    - Maximum random seqeuence step, i.e. maximum distance between two pixels.
+     *                                            Affects how condensed is the distorted array.
+     *
+     * @return { Uint8ClampedArray } An array representing a frame.
      */
     generateDistortedArray ( pixelCount, coverage, maxStep )
     {
@@ -96,11 +95,12 @@ class ImageManager
      * 3. Using this approach, repeat and create a path that consists of max N bright points. Stop if outside the canvas.
      * 4. Skip points that are already selected.
      * 
-     * @param frame       Uint8ClampedArray where each element represents a pixel.
-     * @param imageWidth
-     * @param imageHeight
-     * @param maxLength   Number representing max length of the imaginary line in pixels.
-     * @return frame
+     * @param { Uint8ClampedArray } frame       - An array where each element represents a pixel.
+     * @param { number            } imageWidth
+     * @param { number            } imageHeight
+     * @param { number            } maxLength   - A number representing max length of the imaginary line in pixels.
+     *
+     * @return { Uint8ClampedArray } An array representing a frame.
      */
     generateImaginaryLine ( frame, imageWidth, imageHeight, maxLength )
     {
@@ -153,22 +153,22 @@ class ImageManager
                 let endX   = focalPoint.x + searchXLength;
                 let endY   = focalPoint.y + searchYLength;
 
-                if ( startX < paddingWidth  ) startX = paddingWidth;
-                if ( startY < paddingHeight ) startY = paddingHeight;
-                if ( endX   > availableWidth  + paddingWidth  ) endX = availableWidth + paddingWidth;
-                if ( endY   > availableHeight + paddingHeight ) endY = availableHeight + paddingHeight;
+                if ( startX < paddingWidth                    ) startX = paddingWidth;
+                if ( startY < paddingHeight                   ) startY = paddingHeight;
+                if ( endX   > availableWidth  + paddingWidth  ) endX   = availableWidth + paddingWidth;
+                if ( endY   > availableHeight + paddingHeight ) endY   = availableHeight + paddingHeight;
 
                 const spots = [];
 
-                /* Top and bottom sides    */
-                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x : xi, y : startY } );
-                for ( let xi = startX; xi < endX; ++xi ) spots.push( { x : xi, y : endY   } );
+                /* Top and bottom sides */
+                for ( let xi = startX; xi < endX; ++xi ) spots.push({ x : xi, y : startY });
+                for ( let xi = startX; xi < endX; ++xi ) spots.push({ x : xi, y : endY   });
 
-                /* Left and right sides    */
-                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x : startX, y : yi } );
-                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push( { x : endX,   y : yi } );
+                /* Left and right sides */
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push({ x : startX, y : yi });
+                for ( let yi = startY + 1; yi < endY - 1; ++yi ) spots.push({ x : endX,   y : yi });
 
-                /* Remove duplicates       */
+                /* Remove duplicates */
                 for ( const index in spots )
                 {
                     const isDuplicate = line.find( point => spots[ index ].x === point.x && spots[ index ].y === point.y );

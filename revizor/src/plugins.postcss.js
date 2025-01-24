@@ -1,6 +1,6 @@
 import PostCSS from "postcss";
 
-/* Extracts "styles/file.css" from "url( "styles/file.css" )" */
+/** Extracts "styles/file.css" from "url( "styles/file.css" )" */
 function getKey ( value )
 {
     const matches = value.matchAll(/^url\(\s+["|'](.+)["|']\s+\)$/g);
@@ -15,7 +15,7 @@ const exportObject = ( options = {} ) =>
 {
     return {
         postcssPlugin : "IMPORT-MAPPER-PLUGIN",
-        AtRule:
+        AtRule        :
         {
             import : rule =>
             {

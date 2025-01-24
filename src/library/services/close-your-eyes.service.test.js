@@ -8,5 +8,5 @@ describe( "CloseYourEyes suite", () =>
         const instance = new CloseYourEyes( canvas );
 
         expect( instance instanceof CloseYourEyes ).toBe( true );        
-    } );
-} );
+    });
+});

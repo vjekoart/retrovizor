@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 
-import * as Library from "../library.js";
+import app from "../index.js";
 
 describe( "User journey", () =>
 {
@@ -12,9 +12,9 @@ describe( "User journey", () =>
         browser = await puppeteer.launch();
         page    = await browser.newPage();
 
-        await page.setViewport( { width: 1366, height: 768 } );
-        await page.goto( Library.frontend.tests.getE2ELocation() );
-    } );
+        await page.setViewport({ width : 1366, height : 768 });
+        await page.goto( app.frontend.tests.getE2ELocation() );
+    });
 
     it( "Land on a homepage", async () =>
     {
@@ -22,7 +22,7 @@ describe( "User journey", () =>
         const titleText     = await titleSelector?.evaluate( el => el.textContent );
 
         expect( titleText ).toBe( "Retrovizor" );
-    } );
+    });
 
     it( "Visit text page", async () =>
     {
@@ -32,7 +32,7 @@ describe( "User journey", () =>
         const contentBlock = await page.$( "retro-content-block" );
 
         expect( contentBlock ).toBeTruthy();
-    } );
+    });
 
     it( "Visit code page", async () =>
     {
@@ -53,7 +53,7 @@ describe( "User journey", () =>
         const gistsTitle    = await gistsSelector?.evaluate( el => el.textContent );
 
         expect( gistsTitle ).toContain( "Gists" );
-    } );
+    });
 
     it( "Visit user page", async () =>
     {
@@ -69,7 +69,7 @@ describe( "User journey", () =>
         const personalTitle    = await personalSelector?.evaluate( el => el.textContent );
 
         expect( personalTitle ).toBe( "Personal work" );
-    } );
+    });
 
     it( "Go back to the homepage", async () =>
     {
@@ -79,10 +79,10 @@ describe( "User journey", () =>
         const canvas = await page.$( "canvas" );
 
         expect( canvas ).toBeTruthy();
-    } );
+    });
 
     afterAll( async () =>
     {
         await browser.close();
-    } );
-} );
+    });
+});

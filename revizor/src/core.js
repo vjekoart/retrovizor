@@ -224,15 +224,15 @@ function startServer ( configuration )
 
     console.info( "[startServer] Starting..." );
 
-    const server = HTTP.createServer( ( request, response ) =>
+    const server = HTTP.createServer(( request, response ) =>
     {
         ServeHandler( request, response, { public: fullBuildPath } );
-    } );
+    });
 
     server.listen( devPort, () =>
     {
         console.info( `[startServer] Listening on port ${ devPort }...` );
-    } );
+    });
 }
 
 /**
@@ -248,24 +248,24 @@ function watchLoop ( configuration, onChange )
     const watchPool      = new Bits.WatchPool( onChange );
 
     Chokidar
-        .watch( [ fullAssetsPath, fullSourcePath ], { persistent: true, usePolling: true } )
+        .watch([ fullAssetsPath, fullSourcePath ], { persistent : true, usePolling : true })
         .on( "all", ( event, path ) =>
         {
             if ( event === "add" || event === "change" )
             {
                 watchPool.push( path );
             }
-        } );
+        });
 }
 
 const tests =
 {
-    getE2ELocation: () =>
+    getE2ELocation : () =>
     {
         return Bits.getE2ELocation();
     },
 
-    runE2E: async ( configuration ) =>
+    runE2E : async ( configuration ) =>
     {
         const { buildPath }         = configuration;
         const { sourcePath, tests } = configuration.internals;
@@ -297,7 +297,7 @@ const tests =
         console.info( results );
     },
 
-    runWebBrowser: async ( configuration ) =>
+    runWebBrowser : async ( configuration ) =>
     {
         const
         {
@@ -379,12 +379,14 @@ const tests =
 /**
  * Export namespaces
  */ 
-const general = {
+const general =
+{
     expose,
     getConfiguration
 }
 
-const frontend = {
+const frontend =
+{
     buildLibrary,
     buildScripts,
     buildStyles,
@@ -392,8 +394,8 @@ const frontend = {
     ensureBuildFolder,
     generateHTML,
     startServer,
-    watchLoop,
-    tests
+    tests,
+    watchLoop
 }
 
 export { general, frontend }

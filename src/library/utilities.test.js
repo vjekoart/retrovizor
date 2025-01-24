@@ -16,10 +16,10 @@ describe( "Utilities suite", () =>
         const y =
         {
             z: 3
-        };</pre>
+        }</pre>
         `;
 
-        const expectedOutput = `const x = 2;\nconst y =\n{\n    z: 3\n};`;
+        const expectedOutput = `const x = 2;\nconst y =\n{\n    z: 3\n}`;
 
         void await renderComponent( "pre", unformattedInput );
         formatCodeBlocks();
@@ -27,5 +27,5 @@ describe( "Utilities suite", () =>
         const element = await requestSelector( "pre" );
 
         expect( element.innerHTML ).toBe( expectedOutput );
-    } );
-} );
+    });
+});

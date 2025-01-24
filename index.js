@@ -1,3 +1,5 @@
 import { FrontendApp } from "./revizor/index.js";
 
-FrontendApp();
+const app = FrontendApp();
+
+export default app;

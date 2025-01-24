@@ -7,5 +7,5 @@ describe( "ImageDegradator suite", () =>
         const instance = new ImageDegradator();
 
         expect( instance instanceof ImageDegradator ).toBe( true );        
-    } );
-} );
+    });
+});

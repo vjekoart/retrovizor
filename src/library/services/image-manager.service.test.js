@@ -7,5 +7,5 @@ describe( "ImageManager suite", () =>
         const instance = new ImageManager();
 
         expect( instance instanceof ImageManager ).toBe( true );        
-    } );
-} );
+    });
+});

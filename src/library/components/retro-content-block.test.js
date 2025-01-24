@@ -6,7 +6,7 @@ describe( "RetroContentBlock", () =>
     beforeAll( () =>
     {
         customElements.define( "retro-content-block", RetroContentBlock );
-    } );
+    });
 
     it( "renders: default", async () =>
     {
@@ -14,7 +14,7 @@ describe( "RetroContentBlock", () =>
 
         expect( shadowRoot.innerHTML.includes( "Dummy title" ) ).toBeTruthy();
         expect( shadowRoot.innerHTML.includes( "1970-01-01"  ) ).toBeTruthy();
-    } );
+    });
 
     it( "renders: content", async () =>
     {
@@ -36,5 +36,5 @@ describe( "RetroContentBlock", () =>
 
         expect( shadowRoot.innerHTML.includes( "/custom-url/" ) ).toBeTruthy();
         expect( shadowRoot.innerHTML.includes( "2025-01-01"   ) ).toBeTruthy();
-    } );
-} );
+    });
+});

@@ -6,8 +6,8 @@
  */
 class Eigen
 {
-    static colorCold = { r : 61 , g : 157, b : 230 } // #3d9de6
-    static colorWarm = { r : 230, g : 134, b : 61  } // #e6863d
+    static colorCold = { r : 61 , g : 157, b : 230 } /* #3d9de6 */
+    static colorWarm = { r : 230, g : 134, b : 61  } /* #e6863d */
 
     /**
      * @param pixels Array<{ r: number, g: number, b: number }>
@@ -21,7 +21,7 @@ class Eigen
             average.r += pixel.r;
             average.g += pixel.g;
             average.b += pixel.b;
-        } );
+        });
 
         average.r = Math.round( average.r / pixels.length );
         average.g = Math.round( average.g / pixels.length );
@@ -38,12 +38,12 @@ class Eigen
      */
     static getDegradedColor ( hsl, maxLightness )
     {
-        const selectedColor = ( () =>
+        const selectedColor = (() =>
         {
             if ( hsl.h > 75 && hsl.h < 270 ) return this.colorCold;
 
             return this.colorWarm;
-        } )();
+        })();
 
         const selectedColorHSL = this.getHSLFromRGB( selectedColor );
 
@@ -58,11 +58,11 @@ class Eigen
     }
 
     /**
-     * @param rgb { r: number, g: number, b: number }
-     * Returns {
-     *   h: 0-360, // Hue
-     *   s: 0-255, // Saturation
-     *   l: 0-255  // Lightness
+     * @param { r: number, g: number, b: number } rgb - Color representation.
+     * @return {
+     *   h: 0-360 - Hue
+     *   s: 0-255 - Saturation
+     *   l: 0-255 - Lightness
      * }
      */
     static getHSLFromRGB ( rgb )
@@ -76,16 +76,16 @@ class Eigen
 
         let hue;
 
-        if ( delta === 0 )        hue = 0;
-        else if ( cmax === rDec ) hue = ( ( gDec - bDec ) / delta ) % 6;
-        else if ( cmax === gDec ) hue = ( bDec - rDec ) / delta + 2;
-        else                      hue = ( rDec - gDec ) / delta + 4;
+             if ( delta ===    0 ) hue = 0;
+        else if ( cmax  === rDec ) hue = ( ( gDec - bDec ) / delta ) % 6;
+        else if ( cmax  === gDec ) hue = ( bDec - rDec ) / delta + 2;
+        else                       hue = ( rDec - gDec ) / delta + 4;
 
         hue = Math.round( hue * 60 );
 
         if ( hue < 0 ) hue += 360;
 
-        const lightness  = ( ( cmin + cmax ) / 2 );
+        const lightness  = ( cmin + cmax ) / 2;
         const saturation = delta === 0 ? 0 : delta / ( 1 - Math.abs( 2 * lightness - 1 ) );
 
         return {
@@ -96,8 +96,12 @@ class Eigen
     }
 
     /**
-     * @param hsl { h: number, s: number, l: number }
-     * Returns { r, g, b }
+     * @param { h: number, s: number, l: number } rgb - Color representation.
+     * @return {
+     *   r: 0-255
+     *   g: 0-255
+     *   b: 0-255
+     * }
      */
     static getRGBFromHSL ( hsl )
     {

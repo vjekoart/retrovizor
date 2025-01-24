@@ -6,12 +6,12 @@ describe( "RetroTitle", () =>
     beforeAll( () =>
     {
         customElements.define( "retro-title", RetroTitle );
-    } );
+    });
 
     it( "renders: default", async () =>
     {
         const { shadowRoot } = await renderComponent( "retro-title", "<retro-title></retro-title>" );
         const value = shadowRoot.innerHTML.includes( "Retrovizor" );
         expect( value ).toBeTruthy();
-    } );
-} );
+    });
+});

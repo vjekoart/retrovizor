@@ -5,7 +5,7 @@ function getRandomFromInterval ( min, max )
 
 function getRandomArray ( length, min, max )
 {
-    return Array.from( { length }, () => getRandomFromInterval( min, max ) );
+    return Array.from({ length }, () => getRandomFromInterval( min, max ));
 }
 
 function formatCodeBlocks ()
@@ -20,7 +20,7 @@ function formatCodeBlocks ()
         const purified     = content.replace( new RegExp( indentations[ 0 ][ 1 ], "gm" ), "" );
 
         preEl.outerHTML = `<pre>${ purified }</pre>`;
-    } );
+    });
 }
 
 export

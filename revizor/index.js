@@ -7,7 +7,7 @@ async function build ()
     try
     {
         await Core.frontend.ensureBuildFolder( Configuration, true );
-        await Core.frontend.copyAssets       ( Configuration );
+        await Core.frontend.copyAssets       ( Configuration       );
 
         const loopState =
         {
@@ -16,8 +16,8 @@ async function build ()
             styles  : {}
         }
 
-        loopState.library = await Core.frontend.buildLibrary( Configuration );
-        loopState.scripts = await Core.frontend.buildScripts( Configuration );
+        loopState.library = await Core.frontend.buildLibrary( Configuration                           );
+        loopState.scripts = await Core.frontend.buildScripts( Configuration                           );
         loopState.styles  = await Core.frontend.buildStyles ( Configuration, loopState.library.styles );
 
         await Core.frontend.generateHTML( Configuration, loopState );
@@ -42,7 +42,7 @@ async function dev ()
             library : {},
             scripts : {},
             styles  : {}
-        };
+        }
 
         await Core.frontend.ensureBuildFolder( Configuration );
         Core.frontend.startServer( Configuration );
@@ -51,26 +51,11 @@ async function dev ()
         {
             console.info( "\nStarting the loop...\n" );
 
-            if ( changes.copyAssets )
-            {
-                await Core.frontend.copyAssets( Configuration );
-            }
-            if ( changes.buildLibrary )
-            {
-                loopState.library = await Core.frontend.buildLibrary( Configuration, true );
-            }
-            if ( changes.buildScripts )
-            {
-                loopState.scripts = await Core.frontend.buildScripts( Configuration, true );
-            }
-            if ( changes.buildStyles )
-            {
-                loopState.styles  = await Core.frontend.buildStyles ( Configuration, loopState.library.styles, true );
-            }
-            if ( changes.generateHTML )
-            {
-                await Core.frontend.generateHTML( Configuration, loopState, true );
-            }
+            changes.copyAssets   && ( await Core.frontend.copyAssets( Configuration )                                                       );
+            changes.buildLibrary && ( loopState.library = await Core.frontend.buildLibrary( Configuration, true )                           );
+            changes.buildScripts && ( loopState.scripts = await Core.frontend.buildScripts( Configuration, true )                           );
+            changes.buildStyles  && ( loopState.styles  = await Core.frontend.buildStyles ( Configuration, loopState.library.styles, true ) );
+            changes.generateHTML && ( await Core.frontend.generateHTML( Configuration, loopState, true )                                    );
 
             console.info( "\nLoop completed." );
         } );
@@ -110,4 +95,6 @@ export function FrontendApp ()
         ],
         dev
     );
+
+    return Core;
 }

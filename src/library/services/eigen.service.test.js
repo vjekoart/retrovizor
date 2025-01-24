@@ -7,7 +7,7 @@ describe( "Eigen suite", () =>
         const instance = new Eigen();
 
         expect( instance instanceof Eigen ).toBe( true );        
-    } );
+    });
 
     it( "getAveragePixelColor", () =>
     {
@@ -20,8 +20,8 @@ describe( "Eigen suite", () =>
 
         const result = Eigen.getAveragePixelColor( pixels );
 
-        expect( result ).toEqual( { r : 200, g : 183, b : 167 } );
-    } );
+        expect( result ).toEqual({ r : 200, g : 183, b : 167 });
+    });
 
     it( "getDegradedColor", () =>
     {
@@ -34,19 +34,19 @@ describe( "Eigen suite", () =>
         expect( result.r ).toBeLessThanOrEqual( 255 );
         expect( result.g ).toBeLessThanOrEqual( 255 );
         expect( result.b ).toBeLessThanOrEqual( 255 );
-    } );
+    });
 
     it( "getHSLFromRGB", () =>
     {
-        const result = Eigen.getHSLFromRGB( { r : 22, g : 22, b : 29 } );
+        const result = Eigen.getHSLFromRGB({ r : 22, g : 22, b : 29 });
 
-        expect( result ).toEqual( { h : 240, s : 35, l : 26 } );
-    } );
+        expect( result ).toEqual({ h : 240, s : 35, l : 26 });
+    });
 
     it( "getRGBFromHSL", () =>
     {
-        const result = Eigen.getRGBFromHSL( { h : 240, s : 35, l : 25 } );
+        const result = Eigen.getRGBFromHSL({ h : 240, s : 35, l : 25 });
 
-        expect( result ).toEqual( { r : 22, g : 22, b : 28 } );
-    } );
-} );
+        expect( result ).toEqual({ r : 22, g : 22, b : 28 });
+    });
+});

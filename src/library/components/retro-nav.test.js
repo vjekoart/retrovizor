@@ -6,7 +6,7 @@ describe( "RetroNav", () =>
     beforeAll( () =>
     {
         customElements.define( "retro-nav", RetroNav );
-    } );
+    });
 
     it( "renders: default", async () =>
     {
@@ -16,5 +16,5 @@ describe( "RetroNav", () =>
         expect( shadowRoot.innerHTML.includes( "Code" ) ).toBeTruthy();
         expect( shadowRoot.innerHTML.includes( "Text" ) ).toBeTruthy();
         expect( shadowRoot.innerHTML.includes( "User" ) ).toBeTruthy();
-    } );
-} );
+    });
+});

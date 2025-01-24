@@ -6,7 +6,7 @@ describe( "RetroExperimentControl", () =>
     beforeAll( () =>
     {
         customElements.define( "retro-experiment-control", RetroExperimentControl );
-    } );
+    });
 
     it( "renders: default", async () =>
     {
@@ -34,6 +34,5 @@ describe( "RetroExperimentControl", () =>
         expect( element.shadowRoot.innerHTML ).toContain( "Start the experiment" );
         expect( element.shadowRoot.innerHTML ).toContain( "Color"                );
         expect( element.shadowRoot.innerHTML ).toContain( "Factor"               );
-    } );
-} );
-
+    });
+});

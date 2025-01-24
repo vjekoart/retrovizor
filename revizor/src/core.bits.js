@@ -95,7 +95,7 @@ export async function buildNativeLibrary ( configuration, dev = false )
     {
         scripts : {},
         styles  : {}
-    };
+    }
 
     for ( const file in content )
     {
@@ -109,7 +109,7 @@ export async function buildNativeLibrary ( configuration, dev = false )
 
     for ( const file in content )
     {
-        const param = { name : file, content : content[ file ] };
+        const param = { name : file, content : content[ file ] }
 
         let compiled;
 
@@ -153,7 +153,7 @@ export async function buildNativeWorkers ( configuration, scriptMappings, dev = 
 
         fileMappings[ `Library${ file }` ] = fileOutputPath;
 
-        const param    = { name : file, content : content[ file ] };
+        const param    = { name : file, content : content[ file ] }
         const compiled = await compileScript( param, scriptMappings, buildType, dev );
 
         compiled?.code && await writeFile( Path.join( outputBase, fileOutputPath            ), compiled.code );
@@ -224,10 +224,14 @@ export async function compileBundle ( entryPoint, entryName, outputPath, library
 }
 
 /**
- * TODO describe rest of the parameters
+ * Compile a provided JavaScript code. Returns compiled code and source map.
  *
- * @param file { name : string, content : string }
- * @return { code : string, map : string }
+ * @param { name : string, content : string } file      - Object representing file that should be compiled.
+ * @param { object                          } importMap - Object containing import maps.
+ * @param { "native|native-library-bundle"  } buildType - One of the supported build types.
+ * @param { boolean                         } dev       - Whether to create a development or a production build.
+ *
+ * @return { code : string, map : string }    Object containing compiled code and a source map.
  */
 export async function compileScript ( file = {}, importMap = null, buildType = "native", dev = false )
 {
@@ -247,7 +251,7 @@ export async function compileScript ( file = {}, importMap = null, buildType = "
         presets    : [ "@babel/preset-env" ],
         sourceMaps : true,
         plugins
-    };
+    }
 
     if ( buildType === "native" || buildType === "native-library-bundle" )
     {
@@ -255,7 +259,7 @@ export async function compileScript ( file = {}, importMap = null, buildType = "
         {
             name              : "Library",
             supportsStaticESM : true
-        };
+        }
     }
 
     let results;
@@ -275,14 +279,18 @@ export async function compileScript ( file = {}, importMap = null, buildType = "
 
     const map = JSON.stringify( results.map ?? {} );
 
-    return { code, map };
+    return { code, map }
 }
 
 /**
- * TODO describe rest of the parameters
+ * Compile a provided CSS code. Returns compiled code and source map.
  *
- * @param file { name : string, content : string }
- * @return { code : string, map : string }
+ * @param { name : string, content : string } file      - Object representing file that should be compiled.
+ * @param { object                          } importMap - Object containing import maps.
+ * @param { "native|native-library-bundle"  } buildType - One of the supported build types.
+ * @param { boolean                         } dev       - Whether to create a development or a production build.
+ *
+ * @return { code : string, map : string }    Object containing compiled code and a source map.
  */
 export async function compileStyle ( file = {}, importMap = null, buildType = "native", dev = false )
 {
@@ -300,7 +308,7 @@ export async function compileStyle ( file = {}, importMap = null, buildType = "n
         from : file.name,
         to   : file.name,
         map  : true
-    };
+    }
 
     let results;
     let code;
@@ -319,13 +327,13 @@ export async function compileStyle ( file = {}, importMap = null, buildType = "n
 
     const map = JSON.stringify( results.map ?? {} );
 
-    return { code, map };
+    return { code, map }
 }
 
 export async function ensureFolder ( path, clear = false )
 {
-    const createFolder = () => FS.mkdir( path, { recursive : true } );
-    const deleteFolder = () => FS.rm( path, { recursive : true, force : true } );
+    const createFolder = () => FS.mkdir( path, { recursive : true               } );
+    const deleteFolder = () => FS.rm   ( path, { recursive : true, force : true } );
 
     try
     {
@@ -401,7 +409,7 @@ export async function getTestFiles ( path, includes )
 export async function getTestLibraryMappings ( path, libraryPath )
 {
     const files    = await FS.readdir( Path.join( path, libraryPath ), { recursive: true, withFileTypes: true } );
-    const mappings = {};
+    const mappings = {}
 
     for ( const dirent of files )
     {
@@ -484,7 +492,7 @@ export function isWorkerFile ( file )
 export async function readDirectoryContent ( path, filter = null )
 {
     const files   = await FS.readdir( path, { recursive: true, withFileTypes: true } );
-    const content = {};
+    const content = {}
 
     for ( const dirent of files )
     {
@@ -532,7 +540,8 @@ export function registerHelpers ( Handlebars, configuration, loopState )
 
 export async function registerPartials ( Handlebars )
 {
-    const {
+    const
+    {
         indexTemplate,
         layoutPrefix,
         templatesPath
@@ -544,7 +553,7 @@ export async function registerPartials ( Handlebars )
     const partials =
     {
         index : await FS.readFile( fullIndexPath, { encoding : "utf8" } )
-    };
+    }
 
     const templateFiles     = await FS.readdir( fullTemplatesPath );
     const htmlTemplateFiles = templateFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
@@ -574,19 +583,17 @@ export function validateConfiguration ( configuration )
     for ( const field of requiredFields )
     {
         if ( typeof configuration[ field ] === "undefined" )
-        {
             throw new Error( `Configuration: missing '${ field }'!` );
-        }
     }
 
-    if ( typeof configuration.buildPath !== "string" ) throw new Error( `Configuration: 'buildPath' must be a string!` );
+    if ( typeof configuration.buildPath !== "string" )
+        throw new Error( `Configuration: 'buildPath' must be a string!` );
 
     const buildTypeValues = [ "native", "native-library-bundle" ];
 
     if ( buildTypeValues.indexOf( configuration.buildType ) === -1 )
-    {
         throw new Error( `Configuration: 'buildType' must be one of the following: ${ buildTypeValues }` );
-    }
+
 
     const optionalFields =
     [
@@ -594,10 +601,10 @@ export function validateConfiguration ( configuration )
         "nativeDependencies"
     ];
 
-    if ( configuration.dataFile && typeof configuration.dataFile !== "string" )
+    if ( typeof configuration.dataFile !== "string" )
         throw new Error( `Configuration: 'dataFile' must be a string!` );
 
-    if ( configuration.nativeDependencies && typeof configuration.nativeDependencies !== "object" )
+    if ( typeof configuration.nativeDependencies !== "object" )
         throw new Error( `Configuration: 'nativeDependencies' must be an object!` );
 }
 
@@ -611,15 +618,20 @@ export async function writeViews ( Handlebars, configuration, fileMappings, dev 
 {
     console.info( `Writing views...` );
 
-    const { buildPath, dataFile } = configuration;
+    const
+    {
+        buildPath,
+        dataFile
+    } = configuration;
+
     const { viewsPath }    = _INTERNALS;
 
     const fullBuildPath    = Path.join( getRootPath(), buildPath );
     const fullViewsPath    = Path.join( getRootPath(), viewsPath );
     const fullDataFilePath = Path.join( getRootPath(), dataFile  );
 
-    const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
-    const templateData     = { data, configuration, fileMappings };
+    const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {}
+    const templateData     = { data, configuration, fileMappings }
     const viewFiles        = await FS.readdir( fullViewsPath, { recursive: true } );
     const htmlViewFiles    = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
 

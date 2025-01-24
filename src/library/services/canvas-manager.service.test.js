@@ -8,5 +8,5 @@ describe( "CanvasManager suite", () =>
         const instance = new CanvasManager( canvas );
 
         expect( instance instanceof CanvasManager ).toBe( true );        
-    } );
-} );
+    });
+});

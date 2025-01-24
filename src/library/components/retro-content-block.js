@@ -14,7 +14,7 @@ export class RetroContentBlock extends LitElement
             attribute: "data-href",
             type: String
         }
-    };
+    }
 
     static styles = css`
         :host

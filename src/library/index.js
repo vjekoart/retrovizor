@@ -28,12 +28,12 @@ export
 {
     Configuration,
 
-    // Services
+    /* Services */
     CloseYourEyes,
     ImageDegradator,
 
-    // Utilities
+    /* Utilities */
     formatCodeBlocks,
 
     initialize
-};
+}
