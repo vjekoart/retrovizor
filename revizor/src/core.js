@@ -13,7 +13,7 @@ import Path           from "path";
 import Process        from "node:process";
 import ServeHandler   from "serve-handler";
 
-import * as Bits      from "./library.bits.js";
+import * as Bits      from "./core.bits.js";
 
 
 /**
@@ -50,8 +50,8 @@ function expose ( functions, fallback )
  */
 function getConfiguration ()
 {
-    const internals     = JSON.parse( FSSync.readFileSync( ".internals.json"   , { encoding: "utf8" } ) );
-    const configuration = JSON.parse( FSSync.readFileSync( "configuration.json", { encoding: "utf8" } ) );
+    const internals     = JSON.parse( FSSync.readFileSync( Path.join( import.meta.dirname, "../internals.json" ), { encoding: "utf8" } ) );
+    const configuration = JSON.parse( FSSync.readFileSync( "configuration.json"                                 , { encoding: "utf8" } ) );
 
     Bits.validateConfiguration( configuration );
 

@@ -10,10 +10,10 @@ import PostCSS        from "postcss";
 import { cwd }        from "node:process";
 import URL            from "url";
 
-import LibraryPostCSS          from "./library.postcss.js";
-import TransformApplyImportMap from "./library.babel.js";
+import LibraryPostCSS          from "./plugins.postcss.js";
+import TransformApplyImportMap from "./plugins.babel.js";
 
-const _INTERNALS = JSON.parse( FSSync.readFileSync( ".internals.json", { encoding: "utf8" } ) );
+const _INTERNALS = JSON.parse( FSSync.readFileSync( Path.join( import.meta.dirname, "../internals.json" ), { encoding: "utf8" } ) );
 
 export async function buildBundleLibrary ( configuration, dev = false )
 {
@@ -388,7 +388,7 @@ export function getPartialNameFromFileName ( file )
 
 export function getRootPath ()
 {
-    return Path.dirname( URL.fileURLToPath( import.meta.url ) );
+    return process.cwd();
 }
 
 export async function getTestFiles ( path, includes )
