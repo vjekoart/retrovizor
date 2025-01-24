@@ -204,7 +204,7 @@ export async function compileBundle ( entryPoint, entryName, outputPath, library
         }
     }
 
-    if ( isScriptFile( entryName ) || isWorkerFile( entryName ) )
+    if ( isScriptFile( entryName ) || isWorkerFile( entryName ) || isTestFile( entryName ) )
     {
         config.target = [ "es2020" ];
         config.format = "esm";
@@ -322,6 +322,33 @@ export async function compileStyle ( file = {}, importMap = null, buildType = "n
     return { code, map };
 }
 
+export async function ensureFolder ( path, clear = false )
+{
+    const createFolder = () => FS.mkdir( path, { recursive : true } );
+    const deleteFolder = () => FS.rm( path, { recursive : true, force : true } );
+
+    try
+    {
+        await checkPath( path, true );
+
+        if ( clear )
+        {
+            await deleteFolder();
+            await createFolder();
+        }
+    }
+    catch ( error )
+    {
+        if ( error.code === "ENOENT" )
+        {
+            await createFolder();
+            return;
+        }
+
+        throw error;
+    }
+}
+
 export function getCompiledPath ( path, content, dev )
 {
     const pathUnits = Path.normalize( path ).split( "/" );
@@ -426,6 +453,24 @@ export function isScriptFile ( file )
 export function isStyleFile ( file )
 {
     return file.endsWith( ".css" );
+}
+
+export function isTestFile ( file )
+{
+    if ( !file.endsWith( ".js" ) )
+    {
+        return false;
+    }
+    if ( file.includes( _INTERNALS.tests.browserTestIncludes ) )
+    {
+        return true;
+    }
+    if ( file.includes( _INTERNALS.tests.e2eTestIncludes ) )
+    {
+        return true;
+    }
+
+    return false;
 }
 
 export function isWorkerFile ( file )

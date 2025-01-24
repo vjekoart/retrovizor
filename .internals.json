@@ -11,11 +11,12 @@
     "tests":
     {
         "browserTestIncludes": ".test.",
-        "e2eTestIncludes": ".e2e.",
-        "testUtilityIncludes": "test.utilities.js",
-        "jasmineBrowserServerPort": 4321,
+        "browserTestBuild": "__tests__",
         "e2eHostname": "localhost",
-        "e2ePort": 4322
+        "e2ePort": 4322,
+        "e2eTestIncludes": ".e2e.",
+        "jasmineBrowserServerPort": 4321,
+        "testUtilityIncludes": "test.utilities.js"
     },
     "viewsPath": "src/views"
 }

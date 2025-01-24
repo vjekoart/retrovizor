@@ -198,28 +198,8 @@ async function ensureBuildFolder ( configuration, clear = false )
 {
     const { buildPath } = configuration;
     const fullBuildPath = Path.join( Bits.getRootPath(), buildPath );
-    const createFolder  = () => FS.mkdir( fullBuildPath, { recursive : true } );
 
-    try
-    {
-        await Bits.checkPath( fullBuildPath, true );
-
-        if ( clear )
-        {
-            await FS.rm( fullBuildPath, { recursive : true, force : true } );
-            await createFolder();
-        }
-    }
-    catch ( error )
-    {
-        if ( error.code === "ENOENT" )
-        {
-            await createFolder();
-            return;
-        }
-
-        throw error;
-    }
+    await Bits.ensureFolder( fullBuildPath, clear );
 }
 
 async function generateHTML ( configuration, loopState, dev = false )
@@ -319,11 +299,17 @@ const tests =
 
     runWebBrowser: async ( configuration ) =>
     {
-        const { nativeDependencies } = configuration;
-        const {
+        const
+        {
+            buildPath,
+            nativeDependencies
+        } = configuration;
+
+        const
+        {
+            libraryPath,
             sourcePath,
-            tests,
-            libraryPath
+            tests
         } = configuration.internals;
 
         const root            = Path.join( Bits.getRootPath(), sourcePath );
@@ -359,9 +345,34 @@ const tests =
             }
         }
 
+        if ( configuration.buildType === "native-library-bundle" )
+        {
+            console.info( "Compiling test specs before execution..." );
+
+            const testBuildPath     = Path.join( Bits.getRootPath(), buildPath, tests.browserTestBuild );
+            await Bits.ensureFolder( testBuildPath, true );
+
+            const compiledSpecFiles = [];
+
+            for ( const spec of config.specFiles )
+            {
+                const entry    = Path.join( root, spec );
+                const name     = spec.split( "/" ).pop();
+                const compiled = await Bits.compileBundle( entry, `${ tests.browserTestBuild }/${ name }`, testBuildPath, libraryPath, true );
+
+                compiledSpecFiles.push( compiled.split( "/" ).pop() );
+            }
+
+            config.specDir   = testBuildPath;
+            config.specFiles = compiledSpecFiles;
+
+            console.info( "Compiled." );
+        }
+
         const results = await JasmineBrowser.runSpecs( config );
+
         console.info( results );
-    },
+    }
 }
 
 

@@ -19,7 +19,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 5: Add single E2E test - user journey~
 * Phase 6: code fine-tune
     * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
-    * Build system tests: when build type is `native-library-bundle` then create bundles in library when running tests, see `retro-experiment-control.js`
     * Write tests for worker files
     * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
         * Enable source maps, possible because `sourceMappingURL=index.js.map`
@@ -131,6 +130,19 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * There's no content hashing for assets, add versioning manually. For example, `font-file.v01.woff` and similar.
 * When adding a template or view script/style, use relative paths in `src` directory. For example, file `src/views/code/image-degradator/image-degradator.js` should be defined in `src/views/code/image-degradator/index.html.hbs` file as `viewScript="views/code/image-degradator/image-degradator.js"`. Same goes for `viewStyle`. For templates, similar, e.g. `templateScript="templates/my-template.js"`.
 * [CHECK] It's not possible to load CSS library files from view/template style files. I assume that's because missing import maps when building a bundle library.
+
+### Note on modules in native VS native-library-bundle
+
+```javascript
+/* Some file inside a library */
+
+/* Build type is "native"; requires "lit-all.min.js" in "configuration.json" */
+import { LitElement, html, css, createRef, ref } from "lit";
+
+/* Build type === "native-library-bundle" */
+import { LitElement, html, css } from "lit";
+import { createRef, ref } from "lit/directives/ref.js";
+```
 
 ### Workers inside a library
 

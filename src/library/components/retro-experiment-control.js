@@ -1,7 +1,3 @@
-// TODO: this works for native build, including tests for now, requires lit-all.min.js in configuration.json
-// import { LitElement, html, css, createRef, ref } from "lit";
-
-// TODO: this works for native library bundle, but not for tests because they lack support for bundling
 import { LitElement, html, css } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 
