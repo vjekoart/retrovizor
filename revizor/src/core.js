@@ -222,7 +222,7 @@ function startServer ( configuration )
     const { devPort   } = configuration.internals;
     const fullBuildPath = Path.join( Bits.getRootPath(), buildPath );
 
-    console.info( "[startServer] Starting..." );
+    console.info( "Starting server..." );
 
     const server = HTTP.createServer(( request, response ) =>
     {
@@ -231,7 +231,7 @@ function startServer ( configuration )
 
     server.listen( devPort, () =>
     {
-        console.info( `[startServer] Listening on port ${ devPort }...` );
+        console.info( `Server listening on port ${ devPort }...` );
     });
 }
 
@@ -271,15 +271,15 @@ const tests =
         const { sourcePath, tests } = configuration.internals;
         const fullBuildPath         = Path.join( Bits.getRootPath(), buildPath );
 
-        const server = HTTP.createServer( ( request, response ) =>
+        const server = HTTP.createServer(( request, response ) =>
         {
-            ServeHandler( request, response, { public: fullBuildPath } );
-        } );
+            ServeHandler( request, response, { public : fullBuildPath } );
+        });
 
         server.listen( tests.e2ePort, () =>
         {
-            console.info( `[startServer] Listening on port ${ tests.e2ePort }...` );
-        } );
+            console.info( `Server listening on port ${ tests.e2ePort }...` );
+        });
 
         const root   = Path.join( Bits.getRootPath(), sourcePath );
         const units  = await Bits.getTestFiles( root, tests.e2eTestIncludes );

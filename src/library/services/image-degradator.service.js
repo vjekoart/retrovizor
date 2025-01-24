@@ -1,9 +1,6 @@
 /**
  * Class that degrades an image by scaling-down the number of pixels and by changing original image colors.
  * Currently, it transforms the image to a format with two colors.
- *
- * @usage
- * TODO
  */
 class ImageDegradator
 {

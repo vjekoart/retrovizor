@@ -44,11 +44,9 @@ async function degrade ( base64, options = {} )
     return await canvasToBase64( canvas );
 }
 
-
 /**
  * Utilities
  **/
-
 
 /**
  * Get canvas image content in the format of base64 string.

@@ -177,9 +177,9 @@ export function checkPath ( path, isDirectory = false )
                 }
 
                 resolve();
-            } )
+            })
             .catch( error => reject( error ) );
-    } );
+    });
 }
 
 /**
@@ -296,7 +296,7 @@ export async function compileStyle ( file = {}, importMap = null, buildType = "n
 {
     console.info( `Compiling style file '${ file.name }'...` );
 
-    const postPlugins = [ Autoprefixer, LibraryPostCSS( { importMap } ) ];
+    const postPlugins = [ Autoprefixer, LibraryPostCSS({ importMap }) ];
 
     if ( !dev )
     {
@@ -521,7 +521,7 @@ export function registerHelpers ( Handlebars, configuration, loopState )
     Handlebars.registerHelper( "ifBuildType", function ( buildType, options )
     {
         return configuration.buildType === buildType ? options.fn( this ) : options.inverse( this );
-    } );
+    });
 
     Handlebars.registerHelper( "getFilePath", ( ...args ) =>
     {
@@ -535,7 +535,7 @@ export function registerHelpers ( Handlebars, configuration, loopState )
         if ( loopState.styles         [ path ] ) return loopState.styles         [ path ];
 
         throw new Error( `Could not find path for ${ path }!` );
-    } );
+    });
 }
 
 export async function registerPartials ( Handlebars )

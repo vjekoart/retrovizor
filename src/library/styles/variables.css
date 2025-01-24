@@ -56,7 +56,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Black.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Black.woff2");
 
     font-family : "Julia Mono";
     font-style  : normal;
@@ -65,7 +65,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Bold.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Bold.woff2");
 
     font-family : "Julia Mono";
     font-style  : normal;
@@ -74,7 +74,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Medium.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Medium.woff2");
 
     font-family : "Julia Mono";
     font-style  : normal;
@@ -83,7 +83,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-MediumItalic.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-MediumItalic.woff2");
 
     font-family : "Julia Mono";
     font-style  : italic;
@@ -92,7 +92,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Regular.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Regular.woff2");
 
     font-family : "Julia Mono";
     font-style  : normal;
@@ -101,7 +101,7 @@
 
 @font-face
 {
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-RegularItalic.woff2");
+    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-RegularItalic.woff2");
 
     font-family : "Julia Mono";
     font-style  : italic;

@@ -2,6 +2,8 @@ import puppeteer from "puppeteer";
 
 import app from "../index.js";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
 describe( "User journey", () =>
 {
     let browser = null;

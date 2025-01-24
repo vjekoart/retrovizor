@@ -24,7 +24,7 @@ async function build ()
     }
     catch ( error )
     {
-        console.error( "[build:error]", error );
+        console.error( "\nError during build action!", error );
     }
 }
 
@@ -62,7 +62,7 @@ async function dev ()
     }
     catch ( error )
     {
-        console.error( "[dev:error]", error );
+        console.error( "\nError during dev action!", error );
     }
 }
 
@@ -89,9 +89,9 @@ export function FrontendApp ()
             build,
             deploy,
             dev,
+            e2e,
             start,
-            test,
-            e2e
+            test
         ],
         dev
     );

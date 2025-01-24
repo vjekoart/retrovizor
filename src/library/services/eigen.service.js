@@ -6,8 +6,8 @@
  */
 class Eigen
 {
-    static colorCold = { r : 61 , g : 157, b : 230 } /* #3d9de6 */
-    static colorWarm = { r : 230, g : 134, b : 61  } /* #e6863d */
+    static colorCold = { r :  61, g : 157, b : 230 } /* #3d9de6 */
+    static colorWarm = { r : 230, g : 134, b :  61 } /* #e6863d */
 
     /**
      * @param pixels Array<{ r: number, g: number, b: number }>
