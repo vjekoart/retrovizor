@@ -18,11 +18,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * ~Phase 4: content & pages, incl. related logic~
 * ~Phase 5: Add single E2E test - user journey~
 * Phase 6: code fine-tune
-    * Visit stats: add a service/component (restructure FE into component), produce single publicly available JSON file with statistics per month, one endpoint to collect stats : maybe just an nginx configuration files?
-    * Write tests for worker files
-    * Templates/views: like in Prospekt, single file with HTML/CSS/JS: build system should resolve CSS, babel-ify JS and similar, goal is to reduce load time by reducing number of requests to 1 (I can simplify `src/views` file structure)
-        * Enable source maps, possible because `sourceMappingURL=index.js.map`
-        * Architecture opinion: this approach forces views to be small, and to put utilities in the library
     * Move `library.*` files from the root directory to `revizor/` folder, including the main `index.js` file, and expose something like `revizorFrontend()` so there's minimal code in the root `index.js` file - feeling should be as if I am using a library for building the app
         * What to do with `deploy` and `start` actions in `index.js`?
         * Add `revizor/Readme.md` and extract relevant stuff there
@@ -76,6 +71,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Revise GitHub profile and update links
 * PUBLISH
     * Rename instagram to retrovizor.xyz and update info - the same day the website is published
+    * How to collect visit stats?
 * Phase 12: cycle of improvements from backlog after the first feedback
 
 ### Roadmap stuff (not part of the first version)
@@ -143,6 +139,13 @@ import { LitElement, html, css, createRef, ref } from "lit";
 import { LitElement, html, css } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 ```
+
+### Note on testing web workers
+
+The idea is to consume other testable units inside worker files, so they're
+not treated as units when it comes to testing.
+
+Their functionality should be covered with E2E tests.
 
 ### Workers inside a library
 

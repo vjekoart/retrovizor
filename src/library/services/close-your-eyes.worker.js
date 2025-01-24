@@ -50,7 +50,7 @@ function generate ( options )
                 min : minDotOpacity
             }
         },
-        lineOpacityIncrease : lineOpacityIncrease
+        lineOpacityIncrease
     });
 
     for ( let i = 0; i < frameCount; ++i )

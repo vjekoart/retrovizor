@@ -20,7 +20,7 @@ self.onmessage = async ev =>
 }
 
 /**
- * TODO: move to single abstraction level.
+ * TODO: move to single abstraction level, maybe create a dedicated class for this functionality
  */
 async function degrade ( base64, options = {} )
 {
