@@ -80,10 +80,9 @@ function main ()
         switch ( ev.detail )
         {
             case "run":
-                setProcessing( true );
-
                 const options = {}
 
+                dom.experimentControl.setAttribute( "disabled", "disabled" );
                 dom.experimentControl.values.forEach( x => options[ x.key ] = x.key === "noiseColor" ? JSON.parse( x.value ) : x.value );
 
                 closeYourEyes.isRunning && closeYourEyes.stop();
@@ -98,7 +97,7 @@ function main ()
                     })
                     .finally(() =>
                     {
-                        setProcessing( false );
+                        dom.experimentControl.removeAttribute( "disabled" );
                     });
                 break;
 
@@ -112,17 +111,6 @@ function main ()
     });
 
     closeYourEyes.setup();
-}
-
-function setProcessing ( isProcessing )
-{
-    if ( isProcessing )
-    {
-        dom.experimentControl.setAttribute( "disabled", "disabled" );
-        return;
-    }
-
-    dom.experimentControl.removeAttribute( "disabled" );
 }
 
 window.addEventListener( "DOMContentLoaded", main );

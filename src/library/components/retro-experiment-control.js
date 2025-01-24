@@ -6,6 +6,7 @@ import { LitElement, html, css } from "lit";
 import { createRef, ref } from "lit/directives/ref.js";
 
 /**
+ * [PROPERTIES]
  * retroExperimentControl.controls =
  * {
  *     "name"  : "Label",
@@ -39,6 +40,7 @@ import { createRef, ref } from "lit/directives/ref.js";
  * Return value for `type : "file"` is a base64 string.
  * 
  * @event controlClicked { detail : "control key" }
+ * @attribute disabled="disabled"
  */
 export class RetroExperimentControl extends LitElement
 {

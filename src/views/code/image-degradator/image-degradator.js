@@ -50,17 +50,16 @@ function main ()
         switch ( ev.detail )
         {
             case "generate":
-                setProcessing( true );
-
                 let base64 = null;
                 let name   = "";
                 let rest   = {}
 
                 dom.experimentControl.values.forEach( x => x.key === "image" ? [ base64, name ] = [ x.value, x.name ] : rest[ x.key ] = x.value );
+                dom.experimentControl.setAttribute( "disabled", "disabled" );
 
                 if ( !base64 )
                 {
-                    setProcessing( false );
+                    dom.experimentControl.removeAttribute( "disabled" );
                     alert( "Missing input image!" );
                     return;
                 }
@@ -72,7 +71,7 @@ function main ()
                     .then(( degraded ) =>
                     {
                         state.fileName = extractFileName( name );
-                        renderBase64ToImage( degraded, dom.image );
+                        dom.image.src  = degraded;
                     })
                     .catch(( error ) =>
                     {
@@ -81,7 +80,7 @@ function main ()
                     })
                     .finally(() =>
                     {
-                        setProcessing( false );
+                        dom.experimentControl.removeAttribute( "disabled" );
                     });
                 break;
 
@@ -117,22 +116,6 @@ function imageToDownload ( imageElement )
     a.download = state.fileName;
 
     a.click();
-}
-
-function renderBase64ToImage ( base64, imageElement )
-{
-    dom.image.src = base64;
-}
-
-function setProcessing ( isProcessing )
-{
-    if ( isProcessing )
-    {
-        dom.experimentControl.setAttribute( "disabled", "disabled" );
-        return;
-    }
-
-    dom.experimentControl.removeAttribute( "disabled" );
 }
 
 window.addEventListener( "DOMContentLoaded", main );
