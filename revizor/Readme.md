@@ -29,12 +29,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Add something like `npm run dev:test` to support test development
 * Enable tests for views, and maybe templates?
 * Tests: enable running E2E tests in non-headless mode
+* Tests: extract and generalise test utilities from `retrovizor/src/library/test.utilities.js`
 * Performance
     * Try streams instead of `writeFile` and similar to improve performance 
     * Try keeping open handles in dev mode to decrease rebuild time
     * `buildLibrary|buildScripts|buildStyles` in `dev` mode
         * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
-    * Simplify component `index.js` file by removing the need to provide low level detail tech stuff
 * Environment (limited by Revizor)
     * Migrate to TypeScript
     * Add `lint` action that lints the whole codebase

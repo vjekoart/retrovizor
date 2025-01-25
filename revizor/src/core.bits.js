@@ -487,7 +487,12 @@ export function isWorkerFile ( file )
 }
 
 /**
- * Returns { [relativeFilePath] : "File content..." }
+ * Reads a directory recursively and returns an object with file content in textual format.
+ *
+ * @param { string   } path   - Full path of the directory
+ * @param { Function } filter - Optional filter function that filters file by name. 
+ *
+ * @return { [relativeFilePath] : "File content in text format" }
  */
 export async function readDirectoryContent ( path, filter = null )
 {
@@ -630,7 +635,7 @@ export async function writeViews ( Handlebars, configuration, fileMappings, dev 
     const fullViewsPath    = Path.join( getRootPath(), viewsPath );
     const fullDataFilePath = Path.join( getRootPath(), dataFile  );
 
-    const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {}
+    const data             = dataFile ? JSON.parse( await FS.readFile( fullDataFilePath, { encoding: "utf8" } ) ) : {};
     const templateData     = { data, configuration, fileMappings }
     const viewFiles        = await FS.readdir( fullViewsPath, { recursive: true } );
     const htmlViewFiles    = viewFiles.filter( x => x.endsWith( ".html" ) || x.endsWith( ".hbs" ) );
@@ -648,7 +653,7 @@ export async function writeViews ( Handlebars, configuration, fileMappings, dev 
         catch ( error )
         {
             console.info ( `\n[FILE] ${ file }` );
-            console.error( error.message, "\n" );
+            console.error( error.message, "\n"  );
             return;
         }
     }
@@ -720,7 +725,8 @@ export class WatchPool
             clearTimeout( this.timerId );
         }
 
-        this.timerId = setTimeout(
+        this.timerId = setTimeout
+        (
             () =>
             {
                 this.publishChanges();

@@ -51,8 +51,8 @@ async function degrade ( base64, options = {} )
 /**
  * Get canvas image content in the format of base64 string.
  *
- * @param canvas {Canvas}
- * @return string
+ * @param { HTMLCanvasElement } canvas
+ * @return { string }
  */
 function canvasToBase64 ( canvas )
 {

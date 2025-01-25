@@ -12,6 +12,9 @@ Bla bla, Retrovizor.xyz website built with revizor
 * Phase 6: code fine-tune
     * Standardize function comments; explain params and return values (JSDoc)
     * Apply patterns from the Declarative text and coding style (CSS is done)
+    * Test everything
+        * Build system actions for both build types
+        * Every part of the website
 * Phase 7: UI fine-tune
     * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
     * General: loading state: block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded

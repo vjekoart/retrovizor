@@ -19,8 +19,8 @@ import * as Bits      from "./core.bits.js";
 /**
  * Expose functions of the component to the CLI (and other parts of the codebase in the future).
  * 
- * @param { Array<Function> } functions Array of functions to expose.
- * @param { Function        } fallback  Function to execute if none was provided when called via CLI.
+ * @param { Array<Function> } functions - Array of functions to expose.
+ * @param { Function        } fallback  - Function to execute if none was provided when called via CLI.
  */
 function expose ( functions, fallback )
 {
@@ -58,6 +58,13 @@ function getConfiguration ()
     return Object.assign( configuration, { internals } );
 }
 
+/**
+ * Main entry point for building a library. Based on the `buildType` different compile functions
+ * will be executed.
+ *
+ * @param { Configuration } configuration
+ * @param { boolean       } dev
+ */
 async function buildLibrary ( configuration, dev = false )
 {
     let fileMappings = {}
@@ -75,10 +82,18 @@ async function buildLibrary ( configuration, dev = false )
     return fileMappings;
 }
 
+/**
+ * Main entry point for building template and view scripts. These script files are always built like
+ * a native ES module intended for usage inside a web browser.
+ *
+ * @param { Configuration } configuration
+ * @param { boolean       } dev
+ */
 async function buildScripts ( configuration, dev = false )
 {
     const { buildPath } = configuration;
-    const {
+    const
+    {
         sourcePath,
         templatesBuild,
         templatesPath,
@@ -129,10 +144,19 @@ async function buildScripts ( configuration, dev = false )
     return fileMappings;
 }
 
+/**
+ * Main entry point for building template and view styles. These style files are always built like
+ * using a `compileStyle` function.
+ *
+ * @param { Configuration } configuration
+ * @param { name : string } additionalMappings - Object with import mappings for CSS files.
+ * @param { boolean       } dev
+ */
 async function buildStyles ( configuration, additionalMappings, dev = false )
 {
     const { buildPath } = configuration;
-    const {
+    const
+    {
         sourcePath,
         templatesBuild,
         templatesPath,
@@ -236,8 +260,13 @@ function startServer ( configuration )
 }
 
 /**
- * @param {( changes ) => void} onChange
- * @see WatchPool class for all possible changes.
+ * Main watch loop used in the dev mode. Watches for file changes, and informs the callback
+ * about a change type.
+ *
+ * See WatchPool class for a list of all possible changes.
+ *
+ * @param { Configuration       } configuration
+ * @param { ( changes ) => void } onChange
  */
 function watchLoop ( configuration, onChange )
 {
@@ -265,7 +294,7 @@ const tests =
         return Bits.getE2ELocation();
     },
 
-    runE2E : async ( configuration ) =>
+    runE2E : async configuration =>
     {
         const { buildPath }         = configuration;
         const { sourcePath, tests } = configuration.internals;
@@ -294,10 +323,11 @@ const tests =
         runner.loadConfig( config );
 
         const results = await runner.execute();
+
         console.info( results );
     },
 
-    runWebBrowser : async ( configuration ) =>
+    runWebBrowser : async configuration =>
     {
         const
         {
@@ -350,15 +380,15 @@ const tests =
             console.info( "Compiling test specs before execution..." );
 
             const testBuildPath     = Path.join( Bits.getRootPath(), buildPath, tests.browserTestBuild );
-            await Bits.ensureFolder( testBuildPath, true );
-
             const compiledSpecFiles = [];
+
+            await Bits.ensureFolder( testBuildPath, true );
 
             for ( const spec of config.specFiles )
             {
-                const entry    = Path.join( root, spec );
-                const name     = spec.split( "/" ).pop();
-                const compiled = await Bits.compileBundle( entry, `${ tests.browserTestBuild }/${ name }`, testBuildPath, libraryPath, true );
+                const entry     = Path.join( root, spec );
+                const entryName = `${ tests.browserTestBuild }/${ spec.split( "/" ).pop() }`;
+                const compiled  = await Bits.compileBundle( entry, entryName, testBuildPath, libraryPath, true );
 
                 compiledSpecFiles.push( compiled.split( "/" ).pop() );
             }
