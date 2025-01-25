@@ -9,34 +9,44 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 3: code extraction: library and web components with test mechanisms~
 * ~Phase 4: content & pages, incl. related logic~
 * ~Phase 5: Add single E2E test - user journey~
-* Phase 6: code fine-tune
-    * Go through HTML files
-    * Test everything
-        * Build system actions for both build types
-        * Every part of the website
+* ~Phase 6: code fine-tune~
 * Phase 7: UI fine-tune
-    * **UI Style: terminal + markdown + code editor aesthetics + programming languages in eigengrau palette** Programming aesthetics in eigengrau scheme
-    * General: loading state: block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
-    * Homepage: make loading state nice
-    * Homepage: what to do in case of an error during CloseYourEyes generating error?
-    * ImageDegradator: merge input image preview and upload image control
-    * CloseYourEyes art: what about those damn lines? Make them breathe
-    * CloseYourEyes/ImageDegradator: responsive experiment controls
-    * Main nav elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
-    * Nav difference between active and non-active is bleak and weak
-    * Homepage: hide everything except animation if user is idle
-    * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
-    * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
-    * Transitions
-    * Assets
-    * Favicons
-    * SEO
+    * Philosophy: programming aesthetics in eigengrau scheme
+        * Terminal fonts and feeling
+        * Markdown code inspiration for exposing "bare-bones" - code
+        * Code editor colors and symbols
+    * General
+        * General exploration
+        * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
+        * Favicons
+    * Navigation
+        * Elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
+        * Difference between active and non-active is bleak and weak
+    * Homepage
+        * Improve loading (default) state
+        * Hide everything except animation if user is idle
+        * Improve the animation by improving lines and fine-tunning
+    * Code / <all>
+        * Responsive experiment controls
+    * Code / Image Degradator
+        * Merge input image preview and upload image control
+        * Fine tune
+    * Code / Close Your Eyes
+        * Padding setting doesn't work as expected
+        * Fine tune
+    * Post
+        * Transitions
+        * Assets optimization and download
+        * SEO and accessibility
+        * Block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
+        * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
         * Native web:
             * **Maybe the idea is to present limitations, and build system workarounds for current native web technologies?**
                 * For example, precomposed web components since it's heavy to load the library, relying on SSR, sweet spot between bundles and native ES modules?
+            * **Maybe the idea is to talk about native web frontend and Revizor?**
             * Architecture: explain approach with index/layout/views + library
             * Approach: crafting a build system
         * Declarative Javascript
@@ -65,6 +75,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 
 ### Roadmap stuff (not part of the first version)
 
+* A strange bug where `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected (most probably affects Revizor)
 * Add support for linkable headings
 * Add support for "Table of contents" on text pages
 * Add support for better color selector in `retro-experiment-control`

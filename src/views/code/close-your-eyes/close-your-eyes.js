@@ -29,7 +29,7 @@ function main ()
         {
             key     : "drawFPS",
             type    : "range",
-            options : { min : 1, max : 255 },
+            options : { min : 1, max : 50 },
             label   : "FPS",
             value   : defaultOptions.drawFPS
         },
@@ -98,7 +98,7 @@ function main ()
                 closeYourEyes
                     .generate()
                     .then(() => closeYourEyes.run())
-                    .catch(( error ) =>
+                    .catch( error =>
                     {
                         console.warn( error );
                         alert( "There was an error!" );

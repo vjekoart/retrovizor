@@ -70,12 +70,12 @@ function main ()
 
                 imageDegradator
                     .degrade( base64 )
-                    .then(( degraded ) =>
+                    .then( degraded =>
                     {
                         state.fileName = extractFileName( name );
                         dom.image.src  = degraded;
                     })
-                    .catch(( error ) =>
+                    .catch( error =>
                     {
                         console.warn( error );
                         alert( "There was an error!" );

@@ -20,7 +20,7 @@ function main ()
             dom.bright.classList.add( "hidden" );
             window.setTimeout( () => closeYourEyes.run(), 660 );
         })
-        .catch(( error ) =>
+        .catch( error =>
         {
             console.warn( error );
             alert( "There was an error!" );
