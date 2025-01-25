@@ -63,7 +63,7 @@ class ImageManager
         const opacitySequence = getRandomArray( 300, this.dot.opacity.min, this.dot.opacity.max );
         const pixelSequence   = Array.from
         (
-            { length: ( coverage / 100 ) * pixelCount },
+            { length : ( coverage / 100 ) * pixelCount },
             () => Math.floor( Math.random() * maxStep )
         );
 

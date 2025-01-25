@@ -4,12 +4,16 @@
  */
 class ImageDegradator
 {
-    constructor ( scaleDownFactor )
+    /**
+     * @param { number } maxLightness    - Maximum lightness value for a pixel, 0 - 255.
+     * @param { number } scaleDownFactor - Degradation factor, 1 - Math.min( image.width, image.height )
+     */
+    constructor ( maxLightness, scaleDownFactor )
     {
         this.options =
         {
-            maxLightness    : 200,                  /* 0 - 255                                   */
-            scaleDownFactor : scaleDownFactor ?? 16 /* 1 - Math.min( image.width, image.height ) */
+            maxLightness    : maxLightness    ?? 200,
+            scaleDownFactor : scaleDownFactor ?? 16
         }
 
         this.worker  = new Worker

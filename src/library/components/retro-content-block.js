@@ -4,15 +4,15 @@ export class RetroContentBlock extends LitElement
 {
     static properties =
     {
-        articleDate:
+        articleDate :
         {
-            attribute: "data-date",
-            type: String
+            attribute : "data-date",
+            type      : String
         },
-        articleHref:
+        articleHref :
         {
-            attribute: "data-href",
-            type: String
+            attribute : "data-href",
+            type      : String
         }
     }
 

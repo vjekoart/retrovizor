@@ -3,7 +3,7 @@ import { RetroContentBlock } from "./retro-content-block.js";
 
 describe( "RetroContentBlock", () =>
 {
-    beforeAll( () =>
+    beforeAll(() =>
     {
         customElements.define( "retro-content-block", RetroContentBlock );
     });
@@ -18,7 +18,8 @@ describe( "RetroContentBlock", () =>
 
     it( "renders: content", async () =>
     {
-        const { shadowRoot } = await renderComponent(
+        const { shadowRoot } = await renderComponent
+        (
             "retro-content-block",
             `
                 <retro-content-block data-date="2025-01-01" data-href="/custom-url/">

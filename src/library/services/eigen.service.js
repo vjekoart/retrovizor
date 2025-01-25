@@ -33,8 +33,8 @@ class Eigen
     /**
      * Get opinionated color in RGB format from provided HSL.
      *
-     * @param hsl { h: number, s: number, l: number }
-     * @param maxLightness, integer, max 255
+     * @param { h: number, s: number, l: number } hsl
+     * @param { number }                          maxLightness - 0 - 255
      */
     static getDegradedColor ( hsl, maxLightness )
     {

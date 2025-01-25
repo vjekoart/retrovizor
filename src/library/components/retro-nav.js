@@ -6,10 +6,10 @@ export class RetroNav extends LitElement
 {
     static properties =
     {
-        active:
+        active :
         {
-            attribute: "data-active",
-            type: String
+            attribute : "data-active",
+            type      : String
         }
     }
 
@@ -70,7 +70,9 @@ export class RetroNav extends LitElement
         this.active = "";
     }
 
-    /* element := { name, path, text } */
+    /**
+     * @param { name, path, text } element - A single navigation element.
+     */
     renderElement ( element )
     {
         return html`

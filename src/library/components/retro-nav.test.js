@@ -3,7 +3,7 @@ import { RetroNav        } from "./retro-nav.js";
 
 describe( "RetroNav", () =>
 {
-    beforeAll( () =>
+    beforeAll(() =>
     {
         customElements.define( "retro-nav", RetroNav );
     });

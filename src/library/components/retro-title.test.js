@@ -3,7 +3,7 @@ import { RetroTitle      } from "./retro-title.js";
 
 describe( "RetroTitle", () =>
 {
-    beforeAll( () =>
+    beforeAll(() =>
     {
         customElements.define( "retro-title", RetroTitle );
     });
@@ -11,7 +11,8 @@ describe( "RetroTitle", () =>
     it( "renders: default", async () =>
     {
         const { shadowRoot } = await renderComponent( "retro-title", "<retro-title></retro-title>" );
-        const value = shadowRoot.innerHTML.includes( "Retrovizor" );
+        const value          = shadowRoot.innerHTML.includes( "Retrovizor" );
+
         expect( value ).toBeTruthy();
     });
 });

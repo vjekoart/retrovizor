@@ -1,4 +1,4 @@
-import { ImageManager }          from "Library/services/image-manager.service.js";
+import { ImageManager          } from "Library/services/image-manager.service.js";
 import { getRandomFromInterval } from "Library/utilities.js";
 
 self.onmessage = async ev =>

@@ -1,9 +1,9 @@
 import { renderComponent, waitFor } from "../test.utilities.js";
-import { RetroExperimentControl } from "./retro-experiment-control.js";
+import { RetroExperimentControl   } from "./retro-experiment-control.js";
 
 describe( "RetroExperimentControl", () =>
 {
-    beforeAll( () =>
+    beforeAll(() =>
     {
         customElements.define( "retro-experiment-control", RetroExperimentControl );
     });

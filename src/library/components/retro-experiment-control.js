@@ -1,13 +1,31 @@
-import { LitElement, html, css } from "lit";
-import { createRef, ref } from "lit/directives/ref.js";
+import
+{
+    LitElement,
+    html,
+    css
+} from "lit";
+
+import
+{
+    createRef,
+    ref
+} from "lit/directives/ref.js";
 
 /**
- * [PROPERTIES]
+ * Component responsible for displaying and controlling options for an experiment. Basically, a form
+ * control component that simplifies definition and usage of various input fields.
+ *
+ * @usage
+ * const retroExperimentControl = document.createElement( "retro-experiment-control" );
+ *
+ * // Define controls, actions
  * retroExperimentControl.controls =
  * {
  *     "name"  : "Label",
  *     "start" : "Start the animation"
  * }
+ * 
+ * // Define options and their types, including options for each type
  * retroExperimentControl.options  =
  * [
  *     {
@@ -16,13 +34,15 @@ import { createRef, ref } from "lit/directives/ref.js";
  *         options : { accept : "image/png, image/jpeg, image/webp" },
  *         label   : "Click to select an image",
  *         value   : null
- *     }, {
+ *     },
+ *     {
  *         key     : "scaleDownFactor"
  *         type    : "range",
  *         options : { min : 2, max : 128 },
  *         label   : "Factor",
  *         value   : defaultOptions.scaleDownFactor
- *     }, {
+ *     },
+ *     {
  *         key     : "noiseColor",
  *         type    : "text",
  *         label   : "Noise color",
@@ -30,13 +50,26 @@ import { createRef, ref } from "lit/directives/ref.js";
  *     }
  * ];
  * 
+ * // Read values of options to get user input
  * retroExperimentControl.values === [ { key : "key name", value : Value }, ... ];
  *
- * Value object for type === "file", has a "name" property.
- * Return value for `type : "file"` is a base64 string.
- * 
- * @event controlClicked { detail : "control key" }
- * @attribute disabled="disabled"
+ * // Value object for type === "file"
+ * { 
+ *     "name"  : "file-name"
+ *     "value" : "Base64 string representing file content"
+ * } has a "name" property.
+ *
+ * // Listen for control actions
+ * retroExperimentControl.addEventListener( "controlClicked", ev =>
+ * {
+ *     console.log( "ev.detail contains key from retroExperimentControl.controls", ev.detail );
+ * });
+ *
+ * // Set "disabled" attribute to put component in the loading state and block user interaction
+ * retroExperimentControl.setAttribute( "disabled", "disabled" );
+ *
+ * // Enable the component by removing the attribute
+ * retroExperimentControl.removeAttribute( "disabvled" );
  */
 export class RetroExperimentControl extends LitElement
 {

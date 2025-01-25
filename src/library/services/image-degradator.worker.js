@@ -29,7 +29,7 @@ async function degrade ( base64, options = {} )
 
     context.drawImage( image, 0, 0 );
 
-    /* Transform inside canvas */
+    /* Transform image inside a canvas */
     const imageData       = context.getImageData( 0, 0, image.width, image.height );
     const bounds          = getBounds( image, options.scaleDownFactor );
     const maxLightness    = options.maxLightness;
@@ -97,6 +97,13 @@ function colorAdjust ( imageData, maxLightness )
 
 /**
  * Returns an array of pixels in the specified area.
+ *
+ * @param { Blob      } image
+ * @param { ImageData } imageData
+ * @param { number    } x         - Starting X coordinate of an area.
+ * @param { number    } y         - Starting Y coordinate of an area.
+ * @param { number    } xOffset   - Final X coordinate of an area.
+ * @param { number    } yOffset   - Final Y coordinate of an area.
  *
  * @return { Array<{ r, g, b, index }> } Index is index of the pixel in the ImageData.data array.
  */

@@ -10,8 +10,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 4: content & pages, incl. related logic~
 * ~Phase 5: Add single E2E test - user journey~
 * Phase 6: code fine-tune
-    * Standardize function comments; explain params and return values (JSDoc)
-    * Apply patterns from the Declarative text and coding style (CSS is done)
+    * Go through HTML files
     * Test everything
         * Build system actions for both build types
         * Every part of the website

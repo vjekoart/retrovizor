@@ -3,7 +3,7 @@ import { RetroFooter     } from "./retro-footer.js";
 
 describe( "RetroFooter", () =>
 {
-    beforeAll( () =>
+    beforeAll(() =>
     {
         customElements.define( "retro-footer", RetroFooter );
     });
