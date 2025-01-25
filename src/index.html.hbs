@@ -20,11 +20,11 @@
                 {
                 {{#ifBuildType "native"}}
                     {{#each configuration.nativeDependencies}}
-                    "{{@key}}": "/{{this}}",
+                    "{{ @key }}": "/{{ this }}",
                     {{/each}}
                 {{/ifBuildType}}
-                {{#each fileMappings.library.scripts }}
-                    "{{@key}}": "{{this}}"{{#unless @last}},{{/unless}}
+                {{#each fileMappings.library.scripts}}
+                    "{{ @key }}": "{{ this }}"{{#unless @last}},{{/unless}}
                 {{/each}}
                 }
             }
