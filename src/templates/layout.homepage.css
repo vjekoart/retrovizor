@@ -22,3 +22,24 @@ retro-nav
     left     : 0;
     right    : 0;
 }
+
+/**
+ * Hide/show elements
+ */
+header[role="main"].hidden
+{
+    cursor : none;
+}
+
+retro-title,
+retro-nav
+{
+    opacity    : 1;
+    transition : opacity var(--transition-duration-medium) ease-in-out;
+}
+
+retro-title.hidden,
+retro-nav.hidden
+{
+    opacity : 0;
+}

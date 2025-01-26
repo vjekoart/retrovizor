@@ -19,20 +19,22 @@ Bla bla, Retrovizor.xyz website built with revizor
         * General exploration
         * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
         * Favicons
+        * What about different font?
+        * Maybe improve the title by creating a logo in SVG that has something different compared to pure text font?
     * Navigation
         * Elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
         * Difference between active and non-active is bleak and weak
     * Homepage
         * Improve loading (default) state
-        * Hide everything except animation if user is idle
         * Improve the animation by improving lines and fine-tunning
     * Code / <all>
         * Responsive experiment controls
+        * Fine tune experiment controls UI/UX
     * Code / Image Degradator
         * Merge input image preview and upload image control
         * Fine tune
     * Code / Close Your Eyes
-        * Padding setting doesn't work as expected
+        * !!! Padding setting doesn't work as expected
         * Fine tune
     * Post
         * Transitions
@@ -40,6 +42,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * SEO and accessibility
         * Block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
+        * Responsiveness / cross-browser testing
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
