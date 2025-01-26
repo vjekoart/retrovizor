@@ -16,7 +16,10 @@ class CanvasManager
 
         this.canvas  = canvas;
         this.context = this.canvas.getContext( "2d", { willReadFrequently : true } );
-        this.options = { padding }
+        this.options =
+        {
+            padding : this.validatePadding( padding )
+        }
 
         this.pixelCountX = 0;
         this.pixelCountY = 0;
@@ -64,9 +67,11 @@ class CanvasManager
         return this.options;
     }
 
-    setOptions ( options )
+    setOptions ( options = {} )
     {
-        this.options = options;
+        options.padding && ( this.options.padding = this.validatePadding( options.padding ) );
+
+        this.recalculatePixels();
     }
 
     /**
@@ -105,6 +110,12 @@ class CanvasManager
         this.context.putImageData( existing, this.options.padding, this.options.padding );
     }
 
+    recalculatePixels ()
+    {
+        this.pixelCountX = this.canvas.width  - 2 * this.options.padding;
+        this.pixelCountY = this.canvas.height - 2 * this.options.padding;
+    }
+
     /**
      * Sets drawing area inside a canvas element taking into consideration canvas width, height and predefined
      * drawing padding.
@@ -117,9 +128,7 @@ class CanvasManager
         this.canvas.height  = parseInt( computedStyle.getPropertyValue( "height" ), 10 );
 
         this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
-
-        this.pixelCountX = this.canvas.width  - 2 * this.options.padding;
-        this.pixelCountY = this.canvas.height - 2 * this.options.padding;
+        this.recalculatePixels();
     }
 
     /**
@@ -130,6 +139,11 @@ class CanvasManager
     {
         this.resize();
         window.addEventListener( "resize", () => this.resize() );
+    }
+
+    validatePadding ( padding )
+    {
+        return Math.round( Math.min( padding, 0.45 * Math.min( this.canvas.width, this.canvas.height ) ) );
     }
 }
 

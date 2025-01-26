@@ -34,7 +34,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Merge input image preview and upload image control
         * Fine tune
     * Code / Close Your Eyes
-        * !!! Padding setting doesn't work as expected
         * Fine tune
     * Post
         * Transitions

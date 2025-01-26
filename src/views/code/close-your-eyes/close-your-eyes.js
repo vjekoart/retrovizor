@@ -36,7 +36,7 @@ function main ()
         {
             key     : "drawPadding",
             type    : "range",
-            options : { min : 1, max : 255 },
+            options : { min : 1, max : 180 },
             label   : "Padding",
             value   : defaultOptions.drawPadding
         },
