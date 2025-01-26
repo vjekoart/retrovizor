@@ -18,27 +18,28 @@ Bla bla, Retrovizor.xyz website built with revizor
     * General
         * Title and navigation
             * Non-homepage: they should be header of the "machine"
-            * Programming code, i.e. grammar machine?
-            * Rework, revisit, e.g. for title instead of text use SVG
-        * Accent color? Maybe more colors?
+            * Programming code - grammar machine?
+            * Rework/revisit, e.g. for title instead of text use SVG if needed
+        * Different accent color? Maybe more colors?
         * Font? Maybe another font?
-        * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens.
+        * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
     * Homepage
         * Improve loading (default) state (part of the title+nav machine)
         * Improve the animation by improving lines and fine-tunning
-    * Code / <all>
+    * Code
         * Responsive experiment controls
         * Fine tune experiment controls UI/UX
         * Fine-tune UI/UX of Image Degradator
         * Fine-tune UI/UX of Close Your Eyes
+    * Block loading for web components
+        * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Post
+        * Responsiveness / cross-browser testing
         * Favicons
         * Transitions
         * Assets optimization and download
         * SEO and accessibility
-        * Block loading for web components by adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
-        * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file - for instant brand elements during the initial loading
-        * Responsiveness / cross-browser testing
+        * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
