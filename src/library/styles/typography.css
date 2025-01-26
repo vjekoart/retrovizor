@@ -33,7 +33,7 @@ h2
 
 h2::before
 {
-    content       : "#";
+    content       : "##";
     padding-right : var(--style-grid-third);
     color         : var(--style-color-accent);
 }
@@ -52,9 +52,14 @@ h3
 
 h3::before
 {
-    content       : "##";
+    content       : "###";
     padding-right : var(--style-grid-third);
     color         : var(--style-color-accent);
+}
+
+h3:not(:first-child)
+{
+    margin-top : calc(2 * var(--style-line-height));
 }
 
 /**
@@ -95,7 +100,7 @@ li::before
     left          : 0;
     top           : 0;
 
-    color         : var(--style-color-accent);
+    color         : var(--style-color-light-faded);
 }
 
 .faded

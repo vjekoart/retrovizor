@@ -16,26 +16,23 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
     * General
-        * General exploration
-        * Try `text-align: justify` for long text? Looks good, but should be careful to expand sentences which seem empty.
-        * Favicons
-        * What about different font?
-        * Maybe improve the title by creating a logo in SVG that has something different compared to pure text font?
-    * Navigation
-        * Elements, specially on the homepage, look strange with underline text? Maybe add block color behind each link?
-        * Difference between active and non-active is bleak and weak
+        * Title and navigation
+            * Non-homepage: they should be header of the "machine"
+            * Programming code, i.e. grammar machine?
+            * Rework, revisit, e.g. for title instead of text use SVG
+        * Accent color? Maybe more colors?
+        * Font? Maybe another font?
+        * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens.
     * Homepage
-        * Improve loading (default) state
+        * Improve loading (default) state (part of the title+nav machine)
         * Improve the animation by improving lines and fine-tunning
     * Code / <all>
         * Responsive experiment controls
         * Fine tune experiment controls UI/UX
-    * Code / Image Degradator
-        * Merge input image preview and upload image control
-        * Fine tune
-    * Code / Close Your Eyes
-        * Fine tune
+        * Fine-tune UI/UX of Image Degradator
+        * Fine-tune UI/UX of Close Your Eyes
     * Post
+        * Favicons
         * Transitions
         * Assets optimization and download
         * SEO and accessibility

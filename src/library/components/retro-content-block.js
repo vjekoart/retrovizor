@@ -37,7 +37,7 @@ export class RetroContentBlock extends LitElement
 
         :host h2::before
         {
-            content       : "#";
+            content       : "##";
             color         : var(--style-color-accent);
             padding-right : var(--style-grid-third);
         }
@@ -101,14 +101,14 @@ export class RetroContentBlock extends LitElement
         :host footer a::before
         {
             content       : "[";
-            padding-right : calc(0.33 * var(--style-font-size-text));
+            padding-right : calc(0.13 * var(--style-font-size-text));
             
         }
 
         :host footer a::after
         {
             content      : "]";
-            padding-left : calc(0.33 * var(--style-font-size-text));
+            padding-left : calc(0.13 * var(--style-font-size-text));
         }
     `;
 
