@@ -11,7 +11,7 @@ export class RetroTitle extends LitElement
 
         :host([data-style="main"])
         {
-            padding-top : calc(2 * var(--style-grid-full));
+            padding : calc(2 * var(--style-grid-full)) 0;
         }
 
         :host h1
@@ -22,11 +22,14 @@ export class RetroTitle extends LitElement
             font-size   : var(--style-font-size-title);
             font-weight : var(--style-font-weight-title);
             line-height : var(--style-font-size-title);
+
+            text-align  : center;
+            color       : var(--style-color-accent);
         }
 
         :host h1 a
         {
-            color           : var(--color-light-faded);
+            color           : var(--style-color-light);
             text-decoration : none;
             text-transform  : uppercase;
         }
@@ -34,6 +37,6 @@ export class RetroTitle extends LitElement
 
     render ()
     {
-        return html`<h1><a href="/">Retrovizor</a></h1>`;
+        return html`<h1>.:.::..:..<br /><a href="/">Retrovizor</a></h1>`;
     }
 }

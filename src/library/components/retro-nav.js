@@ -16,9 +16,10 @@ export class RetroNav extends LitElement
     static styles = css`
         :host
         {
-            display    : block;
-            padding    : var(--style-grid-full);
-            text-align : center;
+            display       : block;
+            text-align    : center;
+            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         :host a
@@ -29,33 +30,24 @@ export class RetroNav extends LitElement
             font-family     : var(--style-font-family-strong);
             font-weight     : var(--style-font-weight-strong);
             font-size       : var(--style-font-size-text);
-            line-height     : var(--style-grid-full);
+            line-height     : calc(1.2 * var(--style-grid-full));
             text-transform  : uppercase;
             text-decoration : none;
          
             color           : var(--style-color-light);
-            border-bottom   : var(--style-line-width-light) solid var(--style-color-light);
-        }
-
-        :host a:hover,
-        :host a:active,
-        :host a:focus,
-        :host a.active
-        {
-            color : var(--style-color-light-highlight);
         }
 
         :host a:hover,
         :host a:active,
         :host a:focus
         {
-            border-color : var(--style-color-accent);
+            color : var(--style-color-accent);
         }
 
         :host a.active
         {
-            border-color : var(--style-color-light-highlight);
-            cursor       : default;
+            color  : var(--style-color-accent);
+            cursor : default;
         }
 
         :host a:last-child

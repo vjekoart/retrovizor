@@ -20,7 +20,7 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Non-homepage: they should be header of the "machine"
             * Programming code - grammar machine?
             * Rework/revisit, e.g. for title instead of text use SVG if needed
-        * Different accent color? Maybe more colors?
+        * Different accent color? Maybe a cold accent color so it's calming? Maybe more colors?
         * Font? Maybe another font?
         * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
     * Homepage
@@ -35,10 +35,11 @@ Bla bla, Retrovizor.xyz website built with revizor
         * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Post
         * Responsiveness / cross-browser testing
+        * Remove unused variables from `variables.css`
         * Favicons
         * Transitions
         * Assets optimization and download
-        * SEO and accessibility
+        * SEO and accessibility (don't forget about meta tag for bar color)
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
 * Phase 8: content fine-tune
     * Adjust dates everywhere

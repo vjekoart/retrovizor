@@ -1,3 +1,16 @@
+html
+{
+    background-color : var(--style-color-dark-lighter);
+}
+
+body
+{
+    max-width        : calc(640px + var(--style-grid-full));
+    margin           : 0 auto;
+    background-color : var(--style-color-dark);
+    box-shadow       : 0 0 3px var(--style-color-dark);
+}
+
 retro-title
 {
     text-align : center;
@@ -5,10 +18,11 @@ retro-title
 
 main
 {
-    display    : block;
-    min-height : calc(100vh - 10 * var(--style-grid-full) - 2px);
-    max-width  : 640px;
+    display     : block;
+    min-height  : calc(100vh - 11 * var(--style-grid-full) - 2px);
+    max-width   : 640px;
 
-    margin     : 0 auto;
-    padding    : var(--style-grid-full);
+    margin      : 0 auto;
+    padding     : var(--style-grid-full);
+    padding-top : calc(2 * var(--style-grid-full));
 }
