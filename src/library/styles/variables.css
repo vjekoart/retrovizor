@@ -4,6 +4,7 @@
 :root
 {
     --color-eigengrau              : #16161d;
+    --color-eigengrau-light        : #202027;
     --color-eigengrau-lighter      : #26262d;
     --color-white                  : #f6f6fd;
     --color-gray                   : #a6a6ad;
@@ -17,6 +18,7 @@
     --color-blue-dark              : #2d8de6;
 
     --style-color-dark             : var(--color-eigengrau);
+    --style-color-dark-light       : var(--color-eigengrau-light);
     --style-color-dark-lighter     : var(--color-eigengrau-lighter);
     --style-color-light            : var(--color-gray-light);
     --style-color-light-faded      : var(--color-gray);
