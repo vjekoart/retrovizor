@@ -16,21 +16,24 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
     * General
-        * Title and navigation
-            * Non-homepage: they should be header of the "machine"
-            * Programming code - grammar machine?
-            * Rework/revisit, e.g. for title instead of text use SVG if needed
         * Different accent color? Maybe a cold accent color so it's calming? Maybe more colors?
         * Font? Maybe another font?
         * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
+        * Sticky navigation, e.g. for long texts
     * Homepage
-        * Improve loading (default) state (part of the title+nav machine)
+        * Improve loading (default) state (part of the title+nav approach)
         * Improve the animation by improving lines and fine-tunning
     * Code
-        * Responsive experiment controls
         * Fine tune experiment controls UI/UX
+            * Should look like a machine, intuitive, user should know what to do
+            * Responsive
         * Fine-tune UI/UX of Image Degradator
+            * Fine tune paramteres so it makes sense to change them
+            * Fine tune UX messages
         * Fine-tune UI/UX of Close Your Eyes
+            * Fine tune paramteres so it makes sense to change them
+            * Fine tune UX messages
+    * User page fine tune
     * Block loading for web components
         * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Post

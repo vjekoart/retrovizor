@@ -29,14 +29,21 @@ export class RetroTitle extends LitElement
 
         :host h1 a
         {
-            color           : var(--style-color-light);
+            display         : inline-block;
+            color           : var(--style-color-light-highlight);
             text-decoration : none;
             text-transform  : uppercase;
+        }
+
+        :host h1 span
+        {
+            color : var(--style-color-accent);
+
         }
     `;
 
     render ()
     {
-        return html`<h1>.:.::..:..<br /><a href="/">Retrovizor</a></h1>`;
+        return html`<h1><a href="/"><span>#</span>&nbsp;Re<br />trov<br />izor</a></h1>`;
     }
 }

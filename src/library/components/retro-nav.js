@@ -16,8 +16,12 @@ export class RetroNav extends LitElement
     static styles = css`
         :host
         {
-            display       : block;
-            text-align    : center;
+            display    : block;
+            text-align : center;
+        }
+
+        :host([data-style="main"])
+        {
             border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
             border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
