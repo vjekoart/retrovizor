@@ -16,7 +16,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
     * General
-        * Font? Maybe another font?
         * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
         * Sticky navigation, e.g. for long texts
         * Think about adding microinteractions somewhere, e.g. for clicks
@@ -29,6 +28,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
             * Responsive
+        * Improve Image Degradator, make it interesting, add something
         * Fine-tune UI/UX of Image Degradator
             * Fine tune paramteres so it makes sense to change them
             * Fine tune UX messages

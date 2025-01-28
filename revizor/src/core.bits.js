@@ -201,7 +201,8 @@ export async function compileBundle ( entryPoint, entryName, outputPath, library
         alias       :
         {
             "Library": Path.join( getRootPath(), libraryPath )
-        }
+        },
+        external   : [ "/assets/*" ]
     }
 
     if ( isScriptFile( entryName ) || isWorkerFile( entryName ) || isTestFile( entryName ) )
