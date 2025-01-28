@@ -15,7 +15,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * ImageDegradator: make it interesting, add something
+    * ImageDegradator: complete `deprimitivise` function on worker
     * Code
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do

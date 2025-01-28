@@ -37,6 +37,7 @@ async function degrade ( base64, options = {} )
 
     colorAdjust( imageData, maxLightness );
     primitivise( image, imageData, bounds, scaleDownFactor );
+    deprimitivise();
 
     /* Convert transformed image to Base64 */
     context.putImageData( imageData, 0, 0 );
@@ -94,6 +95,16 @@ function colorAdjust ( imageData, maxLightness )
         imageData.data[ i + 2 ] = color.b;
     }
 }
+
+/**
+ * Opposite of primitivise. Go through newly-generated boxes in the image, and break each box to 4 equal parts. Lightness of each
+ * part is increased/decreased based on the average lightness of adjecent pixels.
+ *
+ * TODO: first phase, split each box into 4 pieces and randomly change lightness of each piece.
+ * TODO: second phase, calculate average lightness of adjecent pixels.
+ */
+function deprimitivise ()
+{}
 
 /**
  * Returns an array of pixels in the specified area.
