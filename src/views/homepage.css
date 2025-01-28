@@ -15,38 +15,17 @@ canvas
     left          : 50%;
 
     display       : block;
-    width         : calc(3 * var(--style-grid-full));
-    height        : calc(3 * var(--style-grid-full));
+    width         : var(--style-grid-half);
+    height        : var(--style-grid-half);
 
-    background    : radial-gradient(circle at center, var(--style-color-light-highlight) 0, var(--style-color-dark-lighter) 66%, var(--style-color-dark) 100%);
-    border-radius : 100%;
+    background    : var(--style-color-accent);
 
     opacity       : 1;
     transform     : translate( -50%, -50% );
     transition    : opacity var(--transition-duration-long) ease-in-out;
-
-    animation     : 3s ease-in-out 0s infinite blink;
 }
 
 #bright.hidden
 {
     opacity : 0;
-}
-
-@keyframes blink
-{
-    0%
-    {
-        box-shadow : 0 0 var(--style-grid-third) var(--style-color-light-faded);
-    }
-
-    50%
-    {
-        box-shadow : 0 0 var(--style-grid-full) var(--style-color-light-faded);
-    }
-
-    100%
-    {
-        box-shadow : 0 0 var(--style-grid-third) var(--style-color-light-faded);
-    }
 }

@@ -22,7 +22,7 @@ class ImageManager
      *             max : 255
      *         }
      *     },
-     *     imaginaryLineDotOpacityIncrease : 0
+     *     lineOpacityIncrease : 0
      * }
      */
     constructor ( options = {} )
@@ -41,7 +41,7 @@ class ImageManager
             }
         }
 
-        this.imaginaryLineDotOpacityIncrease = options.imaginaryLineDotOpacityIncrease ?? 0;
+        this.lineOpacityIncrease = options.lineOpacityIncrease ?? 0;
     }
 
     /**
@@ -104,8 +104,8 @@ class ImageManager
      */
     generateImaginaryLine ( frame, imageWidth, imageHeight, maxLength )
     {
-        const _startingPointPaddingFactor = 0.4;  /* Starting box from where the brightest point should be selected                     */
-        const _deadEndPaddingFactor       = 0.05; /* Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side */
+        const _startingPointPaddingFactor = 0.48;  /* Starting box from where the brightest point should be selected                     */
+        const _deadEndPaddingFactor       = 0.33; /* Line should bounce if it enters this part of the frame, e.g. 10% on each axis/side */
 
         /* Find the brightest point in the starting box, influenced by _startingPointPaddingFactor */
         const getStartingPoint = () =>
@@ -137,7 +137,7 @@ class ImageManager
             return brightest;
         }
 
-        const findImaginaryLine = ( startingPoint ) =>
+        const findImaginaryLine = startingPoint =>
         {
             const line = [ startingPoint ];
 
@@ -190,13 +190,13 @@ class ImageManager
             {
                 const brightest = { x : null, y : null, a : null }
 
-                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach(( spot ) =>
+                getNearbySpots( focalPoint, searchXLength, searchYLength ).forEach( spot =>
                 {
                     if ( spot.a > 0 && ( brightest === null || spot.a >= brightest.a ) )
                     {
                         brightest.x = spot.x;
                         brightest.y = spot.y;
-                        brightest.a = Math.min( 255, spot.a + this.imaginaryLineDotOpacityIncrease );
+                        brightest.a = Math.min( 255, spot.a + this.lineOpacityIncrease );
                     }
                 });
 

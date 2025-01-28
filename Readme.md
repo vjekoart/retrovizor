@@ -15,15 +15,11 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * Homepage
-        * Improve loading (default) state (part of the title+nav approach)
-        * Improve the animation by improving lines and fine-tunning
+    * ImageDegradator: make it interesting, add something
     * Code
-        * Remove dates from Code* views, they clutter the information
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
             * Responsive
-        * Improve Image Degradator, make it interesting, add something
         * Fine-tune UI/UX of Image Degradator
             * Fine tune paramteres so it makes sense to change them
             * Fine tune UX messages
@@ -39,7 +35,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Favicons
         * Transitions
         * Assets optimization and download
-            * Check if there's Julia Mono variable font and if browser support is good
+            * Check if there's Julia Mono variable font
         * SEO and accessibility (don't forget about meta tag for bar color)
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
 * Phase 8: content fine-tune

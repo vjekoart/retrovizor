@@ -22,7 +22,7 @@ class CloseYourEyes
             alphaDelta          : 20,
             drawFPS             : 30,
             drawPadding         : 0,
-            frameCount          : 15,
+            frameCount          : 9,
             lineOpacityIncrease : 120,
             maxDotOpacity       : 120,
             minDotOpacity       : 30,
@@ -172,7 +172,8 @@ class CloseYourEyes
         this.animationState.backgroundIndex = 0;
         this.animationState.lineIndex       = 0;
         this.animationState.machineIndex    = 0;
-        this.animationState.machine         = [ "BG", "BG", "BG", "BG", "BG", "BG", "LINE" ];
+        this.animationState.machine         =
+        [ "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "BG", "LINE", "BG", "BG", "BG", "BG", "BG", "BG" ];
 
         const fpsDelay = Math.floor( 1000 / this.options.drawFPS );
 

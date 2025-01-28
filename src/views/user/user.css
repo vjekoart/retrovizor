@@ -23,7 +23,7 @@ section
 #profile
 {
     display : block;
-    width   : 261px;
+    width   : 240px;
     height  : auto;
     margin  : 0 auto calc(2 * var(--style-grid-full)) auto;
     border  : var(--style-line-width-light) solid var(--style-color-light);

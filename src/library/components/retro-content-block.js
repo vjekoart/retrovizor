@@ -117,38 +117,41 @@ export class RetroContentBlock extends LitElement
     constructor ()
     {
         super();
-
-        this.articleDate = "1970-01-01";
     }
 
     getDateString ( date )
     {
+        if ( !date )
+        {
+            return "";
+        }
+
         return new Date( date ).toISOString().split( "T" )[ 0 ];
     }
 
-    renderFooter ( articleHref )
+    renderFooter ( href )
     {
-        if ( !articleHref )
+        if ( !href )
         {
             return "";
         }
 
         return html`
             <footer>
-                <a href="${ this.articleHref }">READ</a>
+                <a href="${ href }">READ</a>
             </footer>
         `;
     }
 
-    renderTitle ( articleHref )
+    renderTitle ( href )
     {
-        if ( !articleHref )
+        if ( !href )
         {
             return html`<slot name="title">Dummy title</slot>`;
         }
 
         return html`
-            <a href="${ this.articleHref }"><slot name="title">Dummy title</slot></a>
+            <a href="${ href }"><slot name="title">Dummy title</slot></a>
         `;
     }
 
