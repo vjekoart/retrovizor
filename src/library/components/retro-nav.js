@@ -19,12 +19,14 @@ export class RetroNav extends LitElement
             display    : block;
             position   : relative;
             text-align : center;
+            z-index    : 100;
 
             --height   : calc(1.2 * var(--style-grid-full));
         }
 
         :host([data-style="main"])
         {
+            background    : var(--style-color-dark);
             border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
             border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }

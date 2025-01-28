@@ -103,6 +103,11 @@ li::before
     color         : var(--style-color-light-faded);
 }
 
+p
+{
+    text-align : justify;
+}
+
 .faded
 {
     color : var(--style-color-light-faded);

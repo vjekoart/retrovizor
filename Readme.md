@@ -15,11 +15,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * General
-        * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
-        * Sticky navigation, e.g. for long texts
-        * Think about adding microinteractions somewhere, e.g. for clicks
-        * `retro-content-block`: see if _Full text_ link can be changed
     * Homepage
         * Improve loading (default) state (part of the title+nav approach)
         * Improve the animation by improving lines and fine-tunning
@@ -44,6 +39,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Favicons
         * Transitions
         * Assets optimization and download
+            * Check if there's Julia Mono variable font and if browser support is good
         * SEO and accessibility (don't forget about meta tag for bar color)
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
 * Phase 8: content fine-tune

@@ -11,9 +11,9 @@
     --color-gray-light             : #e6e6ed;
     --color-orange                 : #e6863d;
     --color-orange-faded           : #c6763d;
-    --color-blue                   : #3d81e6;
-    --color-blue-accent            : #538fe9;
-    --color-blue-dark              : #1d6ce2;
+    --color-blue                   : #3d9de6;
+    --color-blue-accent            : #659beb;
+    --color-blue-dark              : #2691e3;
 
     --style-color-dark             : var(--color-eigengrau);
     --style-color-dark-light       : var(--color-eigengrau-light);

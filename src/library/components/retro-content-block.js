@@ -66,8 +66,9 @@ export class RetroContentBlock extends LitElement
 
         :host p
         {
-            margin    : 0 0 var(--style-grid-third) 0;
-            font-size : var(--style-font-size-text);
+            margin     : 0 0 var(--style-grid-third) 0;
+            font-size  : var(--style-font-size-text);
+            text-align : justify;
         }
 
         :host footer
@@ -81,21 +82,22 @@ export class RetroContentBlock extends LitElement
             font-weight     : var(--style-font-weight-title);
             font-size       : var(--style-font-size-footer-link);
             line-height     : var(--style-line-height);
-            color           : var(--style-color-light);
+            color           : var(--style-color-interactive);
             text-decoration : none;
+            transition      : color var(--transition-duration-short) ease-in-out;
         }
 
         :host footer a:hover,
         :host footer a:active,
         :host footer a:focus
         {
-            color : var(--style-color-light-highlight);
+            color : var(--style-color-interactive-in);
         }
 
         :host footer a::before,
         :host footer a::after
         {
-            color : var(--style-color-accent);
+            color : var(--style-color-light);
         }
 
         :host footer a::before
@@ -133,7 +135,7 @@ export class RetroContentBlock extends LitElement
 
         return html`
             <footer>
-                <a href="${ this.articleHref }">Full text</a>
+                <a href="${ this.articleHref }">READ</a>
             </footer>
         `;
     }
