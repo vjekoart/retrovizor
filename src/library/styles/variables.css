@@ -10,12 +10,10 @@
     --color-gray                   : #a6a6ad;
     --color-gray-light             : #e6e6ed;
     --color-orange                 : #e6863d;
-    --color-orange-accent          : #f6a63d;
-    --color-red                    : #c6361d;
-    --color-red-accent             : #e6361d;
-    --color-blue                   : #3d9de6;
-    --color-blue-accent            : #6dbde6;
-    --color-blue-dark              : #2d8de6;
+    --color-orange-faded           : #c6763d;
+    --color-blue                   : #3d81e6;
+    --color-blue-accent            : #538fe9;
+    --color-blue-dark              : #1d6ce2;
 
     --style-color-dark             : var(--color-eigengrau);
     --style-color-dark-light       : var(--color-eigengrau-light);
@@ -24,13 +22,7 @@
     --style-color-light-faded      : var(--color-gray);
     --style-color-light-highlight  : var(--color-white);
     --style-color-accent           : var(--color-orange);
-
-    /* When accent is closer to yellow it's interesting */
-/*    --style-color-accent           : #e69d3d;*/
-
-    /* Cold color? No */
-/*    --style-color-accent           : #3de6e3;*/
-
+    --style-color-accent-faded     : var(--color-orange-faded);
     --style-color-interactive      : var(--color-blue);
     --style-color-interactive-dark : var(--color-blue-dark);
     --style-color-interactive-in   : var(--color-blue-accent);

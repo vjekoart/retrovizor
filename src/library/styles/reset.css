@@ -21,7 +21,7 @@ html
     line-height : var(--style-line-height);
 
     color       : var(--style-color-light);
-    background  : var(--style-color-dark);
+    background  : var(--style-color-dark-light);
 }
 
 body

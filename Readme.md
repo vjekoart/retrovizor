@@ -16,17 +16,11 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
     * General
-        * Navigation is still missing something, one subtle effect or _ukras_
-            * Maybe middots for alignment instead of borders?
-        * Different accent color
-            * Maybe a cold accent color so it'scalming? Not really.
-            * Maybe more colors? Orange is annoying after some time
-            * Try text gradient as accent color? Not really.
-        * Change blue color also
         * Font? Maybe another font?
         * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
         * Sticky navigation, e.g. for long texts
         * Think about adding microinteractions somewhere, e.g. for clicks
+        * `retro-content-block`: see if _Full text_ link can be changed
     * Homepage
         * Improve loading (default) state (part of the title+nav approach)
         * Improve the animation by improving lines and fine-tunning

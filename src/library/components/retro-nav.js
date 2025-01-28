@@ -25,8 +25,8 @@ export class RetroNav extends LitElement
 
         :host([data-style="main"])
         {
-/*            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);*/
-/*            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);*/
+            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         :host a
@@ -42,6 +42,7 @@ export class RetroNav extends LitElement
             text-decoration : none;
          
             color           : var(--style-color-light);
+            transition      : color var(--transition-duration-short) ease-in-out;
         }
 
         :host a:hover,
@@ -78,25 +79,15 @@ export class RetroNav extends LitElement
      */
     renderElement ( element )
     {
-        return html`
-            <a
-                class     = "${ this.active === element.name ? "active" : "" }"
-                href      = "${ element.path }"
-                data-name = "${ element.name }"
-            >
-                ${ element.text }
-            </a>
-        `;
+        return html`<a
+            class     = "${ this.active === element.name ? "active" : "" }"
+            href      = "${ element.path }"
+            data-name = "${ element.name }"
+        >${ element.text }</a>`;
     }
 
     render ()
     {
-        const items = Configuration.navigationItems.map( x => this.renderElement( x ) );
-
-        return html`
-            <span>ZcX859krdnmgjk<br />398fmasdghy824nj</span>
-            ${ items }
-            <span>ZcX859krdnmgjk<br />398fmasdghy824nj</span>
-        `;
+        return Configuration.navigationItems.map( x => this.renderElement( x ) );
     }
 }
