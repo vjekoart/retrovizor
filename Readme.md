@@ -17,8 +17,12 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Code editor colors and symbols
     * General
         * Navigation is still missing something, one subtle effect or _ukras_
-        * Different accent color: maybe a cold accent color so it's calming? Maybe more colors? Orange is annoying after some time
             * Maybe middots for alignment instead of borders?
+        * Different accent color
+            * Maybe a cold accent color so it'scalming? Not really.
+            * Maybe more colors? Orange is annoying after some time
+            * Try text gradient as accent color? Not really.
+        * Change blue color also
         * Font? Maybe another font?
         * Try `text-align: justify` by modifying some paragraphs and check behaviour on different screens. Is it worth it?
         * Sticky navigation, e.g. for long texts
@@ -27,6 +31,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Improve loading (default) state (part of the title+nav approach)
         * Improve the animation by improving lines and fine-tunning
     * Code
+        * Remove dates from Code* views, they clutter the information
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
             * Responsive

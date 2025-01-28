@@ -15,6 +15,8 @@ The advantage of this example is that I can focus on other aspects of the system
 
 Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0e90fc2c1a5e45932414ddbf5d04d).
 
+* Philosophy note: no autonmatic linting, care about what you craft.
+
 ## Roadmap
 
 * What to do with `deploy` and `start` actions in `revizor/index.js`?
@@ -37,7 +39,6 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
         * Recompile only affected file, create bundle if not `native`, and move affected file or the whole bundle to dist
 * Environment (limited by Revizor)
     * Migrate to TypeScript
-    * Add `lint` action that lints the whole codebase
     * Dockerisation
     * Write E2E tests using Gherkin syntax
 

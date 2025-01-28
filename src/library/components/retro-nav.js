@@ -17,13 +17,16 @@ export class RetroNav extends LitElement
         :host
         {
             display    : block;
+            position   : relative;
             text-align : center;
+
+            --height   : calc(1.2 * var(--style-grid-full));
         }
 
         :host([data-style="main"])
         {
-            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
-            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+/*            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);*/
+/*            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);*/
         }
 
         :host a
@@ -34,7 +37,7 @@ export class RetroNav extends LitElement
             font-family     : var(--style-font-family-strong);
             font-weight     : var(--style-font-weight-strong);
             font-size       : var(--style-font-size-text);
-            line-height     : calc(1.2 * var(--style-grid-full));
+            line-height     : var(--height);
             text-transform  : uppercase;
             text-decoration : none;
          
@@ -67,15 +70,19 @@ export class RetroNav extends LitElement
     }
 
     /**
+     * Returns markup for single navigation element, button.
+     *
      * @param { name, path, text } element - A single navigation element.
+     *
+     * @return { html }
      */
     renderElement ( element )
     {
         return html`
             <a
-                data-name="${ element.name }"
-                href="${ element.path }"
-                class="${ this.active === element.name ? "active" : "" }"
+                class     = "${ this.active === element.name ? "active" : "" }"
+                href      = "${ element.path }"
+                data-name = "${ element.name }"
             >
                 ${ element.text }
             </a>
@@ -84,6 +91,12 @@ export class RetroNav extends LitElement
 
     render ()
     {
-        return Configuration.navigationItems.map( x => this.renderElement( x ) );
+        const items = Configuration.navigationItems.map( x => this.renderElement( x ) );
+
+        return html`
+            <span>ZcX859krdnmgjk<br />398fmasdghy824nj</span>
+            ${ items }
+            <span>ZcX859krdnmgjk<br />398fmasdghy824nj</span>
+        `;
     }
 }

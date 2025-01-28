@@ -24,6 +24,13 @@
     --style-color-light-faded      : var(--color-gray);
     --style-color-light-highlight  : var(--color-white);
     --style-color-accent           : var(--color-orange);
+
+    /* When accent is closer to yellow it's interesting */
+/*    --style-color-accent           : #e69d3d;*/
+
+    /* Cold color? No */
+/*    --style-color-accent           : #3de6e3;*/
+
     --style-color-interactive      : var(--color-blue);
     --style-color-interactive-dark : var(--color-blue-dark);
     --style-color-interactive-in   : var(--color-blue-accent);

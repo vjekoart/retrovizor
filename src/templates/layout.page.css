@@ -5,7 +5,7 @@ html
 
 body
 {
-    max-width        : calc(640px + var(--style-grid-full));
+    max-width        : 640px;
     margin           : 0 auto;
     background-color : var(--style-color-dark);
     box-shadow       : 0 0 3px var(--style-color-dark);
@@ -20,7 +20,6 @@ main
 {
     display     : block;
     min-height  : calc(100vh - 11.26 * var(--style-grid-full) - 2px);
-    max-width   : 640px;
 
     margin      : 0 auto;
     padding     : var(--style-grid-full);

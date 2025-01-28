@@ -59,8 +59,8 @@ export class RetroContentBlock extends LitElement
 
         :host time
         {
-            font-style : italic;
             font-size  : var(--style-font-size-footer-link);
+            font-style : normal;
             color      : var(--style-color-light-faded);
         }
 
@@ -119,6 +119,11 @@ export class RetroContentBlock extends LitElement
         this.articleDate = "1970-01-01";
     }
 
+    getDateString ( date )
+    {
+        return new Date( date ).toISOString().split( "T" )[ 0 ];
+    }
+
     renderFooter ( articleHref )
     {
         if ( !articleHref )
@@ -133,7 +138,7 @@ export class RetroContentBlock extends LitElement
         `;
     }
 
-    renderTitleContent ( articleHref )
+    renderTitle ( articleHref )
     {
         if ( !articleHref )
         {
@@ -147,13 +152,13 @@ export class RetroContentBlock extends LitElement
 
     render ()
     {
-        const renderDate   = new Date( this.articleDate ).toLocaleDateString();
-        const titleContent = this.renderTitleContent( this.articleHref );
-        const footer       = this.renderFooter( this.articleHref );
+        const date   = this.getDateString( this.articleDate );
+        const footer = this.renderFooter ( this.articleHref );
+        const title  = this.renderTitle  ( this.articleHref );
 
         return html`
-            <h2>${ titleContent }</h2>
-            <time datetime="${ this.articleDate }">${ renderDate }</time>
+            <h2>${ title }</h2>
+            <time datetime="${ this.articleDate }">${ date }</time>
             <p>
                 <slot name="excerpt"></slot>
             </p>
