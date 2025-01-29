@@ -34,7 +34,7 @@ function main ()
         {
             key     : "scaleDownFactor",
             type    : "range",
-            options : { min : 2, max : 128 },
+            options : { min : 2, max : 32 },
             label   : "Factor",
             value   : defaultOptions.scaleDownFactor
         },

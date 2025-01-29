@@ -6,8 +6,10 @@
  */
 class Eigen
 {
-    static colorCold = { r :  61, g : 157, b : 230 } /* #3d9de6 */
-    static colorWarm = { r : 230, g : 134, b :  61 } /* #e6863d */
+    static colorBlue    = { r :  61, g : 157, b : 230 } /* #3d9de6 */
+    static colorBlueish = { r :  61, g : 146, b : 230 } /* #3de63d */
+    static colorRed     = { r : 230, g : 115, b :  61 } /* #e63d3d */
+    static colorOrange  = { r : 230, g : 134, b :  61 } /* #e6863d */
 
     /**
      * @param pixels Array<{ r: number, g: number, b: number }>
@@ -40,9 +42,11 @@ class Eigen
     {
         const selectedColor = (() =>
         {
-            if ( hsl.h > 75 && hsl.h < 270 ) return this.colorCold;
+            if ( hsl.h >  75  && hsl.h < 175 ) return this.colorBlueish;
+            if ( hsl.h >= 175 && hsl.h < 270 ) return this.colorBlue;
+            if ( hsl.h >= 270                ) return this.colorRed;
 
-            return this.colorWarm;
+            return this.colorOrange;
         })();
 
         const selectedColorHSL = this.getHSLFromRGB( selectedColor );

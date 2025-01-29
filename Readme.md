@@ -15,14 +15,16 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * ImageDegradator: complete `deprimitivise` function on worker
     * Code
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
             * Responsive
+            * Add input type color, just filtering for allowed formats, nothing fancy (and maybe a color preview on change in a box)
+            * For ImageDegradator: just one image field, and live controls, when user selects a image, it's automatically degenerated, and as user moves range bars, the image is automatically processed (with debounce)
         * Fine-tune UI/UX of Image Degradator
             * Fine tune paramteres so it makes sense to change them
             * Fine tune UX messages
+            * Expose color selection
         * Fine-tune UI/UX of Close Your Eyes
             * Fine tune paramteres so it makes sense to change them
             * Fine tune UX messages
@@ -38,6 +40,7 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Check if there's Julia Mono variable font
         * SEO and accessibility (don't forget about meta tag for bar color)
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
+    * Why so much memory used? Chrome tab memory usage, try minified
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
