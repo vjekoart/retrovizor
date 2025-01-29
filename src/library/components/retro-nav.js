@@ -16,25 +16,28 @@ export class RetroNav extends LitElement
     static styles = css`
         :host
         {
-            display    : block;
-            position   : relative;
-            text-align : center;
-            z-index    : 100;
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+            flex-direction  : row;
 
-            --height   : calc(1.2 * var(--style-grid-full));
+            position        : relative;
+            text-align      : center;
+            z-index         : 100;
+
+            --height        : calc(1.2 * var(--style-grid-full));
         }
 
         :host([data-style="main"])
         {
-            background    : var(--style-color-dark);
-            border-top    : var(--style-line-width-light) solid var(--style-color-dark-lighter);
-            border-bottom : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            background : var(--style-color-dark-light);
+            border     : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         :host a
         {
-            display         : inline-block;
-            margin          : 0 var(--style-grid-half) 0 0;
+            display         : block;
+            padding         : 0 var(--style-grid-half);
             
             font-family     : var(--style-font-family-strong);
             font-weight     : var(--style-font-weight-strong);
@@ -45,6 +48,12 @@ export class RetroNav extends LitElement
          
             color           : var(--style-color-light);
             transition      : color var(--transition-duration-short) ease-in-out;
+        }
+
+        :host([data-style="main"]) a
+        {
+            background  : var(--style-color-dark);
+            border-left : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         :host a:hover,
@@ -60,9 +69,19 @@ export class RetroNav extends LitElement
             cursor : default;
         }
 
+        :host([data-style="main"]) a.active
+        {
+            background : var(--style-color-dark-light);
+        }
+
         :host a:last-child
         {
             margin-right : 0;
+        }
+
+        :host([data-style="main"]) a:last-child
+        {
+            border-right : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
     `;
 

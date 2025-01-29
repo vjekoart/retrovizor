@@ -19,9 +19,7 @@ main
 retro-nav
 {
     position      : sticky;
-    top           : 0;
-
+    top           : var(--style-grid-full);
     margin-bottom : calc(2 * var(--style-grid-full));
-    margin-left   : calc(-1 * var(--style-grid-full));
-    margin-right  : calc(-1 * var(--style-grid-full));
+    box-shadow    : 0 calc(-1 * var(--style-grid-full)) 0 0 var(--style-color-dark);
 }
