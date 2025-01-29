@@ -9,6 +9,20 @@ a
     transition      : color var(--transition-duration-short) ease-in-out;
 }
 
+a[target="_blank"]
+{
+    display : inline-block;
+}
+
+a[target="_blank"]::after
+{
+    content        : "\2197";
+
+    vertical-align : top;
+    line-height    : var(--style-font-size-text);
+    color          : var(--style-color-light);
+}
+
 a:hover,
 a:active,
 a:focus
@@ -19,6 +33,12 @@ a:focus
 /**
  * Headings
  */
+h2,
+h3
+{
+    text-wrap : balance;
+}
+
 h2
 {
     margin      : 0 0 var(--style-grid-third) 0;

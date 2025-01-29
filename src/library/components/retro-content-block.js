@@ -31,6 +31,7 @@ export class RetroContentBlock extends LitElement
             font-weight : var(--style-font-weight-strong);
             font-size   : var(--style-font-size-text);
             line-height : var(--style-grid-full);
+            text-wrap   : balance;
 
             color       : var(--style-color-light-highlight);
         }
