@@ -30,8 +30,8 @@ export class RetroNav extends LitElement
 
         :host([data-style="main"])
         {
-            background : var(--style-color-dark-light);
-            border     : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            background : var(--style-color-dark);
+            box-shadow : 0 0 3px var(--style-color-dark);
         }
 
         :host a
@@ -50,12 +50,6 @@ export class RetroNav extends LitElement
             transition      : color var(--transition-duration-short) ease-in-out;
         }
 
-        :host([data-style="main"]) a
-        {
-            background  : var(--style-color-dark);
-            border-left : var(--style-line-width-light) solid var(--style-color-dark-lighter);
-        }
-
         :host a:hover,
         :host a:active,
         :host a:focus
@@ -69,11 +63,6 @@ export class RetroNav extends LitElement
             cursor : default;
         }
 
-        :host([data-style="main"]) a.active
-        {
-            background : var(--style-color-dark-light);
-        }
-
         :host a:last-child
         {
             margin-right : 0;
@@ -81,7 +70,7 @@ export class RetroNav extends LitElement
 
         :host([data-style="main"]) a:last-child
         {
-            border-right : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border-right : none;
         }
     `;
 
