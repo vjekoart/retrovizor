@@ -6,10 +6,13 @@
  */
 class Eigen
 {
-    static colorBlue    = { r :  61, g : 157, b : 230 } /* #3d9de6 */
-    static colorBlueish = { r :  61, g : 146, b : 230 } /* #3de63d */
-    static colorRed     = { r : 230, g : 115, b :  61 } /* #e63d3d */
-    static colorOrange  = { r : 230, g : 134, b :  61 } /* #e6863d */
+    static colors =
+    {
+        coldPrimary   : { r :  61, g : 157, b : 230 }, /* #3d9de6 */
+        coldSecondary : { r :  61, g : 146, b : 230 }, /* #3de63d */
+        warmPrimary   : { r : 230, g : 134, b :  61 }, /* #e6863d */
+        warmSecondary : { r : 230, g : 115, b :  61 }  /* #e63d3d */
+    }
 
     /**
      * @param pixels Array<{ r: number, g: number, b: number }>
@@ -38,15 +41,15 @@ class Eigen
      * @param { h: number, s: number, l: number } hsl
      * @param { number }                          maxLightness - 0 - 255
      */
-    static getDegradedColor ( hsl, maxLightness )
+    static getDegradedColor ( hsl, maxLightness, colors = {} )
     {
         const selectedColor = (() =>
         {
-            if ( hsl.h >  75  && hsl.h < 175 ) return this.colorBlueish;
-            if ( hsl.h >= 175 && hsl.h < 270 ) return this.colorBlue;
-            if ( hsl.h >= 270                ) return this.colorRed;
+            if ( hsl.h >  75  && hsl.h < 175 ) return colors.coldSecondary ?? this.colors.coldSecondary;
+            if ( hsl.h >= 175 && hsl.h < 270 ) return colors.coldPrimary   ?? this.colors.coldPrimary;
+            if ( hsl.h >= 270                ) return colors.warmSecondary ?? this.colors.warmSecondary;
 
-            return this.colorOrange;
+            return colors.warmPrimary ?? this.colors.warmPrimary;
         })();
 
         const selectedColorHSL = this.getHSLFromRGB( selectedColor );

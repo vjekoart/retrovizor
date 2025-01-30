@@ -77,9 +77,9 @@ function main ()
         },
         {
             key     : "noiseColor",
-            type    : "text",
+            type    : "color",
             label   : "Noise color",
-            value   : JSON.stringify( defaultOptions.noiseColor )
+            value   : defaultOptions.noiseColor
         }
     ];
 
@@ -91,7 +91,7 @@ function main ()
                 const options = {}
 
                 dom.experimentControl.setAttribute( "disabled", "disabled" );
-                dom.experimentControl.values.forEach( x => options[ x.key ] = x.key === "noiseColor" ? JSON.parse( x.value ) : x.value );
+                dom.experimentControl.values.forEach( x => options[ x.key ] = x.value );
 
                 closeYourEyes.isRunning && closeYourEyes.stop();
                 closeYourEyes.setOptions( options );

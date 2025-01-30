@@ -35,7 +35,7 @@ async function degrade ( base64, options = {} )
     const maxLightness    = options.maxLightness;
     const scaleDownFactor = options.scaleDownFactor;
 
-    colorAdjust( imageData, maxLightness );
+    colorAdjust( imageData, maxLightness, options.colors ?? {} );
     primitivise( image, imageData, bounds, scaleDownFactor );
 
     /* Convert transformed image to Base64 */
@@ -80,14 +80,14 @@ function canvasToBase64 ( canvas )
  *
  * Take a pixel lightness, and adjust final color lightness.
  */
-function colorAdjust ( imageData, maxLightness )
+function colorAdjust ( imageData, maxLightness, colors )
 {
     const byteCount = imageData.data.length;
 
     for ( let i = 0; i < byteCount; i += 4 )
     {
         const hsl   = Eigen.getHSLFromRGB({ r : imageData.data[ i ], g : imageData.data[ i + 1 ], b : imageData.data[ i + 2 ] });
-        const color = Eigen.getDegradedColor( hsl, maxLightness );
+        const color = Eigen.getDegradedColor( hsl, maxLightness, colors );
 
         imageData.data[ i     ] = color.r;
         imageData.data[ i + 1 ] = color.g;

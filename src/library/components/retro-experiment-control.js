@@ -11,6 +11,8 @@ import
     ref
 } from "lit/directives/ref.js";
 
+import { Colors } from "Library/utilities.js";
+
 /**
  * Component responsible for displaying and controlling options for an experiment. Basically, a form
  * control component that simplifies definition and usage of various input fields.
@@ -44,7 +46,7 @@ import
  *     },
  *     {
  *         key     : "noiseColor",
- *         type    : "text",
+ *         type    : "color",
  *         label   : "Noise color",
  *         value   : JSON.stringify( defaultOptions.noiseColor )
  *     }
@@ -52,6 +54,9 @@ import
  * 
  * // Read values of options to get user input
  * retroExperimentControl.values === [ { key : "key name", value : Value }, ... ];
+ *
+ * // Value object for type === "color"
+ * { r, g, b }, where each value is an integer between 0-255
  *
  * // Value object for type === "file"
  * { 
@@ -206,6 +211,13 @@ export class RetroExperimentControl extends LitElement
         this.values     = [];
     }
 
+    handleChangeColor ( ev )
+    {
+        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
+
+        target.value = Colors.hexToObjectRGB( ev.target.value );
+    }
+
     handleChangeFile ( ev )
     {
         const file = ev.target.files[ 0 ];
@@ -264,6 +276,17 @@ export class RetroExperimentControl extends LitElement
     {
         this.values.push({ key : option.key, value : option.value });
 
+        // TODO: change color box inside input element on each value change, show label if unsupported color format
+        const renderColorOption = option => html`
+            <input
+                id="${ option.key }"
+                name="${ option.key }"
+                type="text"
+                .value=${ Colors.objectRGBToHex( option.value ) }
+                @change="${ this.handleChangeColor }"
+            />
+        `;
+
         const renderFileOption = option =>
         {
             this.references[ option.key ] = createRef();
@@ -305,6 +328,7 @@ export class RetroExperimentControl extends LitElement
 
         let rendered;
 
+        option.type === "color" && ( rendered = renderColorOption( option ) );
         option.type === "file"  && ( rendered = renderFileOption ( option ) );
         option.type === "range" && ( rendered = renderRangeOption( option ) );
         option.type === "text"  && ( rendered = renderTextOption ( option ) );

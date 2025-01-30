@@ -25,6 +25,30 @@ function main ()
     dom.experimentControl.options =
     [
         {
+            key   : "colorColdPrimary",
+            type  : "color",
+            label : "Primary cold color replacement",
+            value : defaultOptions.colors.coldPrimary
+        },
+        {
+            key   : "colorColdSecondary",
+            type  : "color",
+            label : "Secondary cold color replacement",
+            value : defaultOptions.colors.coldSecondary
+        },
+        {
+            key   : "colorWarmPrimary",
+            type  : "color",
+            label : "Primary warm color replacement",
+            value : defaultOptions.colors.warmPrimary
+        },
+        {
+            key   : "colorWarmSecondary",
+            type  : "color",
+            label : "Secondary warm color replacement",
+            value : defaultOptions.colors.warmSecondary
+        },
+        {
             key     : "image",
             type    : "file",
             options : { accept : "image/png, image/jpeg, image/webp" },
@@ -64,6 +88,14 @@ function main ()
                     dom.experimentControl.removeAttribute( "disabled" );
                     alert( "Missing input image!" );
                     return;
+                }
+
+                rest.colors =
+                {
+                    coldPrimary   : rest.colorColdPrimary,
+                    coldSecondary : rest.colorColdSecondary,
+                    warmPrimary   : rest.colorWarmPrimary,
+                    warmSecondary : rest.colorWarmSecondary
                 }
 
                 imageDegradator.setOptions( rest );
