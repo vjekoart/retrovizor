@@ -19,7 +19,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
             * Responsive, but much wider than rest of layout.page stuff, another layout?
-            * Add input type color, just filtering for allowed formats, nothing fancy (and maybe a color preview on change in a box)
             * For ImageDegradator: just one image field, and live controls, when user selects a image, it's automatically degenerated, and as user moves range bars, the image is automatically processed (with debounce)
         * Fine-tune UI/UX of Image Degradator
             * Fine tune paramteres so it makes sense to change them

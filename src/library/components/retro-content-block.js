@@ -60,7 +60,7 @@ export class RetroContentBlock extends LitElement
 
         :host time
         {
-            font-size  : var(--style-font-size-footer-link);
+            font-size  : var(--style-font-size-small);
             font-style : normal;
             color      : var(--style-color-light-faded);
         }
@@ -81,7 +81,7 @@ export class RetroContentBlock extends LitElement
         {
             font-family     : var(--style-font-family-content);
             font-weight     : var(--style-font-weight-title);
-            font-size       : var(--style-font-size-footer-link);
+            font-size       : var(--style-font-size-small);
             line-height     : var(--style-line-height);
             color           : var(--style-color-interactive);
             text-decoration : none;

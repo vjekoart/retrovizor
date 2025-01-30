@@ -39,10 +39,11 @@
     --style-font-size-text         : 16px;
     --style-font-size-title        : 26px;
     --style-font-size-code         : 14px;
-    --style-font-size-footer-link  : 14px;
+    --style-font-size-small        : 14px;
     --style-line-height            : 26px;
     --style-line-height-title      : 36.5px;
     --style-line-height-code       : 22px;
+    --style-line-height-small      : 22px;
 
     --style-line-width             : 4px;
     --style-line-width-light       : 2px;

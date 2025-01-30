@@ -143,6 +143,41 @@ export class RetroExperimentControl extends LitElement
             margin-bottom : var(--style-grid-half);
         }
 
+        :host .configuration-value.color
+        {
+            position : relative;
+        }
+
+        :host .configuration-value.color [data-color]
+        {
+            display    : block;
+            width      : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
+            height     : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
+
+            position   : absolute;
+            bottom     : calc(2 * var(--style-line-width-light));
+            left       : calc(2 * var(--style-line-width-light));
+
+            background : var(--style-color-light-faded);
+        }
+
+        :host .configuration-value.color input
+        {
+            padding-left : var(--style-grid-full);
+        }
+
+        :host .configuration-value.color [data-error]
+        {
+            position    : absolute;
+            bottom      : calc(-1 * var(--style-line-height-small));
+            left        : calc(2 * var(--style-line-width-light));
+
+            font-size   : var(--style-font-size-small);
+            line-height : var(--style-line-height-small);
+
+            background  : var(--style-color-accent);
+        }
+
         :host .configuration-value.file
         {}
 
@@ -168,6 +203,22 @@ export class RetroExperimentControl extends LitElement
         :host .configuration-value.file input[type="file"]
         {
             display : none;
+        }
+
+        input
+        {
+            display       : block;
+            padding       : 0 var(--style-grid-third);
+
+            font-family   : var(--style-font-family-code);
+            font-weight   : var(--style-font-weight-normal);
+            font-size     : var(--style-font-size-small);
+            line-height   : var(--style-grid-full);
+
+            color         : var(--style-color-dark-light);
+            background    : var(--style-color-light-highlight);
+            border        : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border-radius : 0;
         }
 
         button
@@ -207,15 +258,31 @@ export class RetroExperimentControl extends LitElement
 
         this.controls   = {}
         this.options    = [];
-        this.references = {}
         this.values     = [];
+
+        this.errors     = {}
+        this.references = {}
     }
 
     handleChangeColor ( ev )
     {
-        const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
+        const key    = ev.target.getAttribute( "id" );
+        const target = this.values.find( x => x.key === key );
 
-        target.value = Colors.hexToObjectRGB( ev.target.value );
+        this.errors[ key ].value.innerText = "";
+
+        try
+        {
+            target.value = Colors.hexToObjectRGB( ev.target.value );
+            this.references[ key ].value.style.background = ev.target.value;
+        }
+        catch ( error )
+        {
+            if ( error === "Invalid color format!" )
+            {
+                this.errors[ key ].value.innerText = error;
+            }
+        }
     }
 
     handleChangeFile ( ev )
@@ -276,16 +343,25 @@ export class RetroExperimentControl extends LitElement
     {
         this.values.push({ key : option.key, value : option.value });
 
-        // TODO: change color box inside input element on each value change, show label if unsupported color format
-        const renderColorOption = option => html`
-            <input
-                id="${ option.key }"
-                name="${ option.key }"
-                type="text"
-                .value=${ Colors.objectRGBToHex( option.value ) }
-                @change="${ this.handleChangeColor }"
-            />
-        `;
+        const renderColorOption = option =>
+        {
+            const initial = Colors.objectRGBToHex( option.value );
+
+            this.errors[ option.key ]     = createRef();
+            this.references[ option.key ] = createRef();
+
+            return html`
+                <span data-color ${ ref( this.references[ option.key ] ) } style="background: ${ initial }"></span>
+                <input
+                    id="${ option.key }"
+                    name="${ option.key }"
+                    type="text"
+                    .value=${ initial }
+                    @change="${ this.handleChangeColor }"
+                />
+                <label data-error ${ ref( this.errors[ option.key ] ) }></label>
+            `;
+        }
 
         const renderFileOption = option =>
         {
