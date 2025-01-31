@@ -26,7 +26,7 @@ section
     width   : 240px;
     height  : auto;
     margin  : 0 auto calc(2 * var(--style-grid-full)) auto;
-    border  : var(--style-line-width-light) solid var(--style-color-light);
+    border  : var(--style-line-width-light) solid var(--style-color-border);
 }
 
 #professional-career li

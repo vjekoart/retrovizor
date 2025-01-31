@@ -7,6 +7,9 @@
     --color-eigengrau-light        : #202027;
     --color-eigengrau-lighter      : #26262d;
     --color-white                  : #e6e6ed;
+    --color-darkgray               : #5f5f7d;
+    --color-darkgray-light         : #6c6c8e;
+    --color-darkgray-lighter       : #777798;
     --color-gray                   : #a6a6ad;
     --color-gray-light             : #d6d6dd;
     --color-orange                 : #e6863d;
@@ -26,6 +29,9 @@
     --style-color-interactive      : var(--color-blue);
     --style-color-interactive-dark : var(--color-blue-dark);
     --style-color-interactive-in   : var(--color-blue-accent);
+    --style-color-border           : var(--color-darkgray);
+    --style-color-button           : var(--color-darkgray-light);
+    --style-color-button-active    : var(--color-darkgray-lighter);
 
     --style-font-family-strong     : "Julia Mono", monospace;
     --style-font-family-content    : "Julia Mono", monospace;

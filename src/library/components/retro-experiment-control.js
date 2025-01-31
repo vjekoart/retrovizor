@@ -102,7 +102,7 @@ export class RetroExperimentControl extends LitElement
             height        : auto;
             margin-bottom : var(--style-grid-full);
             padding       : var(--style-grid-full);
-            border        : var(--style-line-width-light) solid var(--style-color-light);
+            border        : var(--style-line-width-light) solid var(--style-color-border);
             opacity       : 1;
         }
 
@@ -189,7 +189,7 @@ export class RetroExperimentControl extends LitElement
             height     : auto;
             min-height : var(--style-grid-full);
             background : var(--style-color-dark-lighter);
-            border     : var(--style-line-width-light) solid var(--style-color-light);
+            border     : var(--style-line-width-light) solid var(--style-color-border);
             overflow   : hidden;
         }
 
@@ -217,33 +217,34 @@ export class RetroExperimentControl extends LitElement
 
             color         : var(--style-color-dark-light);
             background    : var(--style-color-light-highlight);
-            border        : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border        : var(--style-line-width-light) solid var(--style-color-border);
             border-radius : 0;
         }
 
         button
         {
-            margin        : 0;
-            padding       : 0 var(--style-grid-full);
+            margin         : 0;
+            padding        : 0 var(--style-grid-full);
 
-            font-family   : var(--style-font-family-content);
-            font-weight   : var(--style-font-weight-normal);
-            font-size     : var(--style-font-size-text);
-            line-height   : var(--style-grid-full);
+            font-family    : var(--style-font-family-content);
+            font-weight    : var(--style-font-weight-normal);
+            font-size      : var(--style-font-size-text);
+            line-height    : var(--style-grid-full);
+            text-transform : uppercase;
 
-            color         : var(--style-color-light);
-            background    : var(--style-color-interactive);
-            border        : var(--style-line-width-light) solid var(--style-color-interactive-dark);
-            border-radius : 0;
-            cursor        : pointer;
+            color          : var(--style-color-light-highlight);
+            background     : var(--style-color-button);
+            border         : var(--style-line-width-light) solid var(--style-color-border);
+            border-radius  : 0;
+            cursor         : pointer;
 
-            transition    : background-color var(--transition-duration-short) ease-in-out;
+            transition     : background-color var(--transition-duration-short) ease-in-out;
         }
 
         button:hover,
         button:active
         {
-            background : var(--style-color-interactive-in);
+            background : var(--style-color-button-active);
         }
 
         button[disabled="disabled"]

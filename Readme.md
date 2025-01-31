@@ -18,7 +18,7 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Code
         * Fine tune experiment controls UI/UX
             * Should look like a machine, intuitive, user should know what to do
-            * Responsive, but much wider than rest of layout.page stuff, another layout?
+            * Responsive, but much wider than rest of layout.page stuff, another layout? Not a new layout, but rather a parameter for the existing one that changes width of the main content block and maybe padding also
             * For ImageDegradator: just one image field, and live controls, when user selects a image, it's automatically degenerated, and as user moves range bars, the image is automatically processed (with debounce)
         * Fine-tune UI/UX of Image Degradator
             * Fine tune paramteres so it makes sense to change them
@@ -27,6 +27,8 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Fine-tune UI/UX of Close Your Eyes
             * Fine tune paramteres so it makes sense to change them
             * Fine tune UX messages
+        * Fine tune code list page
+    * Fine tune text list page
     * User page fine tune
     * Block loading for web components
         * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
