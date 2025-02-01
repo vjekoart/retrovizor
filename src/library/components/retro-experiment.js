@@ -14,7 +14,7 @@ import
 import { Colors } from "Library/utilities.js";
 
 /**
- * Component responsible for displaying experiment options and ouput.
+ * Component responsible for displaying experiment information, ouput and configuration options.
  *
  * Basically, a form control component that simplifies definition and usage of various input fields,
  * while also styling experiment output in the form of canvas, image or similar.
@@ -29,8 +29,8 @@ import { Colors } from "Library/utilities.js";
  *     "start" : "Start the animation"
  * }
  * 
- * // Define options and their types, including options for each type
- * retroExperiment.options  =
+ * // Define configuration options and their types, including options for each type
+ * retroExperiment.configuration =
  * [
  *     {
  *         key     : "image"
@@ -54,8 +54,11 @@ import { Colors } from "Library/utilities.js";
  *     }
  * ];
  * 
- * // Read values of options to get user input
+ * // Read configuration values to get user input
  * retroExperiment.values === [ { key : "key name", value : Value }, ... ];
+ *
+ * // Hide placeholder after the first run
+ * retroExperiment.showPlaceholder = false;
  *
  * // Value object for type === "color"
  * { r, g, b }, where each value is an integer between 0-255
@@ -76,7 +79,7 @@ import { Colors } from "Library/utilities.js";
  * retroExperiment.setAttribute( "disabled", "disabled" );
  *
  * // Enable the component by removing the attribute
- * retroExperiment.removeAttribute( "disabvled" );
+ * retroExperiment.removeAttribute( "disabled" );
  */
 export class RetroExperiment extends LitElement
 {
@@ -86,11 +89,16 @@ export class RetroExperiment extends LitElement
         {
             attribute : false
         },
-        options  :
+        configuration :
         {
             attribute : false
         },
-        values   :
+        showPlaceholder :
+        {
+            attribute : false,
+            type      : Boolean
+        },
+        values :
         {
             attribute : false
         }
@@ -105,9 +113,6 @@ export class RetroExperiment extends LitElement
         :host
         {
             position        : relative;
-
-            display         : flex;
-            flex-direction  : column;
 
             width           : 100%;
             height          : auto;
@@ -134,10 +139,50 @@ export class RetroExperiment extends LitElement
 
         @media only screen and (min-width: 1024px)
         {
+
+        }
+
+        /**
+         * Layout
+         */
+        :host
+        {
+            display        : flex;
+            flex-direction : column;
+        }
+
+        .information,
+        .configuration
+        {
+            width   : 100%;
+            padding : var(--style-grid-full);
+        }
+
+        .output
+        {
+            width  : calc(100% - 2 * var(--style-grid-full));
+            margin : 0 var(--style-grid-full);
+        }
+
+        @media only screen and (min-width: 1024px)
+        {
             :host
             {
-                flex-direction : row;
-                flex-wrap      : wrap;
+                flex-direction  : row;
+                flex-wrap       : wrap;
+                justify-content : space-between;
+            }
+
+            .information,
+            .configuration
+            {
+                width : var(--sidebar-width);
+            }
+
+            .output
+            {
+                width  : calc(100% - 2 * var(--sidebar-width));
+                margin : var(--style-grid-full) 0;
             }
         }
 
@@ -145,23 +190,20 @@ export class RetroExperiment extends LitElement
          * Information section
          */
         .information
-        {
-            width   : var(--sidebar-width);
-            padding : var(--style-grid-full);
-        }
+        {}
 
-        slot[name="description"]
+        .information slot[name="description"]
         {
             font-size : var(--style-font-size-small);
         }
 
-        .controls
+        .information .controls
         {
             display         : flex;
             justify-content : space-between;
         }
 
-        .controls button
+        .information .controls button
         {
             width  : calc(50% - var(--style-grid-half));
             height : auto;
@@ -169,19 +211,19 @@ export class RetroExperiment extends LitElement
 
         @media only screen and (min-width: 1024px)
         {
-            .controls
+            .information .controls
             {
                 display : block;
             }
 
-            .controls button
+            .information .controls button
             {
                 width      : 100%;
                 margin-top : var(--style-grid-half);
             }
         }
 
-        button
+        .information button
         {
             margin         : 0;
             padding        : 0 var(--style-grid-full);
@@ -201,13 +243,13 @@ export class RetroExperiment extends LitElement
             transition     : background-color var(--transition-duration-short) ease-in-out;
         }
 
-        button:hover,
-        button:active
+        .information button:hover,
+        .information button:active
         {
             background : var(--style-color-button-active);
         }
 
-        button[disabled="disabled"]
+        .information button[disabled="disabled"]
         {
             opacity : 0.5;
         }
@@ -217,43 +259,67 @@ export class RetroExperiment extends LitElement
          */
         .output
         {
-            display : block;
-            width   : calc(100% - 2 * var(--sidebar-width));
-            height  : auto;
-            margin  : var(--style-grid-full) 0;
-            border  : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            position        : relative;
+
+            display         : flex;
+            align-items     : center;
+            justify-content : center;
+            height          : auto;
+
+            border          : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            background      : var(--style-color-dark-light);
         }
 
-        .output img
+        .output ::slotted(img)
         {
             display    : block;
             width      : 100%;
             height     : auto;
-            max-height : 75vh;
-            margin     : 0 auto;
+            max-height : 100vh;
+        }
+
+        .output ::slotted(canvas)
+        {
+            width  : 100%;
+            height : 100%;
+        }
+
+        .output slot[name="placeholder"]
+        {
+            position   : absolute;
+            top        : 50%;
+            left       : 0;
+            right      : 0;
+
+            display    : none;
+            text-align : center;
+
+            transform  : translateY(-50%);
+        }
+
+        .output[data-placeholder="true"] slot[name="placeholder"]
+        {
+            display : block;
         }
 
         /**
-         * Options section
+         * Configuration section
          */
-        .options
-        {
-            width   : var(--sidebar-width);
-            padding : var(--style-grid-full);
-        }
+        .configuration
+        {}
 
-        .configuration-value
+        .configuration .value
         {
             display       : block;
             margin-bottom : var(--style-grid-half);
         }
 
-        .configuration-value.color
+        .configuration .value.color
         {
             position : relative;
         }
 
-        .configuration-value.color [data-color]
+        .configuration .value.color [data-color]
         {
             display    : block;
             width      : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
@@ -266,12 +332,12 @@ export class RetroExperiment extends LitElement
             background : var(--style-color-light-faded);
         }
 
-        .configuration-value.color input
+        .configuration .value.color input
         {
             padding-left : var(--style-grid-full);
         }
 
-        .configuration-value.color [data-error]
+        .configuration .value.color [data-error]
         {
             position    : absolute;
             bottom      : calc(-1 * var(--style-line-height-small));
@@ -283,10 +349,10 @@ export class RetroExperiment extends LitElement
             background  : var(--style-color-accent);
         }
 
-        .configuration-value.file
+        .configuration .value.file
         {}
 
-        .configuration-value.file img
+        .configuration .value.file img
         {
             box-sizing : border-box;
             display    : block;
@@ -298,19 +364,19 @@ export class RetroExperiment extends LitElement
             overflow   : hidden;
         }
 
-        .configuration-value.file label
+        .configuration .value.file label
         {
             display : block;
             padding : 0 0 var(--style-grid-half) 0;
             cursor  : pointer;
         }
 
-        .configuration-value.file input[type="file"]
+        .configuration .value.file input[type="file"]
         {
             display : none;
         }
 
-        input
+        .configuration input
         {
             display       : block;
             padding       : 0 var(--style-grid-third);
@@ -355,12 +421,13 @@ export class RetroExperiment extends LitElement
     {
         super();
 
-        this.controls   = {}
-        this.options    = [];
-        this.values     = [];
+        this.controls        = {}
+        this.configuration   = [];
+        this.showPlaceholder = true;
+        this.values          = [];
 
-        this.errors     = {}
-        this.references = {}
+        this.errors          = {}
+        this.references      = {}
     }
 
     handleChangeColor ( ev )
@@ -424,21 +491,20 @@ export class RetroExperiment extends LitElement
 
     render ()
     {
-        const controls = Object.keys( this.controls ).map( key => this.renderControl({ key, label : this.controls[ key ] }) );
-        const options  = this.options.map( x => this.renderOption( x ) );
+        const controls       = Object.keys( this.controls ).map( key => this.renderControl({ key, label : this.controls[ key ] }) );
+        const configuration  = this.configuration.map( x => this.renderConfiguration( x ) );
 
         return html`
             <section class="information">
                 <slot name="title"></slot>
                 <slot name="description"></slot>
-                <div class="controls">
-                    ${ controls }
-                </div>
+                <div class="controls">${ controls }</div>
             </section>
-            <section class="output">
+            <section class="output" data-placeholder="${ this.showPlaceholder.toString() }">
                 <slot name="display"></slot>
+                <slot name="placeholder"></slot>
             </section>
-            <section class="options">${ options }</section>
+            <section class="configuration">${ configuration }</section>
             <p class="source">[Source](<slot name="source">N/A</slot>)</p>
         `;
     }
@@ -448,79 +514,79 @@ export class RetroExperiment extends LitElement
         return html`<button id="${ control.key }" type="button" @click="${ this.reportControl }">${ control.label }</button>`;
     }
 
-    renderOption ( option )
+    renderConfiguration ( configuration )
     {
-        this.values.push({ key : option.key, value : option.value });
+        this.values.push({ key : configuration.key, value : configuration.value });
 
-        const renderColorOption = option =>
+        const renderColor = configuration =>
         {
-            const initial = Colors.objectRGBToHex( option.value );
+            const initial = Colors.objectRGBToHex( configuration.value );
 
-            this.errors[ option.key ]     = createRef();
-            this.references[ option.key ] = createRef();
+            this.errors[ configuration.key ]     = createRef();
+            this.references[ configuration.key ] = createRef();
 
             return html`
-                <span data-color ${ ref( this.references[ option.key ] ) } style="background: ${ initial }"></span>
+                <span data-color ${ ref( this.references[ configuration.key ] ) } style="background: ${ initial }"></span>
                 <input
-                    id="${ option.key }"
-                    name="${ option.key }"
+                    id="${ configuration.key }"
+                    name="${ configuration.key }"
                     type="text"
                     .value=${ initial }
                     @change="${ this.handleChangeColor }"
                 />
-                <label data-error ${ ref( this.errors[ option.key ] ) }></label>
+                <label data-error ${ ref( this.errors[ configuration.key ] ) }></label>
             `;
         }
 
-        const renderFileOption = option =>
+        const renderFile = configuration =>
         {
-            this.references[ option.key ] = createRef();
+            this.references[ configuration.key ] = createRef();
 
             return html`
                 <input
-                    id="${ option.key }"
-                    name="${ option.key }"
+                    id="${ configuration.key }"
+                    name="${ configuration.key }"
                     type="file"
-                    accept="${ option.options?.accept ?? nothing }"
-                    .value=${ option.value }
+                    accept="${ configuration.options?.accept ?? nothing }"
+                    .value=${ configuration.value }
                     @change="${ this.handleChangeFile }"
                 />
-                <img ${ ref( this.references[ option.key ] ) } />
+                <img ${ ref( this.references[ configuration.key ] ) } />
             `;
         }
 
-        const renderRangeOption = option => html`
+        const renderRange = configuration => html`
             <input
-                id="${ option.key }"
-                name="${ option.key }"
+                id="${ configuration.key }"
+                name="${ configuration.key }"
                 type="range"
-                min="${ option.options?.min ?? nothing }"
-                max="${ option.options?.max ?? nothing }"
-                .value=${ option.value }
+                min="${ configuration.options?.min ?? nothing }"
+                max="${ configuration.options?.max ?? nothing }"
+                .value=${ configuration.value }
                 @change="${ this.handleChangeRange }"
             />
         `;
 
-        const renderTextOption = option => html`
+        const renderText = configuration => html`
             <input
-                id="${ option.key }"
-                name="${ option.key }"
+                id="${ configuration.key }"
+                name="${ configuration.key }"
                 type="text"
-                .value=${ option.value }
+                .value=${ configuration.value }
                 @change="${ this.handleChangeText }"
             />
         `;
 
         let rendered;
 
-        option.type === "color" && ( rendered = renderColorOption( option ) );
-        option.type === "file"  && ( rendered = renderFileOption ( option ) );
-        option.type === "range" && ( rendered = renderRangeOption( option ) );
-        option.type === "text"  && ( rendered = renderTextOption ( option ) );
+        configuration.type === "color" && ( rendered = renderColor( configuration ) );
+        configuration.type === "file"  && ( rendered = renderFile ( configuration ) );
+        configuration.type === "range" && ( rendered = renderRange( configuration ) );
+        configuration.type === "text"  && ( rendered = renderText ( configuration ) );
 
         return html`
-            <div class="configuration-value ${ option.type }">
-                <label for="${ option.key }">${ option.label }</label>
+            <div class="value ${ configuration.type }">
+                <label for="${ configuration.key }">${ configuration.label }</label>
                 ${ rendered }
             </div>
         `;

@@ -6,13 +6,14 @@ const dom =
     bright : document.querySelector( "#bright" )
 }
 
-function main ()
+async function main ()
 {
     dom.bright.classList.remove( "hidden" );
 
     const blank = new Blank( dom.canvas );
 
-    blank.setup();
+    await blank.setup();
+
     blank
         .generate()
         .then(() =>

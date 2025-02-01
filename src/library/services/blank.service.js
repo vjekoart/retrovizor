@@ -7,7 +7,7 @@ import { CanvasManager } from "Library/services/canvas-manager.service.js";
  * const canvas   = document.querySelector( "canvas" );
  * const instance = new Blank( canvas );
  *
- * instance.setup();
+ * await instance.setup();
  * instance.generate().then(() => instance.run());
  */
 class Blank
@@ -202,9 +202,15 @@ class Blank
 
     setup ()
     {
-        this.canvasManager.setup();
-
-        window.addEventListener( "resize", () => this.resize() );
+        return new Promise( resolve =>
+        {
+            window.setTimeout(() =>
+            {
+                this.canvasManager.setup();
+                window.addEventListener( "resize", () => this.resize() );
+                resolve();
+            }, 1 );
+        });
     }
 
     /**

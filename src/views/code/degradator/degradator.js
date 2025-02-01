@@ -22,7 +22,7 @@ function main ()
         "download" : "Download"
     }
 
-    dom.experiment.options =
+    dom.experiment.configuration =
     [
         {
             key   : "colorColdPrimary",
@@ -89,6 +89,8 @@ function main ()
                     alert( "Missing input image!" );
                     return;
                 }
+
+                dom.experiment.showPlaceholder = false;
 
                 rest.colors =
                 {

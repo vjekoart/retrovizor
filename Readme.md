@@ -17,15 +17,17 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Code editor colors and symbols
     * Code
         * Fine tune experiment controls UI/UX
-            * Output: take as much space as possible while keeping the structure
             * Information/controls sidebar UI for both Degradator and Blank
-            * Controls UI
+                * Move image input from configuration to controls
+                * Add support for CTA control
+            * Configuration UI
             * Degradator logic: on image change, automatically degrade and show results
             * On control change logic: with debounce, apply changes immediately
             * Rework loading state: if loading, display centered text in the output area
         * Fine-tune UI/UX parameters of Degradator
         * Fine-tune UI/UX parameters of Blank
         * Fine tune code list page
+    * Homepage: add `Recalculating...` text on window resize
     * Fine tune text list page
     * User page fine tune
     * Block loading for web components

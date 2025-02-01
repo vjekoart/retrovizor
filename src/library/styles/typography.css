@@ -128,11 +128,6 @@ p
     text-align : justify;
 }
 
-.faded
-{
-    color : var(--style-color-light-faded);
-}
-
 code,
 pre
 {
@@ -165,4 +160,17 @@ pre
 pre:last-child
 {
     margin-bottom : 0;
+}
+
+/**
+ * Utility classes
+ */
+.faded
+{
+    color : var(--style-color-light-faded);
+}
+
+.center
+{
+    text-align : center;
 }

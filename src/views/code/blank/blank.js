@@ -11,13 +11,15 @@ function main ()
     const blank  = new Blank( dom.canvas );
     const defaultOptions = blank.getOptions();
 
+    blank.setup();
+
     dom.experiment.controls =
     {
         "run"  : "(Re)run",
         "stop" : "Stop"
     }
 
-    dom.experiment.options =
+    dom.experiment.configuration =
     [
         {
             key     : "alphaDelta",
@@ -88,13 +90,14 @@ function main ()
         switch ( ev.detail )
         {
             case "run":
-                const options = {}
+                const configuration = {}
 
                 dom.experiment.setAttribute( "disabled", "disabled" );
-                dom.experiment.values.forEach( x => options[ x.key ] = x.value );
+                dom.experiment.values.forEach( x => configuration[ x.key ] = x.value );
+                dom.experiment.showPlaceholder = false;
 
                 blank.isRunning && blank.stop();
-                blank.setOptions( options );
+                blank.setOptions( configuration );
                 blank
                     .generate()
                     .then(() => blank.run())
