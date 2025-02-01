@@ -1,7 +1,7 @@
 import * as Configuration from "Library/configuration.js";
 
-import { CloseYourEyes   } from "Library/services/close-your-eyes.service.js";
-import { ImageDegradator } from "Library/services/image-degradator.service.js";
+import { Blank      } from "Library/services/blank.service.js";
+import { Degradator } from "Library/services/degradator.service.js";
 
 import
 {
@@ -13,7 +13,6 @@ import { RetroExperiment   } from "Library/components/retro-experiment.js";
 import { RetroFooter       } from "Library/components/retro-footer.js";
 import { RetroNav          } from "Library/components/retro-nav.js";
 import { RetroTitle        } from "Library/components/retro-title.js";
-
 
 function initialize ()
 {
@@ -29,8 +28,8 @@ export
     Configuration,
 
     /* Services */
-    CloseYourEyes,
-    ImageDegradator,
+    Blank,
+    Degradator,
 
     /* Utilities */
     formatCodeBlocks,

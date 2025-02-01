@@ -1,4 +1,4 @@
-import { ImageDegradator } from "Library";
+import { Degradator } from "Library";
 
 const dom =
 {
@@ -13,8 +13,8 @@ const state =
 
 function main ()
 {
-    const imageDegradator = new ImageDegradator();
-    const defaultOptions  = imageDegradator.getOptions();
+    const degradator = new Degradator();
+    const defaultOptions  = degradator.getOptions();
 
     dom.experiment.controls =
     {
@@ -98,9 +98,9 @@ function main ()
                     warmSecondary : rest.colorWarmSecondary
                 }
 
-                imageDegradator.setOptions( rest );
+                degradator.setOptions( rest );
 
-                imageDegradator
+                degradator
                     .degrade( base64 )
                     .then( degraded =>
                     {

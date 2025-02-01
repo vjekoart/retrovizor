@@ -1,4 +1,4 @@
-import { CloseYourEyes } from "Library";
+import { Blank } from "Library";
 
 const dom =
 {
@@ -10,15 +10,15 @@ function main ()
 {
     dom.bright.classList.remove( "hidden" );
 
-    const closeYourEyes = new CloseYourEyes( dom.canvas );
+    const blank = new Blank( dom.canvas );
 
-    closeYourEyes.setup();
-    closeYourEyes
+    blank.setup();
+    blank
         .generate()
         .then(() =>
         {
             dom.bright.classList.add( "hidden" );
-            window.setTimeout( () => closeYourEyes.run(), 660 );
+            window.setTimeout( () => blank.run(), 660 );
         })
         .catch( error =>
         {

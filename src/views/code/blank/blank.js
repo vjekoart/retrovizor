@@ -1,4 +1,4 @@
-import { CloseYourEyes } from "Library";
+import { Blank } from "Library";
 
 const dom =
 {
@@ -8,8 +8,8 @@ const dom =
 
 function main ()
 {
-    const closeYourEyes  = new CloseYourEyes( dom.canvas );
-    const defaultOptions = closeYourEyes.getOptions();
+    const blank  = new Blank( dom.canvas );
+    const defaultOptions = blank.getOptions();
 
     dom.experiment.controls =
     {
@@ -93,11 +93,11 @@ function main ()
                 dom.experiment.setAttribute( "disabled", "disabled" );
                 dom.experiment.values.forEach( x => options[ x.key ] = x.value );
 
-                closeYourEyes.isRunning && closeYourEyes.stop();
-                closeYourEyes.setOptions( options );
-                closeYourEyes
+                blank.isRunning && blank.stop();
+                blank.setOptions( options );
+                blank
                     .generate()
-                    .then(() => closeYourEyes.run())
+                    .then(() => blank.run())
                     .catch( error =>
                     {
                         console.warn( error );
@@ -110,7 +110,7 @@ function main ()
                 break;
 
             case "stop":
-                closeYourEyes.stop();
+                blank.stop();
                 break;
 
             default:
@@ -118,7 +118,7 @@ function main ()
         }
     });
 
-    closeYourEyes.setup();
+    blank.setup();
 }
 
 window.addEventListener( "DOMContentLoaded", main );

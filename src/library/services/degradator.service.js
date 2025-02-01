@@ -4,7 +4,7 @@ import { Eigen } from "Library/services/eigen.service.js";
  * Class that degrades an image by scaling-down the number of pixels and by changing original image colors.
  * Currently, it transforms the image to a format with two colors.
  */
-class ImageDegradator
+class Degradator
 {
     /**
      * @param { number } maxLightness    - Maximum lightness value for a pixel, 0 - 255.
@@ -23,7 +23,7 @@ class ImageDegradator
 
         this.worker  = new Worker
         (
-            import.meta.resolve( "Library/services/image-degradator.worker.js" ),
+            import.meta.resolve( "Library/services/degradator.worker.js" ),
             { type : "module" }
         );
     }
@@ -63,4 +63,4 @@ class ImageDegradator
     }
 }
 
-export { ImageDegradator }
+export { Degradator }

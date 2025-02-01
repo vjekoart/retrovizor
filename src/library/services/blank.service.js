@@ -5,12 +5,12 @@ import { CanvasManager } from "Library/services/canvas-manager.service.js";
  *
  * @usage
  * const canvas   = document.querySelector( "canvas" );
- * const instance = new CloseYourEyes( canvas );
+ * const instance = new Blank( canvas );
  *
  * instance.setup();
  * instance.generate().then(() => instance.run());
  */
-class CloseYourEyes
+class Blank
 {
     /**
      * @param { HTMLCanvasElement } canvas  - HTML canvas element where the animation will be displayed.
@@ -50,7 +50,7 @@ class CloseYourEyes
         this.canvasManager        = new CanvasManager( canvas, this.options.drawPadding );
         this.worker               = new Worker
         (
-            import.meta.resolve( "Library/services/close-your-eyes.worker.js" ),
+            import.meta.resolve( "Library/services/blank.worker.js" ),
             { type : "module" }
         );
     }
@@ -224,4 +224,4 @@ class CloseYourEyes
     }
 }
 
-export { CloseYourEyes }
+export { Blank }
