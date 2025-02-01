@@ -21,6 +21,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 * What to do with `deploy` and `start` actions in `revizor/index.js`?
 * Prioritise for Filthy Fingers (focus on performance)
+    * Add timestamps to (some) console outputs
     * Extract `revizor` to separate repository
     * Precompose some web components during the build: for marked, logicless components, create full HTML/CSS on the server-side so TTI is as small as possible (like navigation and title components)
 * Compare `buildType:native` and `buildType:bundle` performance

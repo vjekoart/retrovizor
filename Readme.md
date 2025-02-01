@@ -18,11 +18,10 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Code
         * Fine tune experiment controls UI/UX
             * Information/controls sidebar UI for both Degradator and Blank
-                * Move image input from configuration to controls
-                * Add support for CTA control
+                * Degradator logic: on image change (button click), automatically degrade and show results
+                * Remove image input from configuration and cleanup obsolete logic incl. examples
             * Configuration UI
-            * Degradator logic: on image change, automatically degrade and show results
-            * On control change logic: with debounce, apply changes immediately
+            * On configuration change for both: with debounce, apply changes immediately (if not stopped in case of Blank)
             * Rework loading state: if loading, display centered text in the output area
         * Fine-tune UI/UX parameters of Degradator
         * Fine-tune UI/UX parameters of Blank

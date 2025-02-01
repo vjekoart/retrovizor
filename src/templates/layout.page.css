@@ -26,6 +26,14 @@ main
 
 main[data-type-wide]
 {
-    max-width  : calc(100vw - 4 * var(--style-grid-full));
+    max-width  : unset;
     min-height : unset;
+}
+
+@media only screen and (min-width: 768px)
+{
+    main[data-type-wide]
+    {
+        max-width : calc(100vw - 4 * var(--style-grid-full));
+    }
 }

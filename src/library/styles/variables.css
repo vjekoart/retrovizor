@@ -31,7 +31,7 @@
     --style-color-interactive-in   : var(--color-blue-accent);
     --style-color-border           : var(--color-darkgray);
     --style-color-button           : var(--color-darkgray-light);
-    --style-color-button-active    : var(--color-darkgray-lighter);
+    --style-color-button-active    : var(--color-darkgray);
 
     --style-font-family-strong     : "Julia Mono", monospace;
     --style-font-family-content    : "Julia Mono", monospace;

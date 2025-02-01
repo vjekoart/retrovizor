@@ -15,7 +15,7 @@ function main ()
 
     dom.experiment.controls =
     {
-        "run"  : "(Re)run",
+        "run"  : { style : "accent", label : "Run" },
         "stop" : "Stop"
     }
 

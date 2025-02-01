@@ -26,7 +26,7 @@ import { Colors } from "Library/utilities.js";
  * retroExperiment.controls =
  * {
  *     "name"  : "Label",
- *     "start" : "Start the animation"
+ *     "start" : { style : "accent", label : "Start the animation" }
  * }
  * 
  * // Define configuration options and their types, including options for each type
@@ -160,8 +160,9 @@ export class RetroExperiment extends LitElement
 
         .output
         {
-            width  : calc(100% - 2 * var(--style-grid-full));
-            margin : 0 var(--style-grid-full);
+            width        : calc(100% - 2 * var(--style-grid-full));
+            margin       : 0 var(--style-grid-full);
+            aspect-ratio : 16 / 9;
         }
 
         @media only screen and (min-width: 1024px)
@@ -243,10 +244,23 @@ export class RetroExperiment extends LitElement
             transition     : background-color var(--transition-duration-short) ease-in-out;
         }
 
+        .information button[data-style="accent"]
+        {
+            color        : var(--style-color-dark);
+            background   : var(--style-color-accent);
+            border-color : var(--style-color-accent-faded);
+        }
+
         .information button:hover,
         .information button:active
         {
             background : var(--style-color-button-active);
+        }
+
+        .information button[data-style="accent"]:hover,
+        .information button[data-style="accent"]:active
+        {
+            background : var(--style-color-accent-faded);
         }
 
         .information button[disabled="disabled"]
@@ -397,7 +411,7 @@ export class RetroExperiment extends LitElement
          */
         p.source
         {
-            margin     : 0;
+            margin     : 0 0 var(--style-grid-full) 0;
             padding    : 3px;
 
             font-size  : var(--style-font-size-small);
@@ -405,7 +419,6 @@ export class RetroExperiment extends LitElement
             text-align : center;
 
             color      : var(--style-color-light-faded);
-            border-top : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         @media only screen and (min-width: 1024px)
@@ -489,9 +502,26 @@ export class RetroExperiment extends LitElement
         target.value = ev.target.value;
     }
 
+    standardizeControls ( controls )
+    {
+        return Object.keys( controls ).map( key =>
+        {
+            if ( typeof controls[ key ] === "string" )
+            {
+                return {
+                    key,
+                    label : controls[ key ],
+                    style : "default"
+                }
+            }
+
+            return { key, ...controls[ key ] }
+        });
+    }
+
     render ()
     {
-        const controls       = Object.keys( this.controls ).map( key => this.renderControl({ key, label : this.controls[ key ] }) );
+        const controls       = this.standardizeControls( this.controls ).map( x => this.renderControl( x ) );
         const configuration  = this.configuration.map( x => this.renderConfiguration( x ) );
 
         return html`
@@ -511,7 +541,14 @@ export class RetroExperiment extends LitElement
 
     renderControl ( control )
     {
-        return html`<button id="${ control.key }" type="button" @click="${ this.reportControl }">${ control.label }</button>`;
+        return html`
+            <button
+                id="${ control.key }"
+                type="button"
+                data-style="${ control.style }"
+                @click="${ this.reportControl }"
+            >${ control.label }</button>
+        `;
     }
 
     renderConfiguration ( configuration )

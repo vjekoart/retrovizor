@@ -18,7 +18,7 @@ function main ()
 
     dom.experiment.controls =
     {
-        "generate" : "Degrade",
+        "generate" : { style: "accent", label : "Select an image" },
         "download" : "Download"
     }
 
