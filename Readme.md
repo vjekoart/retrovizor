@@ -17,16 +17,14 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Code editor colors and symbols
     * Code
         * Fine tune experiment controls UI/UX
-            * Should look like a machine, intuitive, user should know what to do
-            * Responsive, but much wider than rest of layout.page stuff, another layout? Not a new layout, but rather a parameter for the existing one that changes width of the main content block and maybe padding also
-            * For ImageDegradator: just one image field, and live controls, when user selects a image, it's automatically degenerated, and as user moves range bars, the image is automatically processed (with debounce)
-        * Fine-tune UI/UX of Image Degradator
-            * Fine tune paramteres so it makes sense to change them
-            * Fine tune UX messages
-            * Expose color selection
-        * Fine-tune UI/UX of Close Your Eyes
-            * Fine tune paramteres so it makes sense to change them
-            * Fine tune UX messages
+            * Output: take as much space as possible while keeping the structure
+            * Information/controls sidebar UI for both Degradator and Blank
+            * Controls UI
+            * Degradator logic: on image change, automatically degrade and show results
+            * On control change logic: with debounce, apply changes immediately
+            * Rework loading state: if loading, display centered text in the output area
+        * Fine-tune UI/UX parameters of Degradator
+        * Fine-tune UI/UX parameters of Blank
         * Fine tune code list page
     * Fine tune text list page
     * User page fine tune
@@ -53,6 +51,8 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Approach: crafting a build system
         * Declarative Javascript
             * Define readable code and context at the beginning: working in large teams, where team members change,... workplace/industry context
+            * Maybe completely different approach: text about writing code, declarative, coding style matters, and similar, more abstract, like main philosophy when writing a code
+                * we're writing a book with formulae,...
     * Go through code (in text pages, user-facing content) and coding styles
     * Go through user page
     * Proofreading

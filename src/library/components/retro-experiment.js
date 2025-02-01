@@ -97,15 +97,26 @@ export class RetroExperiment extends LitElement
     }
 
     static styles = css`
+        *
+        {
+            box-sizing : border-box;
+        }
+
         :host
         {
-            display       : block;
-            width         : 100%;
-            height        : auto;
-            margin-bottom : var(--style-grid-full);
-            padding       : var(--style-grid-full);
-            border        : var(--style-line-width-light) solid var(--style-color-border);
-            opacity       : 1;
+            position        : relative;
+
+            display         : flex;
+            flex-direction  : column;
+
+            width           : 100%;
+            height          : auto;
+            margin-bottom   : var(--style-grid-full);
+
+            border          : var(--style-line-width-light) solid var(--style-color-border);
+            opacity         : 1;
+
+            --sidebar-width : 280px;
         }
 
         :host([disabled="disabled"])
@@ -116,19 +127,101 @@ export class RetroExperiment extends LitElement
             transition     : opacity var(--transition-duration-short) ease-in-out;
         }
 
-        :host:last-child
+        :host(:last-child)
         {
             margin-bottom : 0;
         }
 
+        @media only screen and (min-width: 1024px)
+        {
+            :host
+            {
+                flex-direction : row;
+                flex-wrap      : wrap;
+            }
+        }
+
+        /**
+         * Information section
+         */
+        .information
+        {
+            width   : var(--sidebar-width);
+            padding : var(--style-grid-full);
+        }
+
+        slot[name="description"]
+        {
+            font-size : var(--style-font-size-small);
+        }
+
+        .controls
+        {
+            display         : flex;
+            justify-content : space-between;
+        }
+
+        .controls button
+        {
+            width  : calc(50% - var(--style-grid-half));
+            height : auto;
+        }
+
+        @media only screen and (min-width: 1024px)
+        {
+            .controls
+            {
+                display : block;
+            }
+
+            .controls button
+            {
+                width      : 100%;
+                margin-top : var(--style-grid-half);
+            }
+        }
+
+        button
+        {
+            margin         : 0;
+            padding        : 0 var(--style-grid-full);
+
+            font-family    : var(--style-font-family-content);
+            font-weight    : var(--style-font-weight-normal);
+            font-size      : var(--style-font-size-text);
+            line-height    : var(--style-grid-full);
+            text-transform : uppercase;
+
+            color          : var(--style-color-light-highlight);
+            background     : var(--style-color-button);
+            border         : var(--style-line-width-light) solid var(--style-color-border);
+            border-radius  : 0;
+            cursor         : pointer;
+
+            transition     : background-color var(--transition-duration-short) ease-in-out;
+        }
+
+        button:hover,
+        button:active
+        {
+            background : var(--style-color-button-active);
+        }
+
+        button[disabled="disabled"]
+        {
+            opacity : 0.5;
+        }
+
+        /**
+         * Output section
+         */
         .output
         {
-            display       : block;
-            width         : 100%;
-            height        : auto;
-            aspect-ratio  : 16 / 9;
-            margin-bottom : var(--style-grid-full);
-            border        : var(--style-line-width-light) solid var(--style-color-border);
+            display : block;
+            width   : calc(100% - 2 * var(--sidebar-width));
+            height  : auto;
+            margin  : var(--style-grid-full) 0;
+            border  : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
         .output img
@@ -140,22 +233,13 @@ export class RetroExperiment extends LitElement
             margin     : 0 auto;
         }
 
-        .controls
+        /**
+         * Options section
+         */
+        .options
         {
-            display         : flex;
-            justify-content : space-between;
-            margin-bottom   : var(--style-grid-full);
-        }
-
-        .controls:last-child
-        {
-            margin-bottom : 0;
-        }
-
-        .controls button
-        {
-            width  : calc(50% - var(--style-grid-half));
-            height : auto;
+            width   : var(--sidebar-width);
+            padding : var(--style-grid-full);
         }
 
         .configuration-value
@@ -242,35 +326,28 @@ export class RetroExperiment extends LitElement
             border-radius : 0;
         }
 
-        button
+        /**
+         * Source
+         */
+        p.source
         {
-            margin         : 0;
-            padding        : 0 var(--style-grid-full);
+            margin     : 0;
+            padding    : 3px;
 
-            font-family    : var(--style-font-family-content);
-            font-weight    : var(--style-font-weight-normal);
-            font-size      : var(--style-font-size-text);
-            line-height    : var(--style-grid-full);
-            text-transform : uppercase;
+            font-size  : var(--style-font-size-small);
+            line-height: var(--style-grid-full);
+            text-align : center;
 
-            color          : var(--style-color-light-highlight);
-            background     : var(--style-color-button);
-            border         : var(--style-line-width-light) solid var(--style-color-border);
-            border-radius  : 0;
-            cursor         : pointer;
-
-            transition     : background-color var(--transition-duration-short) ease-in-out;
+            color      : var(--style-color-light-faded);
+            border-top : var(--style-line-width-light) solid var(--style-color-dark-lighter);
         }
 
-        button:hover,
-        button:active
+        @media only screen and (min-width: 1024px)
         {
-            background : var(--style-color-button-active);
-        }
-
-        button[disabled="disabled"]
-        {
-            opacity : 0.5;
+            p.source
+            {
+                flex-basis : 100%;
+            }
         }
     `;
 
@@ -351,11 +428,18 @@ export class RetroExperiment extends LitElement
         const options  = this.options.map( x => this.renderOption( x ) );
 
         return html`
-            <div class="output">
+            <section class="information">
+                <slot name="title"></slot>
+                <slot name="description"></slot>
+                <div class="controls">
+                    ${ controls }
+                </div>
+            </section>
+            <section class="output">
                 <slot name="display"></slot>
-            </div>
-            ${ options }
-            <section class="controls">${ controls }</section>
+            </section>
+            <section class="options">${ options }</section>
+            <p class="source">[Source](<slot name="source">N/A</slot>)</p>
         `;
     }
 

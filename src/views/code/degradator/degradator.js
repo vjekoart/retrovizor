@@ -119,7 +119,7 @@ function main ()
                 break;
 
             case "download":
-                donwloadImage( dom.image );
+                downloadImage( dom.image );
                 break;
 
             default:
@@ -129,7 +129,7 @@ function main ()
 }
 
 /** Trigger download event for provided image element */
-function donwloadImage ( imageElement )
+function downloadImage ( imageElement )
 {
     if ( !imageElement.src )
     {

@@ -26,5 +26,6 @@ main
 
 main[data-type-wide]
 {
-    max-width : calc(100vw - 4 * var(--style-grid-full));
+    max-width  : calc(100vw - 4 * var(--style-grid-full));
+    min-height : unset;
 }
