@@ -2,8 +2,8 @@ import { CloseYourEyes } from "Library";
 
 const dom =
 {
-    canvas            : document.querySelector( "canvas" ),
-    experimentControl : document.querySelector( "retro-experiment-control" )
+    canvas     : document.querySelector( "canvas" ),
+    experiment : document.querySelector( "retro-experiment" )
 }
 
 function main ()
@@ -11,13 +11,13 @@ function main ()
     const closeYourEyes  = new CloseYourEyes( dom.canvas );
     const defaultOptions = closeYourEyes.getOptions();
 
-    dom.experimentControl.controls =
+    dom.experiment.controls =
     {
         "run"  : "(Re)run",
         "stop" : "Stop"
     }
 
-    dom.experimentControl.options =
+    dom.experiment.options =
     [
         {
             key     : "alphaDelta",
@@ -83,15 +83,15 @@ function main ()
         }
     ];
 
-    dom.experimentControl.addEventListener( "controlClicked", ev =>
+    dom.experiment.addEventListener( "controlClicked", ev =>
     {
         switch ( ev.detail )
         {
             case "run":
                 const options = {}
 
-                dom.experimentControl.setAttribute( "disabled", "disabled" );
-                dom.experimentControl.values.forEach( x => options[ x.key ] = x.value );
+                dom.experiment.setAttribute( "disabled", "disabled" );
+                dom.experiment.values.forEach( x => options[ x.key ] = x.value );
 
                 closeYourEyes.isRunning && closeYourEyes.stop();
                 closeYourEyes.setOptions( options );
@@ -105,7 +105,7 @@ function main ()
                     })
                     .finally(() =>
                     {
-                        dom.experimentControl.removeAttribute( "disabled" );
+                        dom.experiment.removeAttribute( "disabled" );
                     });
                 break;
 

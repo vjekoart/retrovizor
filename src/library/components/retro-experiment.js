@@ -14,21 +14,23 @@ import
 import { Colors } from "Library/utilities.js";
 
 /**
- * Component responsible for displaying and controlling options for an experiment. Basically, a form
- * control component that simplifies definition and usage of various input fields.
+ * Component responsible for displaying experiment options and ouput.
+ *
+ * Basically, a form control component that simplifies definition and usage of various input fields,
+ * while also styling experiment output in the form of canvas, image or similar.
  *
  * @usage
- * const retroExperimentControl = document.createElement( "retro-experiment-control" );
+ * const retroExperimentControl = document.createElement( "retro-experiment" );
  *
  * // Define controls, actions
- * retroExperimentControl.controls =
+ * retroExperiment.controls =
  * {
  *     "name"  : "Label",
  *     "start" : "Start the animation"
  * }
  * 
  * // Define options and their types, including options for each type
- * retroExperimentControl.options  =
+ * retroExperiment.options  =
  * [
  *     {
  *         key     : "image"
@@ -53,7 +55,7 @@ import { Colors } from "Library/utilities.js";
  * ];
  * 
  * // Read values of options to get user input
- * retroExperimentControl.values === [ { key : "key name", value : Value }, ... ];
+ * retroExperiment.values === [ { key : "key name", value : Value }, ... ];
  *
  * // Value object for type === "color"
  * { r, g, b }, where each value is an integer between 0-255
@@ -65,18 +67,18 @@ import { Colors } from "Library/utilities.js";
  * } has a "name" property.
  *
  * // Listen for control actions
- * retroExperimentControl.addEventListener( "controlClicked", ev =>
+ * retroExperiment.addEventListener( "controlClicked", ev =>
  * {
- *     console.log( "ev.detail contains key from retroExperimentControl.controls", ev.detail );
+ *     console.log( "ev.detail contains key from retroExperiment.controls", ev.detail );
  * });
  *
  * // Set "disabled" attribute to put component in the loading state and block user interaction
- * retroExperimentControl.setAttribute( "disabled", "disabled" );
+ * retroExperiment.setAttribute( "disabled", "disabled" );
  *
  * // Enable the component by removing the attribute
- * retroExperimentControl.removeAttribute( "disabvled" );
+ * retroExperiment.removeAttribute( "disabvled" );
  */
-export class RetroExperimentControl extends LitElement
+export class RetroExperiment extends LitElement
 {
     static properties =
     {
@@ -119,7 +121,7 @@ export class RetroExperimentControl extends LitElement
             margin-bottom : 0;
         }
 
-        .experiment
+        .output
         {
             display       : block;
             width         : 100%;
@@ -129,12 +131,7 @@ export class RetroExperimentControl extends LitElement
             border        : var(--style-line-width-light) solid var(--style-color-border);
         }
 
-        .experiment:last-child
-        {
-            margin-bottom : 0;
-        }
-
-        .experiment img
+        .output img
         {
             display    : block;
             width      : 100%;
@@ -354,7 +351,7 @@ export class RetroExperimentControl extends LitElement
         const options  = this.options.map( x => this.renderOption( x ) );
 
         return html`
-            <div class="experiment">
+            <div class="output">
                 <slot name="display"></slot>
             </div>
             ${ options }

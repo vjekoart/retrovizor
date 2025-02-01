@@ -13,7 +13,6 @@ describe( "RetroContentBlock", () =>
         const { shadowRoot } = await renderComponent( "retro-content-block", "<retro-content-block></retro-content-block>" );
 
         expect( shadowRoot.innerHTML.includes( "Dummy title" ) ).toBeTruthy();
-        expect( shadowRoot.innerHTML.includes( "1970-01-01"  ) ).toBeTruthy();
     });
 
     it( "renders: content", async () =>

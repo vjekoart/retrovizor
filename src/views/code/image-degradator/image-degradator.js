@@ -2,8 +2,8 @@ import { ImageDegradator } from "Library";
 
 const dom =
 {
-    image             : document.querySelector( "img" ),
-    experimentControl : document.querySelector( "retro-experiment-control" )
+    image      : document.querySelector( "img" ),
+    experiment : document.querySelector( "retro-experiment" )
 }
 
 const state =
@@ -16,13 +16,13 @@ function main ()
     const imageDegradator = new ImageDegradator();
     const defaultOptions  = imageDegradator.getOptions();
 
-    dom.experimentControl.controls =
+    dom.experiment.controls =
     {
         "generate" : "Degrade",
         "download" : "Download"
     }
 
-    dom.experimentControl.options =
+    dom.experiment.options =
     [
         {
             key   : "colorColdPrimary",
@@ -71,7 +71,7 @@ function main ()
         }
     ];
 
-    dom.experimentControl.addEventListener( "controlClicked", ev =>
+    dom.experiment.addEventListener( "controlClicked", ev =>
     {
         switch ( ev.detail )
         {
@@ -80,12 +80,12 @@ function main ()
                 let name   = "";
                 let rest   = {}
 
-                dom.experimentControl.values.forEach( x => x.key === "image" ? [ base64, name ] = [ x.value, x.name ] : rest[ x.key ] = x.value );
-                dom.experimentControl.setAttribute( "disabled", "disabled" );
+                dom.experiment.values.forEach( x => x.key === "image" ? [ base64, name ] = [ x.value, x.name ] : rest[ x.key ] = x.value );
+                dom.experiment.setAttribute( "disabled", "disabled" );
 
                 if ( !base64 )
                 {
-                    dom.experimentControl.removeAttribute( "disabled" );
+                    dom.experiment.removeAttribute( "disabled" );
                     alert( "Missing input image!" );
                     return;
                 }
@@ -114,7 +114,7 @@ function main ()
                     })
                     .finally(() =>
                     {
-                        dom.experimentControl.removeAttribute( "disabled" );
+                        dom.experiment.removeAttribute( "disabled" );
                     });
                 break;
 

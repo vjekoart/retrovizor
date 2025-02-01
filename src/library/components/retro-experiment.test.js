@@ -1,16 +1,16 @@
 import { renderComponent, waitFor } from "../test.utilities.js";
-import { RetroExperimentControl   } from "./retro-experiment-control.js";
+import { RetroExperiment   } from "./retro-experiment.js";
 
-describe( "RetroExperimentControl", () =>
+describe( "RetroExperiment", () =>
 {
     beforeAll(() =>
     {
-        customElements.define( "retro-experiment-control", RetroExperimentControl );
+        customElements.define( "retro-experiment", RetroExperiment );
     });
 
     it( "renders: default", async () =>
     {
-        const element = await renderComponent( "retro-experiment-control", "<retro-experiment-control></retro-experiment-control>" );
+        const element = await renderComponent( "retro-experiment", "<retro-experiment></retro-experiment>" );
 
         element.controls = { "start" : "Start the experiment" }
         element.options  =
