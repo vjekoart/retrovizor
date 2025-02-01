@@ -2,12 +2,11 @@
     title="Image degradator"
     view="image-degradator"
     viewScript="views/code/image-degradator/image-degradator.js"
+    viewType="wide"
 }}
-    <div class="experiment">
-        <img id="image-output" alt="Output image" />
-    </div>
-
-    <retro-experiment-control></retro-experiment-control>
+    <retro-experiment-control>
+        <img slot="display" alt="Output image" />
+    </retro-experiment-control>
 
     <retro-content-block>
         <span slot="title">Image degradator</span>

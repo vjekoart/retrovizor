@@ -4,10 +4,11 @@
     templateScript="templates/layout.page.js"
     viewStyle=viewStyle
     viewScript=viewScript
+    viewType=viewType
 }}
     <retro-title data-style="main"></retro-title>
     <retro-nav data-active="{{ view }}" data-style="main"></retro-nav>
-    <main>
+    <main{{#if viewType}} data-type-{{ viewType }}{{/if}}>
     {{> @partial-block }}
     </main>
     <retro-footer></retro-footer>

@@ -23,3 +23,8 @@ main
     background-color : var(--style-color-dark);
     box-shadow       : 0 0 3px var(--style-color-dark);
 }
+
+main[data-type-wide]
+{
+    max-width : calc(100vw - 4 * var(--style-grid-full));
+}

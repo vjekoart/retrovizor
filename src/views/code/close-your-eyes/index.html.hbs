@@ -2,10 +2,11 @@
     title="Close your eyes"
     view="close-your-eyes"
     viewScript="views/code/close-your-eyes/close-your-eyes.js"
+    viewType="wide"
 }}
-    <canvas class="experiment"></canvas>
-
-    <retro-experiment-control></retro-experiment-control>
+    <retro-experiment-control>
+        <canvas slot="display"></canvas>
+    </retro-experiment-control>
 
     <retro-content-block>
         <span slot="title">Close your eyes</span>

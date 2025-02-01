@@ -2,7 +2,7 @@ import { ImageDegradator } from "Library";
 
 const dom =
 {
-    image             : document.querySelector( "#image-output" ),
+    image             : document.querySelector( "img" ),
     experimentControl : document.querySelector( "retro-experiment-control" )
 }
 

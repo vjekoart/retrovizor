@@ -119,36 +119,60 @@ export class RetroExperimentControl extends LitElement
             margin-bottom : 0;
         }
 
-        :host .controls
+        .experiment
+        {
+            display       : block;
+            width         : 100%;
+            height        : auto;
+            aspect-ratio  : 16 / 9;
+            margin-bottom : var(--style-grid-full);
+            border        : var(--style-line-width-light) solid var(--style-color-border);
+        }
+
+        .experiment:last-child
+        {
+            margin-bottom : 0;
+        }
+
+        .experiment img
+        {
+            display    : block;
+            width      : 100%;
+            height     : auto;
+            max-height : 75vh;
+            margin     : 0 auto;
+        }
+
+        .controls
         {
             display         : flex;
             justify-content : space-between;
             margin-bottom   : var(--style-grid-full);
         }
 
-        :host .controls:last-child
+        .controls:last-child
         {
             margin-bottom : 0;
         }
 
-        :host .controls button
+        .controls button
         {
             width  : calc(50% - var(--style-grid-half));
             height : auto;
         }
 
-        :host .configuration-value
+        .configuration-value
         {
             display       : block;
             margin-bottom : var(--style-grid-half);
         }
 
-        :host .configuration-value.color
+        .configuration-value.color
         {
             position : relative;
         }
 
-        :host .configuration-value.color [data-color]
+        .configuration-value.color [data-color]
         {
             display    : block;
             width      : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
@@ -161,12 +185,12 @@ export class RetroExperimentControl extends LitElement
             background : var(--style-color-light-faded);
         }
 
-        :host .configuration-value.color input
+        .configuration-value.color input
         {
             padding-left : var(--style-grid-full);
         }
 
-        :host .configuration-value.color [data-error]
+        .configuration-value.color [data-error]
         {
             position    : absolute;
             bottom      : calc(-1 * var(--style-line-height-small));
@@ -178,10 +202,10 @@ export class RetroExperimentControl extends LitElement
             background  : var(--style-color-accent);
         }
 
-        :host .configuration-value.file
+        .configuration-value.file
         {}
 
-        :host .configuration-value.file img
+        .configuration-value.file img
         {
             box-sizing : border-box;
             display    : block;
@@ -193,14 +217,14 @@ export class RetroExperimentControl extends LitElement
             overflow   : hidden;
         }
 
-        :host .configuration-value.file label
+        .configuration-value.file label
         {
             display : block;
             padding : 0 0 var(--style-grid-half) 0;
             cursor  : pointer;
         }
 
-        :host .configuration-value.file input[type="file"]
+        .configuration-value.file input[type="file"]
         {
             display : none;
         }
@@ -330,6 +354,9 @@ export class RetroExperimentControl extends LitElement
         const options  = this.options.map( x => this.renderOption( x ) );
 
         return html`
+            <div class="experiment">
+                <slot name="display"></slot>
+            </div>
             ${ options }
             <section class="controls">${ controls }</section>
         `;
