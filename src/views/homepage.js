@@ -8,17 +8,20 @@ const dom =
 
 async function main ()
 {
-    dom.bright.classList.remove( "hidden" );
-
     const blank = new Blank( dom.canvas );
 
     await blank.setup();
+
+    blank.on = event =>
+    {
+        if ( event === "generate:start" ) dom.bright.classList.remove( "hidden" );
+        if ( event === "generate:end"   ) dom.bright.classList.add   ( "hidden" );
+    }
 
     blank
         .generate()
         .then(() =>
         {
-            dom.bright.classList.add( "hidden" );
             window.setTimeout( () => blank.run(), 660 );
         })
         .catch( error =>

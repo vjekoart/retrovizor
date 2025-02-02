@@ -15,10 +15,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * Homepage: show orange box always on recalculate, i.e. on window resize
-    * Fine tune text list page
-    * User page fine tune
-    * Add 404 page
     * Block loading for web components
         * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Post
@@ -63,6 +59,7 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Revise GitHub profile and update links
 * PUBLISH
     * Rename instagram to retrovizor.xyz and update info - the same day the website is published
+    * Make sure that 404 page is working as expected
     * How to collect visit stats?
 * Phase 12: cycle of improvements from backlog after the first feedback
 

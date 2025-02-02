@@ -1,4 +1,12 @@
 /**
+ * General elements
+ */
+strong
+{
+    font-weight : var(--style-font-weight-strong);
+}
+
+/**
  * Links
  */
 a

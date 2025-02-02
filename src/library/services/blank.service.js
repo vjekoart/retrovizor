@@ -10,6 +10,13 @@ import { Colors        } from "Library/utilities.js";
  *
  * await instance.setup();
  * instance.generate().then(() => instance.run());
+ *
+ * // Listen for events of interest
+ * instance.on = event =>
+ * {
+ *     if ( event === "generate:start" ) // Show loading
+ *     if ( event === "generate:end"   ) // Hide loading
+ * }
  */
 class Blank
 {
@@ -31,6 +38,8 @@ class Blank
             backgroundColor     : { r :  22, g :  22, b :  29 },
             noiseColor          : { r : 185, g : 185, b : 202 }
         }
+
+        this.on = null;
 
         /* Internal */
         this.isRunning            = false;
@@ -84,6 +93,8 @@ class Blank
     {
         return new Promise(( resolve, reject ) =>
         {
+            this.reportEvent( "generate:start" );
+
             this.backgrounds    = [];
             this.imaginaryLines = [];
 
@@ -111,6 +122,7 @@ class Blank
                     this.backgrounds    = ev.data.content.backgrounds;
                     this.imaginaryLines = ev.data.content.imaginaryLines;
 
+                    this.reportEvent( "generate:end" );
                     resolve();
                     return;
                 }
@@ -128,6 +140,11 @@ class Blank
     setOptions ( options )
     {
         this.options = options;
+    }
+
+    reportEvent ( eventName )
+    {
+        typeof this.on === "function" && this.on( eventName );
     }
 
     resize ()
