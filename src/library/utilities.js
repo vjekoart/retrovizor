@@ -18,9 +18,9 @@ const Colors =
     /** From { r : 255, g : 255, b : 255 } to "#ffffff" */
     objectRGBToHex : rgb =>
     {
-        const r = rgb.r.toString( 16 );
-        const g = rgb.g.toString( 16 );
-        const b = rgb.b.toString( 16 );
+        const r = rgb.r.toString( 16 ).padStart( 2, "0" );
+        const g = rgb.g.toString( 16 ).padStart( 2, "0" );
+        const b = rgb.b.toString( 16 ).padStart( 2, "0" );
 
         return `#${ r }${ g }${ b }`;
     }

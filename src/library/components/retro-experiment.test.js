@@ -12,8 +12,8 @@ describe( "RetroExperiment", () =>
     {
         const element = await renderComponent( "retro-experiment", "<retro-experiment></retro-experiment>" );
 
-        element.controls = { "start" : "Start the experiment" }
-        element.options  =
+        element.controls      = { "start" : "Start the experiment" }
+        element.configuration =
         [
             {
                 key     : "color",

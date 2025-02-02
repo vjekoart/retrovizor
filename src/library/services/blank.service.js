@@ -1,4 +1,5 @@
 import { CanvasManager } from "Library/services/canvas-manager.service.js";
+import { Colors        } from "Library/utilities.js";
 
 /**
  * An experiment trying to depict what a human see when eyes are closed, in the dark.
@@ -20,13 +21,14 @@ class Blank
         this.options =
         {
             alphaDelta          : 20,
-            drawFPS             : 30,
+            drawFPS             : 24,
             drawPadding         : 0,
             frameCount          : 9,
             lineOpacityIncrease : 120,
-            maxDotOpacity       : 120,
+            maxDotOpacity       : 100,
             minDotOpacity       : 30,
             maxLineLength       : Math.min( Math.floor( 0.3 * window.innerWidth ), 1024 ),
+            backgroundColor     : { r :  22, g :  22, b :  29 },
             noiseColor          : { r : 185, g : 185, b : 202 }
         }
 
@@ -85,6 +87,7 @@ class Blank
             this.backgrounds    = [];
             this.imaginaryLines = [];
 
+            this.canvasManager.clearBackground();
             this.canvasManager.clearImage();
             this.canvasManager.setOptions({ padding : this.options.drawPadding });
 
@@ -183,6 +186,7 @@ class Blank
         {
             if ( !this.isRunning )
             {
+                this.canvasManager.clearBackground();
                 this.canvasManager.clearImage();
                 return;
             }
@@ -197,6 +201,7 @@ class Blank
             window.requestAnimationFrame( t => wrapper( t ) );
         }
 
+        this.canvasManager.setBackground( Colors.objectRGBToHex( this.options.backgroundColor ) );
         window.requestAnimationFrame( t => wrapper( t ) );
     }
 

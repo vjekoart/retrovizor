@@ -118,17 +118,8 @@ export class RetroExperiment extends LitElement
             margin-bottom   : var(--style-grid-full);
 
             border          : var(--style-line-width-light) solid var(--style-color-border);
-            opacity         : 1;
 
             --sidebar-width : 280px;
-        }
-
-        :host([disabled="disabled"])
-        {
-            opacity        : 0.5;
-            cursor         : default;
-            pointer-events : none;
-            transition     : opacity var(--transition-duration-short) ease-in-out;
         }
 
         :host(:last-child)
@@ -136,9 +127,27 @@ export class RetroExperiment extends LitElement
             margin-bottom : 0;
         }
 
-        @media only screen and (min-width: 1024px)
+        /**
+         * Disabled state
+         */
+        :host input,
+        :host button
         {
+            opacity    : 1;
+            transition : opacity var(--transition-duration-short) ease-in-out;
+        }
 
+        :host([disabled="disabled"]) input,
+        :host([disabled="disabled"]) button
+        {
+            opacity        : 0.5;
+            cursor         : default;
+            pointer-events : none;
+        }
+
+        :host([disabled="disabled"]) .output .processing
+        {
+            display : block;
         }
 
         /**
@@ -286,7 +295,7 @@ export class RetroExperiment extends LitElement
             height          : auto;
 
             border          : var(--style-line-width-light) solid var(--style-color-border);
-            background      : var(--style-color-dark-light);
+            background      : url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAACdJREFUKFNjzMnp+8+ABLi5uZC5DIx0UFBePgPFDV+/fkN1A+0VAABcJh+xpeSIQQAAAABJRU5ErkJggg==) repeat;
         }
 
         .output ::slotted(img)
@@ -304,7 +313,8 @@ export class RetroExperiment extends LitElement
             height : 100%;
         }
 
-        .output slot[name="placeholder"]
+        .output slot[name="placeholder"],
+        .output .processing
         {
             position   : absolute;
             top        : 50%;
@@ -312,8 +322,8 @@ export class RetroExperiment extends LitElement
             right      : 0;
 
             display    : none;
+            margin     : 0;
             text-align : center;
-
             transform  : translateY(-50%);
         }
 
@@ -538,6 +548,7 @@ export class RetroExperiment extends LitElement
             <section class="output" data-placeholder="${ this.showPlaceholder.toString() }">
                 <slot name="display"></slot>
                 <slot name="placeholder"></slot>
+                <p class="processing">Processing...</p>
             </section>
             <section class="configuration">${ configuration }</section>
             <p class="source">[Source](<slot name="source">N/A</slot>)</p>

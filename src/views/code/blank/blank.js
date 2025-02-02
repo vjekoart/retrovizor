@@ -24,58 +24,50 @@ function main ()
         {
             key     : "alphaDelta",
             type    : "range",
-            options : { min : 1, max : 255 },
-            label   : "Fade-out alpha",
+            options : { min : 1, max : 200 },
+            label   : "Fade-out intensity",
             value   : defaultOptions.alphaDelta
         },
         {
             key     : "drawFPS",
             type    : "range",
-            options : { min : 1, max : 50 },
+            options : { min : 1, max : 40 },
             label   : "FPS",
             value   : defaultOptions.drawFPS
         },
         {
             key     : "drawPadding",
             type    : "range",
-            options : { min : 1, max : 180 },
-            label   : "Padding",
+            options : { min : 0, max : 180 },
+            label   : "Box padding",
             value   : defaultOptions.drawPadding
         },
         {
             key     : "frameCount",
             type    : "range",
             options : { min : 1, max : 40 },
-            label   : "Number of frames",
+            label   : "Frame count",
             value   : defaultOptions.frameCount
         },
         {
             key     : "lineOpacityIncrease",
             type    : "range",
-            options : { min : 1, max : 255 },
+            options : { min : 1, max : 150 },
             label   : "Accent opacity",
             value   : defaultOptions.lineOpacityIncrease
-        },
-        {
-            key     : "maxDotOpacity",
-            type    : "range",
-            options : { min : 1, max : 255 },
-            label   : "Max dot opacity",
-            value   : defaultOptions.maxDotOpacity
-        },
-        {
-            key     : "minDotOpacity",
-            type    : "range",
-            options : { min : 1, max : 255 },
-            label   : "Min dot opacity",
-            value   : defaultOptions.minDotOpacity
         },
         {
             key     : "maxLineLength",
             type    : "range",
             options : { min : 1, max : 1024 },
-            label   : "Max line length",
+            label   : "Line length",
             value   : defaultOptions.maxLineLength
+        },
+        {
+            key     : "backgroundColor",
+            type    : "color",
+            label   : "Background color",
+            value   : defaultOptions.backgroundColor
         },
         {
             key     : "noiseColor",

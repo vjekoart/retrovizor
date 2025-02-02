@@ -15,15 +15,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * Code
-        * Fine tune experiment controls UI/UX
-            * Rework loading state: if loading, display centered `Calculating...` text in the output area
-            * Instead of `experiment.controls` I can pass `<button>` elements directly into the slot, that way I can define
-                buttons on the global level of the app, not inside the retro-experiment-control ???
-        * Fine-tune UI/UX parameters of Degradator
-        * Fine-tune UI/UX parameters of Blank
-        * Fine tune code list page
-    * Homepage: add `Calculating...` text on window resize
+    * Homepage: show orange box always on recalculate, i.e. on window resize
     * Fine tune text list page
     * User page fine tune
     * Add 404 page

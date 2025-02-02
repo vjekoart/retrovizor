@@ -31,6 +31,14 @@ class CanvasManager
     }
 
     /**
+     * Clear background color of canvas element.
+     */
+    clearBackground ()
+    {
+        this.canvas.style = "";
+    }
+
+    /**
      * Clears an existing drawing inside a canvas element. Takes into consideration
      * predefined padding.
      */
@@ -129,6 +137,16 @@ class CanvasManager
 
         this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
         this.recalculatePixels();
+    }
+
+    /**
+     * Sets the background color for canvas element.
+     *
+     * @param { css-color-format } color Color in any CSS-color friendly format.
+     */
+    setBackground ( color )
+    {
+        this.canvas.style = `background : ${ color };`;
     }
 
     /**

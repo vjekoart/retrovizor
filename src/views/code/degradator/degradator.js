@@ -37,31 +37,31 @@ function main ()
             key     : "maxLightness",
             type    : "range",
             options : { min : 2, max : 255 },
-            label   : "Max lightness",
+            label   : "Lightness",
             value   : defaultOptions.maxLightness
         },
         {
             key   : "colorColdPrimary",
             type  : "color",
-            label : "Primary cold color",
+            label : "Color: cold primary",
             value : defaultOptions.colors.coldPrimary
         },
         {
             key   : "colorColdSecondary",
             type  : "color",
-            label : "Secondary cold color",
+            label : "Color: cold secondary",
             value : defaultOptions.colors.coldSecondary
         },
         {
             key   : "colorWarmPrimary",
             type  : "color",
-            label : "Primary warm color",
+            label : "Color: warm primary",
             value : defaultOptions.colors.warmPrimary
         },
         {
             key   : "colorWarmSecondary",
             type  : "color",
-            label : "Secondary warm color",
+            label : "Color: warm secondary",
             value : defaultOptions.colors.warmSecondary
         }
     ];
