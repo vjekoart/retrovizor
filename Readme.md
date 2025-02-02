@@ -17,15 +17,13 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Code editor colors and symbols
     * Code
         * Fine tune experiment controls UI/UX
-            * Configuration UI
-            * On configuration change for both: with debounce, apply changes immediately (if not stopped in case of Blank)
-            * Rework loading state: if loading, display centered `Recalculating...` text in the output area
+            * Rework loading state: if loading, display centered `Calculating...` text in the output area
             * Instead of `experiment.controls` I can pass `<button>` elements directly into the slot, that way I can define
                 buttons on the global level of the app, not inside the retro-experiment-control ???
         * Fine-tune UI/UX parameters of Degradator
         * Fine-tune UI/UX parameters of Blank
         * Fine tune code list page
-    * Homepage: add `Recalculating...` text on window resize
+    * Homepage: add `Calculating...` text on window resize
     * Fine tune text list page
     * User page fine tune
     * Add 404 page

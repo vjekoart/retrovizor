@@ -68,6 +68,12 @@ import { Colors } from "Library/utilities.js";
  *     console.log( "ev.detail contains key from retroExperiment.controls", ev.detail );
  * });
  *
+ * // Listen for configuration changes
+ * retroExperiment.addEventListener( "configurationChanged", ev =>
+ * {
+ *     console.log( "ev.detail contains key from retroExperiment.values", ev.detail );
+ * });
+ *
  * // Set "disabled" attribute to put component in the loading state and block user interaction
  * retroExperiment.setAttribute( "disabled", "disabled" );
  *
@@ -286,9 +292,10 @@ export class RetroExperiment extends LitElement
         .output ::slotted(img)
         {
             display    : block;
-            width      : 100%;
+            width      : auto;
             height     : auto;
-            max-height : 100vh;
+            max-width  : 100%;
+            max-height : 100%;
         }
 
         .output ::slotted(canvas)
@@ -352,8 +359,8 @@ export class RetroExperiment extends LitElement
         .configuration .value.color [data-color]
         {
             display    : block;
-            width      : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
-            height     : calc(var(--style-grid-full) - 2 * var(--style-line-width-light));
+            width      : calc(var(--style-grid-full) - 4 * var(--style-line-width-light));
+            height     : calc(var(--style-grid-full) - 4 * var(--style-line-width-light));
 
             position   : absolute;
             bottom     : calc(2 * var(--style-line-width-light));
@@ -378,6 +385,7 @@ export class RetroExperiment extends LitElement
             font-size   : var(--style-font-size-small);
             line-height : var(--style-line-height-small);
 
+            color       : var(--style-color-dark);
             background  : var(--style-color-accent);
         }
 
@@ -392,10 +400,15 @@ export class RetroExperiment extends LitElement
             font-size     : var(--style-font-size-small);
             line-height   : var(--style-grid-full);
 
-            color         : var(--style-color-dark-light);
-            background    : var(--style-color-light);
-            border        : var(--style-line-width-light) solid var(--style-color-border);
+            color         : var(--style-color-light);
+            background    : var(--style-color-dark-lighter);
+            border        : none;
             border-radius : 0;
+        }
+
+        .configuration input:focus
+        {
+            outline : var(--style-line-width-light) solid var(--style-color-interactive-in);
         }
 
         .configuration input[type="range"]
@@ -403,8 +416,7 @@ export class RetroExperiment extends LitElement
             appearance         : none;
             -webkit-appearance : none;
 
-            padding            : 0;
-            background         : var(--style-color-dark-lighter);
+            padding            : calc(2 * var(--style-line-width-light));
             border             : none;
         }
 
@@ -418,11 +430,6 @@ export class RetroExperiment extends LitElement
             border             : none;
             border-radius      : 0;
             cursor             : pointer;
-        }
-
-        .configuration input[type="range"]:focus
-        {
-            outline : var(--style-line-width-light) solid var(--style-color-interactive-in);
         }
 
         /**
@@ -473,6 +480,7 @@ export class RetroExperiment extends LitElement
         {
             target.value = Colors.hexToObjectRGB( ev.target.value );
             this.references[ key ].value.style.background = ev.target.value;
+            this.reportConfigurationChanged( target );
         }
         catch ( error )
         {
@@ -488,6 +496,7 @@ export class RetroExperiment extends LitElement
         const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
 
         target.value = parseInt( ev.target.value, 10 );
+        this.reportConfigurationChanged( target );
     }
 
     handleChangeText ( ev )
@@ -495,6 +504,7 @@ export class RetroExperiment extends LitElement
         const target = this.values.find( x => x.key === ev.target.getAttribute( "id" ) );
 
         target.value = ev.target.value;
+        this.reportConfigurationChanged( target );
     }
 
     standardizeControls ( controls )
@@ -548,7 +558,10 @@ export class RetroExperiment extends LitElement
 
     renderConfiguration ( configuration )
     {
-        this.values.push({ key : configuration.key, value : configuration.value });
+        if ( !this.values.find( x => x?.key === configuration.key ) )
+        {
+            this.values.push({ key : configuration.key, value : configuration.value });
+        }
 
         const renderColor = configuration =>
         {
@@ -604,6 +617,17 @@ export class RetroExperiment extends LitElement
                 ${ rendered }
             </div>
         `;
+    }
+
+    reportConfigurationChanged ( target )
+    {
+        window.setTimeout(() =>
+        {
+            this.dispatchEvent
+            (
+                new CustomEvent( "configurationChanged", { detail : target } )
+            );
+        }, 100 );
     }
 
     reportControl ( ev )

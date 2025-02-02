@@ -85,31 +85,20 @@ function main ()
         }
     ];
 
+    dom.experiment.addEventListener( "configurationChanged", () =>
+    {
+        if ( blank.isRunning )
+        {
+            runBlank();
+        }
+    });
+
     dom.experiment.addEventListener( "controlClicked", ev =>
     {
         switch ( ev.detail )
         {
             case "run":
-                const configuration = {}
-
-                dom.experiment.setAttribute( "disabled", "disabled" );
-                dom.experiment.values.forEach( x => configuration[ x.key ] = x.value );
-                dom.experiment.showPlaceholder = false;
-
-                blank.isRunning && blank.stop();
-                blank.setOptions( configuration );
-                blank
-                    .generate()
-                    .then(() => blank.run())
-                    .catch( error =>
-                    {
-                        console.warn( error );
-                        alert( "There was an error!" );
-                    })
-                    .finally(() =>
-                    {
-                        dom.experiment.removeAttribute( "disabled" );
-                    });
+                runBlank();
                 break;
 
             case "stop":
@@ -120,6 +109,30 @@ function main ()
                 console.warn( "Unknown control", ev.detail );
         }
     });
+
+    const runBlank = () =>
+    {
+        const configuration = {}
+
+        dom.experiment.setAttribute( "disabled", "disabled" );
+        dom.experiment.values.forEach( x => configuration[ x.key ] = x.value );
+        dom.experiment.showPlaceholder = false;
+
+        blank.isRunning && blank.stop();
+        blank.setOptions( configuration );
+        blank
+            .generate()
+            .then(() => blank.run())
+            .catch( error =>
+            {
+                console.warn( error );
+                alert( "There was an error!" );
+            })
+            .finally(() =>
+            {
+                dom.experiment.removeAttribute( "disabled" );
+            });
+    }
 
     blank.setup();
 }

@@ -66,14 +66,45 @@ function main ()
         }
     ];
 
-    dom.input.addEventListener( "change", async ev =>
+    dom.input.addEventListener( "change", ev =>
     {
         ev.preventDefault();
 
+        getFileContent( ev.target.files[ 0 ] ).then(({ base64, name }) =>
+        {
+            degrade( base64, name );
+        });
+    });
+
+    dom.experiment.addEventListener( "configurationChanged", () =>
+    {
+        if ( state.lastBase64, state.fileName )
+        {
+            degrade( state.lastBase64, state.fileName );
+        }
+    });
+
+    dom.experiment.addEventListener( "controlClicked", ev =>
+    {
+        switch ( ev.detail )
+        {
+            case "generate":
+                dom.input.click();
+                break;
+
+            case "download":
+                downloadImage( dom.image );
+                break;
+
+            default:
+                console.warn( "Unknown control", ev.detail );
+        }
+    });
+
+    const degrade = ( base64, name ) =>
+    {
         dom.experiment.setAttribute( "disabled", "disabled" );
         dom.experiment.showPlaceholder = false;
-
-        const { base64, name } = await getFileContent( ev.target.files[ 0 ] );
 
         const options = (() =>
         {
@@ -109,24 +140,7 @@ function main ()
             {
                 dom.experiment.removeAttribute( "disabled" );
             });
-    });
-
-    dom.experiment.addEventListener( "controlClicked", ev =>
-    {
-        switch ( ev.detail )
-        {
-            case "generate":
-                dom.input.click();
-                break;
-
-            case "download":
-                downloadImage( dom.image );
-                break;
-
-            default:
-                console.warn( "Unknown control", ev.detail );
-        }
-    });
+    }
 }
 
 /** Trigger download event for provided image element */
