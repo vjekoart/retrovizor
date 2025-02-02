@@ -33,11 +33,10 @@ import { Colors } from "Library/utilities.js";
  * retroExperiment.configuration =
  * [
  *     {
- *         key     : "image"
- *         type    : "file",
- *         options : { accept : "image/png, image/jpeg, image/webp" },
- *         label   : "Click to select an image",
- *         value   : null
+ *         key     : "title"
+ *         type    : "text",
+ *         label   : "Title",
+ *         value   : defaultOptions.title
  *     },
  *     {
  *         key     : "scaleDownFactor"
@@ -57,17 +56,11 @@ import { Colors } from "Library/utilities.js";
  * // Read configuration values to get user input
  * retroExperiment.values === [ { key : "key name", value : Value }, ... ];
  *
- * // Hide placeholder after the first run
- * retroExperiment.showPlaceholder = false;
- *
  * // Value object for type === "color"
  * { r, g, b }, where each value is an integer between 0-255
  *
- * // Value object for type === "file"
- * { 
- *     "name"  : "file-name"
- *     "value" : "Base64 string representing file content"
- * } has a "name" property.
+ * // Hide placeholder after the first run
+ * retroExperiment.showPlaceholder = false;
  *
  * // Listen for control actions
  * retroExperiment.addEventListener( "controlClicked", ev =>
@@ -369,33 +362,6 @@ export class RetroExperiment extends LitElement
             background  : var(--style-color-accent);
         }
 
-        .configuration .value.file
-        {}
-
-        .configuration .value.file img
-        {
-            box-sizing : border-box;
-            display    : block;
-            width      : 100%;
-            height     : auto;
-            min-height : var(--style-grid-full);
-            background : var(--style-color-dark-lighter);
-            border     : var(--style-line-width-light) solid var(--style-color-border);
-            overflow   : hidden;
-        }
-
-        .configuration .value.file label
-        {
-            display : block;
-            padding : 0 0 var(--style-grid-half) 0;
-            cursor  : pointer;
-        }
-
-        .configuration .value.file input[type="file"]
-        {
-            display : none;
-        }
-
         .configuration input
         {
             display       : block;
@@ -468,30 +434,6 @@ export class RetroExperiment extends LitElement
                 this.errors[ key ].value.innerText = error;
             }
         }
-    }
-
-    handleChangeFile ( ev )
-    {
-        const file = ev.target.files[ 0 ];
-
-        if ( !file )
-        {
-            return;
-        }
-
-        const key    = ev.target.getAttribute( "id" );
-        const target = this.values.find( x => x.key === key );
-        const reader = new FileReader();
-
-        reader.onload = () =>
-        {
-            target.value = reader.result;
-            this.references[ key ].value.src = reader.result;
-        }
-
-        reader.readAsDataURL( file );
-
-        target.name = file.name;
     }
 
     handleChangeRange ( ev )
@@ -581,23 +523,6 @@ export class RetroExperiment extends LitElement
             `;
         }
 
-        const renderFile = configuration =>
-        {
-            this.references[ configuration.key ] = createRef();
-
-            return html`
-                <input
-                    id="${ configuration.key }"
-                    name="${ configuration.key }"
-                    type="file"
-                    accept="${ configuration.options?.accept ?? nothing }"
-                    .value=${ configuration.value }
-                    @change="${ this.handleChangeFile }"
-                />
-                <img ${ ref( this.references[ configuration.key ] ) } />
-            `;
-        }
-
         const renderRange = configuration => html`
             <input
                 id="${ configuration.key }"
@@ -623,7 +548,6 @@ export class RetroExperiment extends LitElement
         let rendered;
 
         configuration.type === "color" && ( rendered = renderColor( configuration ) );
-        configuration.type === "file"  && ( rendered = renderFile ( configuration ) );
         configuration.type === "range" && ( rendered = renderRange( configuration ) );
         configuration.type === "text"  && ( rendered = renderText ( configuration ) );
 

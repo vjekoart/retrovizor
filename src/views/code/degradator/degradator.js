@@ -3,12 +3,14 @@ import { Degradator } from "Library";
 const dom =
 {
     image      : document.querySelector( "img" ),
+    input      : document.querySelector( "input" ),
     experiment : document.querySelector( "retro-experiment" )
 }
 
 const state =
 {
-    fileName : null
+    fileName   : null,
+    lastBase64 : null
 }
 
 function main ()
@@ -49,13 +51,6 @@ function main ()
             value : defaultOptions.colors.warmSecondary
         },
         {
-            key     : "image",
-            type    : "file",
-            options : { accept : "image/png, image/jpeg, image/webp" },
-            label   : "Click to select an image",
-            value   : null
-        },
-        {
             key     : "scaleDownFactor",
             type    : "range",
             options : { min : 2, max : 32 },
@@ -71,53 +66,57 @@ function main ()
         }
     ];
 
+    dom.input.addEventListener( "change", async ev =>
+    {
+        ev.preventDefault();
+
+        dom.experiment.setAttribute( "disabled", "disabled" );
+        dom.experiment.showPlaceholder = false;
+
+        const { base64, name } = await getFileContent( ev.target.files[ 0 ] );
+
+        const options = (() =>
+        {
+            const mapped = {}
+            dom.experiment.values.forEach( x => mapped[ x.key ] = x.value );
+            return mapped;
+        })();
+
+        options.colors =
+        {
+            coldPrimary   : options.colorColdPrimary,
+            coldSecondary : options.colorColdSecondary,
+            warmPrimary   : options.colorWarmPrimary,
+            warmSecondary : options.colorWarmSecondary
+        }
+
+        degradator.setOptions( options );
+
+        degradator
+            .degrade( base64 )
+            .then( degraded =>
+            {
+                state.fileName   = extractFileName( name );
+                state.lastBase64 = base64;
+                dom.image.src    = degraded;
+            })
+            .catch( error =>
+            {
+                console.warn( error );
+                alert( "There was an error!" );
+            })
+            .finally(() =>
+            {
+                dom.experiment.removeAttribute( "disabled" );
+            });
+    });
+
     dom.experiment.addEventListener( "controlClicked", ev =>
     {
         switch ( ev.detail )
         {
             case "generate":
-                let base64 = null;
-                let name   = "";
-                let rest   = {}
-
-                dom.experiment.values.forEach( x => x.key === "image" ? [ base64, name ] = [ x.value, x.name ] : rest[ x.key ] = x.value );
-                dom.experiment.setAttribute( "disabled", "disabled" );
-
-                if ( !base64 )
-                {
-                    dom.experiment.removeAttribute( "disabled" );
-                    alert( "Missing input image!" );
-                    return;
-                }
-
-                dom.experiment.showPlaceholder = false;
-
-                rest.colors =
-                {
-                    coldPrimary   : rest.colorColdPrimary,
-                    coldSecondary : rest.colorColdSecondary,
-                    warmPrimary   : rest.colorWarmPrimary,
-                    warmSecondary : rest.colorWarmSecondary
-                }
-
-                degradator.setOptions( rest );
-
-                degradator
-                    .degrade( base64 )
-                    .then( degraded =>
-                    {
-                        state.fileName = extractFileName( name );
-                        dom.image.src  = degraded;
-                    })
-                    .catch( error =>
-                    {
-                        console.warn( error );
-                        alert( "There was an error!" );
-                    })
-                    .finally(() =>
-                    {
-                        dom.experiment.removeAttribute( "disabled" );
-                    });
+                dom.input.click();
                 break;
 
             case "download":
@@ -154,6 +153,23 @@ function extractFileName ( original )
     const originalName = original.split( "." ).toSpliced( -1, 1 ).join( "." );
 
     return [ originalName, "degraded", "png" ].join( "." );
+}
+
+/** From File to { name : "filename", base64 : <file content in base64 format> } */
+function getFileContent ( file )
+{
+    return new Promise( resolve =>
+    {
+        const reader = new FileReader();
+    
+        reader.onload = () => resolve
+        ({
+            base64 : reader.result,
+            name   : file.name
+        });
+    
+        reader.readAsDataURL( file );
+    });
 }
 
 window.addEventListener( "DOMContentLoaded", main );

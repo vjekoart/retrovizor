@@ -17,12 +17,9 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Code editor colors and symbols
     * Code
         * Fine tune experiment controls UI/UX
-            * Information/controls sidebar UI for both Degradator and Blank
-                * Degradator logic: on image change (button click), automatically degrade and show results
-                * Remove image input from configuration and cleanup obsolete logic incl. examples
             * Configuration UI
             * On configuration change for both: with debounce, apply changes immediately (if not stopped in case of Blank)
-            * Rework loading state: if loading, display centered text in the output area
+            * Rework loading state: if loading, display centered `Recalculating...` text in the output area
             * Instead of `experiment.controls` I can pass `<button>` elements directly into the slot, that way I can define
                 buttons on the global level of the app, not inside the retro-experiment-control ???
         * Fine-tune UI/UX parameters of Degradator
