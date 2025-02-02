@@ -237,30 +237,36 @@ export class RetroExperiment extends LitElement
 
             color          : var(--style-color-light-highlight);
             background     : var(--style-color-button);
-            border         : var(--style-line-width-light) solid var(--style-color-border);
+            border         : none;
             border-radius  : 0;
+            box-shadow     : 4px 4px 0 0 var(--style-color-border);
             cursor         : pointer;
 
-            transition     : background-color var(--transition-duration-short) ease-in-out;
+            transition     : box-shadow var(--transition-duration-short) ease-in-out,
+                             transform  var(--transition-duration-short) ease-in-out;
         }
 
         .information button[data-style="accent"]
         {
-            color        : var(--style-color-dark);
-            background   : var(--style-color-accent);
-            border-color : var(--style-color-accent-faded);
+            color      : var(--style-color-dark);
+            background : var(--style-color-accent);
+            box-shadow : 4px 4px 0 0 var(--style-color-accent-faded);
         }
 
-        .information button:hover,
-        .information button:active
-        {
-            background : var(--style-color-button-active);
-        }
-
-        .information button[data-style="accent"]:hover,
+        .information button:active,
         .information button[data-style="accent"]:active
         {
-            background : var(--style-color-accent-faded);
+            transform : translate(2px, 2px);
+        }
+
+        .information button:active
+        {
+            box-shadow : 0 0 0 0 var(--style-color-border);
+        }
+
+        .information button[data-style="accent"]:active
+        {
+            box-shadow : 0 0 0 0 var(--style-color-accent-faded);
         }
 
         .information button[disabled="disabled"]

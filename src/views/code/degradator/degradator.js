@@ -135,6 +135,7 @@ function downloadImage ( imageElement )
 {
     if ( !imageElement.src )
     {
+        alert( "There's nothing to download." );
         return;
     }
 
