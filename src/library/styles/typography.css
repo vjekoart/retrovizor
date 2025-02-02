@@ -142,8 +142,9 @@ pre
 code
 {
     display     : inline-block;
+    margin      : 2px 0;
     padding     : 0 var(--style-grid-third);
-    line-height : var(--style-grid-full);
+    line-height : calc(var(--style-grid-full) - 4px);
 }
 
 pre

@@ -13,15 +13,12 @@ retro-nav
 
 main
 {
-    display          : block;
-    max-width        : 640px;
-    min-height       : calc(100vh - 13.3 * var(--style-grid-full) - 2px);
+    display    : block;
+    max-width  : 640px;
+    min-height : calc(100vh - 13.3 * var(--style-grid-full) - 2px);
 
-    margin           : 0 auto;
-    padding          : var(--style-grid-full);
-
-    background-color : var(--style-color-dark);
-    box-shadow       : 0 0 3px var(--style-color-dark);
+    margin     : 0 auto;
+    padding    : var(--style-grid-full);
 }
 
 main[data-type-wide]

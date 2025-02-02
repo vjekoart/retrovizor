@@ -98,7 +98,8 @@ export class RetroContentBlock extends LitElement
         :host footer a::before,
         :host footer a::after
         {
-            color : var(--style-color-light);
+            color          : var(--style-color-light);
+            vertical-align : bottom;
         }
 
         :host footer a::before

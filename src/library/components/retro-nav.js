@@ -30,8 +30,8 @@ export class RetroNav extends LitElement
 
         :host([data-style="main"])
         {
-            background : var(--style-color-dark);
-            box-shadow : 0 0 3px var(--style-color-dark);
+            background    : var(--style-color-dark);
+            border-bottom : var(--style-line-width-light) solid var(--style-color-border);
         }
 
         :host a

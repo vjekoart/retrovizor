@@ -279,7 +279,7 @@ export class RetroExperiment extends LitElement
             justify-content : center;
             height          : auto;
 
-            border          : var(--style-line-width-light) solid var(--style-color-dark-lighter);
+            border          : var(--style-line-width-light) solid var(--style-color-border);
             background      : var(--style-color-dark-light);
         }
 
@@ -327,6 +327,23 @@ export class RetroExperiment extends LitElement
             margin-bottom : var(--style-grid-half);
         }
 
+        .configuration .value label
+        {
+            display   : block;
+            width     : 100%;
+            font-size : var(--style-font-size-small);
+        }
+
+        .configuration .value label::before
+        {
+            content     : ":=";
+
+            display     : inline-block;
+            padding     : 0 3px 0 0;
+            font-weight : var(--style-font-weight-strong);
+            color       : var(--style-color-interactive);
+        }
+
         .configuration .value.color
         {
             position : relative;
@@ -354,7 +371,9 @@ export class RetroExperiment extends LitElement
         {
             position    : absolute;
             bottom      : calc(-1 * var(--style-line-height-small));
-            left        : calc(2 * var(--style-line-width-light));
+            left        : 0;
+            right       : 0;
+            padding     : 0 calc(2 * var(--style-line-width-light));
 
             font-size   : var(--style-font-size-small);
             line-height : var(--style-line-height-small);
@@ -365,6 +384,7 @@ export class RetroExperiment extends LitElement
         .configuration input
         {
             display       : block;
+            width         : 100%;
             padding       : 0 var(--style-grid-third);
 
             font-family   : var(--style-font-family-code);
@@ -373,9 +393,36 @@ export class RetroExperiment extends LitElement
             line-height   : var(--style-grid-full);
 
             color         : var(--style-color-dark-light);
-            background    : var(--style-color-light-highlight);
+            background    : var(--style-color-light);
             border        : var(--style-line-width-light) solid var(--style-color-border);
             border-radius : 0;
+        }
+
+        .configuration input[type="range"]
+        {
+            appearance         : none;
+            -webkit-appearance : none;
+
+            padding            : 0;
+            background         : var(--style-color-dark-lighter);
+            border             : none;
+        }
+
+        .configuration input[type="range"]::-webkit-slider-thumb,
+        .configuration input[type="range"]::-moz-range-thumb
+        {
+            appearance         : none;
+            -webkit-appearance : none;
+
+            background         : var(--style-color-interactive);
+            border             : none;
+            border-radius      : 0;
+            cursor             : pointer;
+        }
+
+        .configuration input[type="range"]:focus
+        {
+            outline : var(--style-line-width-light) solid var(--style-color-interactive-in);
         }
 
         /**
@@ -519,7 +566,7 @@ export class RetroExperiment extends LitElement
                     .value=${ initial }
                     @change="${ this.handleChangeColor }"
                 />
-                <label data-error ${ ref( this.errors[ configuration.key ] ) }></label>
+                <span data-error ${ ref( this.errors[ configuration.key ] ) }></span>
             `;
         }
 

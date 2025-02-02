@@ -27,30 +27,6 @@ function main ()
     dom.experiment.configuration =
     [
         {
-            key   : "colorColdPrimary",
-            type  : "color",
-            label : "Primary cold color replacement",
-            value : defaultOptions.colors.coldPrimary
-        },
-        {
-            key   : "colorColdSecondary",
-            type  : "color",
-            label : "Secondary cold color replacement",
-            value : defaultOptions.colors.coldSecondary
-        },
-        {
-            key   : "colorWarmPrimary",
-            type  : "color",
-            label : "Primary warm color replacement",
-            value : defaultOptions.colors.warmPrimary
-        },
-        {
-            key   : "colorWarmSecondary",
-            type  : "color",
-            label : "Secondary warm color replacement",
-            value : defaultOptions.colors.warmSecondary
-        },
-        {
             key     : "scaleDownFactor",
             type    : "range",
             options : { min : 2, max : 32 },
@@ -63,6 +39,30 @@ function main ()
             options : { min : 2, max : 255 },
             label   : "Max lightness",
             value   : defaultOptions.maxLightness
+        },
+        {
+            key   : "colorColdPrimary",
+            type  : "color",
+            label : "Primary cold color",
+            value : defaultOptions.colors.coldPrimary
+        },
+        {
+            key   : "colorColdSecondary",
+            type  : "color",
+            label : "Secondary cold color",
+            value : defaultOptions.colors.coldSecondary
+        },
+        {
+            key   : "colorWarmPrimary",
+            type  : "color",
+            label : "Primary warm color",
+            value : defaultOptions.colors.warmPrimary
+        },
+        {
+            key   : "colorWarmSecondary",
+            type  : "color",
+            label : "Secondary warm color",
+            value : defaultOptions.colors.warmSecondary
         }
     ];
 
