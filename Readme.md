@@ -15,16 +15,13 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Terminal fonts and feeling
         * Markdown code inspiration for exposing "bare-bones" - code
         * Code editor colors and symbols
-    * Block loading for web components
-        * By adding CSS rules to the main file OR loading overlay that's removed on DOMContentLoaded
     * Post
         * Responsiveness / cross-browser testing
-        * Remove unused variables from `variables.css`
         * Favicons
-        * Transitions
-        * Assets optimization and download
-            * Check if there's Julia Mono variable font
-        * SEO and accessibility (don't forget about meta tag for bar color)
+        * Accessibility, check roles and I don't know, something
+        * SEO
+            * Meta tags, e.g. bar color
+            * OpenGraph tags
         * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
     * Why so much memory used? Chrome tab memory usage, try minified
 * Phase 8: content fine-tune

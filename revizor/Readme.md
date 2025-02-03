@@ -24,6 +24,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Add timestamps to (some) console outputs
     * Extract `revizor` to separate repository
     * Precompose some web components during the build: for marked, logicless components, create full HTML/CSS on the server-side so TTI is as small as possible (like navigation and title components)
+* Block loading (preloading) for web components
+    * Overlays nor DOMContentLoaded work as expected
+    * Check out SSR for lit.dev components
 * Compare `buildType:native` and `buildType:bundle` performance
 * `buildType`: for now native web module, but later enable bundling
 * `buildType: native` if dependency starts with `node_modules` copy from there, if it starts with `assets` copy from the assets folder

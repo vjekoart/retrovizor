@@ -126,8 +126,10 @@ li::before
 
     position      : absolute;
     left          : 0;
-    top           : 0;
+    bottom        : 0;
 
+    font-weight   : 700;
+    line-height   : var(--style-font-size-text);
     color         : var(--style-color-light-faded);
 }
 

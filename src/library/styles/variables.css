@@ -9,14 +9,12 @@
     --color-white                  : #e6e6ed;
     --color-darkgray               : #4d4d65;
     --color-darkgray-light         : #6c6c8e;
-    --color-darkgray-lighter       : #777798;
     --color-gray                   : #a6a6ad;
     --color-gray-light             : #d6d6dd;
     --color-orange                 : #e6863d;
     --color-orange-faded           : #c6763d;
     --color-blue                   : #3d9de6;
     --color-blue-accent            : #659beb;
-    --color-blue-dark              : #2691e3;
 
     --style-color-dark             : var(--color-eigengrau);
     --style-color-dark-light       : var(--color-eigengrau-light);
@@ -27,18 +25,17 @@
     --style-color-accent           : var(--color-orange);
     --style-color-accent-faded     : var(--color-orange-faded);
     --style-color-interactive      : var(--color-blue);
-    --style-color-interactive-dark : var(--color-blue-dark);
     --style-color-interactive-in   : var(--color-blue-accent);
     --style-color-border           : var(--color-darkgray);
     --style-color-button           : var(--color-darkgray-light);
     --style-color-button-active    : var(--color-darkgray);
 
-    --style-font-family-strong     : "Julia Mono", monospace;
-    --style-font-family-content    : "Julia Mono", monospace;
-    --style-font-family-title      : "Julia Mono", monospace;
-    --style-font-family-code       : "Julia Mono", monospace;
-    --style-font-weight-title      : 600;
-    --style-font-weight-strong     : 600;
+    --style-font-family-strong     : "Sono", monospace;
+    --style-font-family-content    : "Sono", monospace;
+    --style-font-family-title      : "Sono", monospace;
+    --style-font-family-code       : "Sono", monospace;
+    --style-font-weight-title      : 500;
+    --style-font-weight-strong     : 500;
     --style-font-weight-normal     : 400;
     --style-font-weight-code       : 400;
 
@@ -62,56 +59,28 @@
     --transition-duration-long     : 0.66s;
 }
 
+/* Latin extended */
 @font-face
 {
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Black.woff2");
+    src           : url("/assets/sono-v6-latin-ext.woff2");
 
-    font-family : "Julia Mono";
-    font-style  : normal;
-    font-weight : 700;
+    font-family   : "Sono";
+    font-style    : normal;
+    font-weight   : 200 800;
+    font-display  : swap;
+    
+    unicode-range : U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Latin */
 @font-face
 {
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Bold.woff2");
+    src           : url("/assets/sono-v6.woff2");
 
-    font-family : "Julia Mono";
-    font-style  : normal;
-    font-weight : 600;
-}
+    font-family   : "Sono";
+    font-style    : normal;
+    font-weight   : 200 800;
+    font-display  : swap;
 
-@font-face
-{
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Medium.woff2");
-
-    font-family : "Julia Mono";
-    font-style  : normal;
-    font-weight : 500;
-}
-
-@font-face
-{
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-MediumItalic.woff2");
-
-    font-family : "Julia Mono";
-    font-style  : italic;
-    font-weight : 500;
-}
-
-@font-face
-{
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-Regular.woff2");
-
-    font-family : "Julia Mono";
-    font-style  : normal;
-    font-weight : 400;
-}
-
-@font-face
-{
-    src         : url("https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.058/JuliaMono-RegularItalic.woff2");
-
-    font-family : "Julia Mono";
-    font-style  : italic;
-    font-weight : 400;
+    unicode-range : U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
