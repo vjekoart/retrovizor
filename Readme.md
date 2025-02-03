@@ -11,19 +11,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 5: Add single E2E test - user journey~
 * ~Phase 6: code fine-tune~
 * Phase 7: UI fine-tune
-    * Philosophy: programming aesthetics in eigengrau scheme
-        * Terminal fonts and feeling
-        * Markdown code inspiration for exposing "bare-bones" - code
-        * Code editor colors and symbols
-    * Post
-        * Responsiveness / cross-browser testing
-        * Favicons
-        * Accessibility, check roles and I don't know, something
-        * SEO
-            * Meta tags, e.g. bar color
-            * OpenGraph tags
-        * Basic background color, font color, and font family; alongside some basic positioning should be placed in the `index.html` file
-    * Why so much memory used? Chrome tab memory usage, try minified
+    * Responsiveness / cross-browser testing
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
@@ -41,10 +29,8 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Go through user page
     * Proofreading
     * Add link to gist "Code Poetry"
-* Phase 9: run Lighthouse and similar dev tools to ensure website quality
-    * For example, HTML validator
+* Phase 9: run Lighthouse to check website quality
     * Check which attributes to put on `<link>` and `<script>` elements
-    * Head (`<meta>`) tags
     * Don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean both `Readme.md` and `revizor/Readme.md`

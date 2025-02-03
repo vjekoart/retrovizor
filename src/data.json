@@ -1,6 +1,7 @@
 {
     "meta": {
-        "description": "A personal space about technology & society."
+        "description": "A personal space about technology & society.",
+        "keywords": "programming, internet, software development, hacking, technology, society"
     },
     "views": {
         "homepage": {

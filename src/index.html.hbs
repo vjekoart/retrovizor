@@ -3,9 +3,38 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="{{ data.meta.keywords }}">
         <meta name="description" content="{{ data.meta.description }}">
 
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="theme-color" content="#e6863d">
+
         <title>{{ title }} | retrovizor.xyz</title>
+
+        <meta property="og:title" content="{{ data.views.homepage.title }}">
+        <meta property="og:site_name" content="Retrovizor">
+        <meta property="og:description" content="{{ data.meta.description }}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://retrovizor.xyz/">
+        <meta property="og:image" content="https://retrovizor.xyz/assets/favicons/apple-touch-icon.png">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+        <link rel="canonical" href="https://retrovizor.xyz/">
+        <link rel="manifest" href="/assets/manifest.json">
+
+        <style>
+            html {
+                color: #d6d6dd;
+                background: #16161d;
+                font-family: "Sono", monospace;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 26px;
+            }
+        </style>
 
         <link rel="stylesheet" type="text/css" href="{{ getFilePath "index.css" }}">
         {{#if templateStyle}}
