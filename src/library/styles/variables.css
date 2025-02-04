@@ -6,6 +6,7 @@
     --color-eigengrau              : #16161d;
     --color-eigengrau-light        : #202027;
     --color-eigengrau-lighter      : #3e3e51;
+    --color-eigengrau-transparent  : rgba(22, 22, 29, 0.66);
     --color-white                  : #e6e6ed;
     --color-darkgray               : #4d4d65;
     --color-darkgray-light         : #6c6c8e;
@@ -19,6 +20,7 @@
     --style-color-dark             : var(--color-eigengrau);
     --style-color-dark-light       : var(--color-eigengrau-light);
     --style-color-dark-lighter     : var(--color-eigengrau-lighter);
+    --style-color-dark-transparent : var(--color-eigengrau-transparent);
     --style-color-light            : var(--color-gray-light);
     --style-color-light-faded      : var(--color-gray);
     --style-color-light-highlight  : var(--color-white);

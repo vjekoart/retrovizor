@@ -332,6 +332,11 @@ export class RetroExperiment extends LitElement
             display : block;
         }
 
+        .output .processing
+        {
+            background-color : var(--style-color-dark-transparent);
+        }
+
         /**
          * Configuration section
          */

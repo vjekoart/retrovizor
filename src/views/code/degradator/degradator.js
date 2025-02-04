@@ -70,6 +70,11 @@ function main ()
     {
         ev.preventDefault();
 
+        if ( ev.target.files.length === 0 )
+        {
+            return;
+        }
+
         getFileContent( ev.target.files[ 0 ] ).then(({ base64, name }) =>
         {
             degrade( base64, name );

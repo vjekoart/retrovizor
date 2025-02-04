@@ -110,27 +110,7 @@ ol:last-child
 ul,
 ol
 {
-    list-style-type : none;
-    padding-left    : 0;
-}
-
-li
-{
-    position     : relative;
     padding-left : calc(2 * var(--style-grid-third));
-}
-
-li::before
-{
-    content       : "*";
-
-    position      : absolute;
-    left          : 0;
-    bottom        : 0;
-
-    font-weight   : 700;
-    line-height   : var(--style-font-size-text);
-    color         : var(--style-color-light-faded);
 }
 
 p
