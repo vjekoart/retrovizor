@@ -12,6 +12,28 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * Phase 7: UI fine-tune
     * Responsiveness / cross-browser testing
+        * Combinations
+            * Macos/Chrome
+            * Macos/Safari
+            * Windows/Chrome
+            * Windows/Edge
+            * Android Chrome
+            * iOS
+        * To fix
+            * Degradator: increase default, and max limit of factor because photos from phone have huge resolutions
+            * Degradator: add background color to _Processing_ so it's always readable
+            * Blank: line length, limit based on the available canvas width
+            * Blank: cannot change background color on Android, maybe somewhere else also? I tried `#161`
+            * Blank: disable `Run` button once the animation started
+            * General: line below the navigation, always have the same width as content box? or nav items?
+            * Mobile: add some kind of bottom box-shadow/border on the homepage, so on mobile there's distinction between navigation buttons and animation
+            * Mobile landscape: there's a micro gap between navigation and top bar - when scrolling you can see text pixels
+            * General: list dots when single `li` breaks into two or more lines
+            * General: headings: if multiple lines, have padding so everything starts after `#` signs
+            * Android Chrome: 100vh is problematic on homepage, it can scroll and regenerate animation that breaks
+        * To discuss
+            * Mobile portrait: maybe full-content-width image on the user page? To feel complete?
+            * Mobile portrait: maybe decrease gaps in header and around nav? It takes a lot of space
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
@@ -27,6 +49,9 @@ Bla bla, Retrovizor.xyz website built with revizor
                 * we're writing a book with formulae,...
     * Go through code (in text pages, user-facing content) and coding styles
     * Go through user page
+    * General: I'm not sure `text-align: justify` is going to work, try on multiple devices
+        * Check on mobile, fine-tune, then look at mobile and desktop again to see what's happening.
+        * Maybe rythm: long words should always be surrounded by short words, to improve `text-align: justify`
     * Proofreading
     * Add link to gist "Code Poetry"
 * Phase 9: run Lighthouse to check website quality
@@ -49,6 +74,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 ### Roadmap stuff (not part of the first version)
 
 * A strange bug where `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected (most probably affects Revizor)
+* Add support for light and dark theme
 * Add support for linkable headings
 * Add support for "Table of contents" on text pages
 * Add support for better color selector in `retro-experiment-control`
