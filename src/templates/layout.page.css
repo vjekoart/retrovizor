@@ -7,7 +7,10 @@ retro-nav
 {
     width         : 100%;
     position      : sticky;
-    top           : 0;
+
+    /* On some mobile devices there was still visible gap when set to 0 */
+    top           : -1px;
+
     margin-bottom : calc(2 * var(--style-grid-full));
 }
 

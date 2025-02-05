@@ -33,7 +33,7 @@ function generate ( options )
         pixelCount
     } = options;
 
-    if ( maxLineLength >= pixelCountX || maxLineLength >= pixelCountY )
+    if ( maxLineLength >= Math.max( pixelCountX, pixelCountY ) )
     {
         throw new Error( "Cannot compute. Line is bigger than canvas dimensions." );
     }

@@ -13,16 +13,9 @@ Bla bla, Retrovizor.xyz website built with revizor
 * Phase 7: UI fine-tune
     * Responsiveness / cross-browser testing
         * Combinations
-            * Macos/Chrome
             * Macos/Safari
-            * Windows/Chrome
-            * Windows/Edge
-            * Android Chrome
             * iOS
-        * To fix
-            * Mobile: add some kind of bottom box-shadow/border on the homepage, so on mobile there's distinction between navigation buttons and animation
-            * Mobile landscape: there's a micro gap between navigation and top bar - when scrolling you can see text pixels
-            * Android Chrome: 100vh is problematic on homepage, it can scroll and regenerate animation that breaks
+        * To fix: TBD
         * To discuss
             * General: line below the navigation, always have the same width as content box? or nav items?
             * Mobile portrait: maybe full-content-width image on the user page? To feel complete?
