@@ -5,13 +5,14 @@ retro-title
 
 retro-nav
 {
-    width         : 100%;
-    position      : sticky;
+    width     : calc(100% - 2 * var(--style-grid-full));
+    max-width : calc(640px - 2 * var(--style-grid-full));
+    position  : sticky;
 
     /* On some mobile devices there was still visible gap when set to 0 */
-    top           : -1px;
+    top       : -1px;
 
-    margin-bottom : calc(2 * var(--style-grid-full));
+    margin    : 0 auto;
 }
 
 main
@@ -24,6 +25,10 @@ main
     padding    : var(--style-grid-full);
 }
 
+/**
+ * Wide
+ */
+retro-nav[data-type-wide],
 main[data-type-wide]
 {
     max-width  : unset;
@@ -32,6 +37,11 @@ main[data-type-wide]
 
 @media only screen and (min-width: 768px)
 {
+    retro-nav[data-type-wide]
+    {
+        max-width : calc(100vw - 6 * var(--style-grid-full));
+    }
+
     main[data-type-wide]
     {
         max-width : calc(100vw - 4 * var(--style-grid-full));

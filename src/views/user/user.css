@@ -2,12 +2,15 @@ section
 {
     display         : flex;
     flex-direction  : column;
-    flex-flow       : column-reverse;
-    justify-content : space-between;
+    align-items     : center;
+    justify-content : center;
+    gap             : var(--style-grid-half);
+    margin          : var(--style-grid-full) 0;
+}
 
-    margin-bottom   : var(--style-grid-full);
-
-    text-align      : center;
+section p
+{
+    text-align: center;
 }
 
 [data-hotstuff]
@@ -17,16 +20,15 @@ section
 
 [data-hotstuff]::before
 {
-    content : "vjekoart@pm.me";
+    content : "vjekoart\0040\0070\006d\002e\006d\0065";
 }
 
 #profile
 {
-    display : block;
-    width   : 240px;
-    height  : auto;
-    margin  : 0 auto calc(2 * var(--style-grid-full)) auto;
-    border  : var(--style-line-width-light) solid var(--style-color-border);
+    display   : block;
+    width     : 50%;
+    max-width : 100px;
+    height    : auto;
 }
 
 #professional-career li
@@ -37,20 +39,4 @@ section
 #professional-career li:last-child
 {
     margin-bottom : 0;
-}
-
-@media only screen and (min-width: 640px)
-{
-    section
-    {
-        flex-direction : row;
-        flex-flow      : row;
-
-        text-align     : left;
-    }
-
-    #profile
-    {
-        margin : unset;
-    }
 }

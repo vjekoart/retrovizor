@@ -16,11 +16,10 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Macos/Safari
             * iOS
         * To fix: TBD
-        * To discuss
-            * General: line below the navigation, always have the same width as content box? or nav items?
-            * Mobile portrait: maybe full-content-width image on the user page? To feel complete?
-            * Mobile portrait: maybe decrease gaps in header and around nav? It takes a lot of space
+        * To discuss: TBD
 * Phase 8: content fine-tune
+    * User page
+        * Picture: degrade image, extract face with transparent background
     * Adjust dates everywhere
     * Go through texts
         * I need to categorize texts somehow, think in the format of collections or something
@@ -36,7 +35,6 @@ Bla bla, Retrovizor.xyz website built with revizor
                 * "We're writing a book with formulae,..."
                 * But better split that into multiple articles, so declarative is one, and (philosophical) text about writing code is another one
     * Go through code (in text pages, user-facing content) and coding styles
-    * Go through user page
     * General: I'm not sure `text-align: justify` is going to work, try on multiple devices
         * Check on mobile, fine-tune, then look at mobile and desktop again to see what's happening.
         * Maybe rythm: long words should always be surrounded by short words, to improve `text-align: justify`

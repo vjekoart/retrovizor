@@ -7,7 +7,7 @@
     viewType=viewType
 }}
     <retro-title data-style="main"></retro-title>
-    <retro-nav data-active="{{ view }}" data-style="main"></retro-nav>
+    <retro-nav data-active="{{ view }}" data-style="main"{{#if viewType}} data-type-{{ viewType }}{{/if}}></retro-nav>
     <main{{#if viewType}} data-type-{{ viewType }}{{/if}}>
     {{> @partial-block }}
     </main>
