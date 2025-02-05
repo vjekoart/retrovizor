@@ -20,7 +20,6 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Android Chrome
             * iOS
         * To fix
-            * Degradator: increase default, and max limit of factor because photos from phone have huge resolutions
             * Blank: default and max line length, set and limit based on the available canvas width
             * Blank: cannot change background color on Android, maybe somewhere else also? I tried `#161`
             * Blank: disable `Run` button once the animation started
@@ -53,7 +52,10 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Check on mobile, fine-tune, then look at mobile and desktop again to see what's happening.
         * Maybe rythm: long words should always be surrounded by short words, to improve `text-align: justify`
     * Proofreading
-    * Add link to gist "Code Poetry"
+    * Why should I have link to gists? Why not hosting them on the website?
+	* Gists are cool because they're easier to update, I can use gists to create and manage content, and have some kind of a script to automatically
+          generate views in the CLI (fetch gist, create HTML, update view file)
+    * Add link to gist "Code Poetry|Code Poems", or add a page, see above
 * Phase 9: run Lighthouse to check website quality
     * Check which attributes to put on `<link>` and `<script>` elements
     * Don't forget to run this on every page since this is not a SPA

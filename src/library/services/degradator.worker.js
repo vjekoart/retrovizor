@@ -29,6 +29,12 @@ async function degrade ( base64, options = {} )
 
     context.drawImage( image, 0, 0 );
 
+    /* Validations */
+    if ( options.scaleDownFactor >= image.width || options.scaleDownFactor >= image.height )
+    {
+        throw new Error( "Cannot compute. Factor is bigger than image dimensions." );
+    }
+
     /* Transform image inside a canvas */
     const imageData       = context.getImageData( 0, 0, image.width, image.height );
     const bounds          = getBounds( image, options.scaleDownFactor );

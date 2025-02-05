@@ -17,7 +17,7 @@ class Degradator
         this.options =
         {
             maxLightness    : maxLightness    ?? 200,
-            scaleDownFactor : scaleDownFactor ?? 16,
+            scaleDownFactor : scaleDownFactor ?? 32,
             colors          : colors          ?? Eigen.colors
         }
 

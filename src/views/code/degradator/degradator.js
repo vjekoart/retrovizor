@@ -29,7 +29,7 @@ function main ()
         {
             key     : "scaleDownFactor",
             type    : "range",
-            options : { min : 2, max : 32 },
+            options : { min : 2, max : 128 },
             label   : "Factor",
             value   : defaultOptions.scaleDownFactor
         },
@@ -139,7 +139,19 @@ function main ()
             .catch( error =>
             {
                 console.warn( error );
-                alert( "There was an error!" );
+
+                let message;
+
+                if ( error.message === "Error in the worker script." )
+                {
+                    message = error.errorEvent?.data?.error?.message;
+                }
+                else
+                {
+                    message = "Cannot compute.";
+                }
+
+                alert( message );
             })
             .finally(() =>
             {
