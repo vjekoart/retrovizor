@@ -35,6 +35,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 * Phase 8: content fine-tune
     * Adjust dates everywhere
     * Go through texts
+        * I need to categorize texts somehow, think in the format of collections or something
         * Native web:
             * **Maybe the idea is to present limitations, and build system workarounds for current native web technologies?**
                 * For example, precomposed web components since it's heavy to load the library, relying on SSR, sweet spot between bundles and native ES modules?
@@ -44,7 +45,8 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Declarative Javascript
             * Define readable code and context at the beginning: working in large teams, where team members change,... workplace/industry context
             * Maybe completely different approach: text about writing code, declarative, coding style matters, and similar, more abstract, like main philosophy when writing a code
-                * we're writing a book with formulae,...
+                * "We're writing a book with formulae,..."
+                * But better split that into multiple articles, so declarative is one, and (philosophical) text about writing code is another one
     * Go through code (in text pages, user-facing content) and coding styles
     * Go through user page
     * General: I'm not sure `text-align: justify` is going to work, try on multiple devices

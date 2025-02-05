@@ -45,6 +45,12 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
     * Migrate to TypeScript
     * Dockerisation
     * Write E2E tests using Gherkin syntax
+* Long-term
+    * 4 starters: minimal, presentational, app-behind-login, combination of two types
+        * Basically every web app is one of those when it comes to structure
+    * Revizor tests should actually be tests of these 4 starters
+    * Write unit tests for bits and similar utility functions
+    * Add app generator, ideally something like configuration+Gherkin expressions that generates (and extends existing!) codebase
 
 ## Overview
 
