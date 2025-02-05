@@ -20,15 +20,11 @@ Bla bla, Retrovizor.xyz website built with revizor
             * Android Chrome
             * iOS
         * To fix
-            * Blank: default and max line length, set and limit based on the available canvas width
-            * Blank: cannot change background color on Android, maybe somewhere else also? I tried `#161`
-            * Blank: disable `Run` button once the animation started
-            * General: line below the navigation, always have the same width as content box? or nav items?
-            * General: headings: if multiple lines, have padding so everything starts after `#` signs
             * Mobile: add some kind of bottom box-shadow/border on the homepage, so on mobile there's distinction between navigation buttons and animation
             * Mobile landscape: there's a micro gap between navigation and top bar - when scrolling you can see text pixels
             * Android Chrome: 100vh is problematic on homepage, it can scroll and regenerate animation that breaks
         * To discuss
+            * General: line below the navigation, always have the same width as content box? or nav items?
             * Mobile portrait: maybe full-content-width image on the user page? To feel complete?
             * Mobile portrait: maybe decrease gaps in header and around nav? It takes a lot of space
 * Phase 8: content fine-tune

@@ -25,7 +25,9 @@ export class RetroContentBlock extends LitElement
 
         :host h2
         {
+            position    : relative;
             margin      : 0 0 var(--style-grid-third) 0;
+            padding     : 0 0 0 var(--style-grid-full);
 
             font-family : var(--style-font-family-strong);
             font-weight : var(--style-font-weight-strong);
@@ -38,14 +40,14 @@ export class RetroContentBlock extends LitElement
 
         :host h2::before
         {
-            content       : "##";
-            color         : var(--style-color-accent);
-            padding-right : var(--style-grid-third);
+            content  : "##";
+            position : absolute;
+            inset    : 0 auto auto 0;
+            color    : var(--style-color-accent);
         }
 
         :host h2 a
         {
-            margin-left     : calc(-1* var(--style-grid-third));
             color           : inherit;
             text-decoration : none;
         }

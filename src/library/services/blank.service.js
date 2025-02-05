@@ -27,11 +27,11 @@ class Blank
     {
         this.options =
         {
-            alphaDelta          : 20,
+            alphaDelta          : 30,
             drawFPS             : 24,
             drawPadding         : 0,
             frameCount          : 9,
-            lineOpacityIncrease : 120,
+            lineOpacityIncrease : 100,
             maxDotOpacity       : 100,
             minDotOpacity       : 30,
             maxLineLength       : Math.min( Math.floor( 0.3 * window.innerWidth ), 1024 ),

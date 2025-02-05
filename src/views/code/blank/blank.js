@@ -32,14 +32,14 @@ function main ()
             key     : "drawFPS",
             type    : "range",
             options : { min : 1, max : 40 },
-            label   : "FPS",
+            label   : "Speed",
             value   : defaultOptions.drawFPS
         },
         {
             key     : "drawPadding",
             type    : "range",
             options : { min : 0, max : 180 },
-            label   : "Box padding",
+            label   : "Margins",
             value   : defaultOptions.drawPadding
         },
         {
@@ -53,7 +53,7 @@ function main ()
             key     : "lineOpacityIncrease",
             type    : "range",
             options : { min : 1, max : 150 },
-            label   : "Accent opacity",
+            label   : "Line visibility",
             value   : defaultOptions.lineOpacityIncrease
         },
         {
@@ -118,7 +118,19 @@ function main ()
             .catch( error =>
             {
                 console.warn( error );
-                alert( "There was an error!" );
+
+                let message;
+
+                if ( error.message === "Error in the worker script." )
+                {
+                    message = error.errorEvent?.data?.error?.message;
+                }
+                else
+                {
+                    message = "Cannot compute.";
+                }
+
+                alert( message );
             })
             .finally(() =>
             {

@@ -1,6 +1,6 @@
 const Colors =
 {
-    /** From "#ffffff" to { r : 255, g : 255, b : 255 } */
+    /** From "#ffffff|#fff" to { r : 255, g : 255, b : 255 } */
     hexToObjectRGB : hex =>
     {
         if ( !hex.startsWith( "#" ) || !( hex.length === 4 || hex.length === 7 ) )
@@ -8,9 +8,9 @@ const Colors =
             throw "Invalid color format!";
         }
 
-        const r = parseInt( hex.length === 4 ? hex.slice( 1, 2 ) : hex.slice( 1, 3 ), 16 );
-        const g = parseInt( hex.length === 4 ? hex.slice( 2, 3 ) : hex.slice( 3, 5 ), 16 );
-        const b = parseInt( hex.length === 4 ? hex.slice( 3, 4 ) : hex.slice( 5, 7 ), 16 );
+        const r = parseInt( hex.length === 4 ? hex.slice( 1, 2 ).repeat( 2 ) : hex.slice( 1, 3 ), 16 );
+        const g = parseInt( hex.length === 4 ? hex.slice( 2, 3 ).repeat( 2 ) : hex.slice( 3, 5 ), 16 );
+        const b = parseInt( hex.length === 4 ? hex.slice( 3, 4 ).repeat( 2 ) : hex.slice( 5, 7 ), 16 );
 
         return { r, g, b }
     },

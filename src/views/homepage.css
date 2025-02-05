@@ -10,19 +10,18 @@ canvas
 
 #bright
 {
-    position      : absolute;
-    top           : 50%;
-    left          : 50%;
+    position   : absolute;
+    inset      : 50% auto auto 50%;
 
-    display       : block;
-    width         : var(--style-grid-half);
-    height        : var(--style-grid-half);
+    display    : block;
+    width      : var(--style-grid-half);
+    height     : var(--style-grid-half);
 
-    background    : var(--style-color-accent);
+    background : var(--style-color-accent);
 
-    opacity       : 1;
-    transform     : translate( -50%, -50% );
-    transition    : opacity var(--transition-duration-long) ease-in-out;
+    opacity    : 1;
+    transform  : translate( -50%, -50% );
+    transition : opacity var(--transition-duration-long) ease-in-out;
 }
 
 #bright.hidden

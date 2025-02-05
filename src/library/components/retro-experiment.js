@@ -317,9 +317,7 @@ export class RetroExperiment extends LitElement
         .output .processing
         {
             position   : absolute;
-            top        : 50%;
-            left       : 0;
-            right      : 0;
+            inset      : 50% 0 auto 0;
 
             display    : none;
             margin     : 0;
@@ -392,9 +390,8 @@ export class RetroExperiment extends LitElement
         .configuration .value.color [data-error]
         {
             position    : absolute;
-            bottom      : calc(-1 * var(--style-line-height-small));
-            left        : 0;
-            right       : 0;
+            inset       : auto 0 calc(-1 * var(--style-line-height-small)) 0;
+
             padding     : 0 calc(2 * var(--style-line-width-light));
 
             font-size   : var(--style-font-size-small);

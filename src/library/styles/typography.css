@@ -44,12 +44,22 @@ a:focus
 h2,
 h3
 {
+    position  : relative;
+    margin    : 0 0 var(--style-grid-third) 0;
     text-wrap : balance;
+}
+
+h2::before,
+h3::before
+{
+    position : absolute;
+    inset    : 0 auto auto 0;
+    color    : var(--style-color-accent);
 }
 
 h2
 {
-    margin      : 0 0 var(--style-grid-third) 0;
+    padding     : 0 0 0 var(--style-grid-full);
 
     font-family : var(--style-font-family-strong);
     font-weight : var(--style-font-weight-strong);
@@ -61,14 +71,12 @@ h2
 
 h2::before
 {
-    content       : "##";
-    padding-right : var(--style-grid-third);
-    color         : var(--style-color-accent);
+    content : "##";
 }
 
 h3
 {
-    margin      : 0 0 var(--style-grid-third) 0;
+    padding     : 0 0 0 calc(1.33 * var(--style-grid-full));
 
     font-family : var(--style-font-family-strong);
     font-weight : var(--style-font-weight-strong);
@@ -80,9 +88,7 @@ h3
 
 h3::before
 {
-    content       : "###";
-    padding-right : var(--style-grid-third);
-    color         : var(--style-color-accent);
+    content : "###";
 }
 
 h3:not(:first-child)

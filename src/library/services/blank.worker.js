@@ -1,13 +1,13 @@
 import { ImageManager          } from "Library/services/image-manager.service.js";
 import { getRandomFromInterval } from "Library/utilities.js";
 
-self.onmessage = async ev =>
+self.onmessage = ev =>
 {
     if ( ev.data?.action === "start" )
     {
         try
         {
-            const content = await generate( ev.data.options );
+            const content = generate( ev.data.options );
 
             self.postMessage({ action : "end", content });
         }
@@ -32,6 +32,11 @@ function generate ( options )
         pixelCountY,
         pixelCount
     } = options;
+
+    if ( maxLineLength >= pixelCountX || maxLineLength >= pixelCountY )
+    {
+        throw new Error( "Cannot compute. Line is bigger than canvas dimensions." );
+    }
 
     const backgrounds    = [];
     const imaginaryLines = [];
