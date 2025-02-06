@@ -101,14 +101,16 @@ h3:not(:first-child)
  */
 p,
 ul,
-ol
+ol,
+blockquote
 {
     margin : 0 0 var(--style-line-height) 0;
 }
 
 p:last-child,
 ul:last-child,
-ol:last-child
+ol:last-child,
+blockquote:last-child
 {
     margin-bottom : 0;
 }
@@ -117,6 +119,13 @@ ul,
 ol
 {
     padding-left : calc(2 * var(--style-grid-third));
+}
+
+blockquote
+{
+    padding-left : var(--style-grid-third);
+    font-style   : italic;
+    border-left  : var(--style-line-width) solid var(--style-color-dark-lighter);
 }
 
 code,

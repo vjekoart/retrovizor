@@ -15,17 +15,23 @@ Bla bla, Retrovizor.xyz website built with revizor
     * User
         * General
         * Picture: degrade image, extract face with transparent background
-    * Texts
-        * Native web: rewrite into a short article about building a tool for web frontend, concept, approach and that's it
-        * Declarative Javascript: change the title and content to something more modest, this isn't overview of declarative
-        * Go through code (in text pages, user-facing content) and coding styles
+        * Proofreading
+    * Text
+        * Native web
+            * Rewrite into a short article about building a tool for web frontend, concept, approach and that's it
+            * Proofreading
+        * Code readability
+            * Fine-tune content, remove `should|must` with `could|can`
+            * Go through code (in text pages, user-facing content) and coding styles
+            * Proofreading
     * Code
         * Maybe fine-tune list
+        * Check text content on experiment views
         * Why should I have link to gists? Why not hosting them on the website?
             * Gists are cool because they're easier to update
             * I can use gists to create and manage content, and have some kind of a script to automatically generate views in the CLI (fetch gist, create HTML, update view file)
         * Add link to gist "Code Poetry|Code Poems", or add a page, see above
-    * Proofreading
+        * Proofreading
 * Phase 9: run Lighthouse to check website quality: don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean both `Readme.md` and `revizor/Readme.md`
