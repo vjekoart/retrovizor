@@ -12,21 +12,21 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
-    * User page
+    * User
+        * General
         * Picture: degrade image, extract face with transparent background
-    * Adjust dates everywhere
     * Texts
         * Native web: rewrite into a short article about building a tool for web frontend, concept, approach and that's it
         * Declarative Javascript: change the title and content to something more modest, this isn't overview of declarative
-    * Go through code (in text pages, user-facing content) and coding styles
+        * Go through code (in text pages, user-facing content) and coding styles
+    * Code
+        * Maybe fine-tune list
+        * Why should I have link to gists? Why not hosting them on the website?
+            * Gists are cool because they're easier to update
+            * I can use gists to create and manage content, and have some kind of a script to automatically generate views in the CLI (fetch gist, create HTML, update view file)
+        * Add link to gist "Code Poetry|Code Poems", or add a page, see above
     * Proofreading
-    * Why should I have link to gists? Why not hosting them on the website?
-	    * Gists are cool because they're easier to update
-        * I can use gists to create and manage content, and have some kind of a script to automatically generate views in the CLI (fetch gist, create HTML, update view file)
-    * Add link to gist "Code Poetry|Code Poems", or add a page, see above
-* Phase 9: run Lighthouse to check website quality
-    * Check which attributes to put on `<link>` and `<script>` elements
-    * Don't forget to run this on every page since this is not a SPA
+* Phase 9: run Lighthouse to check website quality: don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
     * Structure and clean both `Readme.md` and `revizor/Readme.md`
     * Enable GitHub workflow for PRs (tests for now)
