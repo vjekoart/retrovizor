@@ -69,9 +69,8 @@ export class RetroContentBlock extends LitElement
 
         :host p
         {
-            margin     : 0 0 var(--style-grid-third) 0;
-            font-size  : var(--style-font-size-text);
-            text-align : justify;
+            margin    : 0 0 var(--style-grid-third) 0;
+            font-size : var(--style-font-size-text);
         }
 
         :host footer

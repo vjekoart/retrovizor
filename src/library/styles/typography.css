@@ -119,11 +119,6 @@ ol
     padding-left : calc(2 * var(--style-grid-third));
 }
 
-p
-{
-    text-align : justify;
-}
-
 code,
 pre
 {

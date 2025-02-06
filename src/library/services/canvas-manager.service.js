@@ -127,6 +127,8 @@ class CanvasManager
     /**
      * Sets drawing area inside a canvas element taking into consideration canvas width, height and predefined
      * drawing padding.
+     *
+     * @return { width, height } Width and height of canvas element in number format.
      */
     resize ()
     {
@@ -137,6 +139,8 @@ class CanvasManager
 
         this.context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
         this.recalculatePixels();
+
+        return { width : this.canvas.width, height : this.canvas.height }
     }
 
     /**
@@ -155,8 +159,8 @@ class CanvasManager
      */
     setup ()
     {
-        this.resize();
         window.addEventListener( "resize", () => this.resize() );
+        return this.resize();
     }
 
     validatePadding ( padding )

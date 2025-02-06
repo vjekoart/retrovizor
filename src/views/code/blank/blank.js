@@ -11,71 +11,77 @@ function main ()
     const blank  = new Blank( dom.canvas );
     const defaultOptions = blank.getOptions();
 
-    blank.setup();
+    blank.setup().then
+    (
+        dimensions =>
+        {
+            const maxLineLength = Math.min( Math.max( dimensions.width, dimensions.height ), 1024 );
+
+            dom.experiment.configuration =
+            [
+                {
+                    key     : "alphaDelta",
+                    type    : "range",
+                    options : { min : 1, max : 200 },
+                    label   : "Fade-out intensity",
+                    value   : defaultOptions.alphaDelta
+                },
+                {
+                    key     : "drawFPS",
+                    type    : "range",
+                    options : { min : 1, max : 40 },
+                    label   : "Speed",
+                    value   : defaultOptions.drawFPS
+                },
+                {
+                    key     : "drawPadding",
+                    type    : "range",
+                    options : { min : 0, max : 180 },
+                    label   : "Margins",
+                    value   : defaultOptions.drawPadding
+                },
+                {
+                    key     : "frameCount",
+                    type    : "range",
+                    options : { min : 1, max : 40 },
+                    label   : "Frame count",
+                    value   : defaultOptions.frameCount
+                },
+                {
+                    key     : "lineOpacityIncrease",
+                    type    : "range",
+                    options : { min : 1, max : 150 },
+                    label   : "Line visibility",
+                    value   : defaultOptions.lineOpacityIncrease
+                },
+                {
+                    key     : "maxLineLength",
+                    type    : "range",
+                    options : { min : 1, max : maxLineLength },
+                    label   : "Line length",
+                    value   : Math.min( defaultOptions.maxLineLength, maxLineLength )
+                },
+                {
+                    key     : "backgroundColor",
+                    type    : "color",
+                    label   : "Background color",
+                    value   : defaultOptions.backgroundColor
+                },
+                {
+                    key     : "noiseColor",
+                    type    : "color",
+                    label   : "Noise color",
+                    value   : defaultOptions.noiseColor
+                }
+            ];
+        }
+    );
 
     dom.experiment.controls =
     {
         "run"  : { style : "accent", label : "Run" },
         "stop" : "Stop"
     }
-
-    dom.experiment.configuration =
-    [
-        {
-            key     : "alphaDelta",
-            type    : "range",
-            options : { min : 1, max : 200 },
-            label   : "Fade-out intensity",
-            value   : defaultOptions.alphaDelta
-        },
-        {
-            key     : "drawFPS",
-            type    : "range",
-            options : { min : 1, max : 40 },
-            label   : "Speed",
-            value   : defaultOptions.drawFPS
-        },
-        {
-            key     : "drawPadding",
-            type    : "range",
-            options : { min : 0, max : 180 },
-            label   : "Margins",
-            value   : defaultOptions.drawPadding
-        },
-        {
-            key     : "frameCount",
-            type    : "range",
-            options : { min : 1, max : 40 },
-            label   : "Frame count",
-            value   : defaultOptions.frameCount
-        },
-        {
-            key     : "lineOpacityIncrease",
-            type    : "range",
-            options : { min : 1, max : 150 },
-            label   : "Line visibility",
-            value   : defaultOptions.lineOpacityIncrease
-        },
-        {
-            key     : "maxLineLength",
-            type    : "range",
-            options : { min : 1, max : 1024 },
-            label   : "Line length",
-            value   : defaultOptions.maxLineLength
-        },
-        {
-            key     : "backgroundColor",
-            type    : "color",
-            label   : "Background color",
-            value   : defaultOptions.backgroundColor
-        },
-        {
-            key     : "noiseColor",
-            type    : "color",
-            label   : "Noise color",
-            value   : defaultOptions.noiseColor
-        }
-    ];
 
     dom.experiment.addEventListener( "configurationChanged", () =>
     {

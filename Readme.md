@@ -10,38 +10,19 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 4: content & pages, incl. related logic~
 * ~Phase 5: Add single E2E test - user journey~
 * ~Phase 6: code fine-tune~
-* Phase 7: UI fine-tune
-    * Responsiveness / cross-browser testing
-        * Combinations
-            * Macos/Safari
-            * iOS
-        * To fix: TBD
-        * To discuss: TBD
+* ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
     * User page
         * Picture: degrade image, extract face with transparent background
     * Adjust dates everywhere
-    * Go through texts
-        * I need to categorize texts somehow, think in the format of collections or something
-        * Native web:
-            * **Maybe the idea is to present limitations, and build system workarounds for current native web technologies?**
-                * For example, precomposed web components since it's heavy to load the library, relying on SSR, sweet spot between bundles and native ES modules?
-            * **Maybe the idea is to talk about native web frontend and Revizor?**
-            * Architecture: explain approach with index/layout/views + library
-            * Approach: crafting a build system
-        * Declarative Javascript
-            * Define readable code and context at the beginning: working in large teams, where team members change,... workplace/industry context
-            * Maybe completely different approach: text about writing code, declarative, coding style matters, and similar, more abstract, like main philosophy when writing a code
-                * "We're writing a book with formulae,..."
-                * But better split that into multiple articles, so declarative is one, and (philosophical) text about writing code is another one
+    * Texts
+        * Native web: rewrite into a short article about building a tool for web frontend, concept, approach and that's it
+        * Declarative Javascript: change the title and content to something more modest, this isn't overview of declarative
     * Go through code (in text pages, user-facing content) and coding styles
-    * General: I'm not sure `text-align: justify` is going to work, try on multiple devices
-        * Check on mobile, fine-tune, then look at mobile and desktop again to see what's happening.
-        * Maybe rythm: long words should always be surrounded by short words, to improve `text-align: justify`
     * Proofreading
     * Why should I have link to gists? Why not hosting them on the website?
-	* Gists are cool because they're easier to update, I can use gists to create and manage content, and have some kind of a script to automatically
-          generate views in the CLI (fetch gist, create HTML, update view file)
+	    * Gists are cool because they're easier to update
+        * I can use gists to create and manage content, and have some kind of a script to automatically generate views in the CLI (fetch gist, create HTML, update view file)
     * Add link to gist "Code Poetry|Code Poems", or add a page, see above
 * Phase 9: run Lighthouse to check website quality
     * Check which attributes to put on `<link>` and `<script>` elements
@@ -58,6 +39,8 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Rename instagram to retrovizor.xyz and update info - the same day the website is published
     * Make sure that 404 page is working as expected
     * How to collect visit stats?
+	* Use something like access log parsing - executed by a script on a daily basis and pushed to something like retrovizor.xyz/stats
+	* Collect number of views, URL number of views, referer
 * Phase 12: cycle of improvements from backlog after the first feedback
 
 ### Roadmap stuff (not part of the first version)

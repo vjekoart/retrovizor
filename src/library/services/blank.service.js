@@ -228,9 +228,10 @@ class Blank
         {
             window.setTimeout(() =>
             {
-                this.canvasManager.setup();
+                const dimensions = this.canvasManager.setup();
                 window.addEventListener( "resize", () => this.resize() );
-                resolve();
+
+                resolve( dimensions );
             }, 1 );
         });
     }
