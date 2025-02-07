@@ -19,6 +19,9 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ## Roadmap
 
+## Phase Alpha
+
+* Maybe remove `buildType` property and stick to `native-library-bundle`?
 * What to do with `deploy` and `start` actions in `revizor/index.js`?
 * Prioritise for Filthy Fingers (focus on performance)
     * Add timestamps to (some) console outputs
@@ -44,13 +47,16 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Environment (limited by Revizor)
     * Migrate to TypeScript
     * Dockerisation
-    * Write E2E tests using Gherkin syntax
-* Long-term
-    * 4 starters: minimal, presentational, app-behind-login, combination of two types
-        * Basically every web app is one of those when it comes to structure
-    * Revizor tests should actually be tests of these 4 starters
-    * Write unit tests for bits and similar utility functions
-    * Add app generator, ideally something like configuration+Gherkin expressions that generates (and extends existing!) codebase
+
+## Phase Beta
+
+* 4 starters: minimal, presentational, app-behind-login, combination of two types
+    * Basically every web app is one of those when it comes to structure
+* Revizor tests should actually be tests of these 4 starters
+* Write unit tests for bits and similar utility functions
+* Add app generator, ideally something like configuration+Gherkin expressions that generates (and extends existing!) codebase
+    * This is 
+* Write E2E tests using Gherkin syntax
 
 ## Overview
 

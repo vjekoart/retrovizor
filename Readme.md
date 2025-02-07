@@ -18,7 +18,7 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Proofreading
     * Text
         * Native web
-            * Rewrite into a short article about building a tool for web frontend, concept, approach and that's it
+            * Complete the article based on the guidelines in `native-web-front/index.html.hbs`
             * Proofreading
         * Code readability
             * Fine-tune content, remove `should|must` with `could|can`

@@ -6,6 +6,30 @@
         <span slot="title">Building a web frontend with native technologies</span>
     </retro-content-block>
 
+    * Goal: imagine a tool for building web interfaces that feels native, forces an architecture that's straightforward and well structured, and comes with enough features to enable fast development.
+    * Native-feel
+        * DX: code that programmer writes, is close or almost identical to the code that's sent to client device.
+        * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components)
+        * Performance: SSR with dynamic parts - fastest rendering, with the option to include dynamic parts if needed
+            * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered - in theory integration possible with every web framework that supports using HTML files for views. 
+    * Architecture
+        * Straightforward: Views + library
+        * Well structured: Tool expects a strict file structure, naming conventions, and similar
+    * Fast development
+        * Build system
+        * Test system
+        * Opinionated coding style
+    
+    ## In practice
+
+    This website built using a tool built with this stuff on mind.
+
+    Revizor - NodeJS library, explores this concepts mentioned above.
+
+    Work in progress, currently part of the retrovizor.xyz repository. See the source of this repository to see file structure, and check out library in `revizor` folder.
+
+    ---
+
     <p>There are many resources in the wilderness of the internet about using native technologies to build programs.</p>
     <p>
         This one is not special. This is an opinionated approach to building a web frontend using native technologies
