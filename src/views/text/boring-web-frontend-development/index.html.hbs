@@ -6,189 +6,63 @@
         <span slot="title">Boring web frontend development</span>
     </retro-content-block>
 
-    * Goal: imagine a tool for building web interfaces that feels native, forces an architecture that's straightforward and well structured, and comes with enough features to enable fast development.
+    <p>Modern web frontend development is pretty exciting. Interesting new tools and concepts are popping out on every
+    corner of the internet. Every now and then a new paradigm emerges that promises to fundamentaly change how web interfaces
+    are built. And yes, some of them really do change how programmers write web.</p>
+
+    <p>If that is exciting, then plain old HTML, CSS, and Javascript are boring. These technologies change slowly, they're
+    always backwards compatible, and they don't experience groundbraking paradigm changes. Albeit boring, they're basis of
+    every website there is.</p>
+
+    Fali neki uvod za boring tool, kao pitanje: da li možemo napraviti boring tool koji koristi te boring tehnologije da web dev
+    bude boring? U smislu, bez iznenađenja i novih koncepata jako često.
+    Kako bi takav boring tool mogao izgledati, i kako bi se uopće definirao?
+
+    <p>A boring tool that could have:</p>
+    <ul>
+        <li><strong>Native feel</strong> to emphasize that a programmer should focus on fundamental technologies, not on the tool.</li>
+        <li>Straightforward and strict <strong>architecture</strong> to make the codebase predictable and boring.</li>
+        <li>A pleasant <strong>developer experience</strong> that enables seamless development of production-ready web interfaces.</li>
+    </ul>
+
+    Zašto je Revizor boring? Moderni toolovi su exciting, jer se ne boje uvesti skroz novi koncept, npr. JSX, da ubrzaju
+    razvoj. U odnosu na to, tehnologije podržane od strane web browsera su boring, razvijaju se i mijenjaju sporo,
+    baziraju se na HTML, CSS i JS-u
+        * Budući je cilj podržavati production-level environment baziran na web browser tehnologijama, mijenja se sporo. Dodaju se, miču i mijenjaju tanki slojevi abstrakcije
+        kako se underlying mechanisms improve and  change.
+
+
+    * Goal: imagine a tool for building web interfaces that feels native, forces an architecture that's straightforward and well structured, and comes with enough features to proivde pleasant DX.
+        * That feels boring, like a first web app that a programmer writes when learning basics of HTML, CSS, and Javascript.
     * Why? Native feel, but also just a couple of layers between the actual code sent to the client and a code that was written by the programmer - easier to follow and modify the tool as W3C specifications grow and change.
-    * Native-feel
-        * DX: code that programmer writes, is close or almost identical to the code that's sent to client device.
-        * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components) ...to improve DX where it makes sense
-        * Performance: SSR with dynamic parts - fastest rendering, with the option to include dynamic parts if needed
-            * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered - in theory integration possible with every web framework that supports using HTML files for views. 
-    * Architecture
-        * Straightforward: Views + library
-        * Well structured: Tool expects a strict file structure, naming conventions, and similar
-    * Fast development
-        * Build system
-        * Test system
-        * Opinionated coding style
-    
-    ## In practice
+    * Premise: build a tool that follows these premises (in the practical amount), while providing everything needed for a full-scale web frontend application.
+
+
+    <h3>Native feel</h3>
+
+    * DX: code that programmer writes, is close or almost identical to the code that's sent to client device.
+    * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components) ...to improve DX where it makes sense
+        * Native ali sa thin layer of abstraction da uljepša fundamental tehnologije u određenim scenarijima
+    * Performance: SSR with dynamic parts - fastest rendering, with the option to include dynamic parts if needed
+        * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered - in theory integration possible with every web framework that supports using HTML files for views. 
+
+    <h3>Architecture</h3>
+
+    * Straightforward: Views + library
+        * Views in the center, views represent the main contact point between users and a product.
+    * Well structured: Tool expects a strict file structure, naming conventions, and similar
+
+    <h3>Developer experience</h3>
+
+    * Build system
+    * Test system
+    * Opinionated coding style
+
+    <h3>In practice</h3>
 
     This website built using a tool built with this stuff on mind.
 
     Revizor - NodeJS library, explores this concepts mentioned above.
 
     Work in progress, currently part of the retrovizor.xyz repository. See the source of this repository to see file structure, and check out library in `revizor` folder.
-
-    ---
-
-    <p>There are many resources in the wilderness of the internet about using native technologies to build programs.</p>
-    <p>
-        This one is not special. This is an opinionated approach to building a web frontend using native technologies
-        as a basis, but also by adding a couple of useful tools on top to improve both developer experience and
-        performance of the program.
-    </p>
-
-    <h3>Architecture</h3>
-    <p>
-        The main idea is to use vanilla Javascript, web browser APIs, CSS and HTML to produce a usable and performant
-        web frontend.
-    </p>
-    <p>
-        To improve developer experience, and to ensure that code works as expected on various web browsers, NodeJS is
-        used as an environment, while <a href="https://lit.dev/" target="_blank">lit.dev</a> is used for easier
-        development of Web components.
-    </p>
-    <p>Components:</p>
-    <ul>
-        <li>Structure</li>
-        <li>Build system</li>
-        <li>Templates and views</li>
-        <li>Routing</li>
-        <li>Modules</li>
-        <li>Reusable UI components</li>
-        <li>Testing</li>
-    </ul>
-    <p>Current version of the architecture is missing (at least) the following elements that are common in complex applications:</p>
-    <ul>
-        <li>Type checking</li>
-        <li>State management</li>
-        <li>Authentication</li>
-    </ul>
-    <p>
-        <strong>Note:</strong> this approach can be seen in action by exploring
-        <a href="https://github.com/vjekoart/retrovizor" target="_blank">github.com/vjekoart/retrovizor</a> repository.
-    </p>
-
-    <h3>Structure</h3>
-    <pre>
-        dist/          # Build files intended for serving
-        src/           # Source code
-            library/   # Shared code like UI components and services
-            templates/ # Shared templates, e.g. headers and footers
-            views/     # Views, e.g. homepage, about page and similar</pre>
-
-    <h3>Build system</h3>
-    <p>A build system is responsible for both developer experience and code performance.</p>
-    <p>Developer experience:</p>
-    <ul>
-        <li>Actions like <code>npm run dev</code>, <code>npm run build</code> and <code>npm run test</code>.</li>
-        <li>Code quality analysis with <code>eslint</code> or similar tools.</li>
-    </ul>
-    <p>Code performance:</p>
-    <ul>
-        <li>Applying tools like Babel and PostCSS to transpile and minify the production code.</li>
-        <li>Adding a content hash to script and style filenames to avoid caching of the obsolete code.</li>
-        <li>Running tests and reporting results.</li>
-    </ul>
-    <p>
-        Examples:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/index.js" target="_blank">index.js</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a>
-    </p>
-
-    <h3>Templates and views</h3>
-    <p>
-        To simplify the architecture, this approach relies on identical structure of the <code>views/</code>
-        folder in both <code>src/</code> and <code>dist/</code> directories.
-    </p>
-    <p>
-        To add a view, it's enough to create a new file at desired location, for example file
-        <code>src/views/about/index.html</code> serves as a view file for <code>app.com/about/</code> page.
-    </p>
-    <p>
-        To enable shared templates and to reduce code repetition,
-        <a href="https://handlebarsjs.com/" target="_blank">HandlebarsJS</a> has been introduced and integrated
-        into the build system.
-    </p>
-    <p>
-        Furthermore, build system has been expanded to link dedicated script and style files for each view, if
-        specified.
-    </p>
-    <p>
-        Examples:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/text/index.html.hbs" target="_blank">views/text/index.html.hbs</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/index.html.hbs" target="_blank">views/index.html.hbs</a>
-    </p>
-
-    <h3>Routing</h3>
-    <p>
-        When having views in the format above, there's no need for routing in the classic sense. Web browser takes care
-        of navigating between the sites.
-    </p>
-    <p>
-        In the code, programmer would specify the href attribute, e.g. <code>href="/about/"</code>, while existance of
-        <code>views/about/index.html</code> ensures that URL is displayed as <code>app.com/about/</code> in the web browser.
-    </p>
-
-    <h3>Modules</h3>
-    <p>
-        The current approach doesn't include a bundler. That means that native ES and CSS modules are used. So when a user
-        lands on a page that has <code>import X from "Y";</code> statement, the browser will load the appropriate file.
-    </p>
-    <p>
-        While CSS modules are quite straightforward, it's enough to copy the files in the <code>dist/</code> folder, ES
-        modules require a couple of code changes to work as expected.
-    </p>
-    <p>
-        Firstly, it's important to explicitly state that script files are modules with
-        <code>&lt;script type="module" src="script.js"&gt;&lt;/script&gt;</code>.
-    </p>
-    <p>
-        Secondly, it's possible to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#importing_modules_using_import_maps" target="_blank">import maps</a> to simplify import statements in the Javascript code.
-    </p>
-    <p>
-        Examples:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/index.js" target="_blank">src/library.js</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/views/homepage.js" target="_blank">views/homepage.js</a>
-    </p>
-
-    <h3>Reusable UI components</h3>
-    <p>
-        One of the main advantages of using a framework for building UIs is the extensive support for reusable UI components.
-    </p>
-    <p>
-        This approach relies on native Web components, although with a couple of caveats:
-    </p>
-    <ul>
-        <li>Instead of writing native web components, a tool <a href="https://lit.dev/" target="_blank">lit.dev</a> is used to simplify the development.</li>
-        <li>Native components don't have built-in mechanism for state management, nor the tool comes with advanced templating system - components are quite verbose.</li>
-    </ul>
-    <p>
-        Examples:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-nav.js" target="_blank">retro-nav.js</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-content-block.js" target="_blank">retro-content-block.js</a>
-    </p>
-
-    <h3>Testing</h3>
-    <p>
-        Since testing of the web frontend doesn't make sense outside the web browser,
-        <a href="https://www.npmjs.com/package/jasmine-browser-runner" target="_blank">package <code>jasmine-browser-runner</code></a>
-        is used to enable in-browser tests.
-    </p>
-    <p>
-        Every component, utility and service, can have adjecent <code>*.test.js</code> file that's executed during the <code>npm run test</code>
-        action.
-    </p>
-    <p>
-        Furthermore, there's an E2E test mechanism for <code>*.e2e.js</code> files provided with the combination of Jasmine and Puppeteer.
-        Executed with <code>npm run e2e</code> action, that assumes there's an existing <code>dist/</code> directory. Running the test
-        server is part of the action.
-    <p>
-        Examples:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/library/components/retro-nav.test.js" target="_blank">retro-nav.test.js</a>,
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/src/journey.e2e.js" target="_blank">journey.e2e.js</a>,
-        <br />
-        Build system:
-        <a href="https://github.com/vjekoart/retrovizor/blob/master/library.js" target="_blank">library.js</a> (<code>tests</code>)
-    </p>
 {{/layout.page}}

@@ -19,7 +19,7 @@ main
 {
     display    : block;
     max-width  : 640px;
-    min-height : calc(100vh - 13.3 * var(--style-grid-full) - 2px);
+    min-height : calc(100vh - 11.3 * var(--style-grid-full) - 2px);
 
     margin     : 0 auto;
     padding    : var(--style-grid-full);

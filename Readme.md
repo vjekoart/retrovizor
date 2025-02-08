@@ -12,6 +12,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
+    * Rename `Revizor` to `boring`
     * User
         * General
         * Picture: degrade image, extract face with transparent background
