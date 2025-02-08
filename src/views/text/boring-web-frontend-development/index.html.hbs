@@ -1,15 +1,16 @@
 {{#> layout.page
-    title="Building a web frontend with native technologies"
-    view="native-web-frontend"
+    title="Boring web frontend development"
+    view="boring-web-frontend-development"
 }}
     <retro-content-block data-date="2025-02-01">
-        <span slot="title">Building a web frontend with native technologies</span>
+        <span slot="title">Boring web frontend development</span>
     </retro-content-block>
 
     * Goal: imagine a tool for building web interfaces that feels native, forces an architecture that's straightforward and well structured, and comes with enough features to enable fast development.
+    * Why? Native feel, but also just a couple of layers between the actual code sent to the client and a code that was written by the programmer - easier to follow and modify the tool as W3C specifications grow and change.
     * Native-feel
         * DX: code that programmer writes, is close or almost identical to the code that's sent to client device.
-        * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components)
+        * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components) ...to improve DX where it makes sense
         * Performance: SSR with dynamic parts - fastest rendering, with the option to include dynamic parts if needed
             * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered - in theory integration possible with every web framework that supports using HTML files for views. 
     * Architecture
