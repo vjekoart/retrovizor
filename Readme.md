@@ -13,20 +13,20 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
     * Rename `Revizor` to `boring`
+    * General: pronaći par savjeta kako napisati tekst da ne zvuči pretenciozno, skupljati smjernice
+    * General: proširiti smjernice sa savjetima kako izbjeći "I|we|you"
     * User
         * General
         * Picture: degrade image, extract face with transparent background
         * Proofreading
     * Text
-        * Native web
-            * Complete the article based on the guidelines in `native-web-front/index.html.hbs`
-            * Proofreading
+        * Boring web frontend development
         * Code readability
             * Fine-tune content, remove `should|must` with `could|can`
             * Go through code (in text pages, user-facing content) and coding styles
             * Proofreading
     * Code
-        * Maybe fine-tune list
+        * Maybe fine-tune the list
         * Check text content on experiment views
         * Why should I have link to gists? Why not hosting them on the website?
             * Gists are cool because they're easier to update
