@@ -6,44 +6,28 @@
         <span slot="title">Boring web frontend development</span>
     </retro-content-block>
 
-    <p>Modern web frontend development is pretty exciting. Interesting new tools and concepts are popping out on every
-    corner of the internet. Every now and then a new paradigm emerges that promises to fundamentaly change how web interfaces
-    are built. And yes, some of them really do change how programmers write web.</p>
+    <p>Modern web frontend development is quite exciting. Interesting new tools and concepts are being published almost on
+    a weekly basis. Every now and then a new paradigm emerges that promises to fundamentally change how web interfaces are
+    built. Indeed, some of them really do change how programmers write web.</p>
 
-    <p>If that is exciting, then plain old HTML, CSS, and Javascript are boring. These technologies change slowly, they're
-    always backwards compatible, and they don't experience groundbraking paradigm changes. Albeit boring, they're basis of
-    every website there is.</p>
+    <p>If that is exciting, then plain old HTML, CSS, and Javascript are boring. These technologies evolve slowly, they're
+    always backwards compatible, and they don't experience groundbreaking paradigm changes. Albeit boring, they're the basis
+    of every website there is.</p>
 
-    Fali neki uvod za boring tool, kao pitanje: da li možemo napraviti boring tool koji koristi te boring tehnologije da web dev
-    bude boring? U smislu, bez iznenađenja i novih koncepata jako često.
-    Kako bi takav boring tool mogao izgledati, i kako bi se uopće definirao?
-    Naglasiti da postoji milijun načina, i ovo je rumble o jednom mogućem načinu, koji je najvjerovatnije malo promašen
-
-    <p>A boring tool that could have:</p>
+    <p>This text explores the concept of a boring tool for building the web - one that could feature:</p>
     <ul>
-        <li><strong>Native feel</strong> to emphasize that a programmer should focus on fundamental technologies, not on the tool.</li>
-        <li>Straightforward and strict <strong>architecture</strong> to make the codebase predictable and boring.</li>
-        <li>A pleasant <strong>developer experience</strong> that enables seamless development of production-ready web interfaces.</li>
+        <li><strong>A native feel</strong>, focusing on core technologies (HTML, CSS, Javascript) rather than the tool itself.</li>
+        <li>A straightforward, strict <strong>architecture</strong> designed to make the codebase structure predictable and, yes, boring.</li>
+        <li>A pleasant <strong>developer experience</strong> that enables the development of production-ready web interfaces.</li>
     </ul>
-
-    Zašto je Revizor boring? Moderni toolovi su exciting, jer se ne boje uvesti skroz novi koncept, npr. JSX, da ubrzaju
-    razvoj. U odnosu na to, tehnologije podržane od strane web browsera su boring, razvijaju se i mijenjaju sporo,
-    baziraju se na HTML, CSS i JS-u
-        * Budući je cilj podržavati production-level environment baziran na web browser tehnologijama, mijenja se sporo. Dodaju se, miču i mijenjaju tanki slojevi abstrakcije
-        kako se underlying mechanisms improve and  change.
-
-
-    * Goal: imagine a tool for building web interfaces that feels native, forces an architecture that's straightforward and well structured, and comes with enough features to proivde pleasant DX.
-        * That feels boring, like a first web app that a programmer writes when learning basics of HTML, CSS, and Javascript.
-    * Why? Native feel, but also just a couple of layers between the actual code sent to the client and a code that was written by the programmer - easier to follow and modify the tool as W3C specifications grow and change.
-    * Premise: build a tool that follows these premises (in the practical amount), while providing everything needed for a full-scale web frontend application.
-
 
     <h3>Native feel</h3>
 
     * DX: code that programmer writes, is close or almost identical to the code that's sent to client device.
     * DX: Using native web frontend technologies (HTML, CSS, JS, browser APIs) with a thin layer of abstractions (e.g. Lit for web components) ...to improve DX where it makes sense
         * Native ali sa thin layer of abstraction da uljepša fundamental tehnologije u određenim scenarijima
+        * Budući je cilj podržavati production-level environment baziran na web browser tehnologijama, mijenja se sporo. Dodaju se, miču i
+        mijenjaju tanki slojevi abstrakcije kako se underlying mechanisms improve and change.
     * Performance: SSR with dynamic parts - fastest rendering, with the option to include dynamic parts if needed
         * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered - in theory integration possible with every web framework that supports using HTML files for views. 
 

@@ -44,7 +44,8 @@
         /* main.js */
         import { importantModule } from "Y";
         import { someUtility     } from "Z";
-        import {
+        import
+        {
             handleServerErrors,
             handleServerStart
         } from "main.bits.js";
@@ -76,14 +77,15 @@
     </p>
     <pre>
         /* router.js */
-        Router.routes(
+        Router.routes
+        (
             {
-                path: "/",
-                controller: HomeController
+                path       : "/",
+                controller : HomeController
             },
             {
-                path: "/projects/",
-                controller: ProjectsController
+                path       : "/projects/",
+                controller : ProjectsController
             },
             ...
         );</pre>
