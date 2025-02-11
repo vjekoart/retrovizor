@@ -15,6 +15,7 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Rename `Revizor` to `boring`
     * General: pronaći par savjeta kako napisati tekst da ne zvuči pretenciozno, skupljati smjernice
     * General: proširiti smjernice sa savjetima kako izbjeći "I|we|you"
+    * General: proofreading da je sve british english a ne US
     * User
         * General
         * Picture: degrade image, extract face with transparent background
