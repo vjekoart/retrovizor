@@ -18,7 +18,6 @@ Bla bla, Retrovizor.xyz website built with revizor
         * Picture: degrade image, extract face with transparent background
         * Proofreading
     * Text
-        * Boring web frontend development
         * Code readability
             * Fine-tune content, remove `should|must` with `could|can`
             * Go through code (in text pages, user-facing content) and coding styles
@@ -40,6 +39,7 @@ Bla bla, Retrovizor.xyz website built with revizor
     * Revise (delete and make private) gist.github
     * Revise LinkedIn and update links
     * Revise GitHub profile and update links
+    * Make this repository public
 * PUBLISH
     * Rename instagram to retrovizor.xyz and update info - the same day the website is published
     * Make sure that 404 page is working as expected

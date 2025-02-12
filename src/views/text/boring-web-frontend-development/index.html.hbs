@@ -53,27 +53,42 @@
     </blockquote>
 
     <h3 id="architecture">Architecture</h3>
-
-    * Predictable architecture is good architecture. For both individual and team projects.
-    * This tool will try to force an architecture where every app is divided into two high-level parts: views and library.
-
-    * Views are points of contacts with users. To speak in industry terms, views are of interest to business stakeholders and product managers.
-    * On the other hand, a library is a set of UI components, small utilities, services, and all other units that are needed to achieve desired functionality.
-
-    * One advantage of this approach is to put users in the focus. Views must be clear and readable, because they define what users can see and do. While libraries are for nerds that develop these apps and understand all the small parts required by the engine.
-
-    * Note: to ensure structure, this boring tool foces a strict file structure and naming conventions.
+    <p>
+        Good architecture is predictable architecture. For both individual and team projects. This tool will try to force an architecture where every app is
+        divided into two high-level concepts: views and a library.
+    </p>
+    <p>
+        Views are points of contact for users. To speak in industry terms, views are of interest to business stakeholders and product managers. They define
+        what users can see and do with the application. On the other hand, a library is a set of UI components, small utilities, services, and all other units that are
+        needed to achieve complete functionality.
+    </p>
+    <p>
+        The main idea behind this approach is to put users at the forefront. Views are clear and readable because they define the most important part of the application.
+        But libraries, they are for nerds. They can handle messy code - complex utility functions that will get their comments and well-deserved refactors some day.
+    </p>
+    <blockquote>
+        To enforce an architecture, this tool expects specific file structure and naming conventions.
+    </blockquote>
 
     <h3 id="build-system">Build system</h3>
-
-    * Build system - the most boring part of the tool. A good build system should be invisible while providing development, test, and build actions.
-    * I'll try to keep configuration to minimum, while the tool will except naming conventions and folder structure regarding views, components and tests.
+    <p>
+        The build system - the most boring part of the tool.
+    </p>
+    <p>
+        A good build system should be invisible, while providing development, test, and build actions.
+    </p>
+    <p>
+        The goal is to cover all aspects of testing, from unit tests to complex in-browser E2E tests.
+    </p>
 
     <h3>In practice</h3>
-
-    To sum all of the above, I've built a small boring tool, Revizor, with which I built this website.
-    
-    The goal was to create a reusable set of helpers that can be used in other projects. Although I'm not sure if the goal was achieved.
-
-    Revizor is currently placed in a separate folder inside a repository of retrovizor.xyz.
+    <p>
+        To sum all of the above, I've built a small boring tool called <a href="https://github.com/vjekoart/retrovizor/tree/master/revizor" target="_blank">Revizor</a>, with which I built this website.
+    </p>
+    <p>
+        The idea was to create a reusable set of helpers inspired by the principles outlined at the beginning of this text. Although I'm not sure if the goal was achieved.
+    </p>
+    <p>
+        Revizor is currently placed in a <a href="https://github.com/vjekoart/retrovizor/tree/master/revizor" target="_blank">separate folder</a> inside the repository of retrovizor.xyz.
+    </p>
 {{/layout.page}}
