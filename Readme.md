@@ -12,23 +12,13 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
-    * General: proofreading da je sve british english a ne US
     * User
         * General
         * Picture: degrade image, extract face with transparent background
         * Proofreading
-    * Text
-        * Code readability
-            * Fine-tune content, remove `should|must` with `could|can`
-            * Go through code (in text pages, user-facing content) and coding styles
-            * Proofreading
-    * Code
-        * Maybe fine-tune the list
-        * Check text content on experiment views
-        * Why should I have link to gists? Why not hosting them on the website?
-            * Gists are cool because they're easier to update
-            * I can use gists to create and manage content, and have some kind of a script to automatically generate views in the CLI (fetch gist, create HTML, update view file)
-        * Add link to gist "Code Poetry|Code Poems", or add a page, see above
+    * Text: Code readability
+        * Fine-tune content, remove `should|must` with `could|can`
+        * Go through code (in text pages, user-facing content) and coding styles
         * Proofreading
 * Phase 9: run Lighthouse to check website quality: don't forget to run this on every page since this is not a SPA
 * Phase 10: repository preparations
@@ -55,6 +45,7 @@ Bla bla, Retrovizor.xyz website built with revizor
 * Add support for linkable headings
 * Add support for "Table of contents" on text pages
 * Add support for better color selector in `retro-experiment-control`
+* Expand styling for code blocks, and transfer content from gist.github.com to standalone pages
 * Expand test coverage for services and components
 * Environment (limited by Revizor)
     * Migrate to TypeScript
