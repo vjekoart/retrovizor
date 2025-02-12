@@ -6,55 +6,74 @@
         <span slot="title">Boring web frontend development</span>
     </retro-content-block>
 
-    <p>Modern web frontend development is quite exciting. Interesting new tools and concepts are being published almost on
-    a weekly basis. Every now and then a new paradigm emerges that promises to fundamentally change how web interfaces are
-    built. Indeed, some of them really do change how programmers write web.</p>
-
-    <p>If that is exciting, then plain old HTML, CSS, and Javascript are boring. These technologies evolve slowly, they're
-    always backwards compatible, and they don't experience groundbreaking paradigm changes. Albeit boring, they're the basis
-    of every website there is.</p>
-
-    <p>This text explores the concept of a boring tool for building the web - one that could feature:</p>
+    <p>
+        The web frontend field is exciting. Perhaps even too exciting. Every seasoned frontend engineer has gone through at least one
+        existential crisis due to the ever-changing environment and plethora of strange tools.
+    </p>
+    <p>
+        That doesn't really make sense. Fundamental technologies - HTML, CSS, and Javascript - are boring. They evolve slowly, they're
+        always backwards compatible, and they never change core principles. These technologies don't even require any development
+        environment. Find a way to write and edit a text file on a PC, and you're all set.
+    </p>
+    <p>
+        In this hectic digital world, we can benefit from boredom. That's why I'll try, like every proper frontend developer, of course,
+        to build a tool for web frontend development.
+    </p>
+    <p>This boring tool will try to follow these principles:</p>
     <ul>
-        <li><a href="#native-feel">A native feel</a>, focusing on core technologies (HTML, CSS, Javascript) rather than the tool itself.</li>
-        <li>A straightforward, strict <a href="#architecture">architecture</a> designed to make the codebase structure predictable and, yes, boring.</li>
-        <li>A pleasant <a href="#developer-experience">developer experience</a> that enables the development of production-ready web interfaces.</li>
+        <li>A native feel, focusing on core technologies rather than the tool itself.</li>
+        <li>A strict architecture that makes the codebase predictable and, yes, boring.</li>
+        <li>A pleasant and modern build system that enables the development of production-ready web interfaces.</li>
     </ul>
 
     <h3 id="native-feel">Native feel</h3>
-
-    * Paragraf koji objašnjava što znači native feel i koja mu je svrha: To achieve native feel... || Native feel means...
-        * Native feel znači: kod koji se piše je vrlo sličan, skoro identičan po sadržaju, onom kodu koji se vrti na klijentskoj strani, nema previše iznenađenja
-        * Native feel znači: kod koji se piše je što bliži osnovnim tehnologijama, npr zadnja službena verzija JS-a, CSS, ili npr. HTML sa jednostavnim templating proširenjem
-    * Paragraf koji objašnjava da je u praksi potreban thin layer of abstraction nad osnovnim tehnologijama kako bi se poboljšao DX, cross-browser compatibility, i overall performance
-      budući se native funkcionalnosti razvijaju sporo, te im nije fokus DX već funckionalnost u kontekstu postojećih tehnologija
-        * Tanki sloj apstrakcije se mijenja, ali mijenja se sporo kako se mijenjaju core tehnologije, što pojednostavljuje održavanje
-        * Primjer, lit.dev za pisanje web komponenti
-        * Primjer, suvremeni CSS organiziran unutar modula je dovoljno dobar i za najkompleksnije i najzahtjevnije projekte
-    * Another aspect of native feel: end user and web browser. Što se više oslanja na mehanizme web browsera, poput cachinga i optimizacije renderinga to aplikacija ima veći native feel.
-        Npr završili smo hype krug SPA-ova znamo kada i gdje ih koristiti, također znamo da je najefikasnija web stranica
-        ona koja je SSR, ili kombinacija SSR+dynamic parts kada sadrži heavy interaktivne dijelove
-    * Note: SSR usually requires some logic on the backend, e.g. for user sessions, currently not covered in this exploration, will be added in the next phase.
+    <p>
+        What does it mean for a tool to have a native feel? In this case, code produced by programmers should not be drastically different
+        from that executed on the client side - developers using this tool should write almost pure CSS, HTML, and Javascript.
+    </p>
+    <p>
+        However, to build a practical tool, a thin layer of abstraction is needed. The goal is to produce code that has a decent level of
+        cross-browser compatibility, performs well, and fails properly, all that whilst providing a decent experience.
+    </p>
+    <p>
+        For some scenarios, it's worth adding more concrete abstractions. For example, I'll introduce <a href="https://lit.dev" target="_blank">lit.dev</a> for
+        the development of web components to reduce boilerplate code.
+    </p>
+    <p>
+        Another example would be HTML. It's pretty sweet, but it lacks basic logic to promote reusability through templates - during the build time, at least.
+        For that reason, I'll add <a href="https://handlebarsjs.com/" target="_blank">Handlebars</a>, so developers are able to organise the code properly.
+    </p>
+    <p>
+        Last but not least, what about the user experience in the web browser? The industry has completed the whole cycle from only using SSR to preferring SPAs.
+        The conclusion is that SSR should be preferred for performance reasons, while SPAs have their place in highly dynamic apps. Since this is a tool for
+        general web development, I'll go with the SSR approach. I'll skip backend logic for now, and leave routing to the plain old HTTP server.
+    </p>
+    <blockquote>
+        In the future, the plan is to integrate the tool with something like Django to enable logic on the backend, e.g. for user sessions.
+    </blockquote>
 
     <h3 id="architecture">Architecture</h3>
 
-    * Uvod: Dobra arhitektura je ona koja je straightforward i strict kako bi se smanjila količina iznenađnja u codebase-u, što olakšava i individual i team work.
-    * Jedna od mogućih interpretacija arhitekture je ona koja cijelu aplikaciju na high-level dijeli na dva dijela: views, kao user contact points i library, kao skup komponenti, utilityis,... od kojih su sagrađeni views.
-    * Prednost stavljanja views-a u centar je user focus - sav kod podređen je funkcionalnostima za user interactions
-    * Note: to ensure structure, a boring tool could force a strict file structure, naming conventions, and similar
+    * Predictable architecture is good architecture. For both individual and team projects.
+    * This tool will try to force an architecture where every app is divided into two high-level parts: views and library.
 
-    <h3 id="developer-experience">Developer experience</h3>
+    * Views are points of contacts with users. To speak in industry terms, views are of interest to business stakeholders and product managers.
+    * On the other hand, a library is a set of UI components, small utilities, services, and all other units that are needed to achieve desired functionality.
 
-    * Uvod: a boring tool has great developer experience by just doing the job. While it's quite complicated to minize developers interaction with tool in practice, at least major
-    elements of good DX su se iskristalizirali:
+    * One advantage of this approach is to put users in the focus. Views must be clear and readable, because they define what users can see and do. While libraries are for nerds that develop these apps and understand all the small parts required by the engine.
 
-    * Build system, for both development and production build
-    * Test system with helpful abstractions for testing components, units, and the whole application.
+    * Note: to ensure structure, this boring tool foces a strict file structure and naming conventions.
+
+    <h3 id="build-system">Build system</h3>
+
+    * Build system - the most boring part of the tool. A good build system should be invisible while providing development, test, and build actions.
+    * I'll try to keep configuration to minimum, while the tool will except naming conventions and folder structure regarding views, components and tests.
 
     <h3>In practice</h3>
 
-    I've been playing with aforementioned ideas and I've built a small tool, Revizor, with which I built this website. The goal was to create a reusable
-    set of helpers that can be used in other projects. I'm still not sure if the goal was achieved.
+    To sum all of the above, I've built a small boring tool, Revizor, with which I built this website.
+    
+    The goal was to create a reusable set of helpers that can be used in other projects. Although I'm not sure if the goal was achieved.
 
     Revizor is currently placed in a separate folder inside a repository of retrovizor.xyz.
 {{/layout.page}}

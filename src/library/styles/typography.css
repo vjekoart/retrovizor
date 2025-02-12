@@ -115,6 +115,12 @@ blockquote:last-child
     margin-bottom : 0;
 }
 
+p,
+li
+{
+    text-align : justify;
+}
+
 ul,
 ol
 {

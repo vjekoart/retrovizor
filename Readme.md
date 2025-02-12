@@ -12,9 +12,6 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
-    * Rename `Revizor` to `boring`
-    * General: pronaći par savjeta kako napisati tekst da ne zvuči pretenciozno, skupljati smjernice
-    * General: proširiti smjernice sa savjetima kako izbjeći "I|we|you"
     * General: proofreading da je sve british english a ne US
     * User
         * General
