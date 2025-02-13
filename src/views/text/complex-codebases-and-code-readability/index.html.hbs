@@ -6,20 +6,11 @@
         <span slot="title">Complex codebases and code readability</span>
     </retro-content-block>
 
-    * Motivation
-        * When working on a large codebase, e.g. in a team in a company, no time for huge refactor, techniques to gradually simplify the code and reduce the cognitive load
-        * Makes it easier to perform an impactful refactor in the future
+    <p>A collection of thoughts for tackling complex codebases in a simple and gradual manner.</p>
 
+    <h3 id="layers-and-abstractions">Layers and abstractions</h3>
     <p>
-        This text intends to be a live collection of thoughts for writing readable Javascript code, and programming
-        code in general. The main inspiration is declarative paradigm, but also an experience from working on
-        different codebases, and in different teams.
-    </p>
-
-    <h3>Layers and abstractions</h3>
-    <p>
-        It's not uncommon for a newcomer on the team to open the entry file of a complex codebase, and to find something
-        like the following:
+        Complex product codebases often have main entry files, e.g. <code>main.js</code>, that look like this:
     </p>
     <pre>
         /* main.js */
@@ -36,8 +27,8 @@
               .then (() => { ... })
               .catch(() => { ... });</pre>
     <p>
-        With so many technical details it's hard to grasp the general idea of what the program does. To reduce the cognitive
-        load and to improve both extensibility and stability of the code, lower-level logic should be extracted to separate
+        With so many technical details, it's hard to grasp the general idea of what the program does. To reduce the cognitive
+        load and to improve both the extensibility and stability of the code, lower-level logic could be extracted to separate
         files:
     </p>
     <pre>
@@ -58,19 +49,12 @@
         server.start()
               .then ( handleServerStart  )
               .catch( handleServerErrors );</pre>
-    <p>To conclude, techniques to improve readability by using layers and abstractions:</p>
-    <ul>
-        <li>Ensuring that content of every file, and specially every function, is on the same level of abstraction.</p>
-        <li>Using (hopefully) native modules to extract unnecessary logic from files.</li>
-        <li>Using common code organization approaches like modules, services and utilities to put logic in appropriate places.</li>
-        <li>Using utility files attached to higher-level files, e.g. if there's <code>index.js</code> there can be <code>index.{bits|helpers|utils}.js</code>.</li>
-    </ul>
 
-    <h3>Embracing large files and whitespace</h3>
+    <h3 id="embracing-large-files">Embracing large files</h3>
     <p>Another common characteristic is that programmers tend to shy away from large files.</p>
     <p>
         Although it's problematic to have complex and large files with tons of unfathomable code, it's perfectly
-        fine to have large files with simple and straightforward structure.
+        fine to have large files with a simple and straightforward structure.
     </p>
     <p>
         For example, there's nothing wrong with having a large router file:
@@ -90,15 +74,14 @@
             ...
         );</pre>
     <p>
-        This kind of files, however large, are still clear and don't produce too much cognitive load. The main
-        reason for that is predictability of their structure.
+        These files, however large, are still clear and easy to read due to the predictability of their structure.
+        Sometimes it's more beneficial to have all the glue logic in one place, rather than scattered around modules.
     </p>
+
+    <h3 id="embracing-whitespace">Embracing whitespace</h3>
     <p>
-        Sometimes it's more beneficial to have all glue-logic at one place, rather than scattered around modules.
-    </p>
-    <p>
-        Another caveat that's connected with large files is whitespace. Trying to make the code look optimised,
-        programmers tend to remove whitespace that improves readability and separates different logical operations.
+        Another caveat connected with large files is whitespace. In an attempt to make the code look concise,
+        programmers tend to remove whitespace, which actually improves readability and separates different logical operations.
     </p>
     <p>We can easily go from this:</p>
     <pre>
@@ -120,19 +103,19 @@
             return data.pretty();
         }</pre>
     <p>
-        With combination of predictable structure and code with enough whitespace, it's possible to
+        With a combination of predictable structure and code with enough whitespace, it's possible to
         drastically improve code readability.
     </p>
-    <p>Code, same as natural text, has a rhythm. A good programmer understands and follows the rhythm.</p>
+    <p>Code, like natural text, has a rhythm. A good programmer understands and follows this rhythm.</p>
 
-    <h3>Respecting chronology with function hoisting</h3>
+    <h3 id="respecting-chronology-with-function-hoisting">Respecting chronology with function hoisting</h3>
     <p>
-        Javascript has an interesting mechanism in <a href="https://developer.mozilla.org/en-US/docs/Glossary/Hoisting" target="_blank">hoisting</a>
-        that can be used to improve the readability in some cases.
+        Javascript has an interesting mechanism called <a href="https://developer.mozilla.org/en-US/docs/Glossary/Hoisting" target="_blank">hoisting</a>
+        that can be used to improve readability in some cases.
     </p>
     <p>
-        In short, hoisting is a process that moves declaration of functions and some variables to the top of their scope,
-        prior to the execution of the code - enabling usage of functions before they're declared.
+        In short, hoisting is a process that moves the declaration of functions and some variables to the top of their scope,
+        prior to the execution of the code - enabling usage of functions before they are declared.
     </p>
     <p>This can be useful to refactor something like this:</p>
     <pre>
@@ -165,12 +148,11 @@
 
         function someRandomUtility    () { ... }
         function anotherRandomUtility () { ... }</pre>
-    <p>
-        <strong>Note:</strong> hoisting
-        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting" target="_blank">
-        doesn't work for classes</a>,
+    <blockquote>
+        Hoisting doesn't work for
+        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_classes#class_declaration_hoisting" target="_blank">classes</a>,
         nor for
         <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#variable_hoisting" target="_blank">
-        <code>let|const</code> keywords</a>.
-    </p>
+        let|const</a> keywords.
+    </blockquote>
 {{/layout.page}}

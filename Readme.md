@@ -12,28 +12,27 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
-    * User
-        * General
-        * Picture: degrade image, extract face with transparent background
-        * Proofreading
-    * Text: Code readability
-        * Fine-tune content, remove `should|must` with `could|can`
-        * Go through code (in text pages, user-facing content) and coding styles
-        * Proofreading
+    * User: picture: extract face with transparent background then degrade image so it has a nice outline
+    * User: add a real link to Instagram
 * Phase 9: run Lighthouse to check website quality: don't forget to run this on every page since this is not a SPA
+    * ACTION: merge `index.css` and `library.css`, AND `index.js` and `library.js` to reduce the number of initial requests; THEN rerun lighthouse
+    * ACTION: Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers.
+    * To run: User page, Code page, Any text page, both Experiment pages
 * Phase 10: repository preparations
     * Structure and clean both `Readme.md` and `revizor/Readme.md`
     * Enable GitHub workflow for PRs (tests for now)
 * Phase 11: public image
     * Revise (delete and archive) GitHub repositories
     * Revise (delete and make private) gist.github
-    * Revise LinkedIn and update links
-    * Revise GitHub profile and update links
+    * Revise LinkedIn and update links (add link to this website)
+    * Revise GitHub profile and update links (add link to this website)
     * Make this repository public
 * PUBLISH
+    * Deployment
+        * Make sure that 404 page is working as expected
+        * Add `Cache-Control: max-age=31536000` response header for all static files
+        * How to collect visit stats?
     * Rename instagram to retrovizor.xyz and update info - the same day the website is published
-    * Make sure that 404 page is working as expected
-    * How to collect visit stats?
 	* Use something like access log parsing - executed by a script on a daily basis and pushed to something like retrovizor.xyz/stats
 	* Collect number of views, URL number of views, referer
 * Phase 12: cycle of improvements from backlog after the first feedback

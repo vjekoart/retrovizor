@@ -50,6 +50,19 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ## Phase Beta
 
+* Thoughts about introducing AI for faster development
+    * Introduce AI butler that can add new features, change existing functionality, and perform refactors
+    * Textual and guided interface that displays pretty code diff once generation is done
+    * Steps: define what you want, provide a solution
+    * Something like predefined prompts in front of Mistral AI (or others)
+        * Provide knowledge about architecture and Revizor in general (coding style, naming conventions,...)
+        * Provide knowledge about steps: help with definition (limit domain scope), generate code, ensure tests are working
+        * Provide knowledge about current codebase
+    * User perspective
+        * Define what needs to be done, spec is also fine-tuned by the AI
+        * See code diff
+        * Fine-tune
+        * Apply
 * 4 starters: minimal, presentational, app-behind-login, combination of two types
     * Basically every web app is one of those when it comes to structure
 * Revizor tests should actually be tests of these 4 starters
