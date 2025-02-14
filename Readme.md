@@ -14,12 +14,16 @@ Bla bla, Retrovizor.xyz website built with revizor
 * Phase 8: content fine-tune
     * User: picture: extract face with transparent background then degrade image so it has a nice outline
     * User: add a real link to Instagram
-* Phase 9: run Lighthouse to check website quality: don't forget to run this on every page since this is not a SPA
+* Phase 9: Lighthouse optimisations
     * ACTION: merge `index.css` and `library.css`, AND `index.js` and `library.js` to reduce the number of initial requests; THEN rerun lighthouse
     * ACTION: Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers.
-    * To run: User page, Code page, Any text page, both Experiment pages
+    * ACTION: User: add width and height attributes to profile image element
+    * ACTION: User: serve image in webp format
+    * ACTION: User: image should have exact dimensions like when rendered
+    * ACTION: Ensure CSP is effective against XSS attacks
+    * ACTION: see https://developers.google.com/search/docs/appearance/structured-data
 * Phase 10: repository preparations
-    * Structure and clean both `Readme.md` and `revizor/Readme.md`
+    * Structure and clean both `Readme.md` and `revizor/Readme.md`: ensure it's in british english
     * Enable GitHub workflow for PRs (tests for now)
 * Phase 11: public image
     * Revise (delete and archive) GitHub repositories

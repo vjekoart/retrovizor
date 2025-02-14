@@ -15,7 +15,7 @@ The advantage of this example is that I can focus on other aspects of the system
 
 Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0e90fc2c1a5e45932414ddbf5d04d).
 
-* Philosophy note: no autonmatic linting, care about what you craft.
+* Philosophy note: no automatic linting, care about what you craft. Although, I wll add automatic lint checker so every error is manually corrected
 
 ## Roadmap
 
@@ -24,6 +24,8 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 * Maybe remove `buildType` property and stick to `native-library-bundle`?
 * What to do with `deploy` and `start` actions in `revizor/index.js`?
 * Prioritise for Filthy Fingers (focus on performance)
+    * Die loudly if expected files are not present, e.g. `src/index.{js|css}`
+        * Document somewhere which files are expected
     * Add timestamps to (some) console outputs
     * Extract `revizor` to separate repository
     * Precompose some web components during the build: for marked, logicless components, create full HTML/CSS on the server-side so TTI is as small as possible (like navigation and title components)
@@ -91,6 +93,7 @@ Inspired by [Product codebase organiztion](https://gist.github.com/vjekoart/83f0
 
 ## Usage
 
+* Files `src/index.js` and `src/index.css` are mandatory, they are entry points for creating CSS and JS bundles used on every subpage
 * `npm run e2e`, make sure to run `npm run build` or `npm run dev` beforehand
 * Index library scripts: use `import "Library/configuration.js";` and similar
 * Other library and index/layout/views scripts: use `import { x } from "Library";`
