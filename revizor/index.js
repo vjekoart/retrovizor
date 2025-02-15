@@ -28,11 +28,6 @@ async function build ()
     }
 }
 
-function deploy ()
-{
-    console.info( "Deploy action incomplete." );
-}
-
 async function dev ()
 {
     try
@@ -87,7 +82,6 @@ export function FrontendApp ()
     (
         [
             build,
-            deploy,
             dev,
             e2e,
             start,

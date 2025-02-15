@@ -1,49 +1,26 @@
 # Retrovizor.xyz
 
-Bla bla, Retrovizor.xyz website built with revizor
+Source code of a personal website [retrovizor.xyz](https://retrovizor.xyz).
 
-## TODO
+Developed with the help of [revizor](revizor).
 
-* ~Phase 1: simple build system~
-* ~Phase 2: design prototype~
-* ~Phase 3: code extraction: library and web components with test mechanisms~
-* ~Phase 4: content & pages, incl. related logic~
-* ~Phase 5: Add single E2E test - user journey~
-* ~Phase 6: code fine-tune~
-* ~Phase 7: UI fine-tune~
-* ~Phase 8: content fine-tune~
-* ~Phase 9: Lighthouse optimisations~
-* Phase 10: repository preparations
-    * Structure and clean both `Readme.md` and `revizor/Readme.md`: ensure it's in british english
-    * Enable GitHub workflow for PRs (tests for now)
-* ~Phase 11: public image~
-* PUBLISH
-    * Deployment
-        * Make sure that 404 page is working as expected
-        * Add `Cache-Control: max-age=31536000` response header for all static files
-        * How to collect visit stats?
-    * Rename instagram to retrovizor.xyz and update info - the same day the website is published
-	* Use something like access log parsing - executed by a script on a daily basis and pushed to something like retrovizor.xyz/stats
-	* Collect number of views, URL number of views, referer
-* Phase 12: cycle of improvements from backlog after the first feedback
+## Usage
 
-### Roadmap stuff (not part of the first version)
+1. Clone the repo.
+2. Ensure Node v20+ is present.
+3. Run `npm install && npm run build`
+4. Serve `dist/` folder via HTTP.
 
-* A strange bug where `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected (most probably affects Revizor)
-* Add support for light and dark theme
-* Add support for linkable headings
-* Add support for "Table of contents" on text pages
-* Add support for better color selector in `retro-experiment-control`
-* Expand styling for code blocks, and transfer content from gist.github.com to standalone pages
-* Expand test coverage for services and components
-* Environment (limited by Revizor)
-    * Migrate to TypeScript
-    * Add `lint` action that lints the whole codebase
-    * Dockerisation
-    * Write E2E tests using Gherkin syntax
+## Roadmap
 
-## Stuff
+* [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
+* [UX] Support for light and dark themes
+* [UX] Support for linkable headings
+* [UX] Introduce sticky "Table of contents" on text pages
+* [UX] Expand color selector functionalities in `retro-experiment`
+* [Tech/UX] Expand styling for code blocks, and transfer content from gist.github.com to standalone pages
+* [Tech] Expand test coverage for services and components
 
-* Author bla bla
-* License is MIT or something bla bla
-* Contributions, comments, opinions are welcome bla bla
+## License
+
+[MIT](License)
