@@ -12,7 +12,6 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * Phase 8: content fine-tune
-    * User: picture: extract face with transparent background then degrade image so it has a nice outline
     * User: add a real link to Instagram
 * Phase 9: Lighthouse optimisations
     * BUG: degradator: downloaded image has buggy file name, for every degradation prefix `.degraded` is added to the file name 
