@@ -2,11 +2,52 @@ import { Blank } from "Library";
 
 const dom =
 {
-    canvas : document.querySelector( "canvas"  ),
-    bright : document.querySelector( "#bright" )
+    bright : document.querySelector( "#bright"               ),
+    canvas : document.querySelector( "canvas"                ),
+    header : document.querySelector( "header[role=\"main\"]" ),
+    navbar : document.querySelector( "retro-nav"             ),
+    title  : document.querySelector( "retro-title"           )
 }
 
-async function main ()
+const state =
+{
+    hidden   : false,
+    interval : null
+}
+
+function main ()
+{
+    initializeBlank();
+    initializeFullscreen();
+}
+
+function eventHandler ()
+{
+    state.interval && window.clearTimeout( state.interval );
+    state.hidden   && showInterface();
+
+    state.interval = window.setTimeout( hideInterface, 7000 );
+}
+
+function hideInterface ()
+{
+    dom.header?.classList.add( "hidden" );
+    dom.navbar?.classList.add( "hidden" );
+    dom.title ?.classList.add( "hidden" );
+
+    state.hidden = true;
+}
+
+function showInterface ()
+{
+    dom.header?.classList.remove( "hidden" );
+    dom.navbar?.classList.remove( "hidden" );
+    dom.title ?.classList.remove( "hidden" );
+
+    state.hidden = false;
+}
+
+async function initializeBlank ()
 {
     const blank = new Blank( dom.canvas );
 
@@ -29,6 +70,19 @@ async function main ()
             console.warn( error );
             alert( "There was an error!" );
         });
+}
+
+function initializeFullscreen ()
+{
+    [
+        "keydown",
+        "mousedown",
+        "mousemove",
+        "scroll",
+        "touchstart"
+    ].forEach( x => window.addEventListener( x, eventHandler ) );
+
+    eventHandler();
 }
 
 window.addEventListener( "DOMContentLoaded", main );

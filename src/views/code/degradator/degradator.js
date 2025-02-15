@@ -85,7 +85,7 @@ function main ()
     {
         if ( state.lastBase64, state.fileName )
         {
-            degrade( state.lastBase64, state.fileName );
+            degrade( state.lastBase64 );
         }
     });
 
@@ -106,7 +106,7 @@ function main ()
         }
     });
 
-    const degrade = ( base64, name ) =>
+    const degrade = ( base64, name = null ) =>
     {
         dom.experiment.setAttribute( "disabled", "disabled" );
         dom.experiment.showPlaceholder = false;
@@ -132,7 +132,8 @@ function main ()
             .degrade( base64 )
             .then( degraded =>
             {
-                state.fileName   = extractFileName( name );
+                name && ( state.fileName = extractFileName( name ) );
+
                 state.lastBase64 = base64;
                 dom.image.src    = degraded;
             })

@@ -1,8 +1,12 @@
-{{#> layout.homepage
+{{#> index
     title=data.views.homepage.title
     viewStyle="views/homepage.css"
     viewScript="views/homepage.js"
 }}
-    <span id="bright" class="hidden"></span>
-    <canvas></canvas>
-{{/layout.homepage}}
+    <header>
+        <retro-title></retro-title>
+        <span id="bright" class="hidden"></span>
+        <canvas></canvas>
+    </header>
+    <retro-nav data-active="index"></retro-nav>
+{{/index}}
