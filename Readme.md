@@ -12,20 +12,11 @@ Bla bla, Retrovizor.xyz website built with revizor
 * ~Phase 6: code fine-tune~
 * ~Phase 7: UI fine-tune~
 * ~Phase 8: content fine-tune~
-* Phase 9: Lighthouse optimisations
-    * ACTION: merge `index.css` and `library.css`, AND `index.js` and `library.js` to reduce the number of initial requests; THEN rerun lighthouse
-    * ACTION: Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. For your bundled JavaScript, adopt a modern script deployment strategy using module/nomodule feature detection to reduce the amount of code shipped to modern browsers, while retaining support for legacy browsers.
-    * ACTION: Ensure CSP is effective against XSS attacks
-    * ACTION: See https://developers.google.com/search/docs/appearance/structured-data
-    * ACTION: See http://linter.structured-data.org/
+* ~Phase 9: Lighthouse optimisations~
 * Phase 10: repository preparations
     * Structure and clean both `Readme.md` and `revizor/Readme.md`: ensure it's in british english
     * Enable GitHub workflow for PRs (tests for now)
-* Phase 11: public image
-    * Revise (delete and archive) GitHub repositories
-    * Revise LinkedIn and update links (add link to this website)
-    * Revise GitHub profile and update links (add link to this website)
-    * Make this repository public
+* ~Phase 11: public image~
 * PUBLISH
     * Deployment
         * Make sure that 404 page is working as expected

@@ -7,8 +7,6 @@ import FS             from "fs/promises";
 import FSSync         from "fs";
 import Path           from "path";
 import PostCSS        from "postcss";
-import { cwd }        from "node:process";
-import URL            from "url";
 
 import LibraryPostCSS          from "./plugins.postcss.js";
 import TransformApplyImportMap from "./plugins.babel.js";
