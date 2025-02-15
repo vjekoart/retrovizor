@@ -158,7 +158,6 @@ async function buildStyles ( configuration, additionalMappings, dev = false )
     const
     {
         sourcePath,
-        templatesBuild,
         templatesPath,
         viewsPath
     } = configuration.internals;
@@ -209,8 +208,8 @@ async function buildStyles ( configuration, additionalMappings, dev = false )
 
 async function copyAssets ( configuration )
 {
-    const { buildPath, buildType } = configuration;
-    const { assetsPath           } = configuration.internals;
+    const { buildPath  } = configuration;
+    const { assetsPath } = configuration.internals;
 
     const fullAssetsPath = Path.join( Bits.getRootPath(), assetsPath            );
     const fullOutputPath = Path.join( Bits.getRootPath(), buildPath, assetsPath );
