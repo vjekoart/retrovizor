@@ -15,10 +15,10 @@ Developed with the help of [revizor](revizor).
 
 ### Based on feedback
 
+* Add license on top of JS/CSS files - goal: website works in IceCat with heavy-privacy plugins"
 * Homepage: it's not really clear what's happening - maybe that's okay, but maybe I'd like to make it explicit that this is an experiment that may change?
-* User: remove a link to filthy-fingers.retrovizor.xyz, or remove the password or change password to something friendly and make it public on retrovizor.xyz
-* Revizor Readme -> Roadmap ( undefined -> undefined ) ???
 * Experiment: Blank: make line length setting safer
+* Deploy to upcloud.com and migrate from DO (see deployment improvements, e.g. default cache)
 
 ### Future
 

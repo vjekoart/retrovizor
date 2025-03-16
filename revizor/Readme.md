@@ -33,7 +33,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
         * styles/      # [Optional] Make possible to import these general styles from `index.css`
 ```
 
-## Roadmap (unrefined)
+## Roadmap
 
 ### Alpha: standalone entity
 
