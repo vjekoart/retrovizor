@@ -57,23 +57,25 @@ canvas
     max-height : 1200px;
 }
 
-#bright
+#loading
 {
     position   : absolute;
     inset      : 50% auto auto 50%;
 
     display    : block;
-    width      : var(--style-grid-half);
-    height     : var(--style-grid-half);
-
-    background : var(--style-color-accent);
+    color      : var(--style-color-light);
 
     opacity    : 1;
     transform  : translate( -50%, -50% );
     transition : opacity var(--transition-duration-long) ease-in-out;
 }
 
-#bright.hidden
+#loading.hidden
 {
     opacity : 0;
+}
+
+#loading em
+{
+    color : var(--style-color-accent);
 }

@@ -13,15 +13,6 @@ Developed with the help of [revizor](revizor).
 
 ## Roadmap
 
-### Based on feedback
-
-* Add license on top of JS/CSS files - goal: website works in IceCat with heavy-privacy plugins"
-* Homepage: it's not really clear what's happening - maybe that's okay, but maybe I'd like to make it explicit that this is an experiment that may change?
-* Experiment: Blank: make line length setting safer
-* Deploy to upcloud.com and migrate from DO (see deployment improvements, e.g. default cache)
-
-### Future
-
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
 * [UX] Support for light and dark themes
 * [UX] Approach where mobile navigation is always at the bottom of the screen, and desktop like now, on top

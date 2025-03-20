@@ -37,6 +37,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
 
 ### Alpha: standalone entity
 
+0. Refactor: split `core.js` and `core.bits.js` to multiple files so they're readable and small.
 1. Define what's part of Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
 2. Remove `buildType` property and stick with `native-library-bundle`
 3. Add initial version of SSR for web components
