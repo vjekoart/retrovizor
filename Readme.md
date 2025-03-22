@@ -11,6 +11,19 @@ Developed with the help of [revizor](revizor).
 3. Run `npm install && npm run build`
 4. Serve `dist/` folder via HTTP.
 
+## Development
+
+1. Clone the repo.
+2. Ensure Node v20+ is present.
+3. Run `npm install`.
+4. Run `npm run dev` to start the development server.
+5. Open `http://localhost:8090/` in the web browser.
+
+## Deployment
+
+* Set `.env` file and run `npm run deploy`.
+* For more information on infrastructure, see `./infrastructure/remote.sh`.
+
 ## Roadmap
 
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor

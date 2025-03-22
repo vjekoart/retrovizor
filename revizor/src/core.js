@@ -1,7 +1,3 @@
-/**
- * Utility library that would be moved to a separate project, i.e. "product codebase organization"
- * library/utility.
- */
 import Chokidar       from "chokidar";
 import FS             from "fs/promises";
 import FSSync         from "fs";

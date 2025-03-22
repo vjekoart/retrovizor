@@ -8,7 +8,8 @@
     "dev": "node index.js dev",
     "start": "node index.js",
     "test": "node index.js test",
-    "e2e": "node index.js e2e"
+    "e2e": "node index.js e2e",
+    "deploy": "./infrastructure/remote.sh deploy"
   },
   "type": "module",
   "author": "vjekoart@pm.me",

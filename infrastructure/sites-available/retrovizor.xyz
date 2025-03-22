@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    # TODO: SSL
+
+    server_name retrovizor.xyz www.retrovizor.xyz;
+
+    root /var/www/retrovizor.xyz/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
