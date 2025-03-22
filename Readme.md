@@ -26,6 +26,9 @@ Developed with the help of [revizor](revizor).
 
 ## Roadmap
 
+* Infrastructure
+    * Switch domain and enable SSL
+    * Create primitive access logs analysis tool for basic visit statistics
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
 * [UX] Support for light and dark themes
 * [UX] Approach where mobile navigation is always at the bottom of the screen, and desktop like now, on top

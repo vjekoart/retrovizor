@@ -7,7 +7,11 @@ server {
     server_name retrovizor.xyz www.retrovizor.xyz;
 
     root /var/www/retrovizor.xyz/html;
+    error_page 404 /404/index.html;
     index index.html;
+
+    expires 1y;
+    add_header Cache-Control "public";
 
     location / {
         try_files $uri $uri/ =404;
