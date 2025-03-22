@@ -27,7 +27,7 @@ Developed with the help of [revizor](revizor).
 ## Roadmap
 
 * Infrastructure
-    * Switch domain and enable SSL
+    * Enable SSL with Let's Encrypt
     * Create primitive access logs analysis tool for basic visit statistics
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
 * [UX] Support for light and dark themes
