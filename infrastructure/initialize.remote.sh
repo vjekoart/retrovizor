@@ -1,10 +1,8 @@
 #!/bin/bash
 set -e
 
-# Constants
 NODEJS="v22.14.0"
 
-# Packages
 echo "Installing packages..."
 
 sudo apt update -y
@@ -15,8 +13,9 @@ sudo apt install nginx -y
 sudo apt install ufw -y
 sudo apt install wget -y
 
-# NodeJS installation
-echo "NodeJS installation..."
+sudo apt install python3 python3-venv libaugeas0 -y
+
+echo "Installing NodeJS..."
 
 NODEJS_TARGET="/usr/local/etc"
 NODEJS_BIN="$NODEJS_TARGET/node-$NODEJS-linux-x64/bin"
@@ -28,15 +27,13 @@ sudo rm /usr/local/bin/npm
 sudo ln -s $NODEJS_BIN/node /usr/local/bin/node
 sudo ln -s $NODEJS_BIN/npm /usr/local/bin/npm
 
-# Firewall
 echo "Configuring firewall..."
 
 sudo ufw allow OpenSSH
 sudo ufw allow 'Nginx Full'
 sudo ufw enable
 
-# Nginx configuration
-echo "Nginx configuration..."
+echo "Configuring Nginx..."
 
 sudo mkdir -p /var/www/retrovizor.xyz/html
 sudo echo "Upcoming..." > /var/www/retrovizor.xyz/html/index.html
@@ -45,8 +42,17 @@ sudo rm /etc/nginx/sites-enabled/default
 
 sudo systemctl restart nginx
 
-# Setup SSL
-echo "Setup SSL..."
-# TODO
+echo "Generating SSL certificates..."
+
+sudo python3 -m venv /opt/certbot/
+sudo /opt/certbot/bin/pip install --upgrade pip
+sudo /opt/certbot/bin/pip install certbot certbot-nginx
+
+sudo ln -s /opt/certbot/bin/certbot /usr/local/bin/certbot
+
+# TODO: how to run this non-interactively
+sudo certbot --nginx
+
+echo "0 0,12 * * * root /opt/certbot/bin/python -c 'import random; import time; time.sleep(random.random() * 3600)' && sudo certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
 
 echo "Done."
