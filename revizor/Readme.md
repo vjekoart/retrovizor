@@ -41,7 +41,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
 1. Define what's part of Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
 2. Remove `buildType` property and stick with `native-library-bundle`
 3. Add initial version of SSR for web components
-4. Dockerisation
+4. Dockerisation: low priority
 5. DX optimisations
     * Die loudly if expected files are not present, e.g. `src/index.{js|css}`
     * Add timestamps to console outputs
