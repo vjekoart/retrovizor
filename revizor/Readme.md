@@ -37,12 +37,17 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
 
 ### Alpha: standalone entity
 
-0. Refactor: split `core.js` and `core.bits.js` to multiple files so they're readable and small.
-1. Define what's part of Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
-2. Remove `buildType` property and stick with `native-library-bundle`
-3. Add initial version of SSR for web components
-4. Dockerisation: low priority
-5. DX optimisations
+0. Rethink Revizor in terms of "personal toolkit for building web applications"
+    * In Readme.md there should be a status message: "Build a static web app, deploy to Debian server with nginx, collect basic analytics."
+1. Toolkit
+    * Add a higher layer of abstraction, transform from "Utility for web frontend" to "Toolkit for web applications"
+    * Find a place for infrastructure scripts
+    * Find a place for analytics script
+    * Refactor: split `core.js` and `core.bits.js` to multiple files so they're readable and small.
+2. Define what's part of frontend Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
+3. Frontend: remove `buildType` property and stick with `native-library-bundle`
+4. Add initial version of SSR for web components
+5. Web frontend DX optimisations
     * Die loudly if expected files are not present, e.g. `src/index.{js|css}`
     * Add timestamps to console outputs
     * Handle file rename during the active `dev` loop
@@ -51,12 +56,12 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Provide test mechanisms for views and templates
     * Enable E2E tests in non-headless mode
     * Extract and generalise test utilities from `retrovizor/src/library/test.utilities.js`
-6. Enable installation via NPM
-7. Expand documentation and add example projects
+6. Expand documentation and add example projects
+7. Integrate with Django
 
 ### Beta: seriously reusable
 
-* Performance
+* Web frontend performance
     * Try streams instead of `writeFile` and similar to improve performance 
     * Try keeping open handles during the active `dev` loop to decrease rebuild time
     * Recompile only affected files in `buildLibrary|buildScripts|buildStyles` functions during the active `dev` mode
