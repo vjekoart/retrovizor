@@ -3,11 +3,20 @@ set -e
 
 cat << EOF
 [Usage]
-$ ./infrastructure/remote.sh send:scripts # Send main script files to server
-$ ./infrastructure/remote.sh send:assets  # Send configurations and similar assets to server
-$ ./infrastructure/remote.sh init         # Run an initialization script
-$ ./infrastructure/remote.sh deploy       # Deploy latest version of retrovizor.xyz
-$ ./infrastructure/remote.sh update       # Update server packages and restart services
+
+$ ./infrastructure/remote.sh send:scripts  # Send main script files to server
+$ ./infrastructure/remote.sh send:assets   # Send configurations and similar assets to server
+$ ./infrastructure/remote.sh init          # Run an initialization script
+$ ./infrastructure/remote.sh init-stats    # Initialize stats.@ subdomain for nginx statistics
+$ ./infrastructure/remote.sh deploy        # Deploy latest version of retrovizor.xyz
+$ ./infrastructure/remote.sh update        # Update server packages and restart services
+
+# Task management
+
+$ ./infrastructure/remote.sh task-list
+$ ./infrastructure/remote.sh task-logs <task-id>
+$ ./infrastructure/remote.sh task-register <relative/script/path> "daily|weekly|monthly"
+$ ./infrastructure/remote.sh task-remove <task-id>
 EOF
 
 source $(pwd)/.env
@@ -31,6 +40,11 @@ if [[ "$1" = "init" ]] ; then
     ssh root@$REMOTE 'initialize'
 fi
 
+if [[ "$1" = "init-stats" ]] ; then
+    echo "Initializing stats.@ on '$REMOTE'..."
+    echo "TODO"
+fi
+
 if [[ "$1" = "deploy" ]] ; then
     echo "Deploying latest 'retrovizor.xyz' version to $REMOTE..."
     ssh root@$REMOTE 'deploy'
@@ -39,4 +53,24 @@ fi
 if [[ "$1" = "update" ]] ; then
     echo "Updating '$REMOTE'..."
     ssh root@$REMOTE 'update'
+fi
+
+if [[ "$1" = "task-list" ]] ; then
+    echo "Tasks on '$REMOTE'..."
+    echo "TODO"
+fi
+
+if [[ "$1" = "task-logs" ]] ; then
+    echo "Task logs for 'TODO' on '$REMOTE'..."
+    echo "TODO"
+fi
+
+if [[ "$1" = "task-register" ]] ; then
+    echo "Registering 'TODO' on '$REMOTE'..."
+    echo "TODO"
+fi
+
+if [[ "$1" = "task-remove" ]] ; then
+    echo "Removing 'TODO' from '$REMOTE'..."
+    echo "TODO"
 fi
