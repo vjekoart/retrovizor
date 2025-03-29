@@ -39,14 +39,16 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
 
 0. Rethink Revizor in terms of "personal toolkit for building web applications"
     * In Readme.md there should be a status message: "Build a static web app, deploy to Debian server with nginx, collect basic analytics."
+    * Think about name "boring-toolkit"
 1. Toolkit
     * Add a higher layer of abstraction, transform from "Utility for web frontend" to "Toolkit for web applications"
-    * Find a place for infrastructure scripts
-    * Find a place for analytics script
+    * Find a place for infrastructure scripts, and generalise, i.e. remove hardcoded "retrovizor.xyz" values
+    * Find a place for analytics script, and generalies, i.e. remove hardcoded "retrovizor.xyz" values
+    * Extend `configuration.json` fields with selection of `infrastructure` and `analytics` types
     * Refactor: split `core.js` and `core.bits.js` to multiple files so they're readable and small.
 2. Define what's part of frontend Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
 3. Frontend: remove `buildType` property and stick with `native-library-bundle`
-4. Add initial version of SSR for web components
+4. [Not Alpha] Add initial version of SSR for web components
 5. Web frontend DX optimisations
     * Die loudly if expected files are not present, e.g. `src/index.{js|css}`
     * Add timestamps to console outputs
@@ -57,7 +59,26 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Enable E2E tests in non-headless mode
     * Extract and generalise test utilities from `retrovizor/src/library/test.utilities.js`
 6. Expand documentation and add example projects
-7. Integrate with Django
+7. First phase of AI: generate application code (that works within Revizor)
+    * Usage: `./infrastructure/remote.sh task-start generate description.txt branch-name "PR name" pr-description-template.txt`
+    * Philosophy: use LLMs as coders that get very detailed architecture/instructions - start low to increase chance of viable program
+    * Premise:
+        * With well-written documentation, specialized LLMs can generate incomplete PRs based on description text/architecture; furthermore
+          LLM can change code based on PR comments (so it's a service that gets invoked by a direct call, and by an automation, e.g. PR review)
+        * If user provides a detailed architecture, LLMs requires smaller context so it's better in implementation
+        * Description should be a collection of high-level guidelines, in the form of list where every list item represents a file, and pseudocode
+          changes inside that file, and symbols that are used (new components, services, and similar)
+        * Description should explicitly state which symbols to use, e.g. these Components and Services from that files
+        * LLM works on a single file, with knowledge of external services and environment, but focuses on code that should be generated
+        * Some best practices are also appended as instructions, second documentation file, e.g. add JSDoc comment above new methods, don't use
+          overly complex statements, write tests for new methods and similar
+    * Prerequisites:
+        * Enable `remote.sh task-start` functionality, to enable execution of NodeJS/Python scripts on remote server
+        * Enable GitHub bot (or my account), that can make code changes and publish a PR
+        * Concise documentation of revizor that explains how things work, and how to add new stuff: both LMM and human friendly
+        * Main `generate` NodeJS/Pyhton function that has (codestral) applet, knowledge of revizor, and sufficient rights to modify and save code
+        * Enable some other `remote.sh task*` functionality, to enable implementation of changes based on the PR review - file by file
+8. Integrate with Django
 
 ### Beta: seriously reusable
 
