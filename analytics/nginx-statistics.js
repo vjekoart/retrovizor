@@ -6,9 +6,17 @@
  * Array<{ year: 2025, month: "mar", requests: N, "unique-ips": N, paths: Array<{ url: "/", count: N }> }>
  */
 
-// TODO: ENV or default values
-const _LOGS_PATH =  "";
-const _STATS_PATH = "";
+const _DOMAIN = process.env.DOMAIN;
+
+if ( !_DOMAIN )
+{
+    console.error( "Missing DOMAIN!" );
+    process.exit( 1 );
+}
+
+// TODO: change default value to retrovizor.xyz specific log file (requires modification of nginx configuration)
+const _PATH_LOGS  = process.env.PATH_LOGS  ?? "/var/log/nginx/access.log";
+const _PATH_STATS = process.env.PATH_STATS ?? `/var/www/stats.${ _DOMAIN }/html/index.html`;
 
 async function analyse ( structured )
 {}
@@ -24,33 +32,33 @@ async function analyse ( structured )
 async function createReport ( jsonData )
 {}
 
-async function extractMonthly ( logs )
+async function extractMonth ( logs )
 {}
 
-async function getAccessLogs ()
+async function getAccessLogs ( pathLogs )
 {}
 
 /**
  * Append HTML visits report (string) to master report located on the path
  * that's provided.
  */
-async function mergeReport ( report, masterPath )
+async function mergeReport ( pathMasterReport, report )
 {}
 
-async function textToJSON ( text )
+async function structure ( text )
 {}
 
 async function main ()
 {
     console.log( `[${ new Date().toISOString() }] nginx-statistics.js:main` );
 
-    const logs       = await getAccessLogs ( _LOGS_PATH );
-    const monthly    = await extractMonthly( logs       );
-    const structured = await textToJSON    ( monthly    );
-    const analysed   = await analyse       ( structured );
-    const report     = await createReport  ( analysed   );
+    const logs       = await getAccessLogs( _PATH_LOGS );
+    const monthly    = await extractMonth ( logs       );
+    const structured = await structure    ( monthly    );
+    const analysed   = await analyse      ( structured );
+    const report     = await createReport ( analysed   );
 
-    await mergeReport( `${ _STATS_PATH }/index.html` );
+    await mergeReport( _PATH_STATS, report );
 }
 
 main();
