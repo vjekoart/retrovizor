@@ -5,12 +5,12 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name retrovizor.xyz www.retrovizor.xyz;
+    server_name stats.retrovizor.xyz www.stats.retrovizor.xyz;
 
-    access_log /var/log/nginx/retrovizor.xyz.access.log;
-    error_log /var/log/nginx/retrovizor.xyz.error.log;
+    access_log /var/log/nginx/stats.retrovizor.xyz.access.log;
+    error_log /var/log/nginx/stats.retrovizor.xyz.error.log;
 
-    root /var/www/retrovizor.xyz/html;
+    root /var/www/stats.retrovizor.xyz/html;
     error_page 404 /404/index.html;
     index index.html;
 

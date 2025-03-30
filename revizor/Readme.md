@@ -42,6 +42,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Think about name "boring-toolkit"
 1. Toolkit
     * Add a higher layer of abstraction, transform from "Utility for web frontend" to "Toolkit for web applications"
+    * Introduce some kind of templating mechanism when generating/initializing/updating the project (the whole management CLI needs ideation)
     * Find a place for infrastructure scripts, and generalise, i.e. remove hardcoded "retrovizor.xyz" values
     * Find a place for analytics script, and generalies, i.e. remove hardcoded "retrovizor.xyz" values
     * Extend `configuration.json` fields with selection of `infrastructure` and `analytics` types
@@ -60,7 +61,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Extract and generalise test utilities from `retrovizor/src/library/test.utilities.js`
 6. Expand documentation and add example projects
 7. First phase of AI: generate application code (that works within Revizor)
-    * Usage: `./infrastructure/remote.sh task-start generate description.txt branch-name "PR name" pr-description-template.txt`
+    * Usage: `revizor run generate description.txt branch-name "PR name" pr-description-template.txt`
     * Philosophy: use LLMs as coders that get very detailed architecture/instructions - start low to increase chance of viable program
     * Premise:
         * With well-written documentation, specialized LLMs can generate incomplete PRs based on description text/architecture; furthermore
@@ -73,11 +74,11 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
         * Some best practices are also appended as instructions, second documentation file, e.g. add JSDoc comment above new methods, don't use
           overly complex statements, write tests for new methods and similar
     * Prerequisites:
-        * Enable `remote.sh task-start` functionality, to enable execution of NodeJS/Python scripts on remote server
-        * Enable GitHub bot (or my account), that can make code changes and publish a PR
         * Concise documentation of revizor that explains how things work, and how to add new stuff: both LMM and human friendly
         * Main `generate` NodeJS/Pyhton function that has (codestral) applet, knowledge of revizor, and sufficient rights to modify and save code
-        * Enable some other `remote.sh task*` functionality, to enable implementation of changes based on the PR review - file by file
+    * Future (team) usage:
+        * Enable something like a GitHub bot for code generation on servers that can be triggered via an API
+        * Watch for review comments on PRs, and automatically fix/adjust code based on comments.
 8. Integrate with Django
 
 ### Beta: seriously reusable

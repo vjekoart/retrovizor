@@ -28,7 +28,7 @@ Developed with the help of [revizor](revizor).
 
 * Primitive analytics
     * Goal: have stats.retrovizor.xyz that's automatically generated every day for the past day
-    * Add `./infrastructure/remote.sh init-stats` that sets up stats.retrovizor.xyz subdomain with placeholder `index.html`
+    * Change `./infrastructure/deploy.remote.sh` to keep Git and artifacts, add option to just refresh the repo on server
     * Implement `./infrastructure/remote.sh task-register analytics/nginx-statistics.js daily|weekly|monthly`
     * Implement `./infrastructure/remote.sh task-list|task-remove id|task-logs id`
     * Implementation of task-* functionality

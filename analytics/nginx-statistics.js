@@ -14,8 +14,7 @@ if ( !_DOMAIN )
     process.exit( 1 );
 }
 
-// TODO: change default value to retrovizor.xyz specific log file (requires modification of nginx configuration)
-const _PATH_LOGS  = process.env.PATH_LOGS  ?? "/var/log/nginx/access.log";
+const _PATH_LOGS  = process.env.PATH_LOGS  ?? `/var/log/nginx/${ _DOMAIN }.access.log`;
 const _PATH_STATS = process.env.PATH_STATS ?? `/var/www/stats.${ _DOMAIN }/html/index.html`;
 
 async function analyse ( structured )

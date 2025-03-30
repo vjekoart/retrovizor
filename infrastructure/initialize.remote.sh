@@ -38,6 +38,12 @@ echo "Configuring Nginx..."
 sudo mkdir -p /var/www/retrovizor.xyz/html
 sudo echo "Upcoming..." > /var/www/retrovizor.xyz/html/index.html
 sudo ln -s /etc/nginx/sites-available/retrovizor.xyz /etc/nginx/sites-enabled/
+
+# TODO: this should be optional
+sudo mkdir -p /var/www/stats.retrovizor.xyz/html
+sudo echo "Upcoming..." > /var/www/stats.retrovizor.xyz/html/index.html
+sudo ln -s /etc/nginx/sites-available/stats.retrovizor.xyz /etc/nginx/sites-enabled/
+
 sudo rm /etc/nginx/sites-enabled/default
 
 sudo systemctl restart nginx
