@@ -59,7 +59,7 @@ async function analyse ( text )
  */
 async function createReport ( analysis, periodName )
 {
-    console.info( `Creating a report for ${ periodName }` );
+    console.info( `Creating a report for '${ periodName }'...` );
 
     const paths = analysis.paths.map( el => `<li><strong>"${ el.url }"</strong>: ${ el.count }</li>` ).join( "" );
 
@@ -109,6 +109,8 @@ async function getAccessLogs ( pathLogs, dateMatch )
 async function mergeReport ( pathMasterReport, report )
 {
     console.info( `Merging a report to '${ pathMasterReport }'...` );
+
+    // TODO: check if report with 'periodName' already exists and replace it if yes
 
     await writeFile( pathMasterReport, report, { flag: "a" } );
 }

@@ -91,3 +91,4 @@ if [[ "$1" = "task:cron:logs" ]] ; then
     echo "Reading cron logs on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:logs"
 fi
+
