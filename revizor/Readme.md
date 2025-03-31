@@ -73,8 +73,10 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
         * LLM works on a single file, with knowledge of external services and environment, but focuses on code that should be generated
         * Some best practices are also appended as instructions, second documentation file, e.g. add JSDoc comment above new methods, don't use
           overly complex statements, write tests for new methods and similar
+            * Different doc for different language/technology, e.g. Django backend vs JS frontend
     * Prerequisites:
         * Concise documentation of revizor that explains how things work, and how to add new stuff: both LMM and human friendly
+            * Different documentations for different language/technology, e.g. Django backend vs JS frontend
         * Main `generate` NodeJS/Pyhton function that has (codestral) applet, knowledge of revizor, and sufficient rights to modify and save code
     * Future (team) usage:
         * Enable something like a GitHub bot for code generation on servers that can be triggered via an API

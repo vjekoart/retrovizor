@@ -35,9 +35,7 @@ Developed with the help of [revizor](revizor).
         * Task is NodeJS a script inside retrovizor.xyz repository that knows how to work inside when dependecies are installed
         * Set of shell scripts that use cron to schedule execution of NodeJS scripts inside a repository, and stores logs on predefined location
         * Ideally, avoid having a .spec file or something where all defined tasks are listed on the remote machine
-        * Logs: test console.log|info and console.error to ensure that logs are saved as expected (separate error and standard logs)
-    * Implementation of analytics/nginx-statistics.js
-        * Each run will override statistics for current month, or add entry for the new month
+        * Logs: test console.log|info and console.error to ensure that logs are saved as expected - store all logs in a single file
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
 * [UX] Support for light and dark themes
 * [UX] Approach where mobile navigation is always at the bottom of the screen, and desktop like now, on top

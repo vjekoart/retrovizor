@@ -2,5 +2,6 @@ dist/
 node_modules/
 temp/
 tmp/
+*.tmp
 *swp
 .env
