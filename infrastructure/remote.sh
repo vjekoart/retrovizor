@@ -14,11 +14,11 @@ $ ./infrastructure/remote.sh update        # Update server packages and restart 
 
 # Task management
 
-$ ./infrastructure/remote.sh task-list
-$ ./infrastructure/remote.sh task-run <task-name|task-id> TODO: which approach to use?
-$ ./infrastructure/remote.sh task-logs <task-id>
-$ ./infrastructure/remote.sh task-register <relative/script/path> "daily|weekly|monthly"
-$ ./infrastructure/remote.sh task-remove <task-id>
+$ ./infrastructure/remote.sh task:run <relative/path>
+$ ./infrastructure/remote.sh task:cron:list
+$ ./infrastructure/remote.sh task:cron:set <relative/path> "daily|weekly|monthly"
+$ ./infrastructure/remote.sh task:cron:unset <relative/path>
+$ ./infrastructure/remote.sh task:cron:logs
 EOF
 
 source $(pwd)/.env
@@ -29,6 +29,7 @@ if [[ "$1" = "send:scripts" ]] ; then
     scp $(pwd)/infrastructure/initialize.remote.sh root@$REMOTE:/usr/local/bin/initialize
     scp $(pwd)/infrastructure/deploy.remote.sh root@$REMOTE:/usr/local/bin/deploy
     scp $(pwd)/infrastructure/update.remote.sh root@$REMOTE:/usr/local/bin/update
+    scp $(pwd)/infrastructure/task.remote.sh root@$REMOTE:/usr/local/bin/task
 fi
 
 if [[ "$1" = "send:assets" ]] ; then
@@ -66,27 +67,27 @@ if [[ "$1" = "update" ]] ; then
     ssh root@$REMOTE 'update'
 fi
 
-if [[ "$1" = "task-list" ]] ; then
-    echo "Tasks on '$REMOTE'..."
-    echo "TODO"
-fi
-
-if [[ "$1" = "task-run" ]] ; then
+if [[ "$1" = "task:run" ]] ; then
     echo "Running task '$2' on '$REMOTE'..."
-    echo "TODO"
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task run $2"
 fi
 
-if [[ "$1" = "task-logs" ]] ; then
-    echo "Task logs for 'TODO' on '$REMOTE'..."
-    echo "TODO"
+if [[ "$1" = "task:cron:list" ]] ; then
+    echo "Listing cron tasks on '$REMOTE'..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:list"
 fi
 
-if [[ "$1" = "task-register" ]] ; then
-    echo "Registering 'TODO' on '$REMOTE'..."
-    echo "TODO"
+if [[ "$1" = "task:cron:set" ]] ; then
+    echo "Setting cron task '$2' on a '$3' basis on '$REMOTE'..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:set $2 $3"
 fi
 
-if [[ "$1" = "task-remove" ]] ; then
-    echo "Removing 'TODO' from '$REMOTE'..."
-    echo "TODO"
+if [[ "$1" = "task:cron:unset" ]] ; then
+    echo "Unsetting a cron task '$2' on '$REMOTE'..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:unset $2"
+fi
+
+if [[ "$1" = "task:cron:logs" ]] ; then
+    echo "Reading cron logs on '$REMOTE'..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:logs"
 fi

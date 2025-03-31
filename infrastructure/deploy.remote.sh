@@ -12,6 +12,9 @@ if [[ "$1" = "update" ]] ; then
 
     rm -rf $BUILD_DIR
     git clone --depth=1 $REPO $BUILD_DIR
+    pushd $BUILD_DIR
+    npm ci
+    popd
 
     echo "Done."
 fi
@@ -27,7 +30,7 @@ if [[ "$1" = "build" ]] ; then
     echo "Replacing artefacts..."
 
     rm -rf "$TARGET_DIR/*"
-    cp -r $BUILD_DIR/dist/* "$TARGET_DIR/"
+    cp -r "$BUILD_DIR/dist/*" "$TARGET_DIR/"
 
     echo "Done."
 fi

@@ -27,7 +27,7 @@ const _PATH_STATS = process.env.PATH_STATS ?? `/var/www/stats.${ _DOMAIN }/html/
  */
 async function analyse ( text )
 {
-    console.info( "analyse" );
+    console.info( "Analysing raw logs..." );
 
     const paths = {}
     const ips   = {}
@@ -59,7 +59,7 @@ async function analyse ( text )
  */
 async function createReport ( analysis, periodName )
 {
-    console.info( "createReport", periodName, analysis );
+    console.info( `Creating a report for ${ periodName }` );
 
     const paths = analysis.paths.map( el => `<li><strong>"${ el.url }"</strong>: ${ el.count }</li>` ).join( "" );
 
@@ -84,7 +84,7 @@ async function createReport ( analysis, periodName )
  */
 async function getAccessLogs ( pathLogs, dateMatch )
 {
-    console.info( "getAccessLogs", pathLogs, dateMatch );
+    console.info( `Retrieving access logs on '${ pathLogs }' for period '${ dateMatch }'...` );
 
     const results = [];
     const file    = await open( pathLogs );
@@ -108,7 +108,7 @@ async function getAccessLogs ( pathLogs, dateMatch )
  */
 async function mergeReport ( pathMasterReport, report )
 {
-    console.info( "mergeReport", pathMasterReport, report );
+    console.info( `Merging a report to '${ pathMasterReport }'...` );
 
     await writeFile( pathMasterReport, report, { flag: "a" } );
 }
@@ -125,6 +125,8 @@ async function main ()
     const report     = await createReport ( analysed, currentMonth   );
 
     await mergeReport( _PATH_STATS, report );
+
+    console.info( "Done." );
 }
 
 main();
