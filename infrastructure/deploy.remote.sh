@@ -1,25 +1,33 @@
 #!/bin/bash
 set -e
 
-TMP_DIR="/tmp/retrovizor"
-TARGET_DIR="/var/www/retrovizor.xyz/html"
+# DOMAIN
+# REPO
 
-echo "Cloning the code..."
+BUILD_DIR="/var/local/$DOMAIN"
+TARGET_DIR="/var/www/$DOMAIN/html"
 
-rm -rf $TMP_DIR
-git clone --depth=1 https://github.com/vjekoart/retrovizor.git $TMP_DIR
+if [[ "$1" = "update" ]] ; then
+    echo "Updating the code..."
 
-echo "Building the project..."
+    rm -rf $BUILD_DIR
+    git clone --depth=1 $REPO $BUILD_DIR
 
-pushd $TMP_DIR
-npm ci
-npm run build
-popd
+    echo "Done."
+fi
 
-echo "Replacing artefacts..."
+if [[ "$1" = "build" ]] ; then
+    echo "Building the project..."
 
-rm -rf "$TARGET_DIR/*"
-cp -r $TMP_DIR/dist/* "$TARGET_DIR/"
-rm -rf $TMP_DIR
+    pushd $BUILD_DIR
+    npm ci
+    npm run build
+    popd
 
-echo "Done."
+    echo "Replacing artefacts..."
+
+    rm -rf "$TARGET_DIR/*"
+    cp -r $BUILD_DIR/dist/* "$TARGET_DIR/"
+
+    echo "Done."
+fi

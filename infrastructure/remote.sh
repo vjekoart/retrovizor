@@ -7,7 +7,9 @@ cat << EOF
 $ ./infrastructure/remote.sh send:scripts  # Send main script files to server
 $ ./infrastructure/remote.sh send:assets   # Send configurations and similar assets to server
 $ ./infrastructure/remote.sh init          # Run an initialization script (including "stats" for now)
-$ ./infrastructure/remote.sh deploy        # Deploy latest version of retrovizor.xyz
+$ ./infrastructure/remote.sh deploy        # Deploy latest version of the web app
+$ ./infrastructure/remote.sh deploy:build  # Build and publish latest version of the web app
+$ ./infrastructure/remote.sh deploy:update # Fetch latest version of the repository
 $ ./infrastructure/remote.sh update        # Update server packages and restart services
 
 # Task management
@@ -32,10 +34,10 @@ fi
 if [[ "$1" = "send:assets" ]] ; then
     echo "Sending assets to '$REMOTE'..."
 
-    scp $(pwd)/infrastructure/sites-available/retrovizor.xyz root@$REMOTE:/etc/nginx/sites-available
+    scp $(pwd)/infrastructure/sites-available/$DOMAIN root@$REMOTE:/etc/nginx/sites-available
 
     # TODO: this should be optional
-    scp $(pwd)/infrastructure/sites-available/stats.retrovizor.xyz root@$REMOTE:/etc/nginx/sites-available
+    scp $(pwd)/infrastructure/sites-available/stats.$DOMAIN root@$REMOTE:/etc/nginx/sites-available
 fi
 
 if [[ "$1" = "init" ]] ; then
@@ -44,8 +46,19 @@ if [[ "$1" = "init" ]] ; then
 fi
 
 if [[ "$1" = "deploy" ]] ; then
-    echo "Deploying latest 'retrovizor.xyz' version to $REMOTE..."
-    ssh root@$REMOTE 'deploy'
+    echo "Deploying the latest web app version to $REMOTE..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
+    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+fi
+
+if [[ "$1" = "deploy:build" ]] ; then
+    echo "Building and publishing the latest web app version to $REMOTE..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+fi
+
+if [[ "$1" = "deploy:update" ]] ; then
+    echo "Fetching the latest version of the repository to $REMOTE..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
 fi
 
 if [[ "$1" = "update" ]] ; then
