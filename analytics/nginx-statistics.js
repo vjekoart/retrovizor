@@ -53,19 +53,19 @@ async function analyse ( text )
 /**
  * Creates a report of the analysis in the HTML format. See return statement for more details.
  *
- * @param { function analyse } analysis    Structured analysis results.
- * @param { string           } periodName  Name of the analysis period for display purposes.
+ * @param { function analyse } analysis      Structured analysis results.
+ * @param { string           } reportPeriod  Name of the analysis period for display purposes.
  * @return { string }
  */
-async function createReport ( analysis, periodName )
+async function createReport ( analysis, reportPeriod )
 {
-    console.info( `Creating a report for '${ periodName }'...` );
+    console.info( `Creating a report for '${ reportPeriod }'...` );
 
     const paths = analysis.paths.map( el => `<li><strong>"${ el.url }"</strong>: ${ el.count }</li>` ).join( "" );
 
     return `
         <section>
-            <h2>${ periodName }</h2>
+            <h2>${ reportPeriod }</h2>
             <ul>
                 <li>Requests: <strong>${ analysis.requests }</strong></li>
                 <li>Unique: <strong>${ analysis.unique }</strong></li>
@@ -97,6 +97,8 @@ async function getAccessLogs ( pathLogs, dateMatch )
         }
     }
 
+    await file.close();
+
     return results;
 }
 
@@ -105,14 +107,37 @@ async function getAccessLogs ( pathLogs, dateMatch )
  *
  * @param { string } pathMasterReport  Path to a report HTML file.
  * @param { string } report            HTML snippet representing a single report.
+ * @param { string } reportPeriod      Name of the analysis period. Used for display purposes.
  */
-async function mergeReport ( pathMasterReport, report )
+async function mergeReport ( pathMasterReport, report, reportPeriod )
 {
     console.info( `Merging a report to '${ pathMasterReport }'...` );
 
-    // TODO: check if report with 'periodName' already exists and replace it if yes
+    let reportContent = report;
+    
+    // TODO: since I'm using a 'node-html-parser' I can extend the structure to get a proper HTML document
 
-    await writeFile( pathMasterReport, report, { flag: "a" } );
+    // TODO: code below is not relevant anymore, use 'node-html-parser' package
+    try
+    {
+        const existing = await readFile( pathMasterReport, { encoding : "utf8" } );
+
+        if ( existing )
+        {
+            if ( existing.includes( reportPeriod ) )
+            {
+                // TODO: update reportPeriod
+            }
+            else
+            {
+                reportContent = existing + report + "\n";
+            }
+        }
+    }
+    finally
+    {
+       await writeFile( pathMasterReport, reportContent ); 
+    }
 }
 
 async function main ()
@@ -120,13 +145,13 @@ async function main ()
     console.info( "Running nginx-statistics.js ..." );
 
     const today        = new Date().toDateString().split( " " );
-    const currentMonth = `${ today[ 1 ] }/${ today[ 3 ] }`;
+    const reportPeriod = `${ today[ 1 ] }/${ today[ 3 ] }`;
 
-    const logs       = await getAccessLogs( _PATH_LOGS, currentMonth );
+    const logs       = await getAccessLogs( _PATH_LOGS, reportPeriod );
     const analysed   = await analyse      ( logs                     );
-    const report     = await createReport ( analysed, currentMonth   );
+    const report     = await createReport ( analysed, reportPeriod   );
 
-    await mergeReport( _PATH_STATS, report );
+    await mergeReport( _PATH_STATS, report, reportPeriod );
 
     console.info( "Done." );
 }
