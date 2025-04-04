@@ -30,10 +30,6 @@ Developed with the help of [revizor](revizor).
 
 ## Roadmap
 
-* Primitive analytics
-    * Goal: have stats.retrovizor.xyz that's automatically generated every day for the past day
-    * analytics/nginx-statistics.js:mergeReport: replace report for the same period if exists
-    * infrastructure/task.remote.sh: implement missing functions
 * [BUG] Worker `close-your-eyes.worker.js` doesn't work for `native` build type, but `image-degradator.worker.js` works as expected; most probably affects Revizor
 * [UX] Support for light and dark themes
 * [UX] Approach where mobile navigation is always at the bottom of the screen, and desktop like now, on top

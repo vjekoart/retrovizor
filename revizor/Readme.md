@@ -35,7 +35,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
 
 ## Roadmap
 
-### Alpha: standalone entity
+### Alpha.1: standalone entity
 
 0. Rethink Revizor in terms of "personal toolkit for building web applications"
     * In Readme.md there should be a status message: "Build a static web app, deploy to Debian server with nginx, collect basic analytics."
@@ -49,8 +49,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Refactor: split `core.js` and `core.bits.js` to multiple files so they're readable and small.
 2. Define what's part of frontend Revizor when it comes to entry files, e.g. `index.html`, `index.css`, `index.js`
 3. Frontend: remove `buildType` property and stick with `native-library-bundle`
-4. [Not Alpha] Add initial version of SSR for web components
-5. Web frontend DX optimisations
+4. Web frontend DX optimisations
     * Die loudly if expected files are not present, e.g. `src/index.{js|css}`
     * Add timestamps to console outputs
     * Handle file rename during the active `dev` loop
@@ -59,8 +58,8 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Provide test mechanisms for views and templates
     * Enable E2E tests in non-headless mode
     * Extract and generalise test utilities from `retrovizor/src/library/test.utilities.js`
-6. Expand documentation and add example projects
-7. First phase of AI: generate application code (that works within Revizor)
+5. Expand documentation and add example projects
+6. First phase of AI: generate application code (that works within Revizor)
     * Usage: `revizor run generate description.txt branch-name "PR name" pr-description-template.txt`
     * Philosophy: use LLMs as coders that get very detailed architecture/instructions - start low to increase chance of viable program
     * Premise:
@@ -81,7 +80,13 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Future (team) usage:
         * Enable something like a GitHub bot for code generation on servers that can be triggered via an API
         * Watch for review comments on PRs, and automatically fix/adjust code based on comments.
-8. Integrate with Django
+7. Integrate with Django
+
+### Alpha.2: production optimisations
+
+* Dockerisation, or some other way to ensure environment requirements
+* Infrastructure: introduce log rotation on nginx
+* Frontend: add initial version of SSR for web components
 
 ### Beta: seriously reusable
 

@@ -16,9 +16,11 @@ $ ./infrastructure/remote.sh update        # Update server packages and restart 
 
 $ ./infrastructure/remote.sh task:run <relative/path> args
 $ ./infrastructure/remote.sh task:cron:list
-$ ./infrastructure/remote.sh task:cron:set <relative/path> "daily|weekly|monthly"
+$ ./infrastructure/remote.sh task:cron:set <relative/path> "@daily|@weekly|@monthly|<cron expression>"
 $ ./infrastructure/remote.sh task:cron:unset <relative/path>
 $ ./infrastructure/remote.sh task:cron:logs
+
+Tasks are NodeJS scripts placed inside the repository.
 EOF
 
 source $(pwd)/.env
