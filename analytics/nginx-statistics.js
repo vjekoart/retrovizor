@@ -1,10 +1,20 @@
 /**
  * Create primitive web visits statistics based on nginx access logs.
  */
-import { open, writeFile } from "node:fs/promises";
+import
+{
+    open,
+    readFile, 
+    writeFile
+} from "node:fs/promises";
+
+import { parse } from "node-html-parser";
 
 /**
  * Input arguments
+ *
+ * ENV: PATH_LOGS, PATH_STATS
+ * Arguments: period, e.g. "Mar:2025"
  */
 const _DOMAIN = process.env.DOMAIN;
 
@@ -16,6 +26,7 @@ if ( !_DOMAIN )
 
 const _PATH_LOGS  = process.env.PATH_LOGS  ?? `/var/log/nginx/${ _DOMAIN }.access.log`;
 const _PATH_STATS = process.env.PATH_STATS ?? `/var/www/stats.${ _DOMAIN }/html/index.html`;
+const _PERIOD     = process.argv[ 2 ] ?? null;
 
 /**
  * Analyse nginx access log lines and produce statistics in JSON format.
@@ -64,7 +75,7 @@ async function createReport ( analysis, reportPeriod )
     const paths = analysis.paths.map( el => `<li><strong>"${ el.url }"</strong>: ${ el.count }</li>` ).join( "" );
 
     return `
-        <section>
+        <section data-period="${ reportPeriod }">
             <h2>${ reportPeriod }</h2>
             <ul>
                 <li>Requests: <strong>${ analysis.requests }</strong></li>
@@ -113,41 +124,57 @@ async function mergeReport ( pathMasterReport, report, reportPeriod )
 {
     console.info( `Merging a report to '${ pathMasterReport }'...` );
 
-    let reportContent = report;
-    
-    // TODO: since I'm using a 'node-html-parser' I can extend the structure to get a proper HTML document
+    const getInitialMarkdown = report => `<!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8" />
+                <title>Stats: ${ _DOMAIN }</title>
+            </head>
+            <body>
+                ${ report }
+            </body>
+        </html>`;
 
-    // TODO: code below is not relevant anymore, use 'node-html-parser' package
+    let reportContent;
+    
     try
     {
         const existing = await readFile( pathMasterReport, { encoding : "utf8" } );
+        const parsed   = parse( existing );
+        const reported = parsed.querySelector( `[data-period="${ reportPeriod }"]` );
 
-        if ( existing )
+        if ( !reported )
         {
-            if ( existing.includes( reportPeriod ) )
-            {
-                // TODO: update reportPeriod
-            }
-            else
-            {
-                reportContent = existing + report + "\n";
-            }
+            console.info( `...appending report for '${ reportPeriod }'` );
         }
+        else
+        {
+            console.info( `...updating existing report for '${ reportPeriod }'` );
+        }
+    }
+    catch ( error )
+    {
+        console.info( "...failed to modify or append with error:", error      );
+        console.info( `...creating an initial report for '${ reportPeriod }'` );
+
+        reportContent = getInitialMarkdown( report );
     }
     finally
     {
-       await writeFile( pathMasterReport, reportContent ); 
+        if ( !reportContent ) return;
+
+        await writeFile( pathMasterReport, reportContent  ); 
     }
 }
 
 async function main ()
 {
-    console.info( "Running nginx-statistics.js ..." );
+    console.info( `Running nginx-statistics.js with '${ _PERIOD }'...` );
 
     const today        = new Date().toDateString().split( " " );
-    const reportPeriod = `${ today[ 1 ] }/${ today[ 3 ] }`;
+    const reportPeriod = _PERIOD ?? `${ today[ 1 ] }:${ today[ 3 ] }`;
 
-    const logs       = await getAccessLogs( _PATH_LOGS, reportPeriod );
+    const logs       = await getAccessLogs( _PATH_LOGS, reportPeriod.split( ":" ).join( "/" ) );
     const analysed   = await analyse      ( logs                     );
     const report     = await createReport ( analysed, reportPeriod   );
 
