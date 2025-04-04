@@ -14,7 +14,7 @@ $ ./infrastructure/remote.sh update        # Update server packages and restart 
 
 # Task management
 
-$ ./infrastructure/remote.sh task:run <relative/path>
+$ ./infrastructure/remote.sh task:run <relative/path> args
 $ ./infrastructure/remote.sh task:cron:list
 $ ./infrastructure/remote.sh task:cron:set <relative/path> "daily|weekly|monthly"
 $ ./infrastructure/remote.sh task:cron:unset <relative/path>
@@ -68,8 +68,8 @@ if [[ "$1" = "update" ]] ; then
 fi
 
 if [[ "$1" = "task:run" ]] ; then
-    echo "Running task '$2' on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task run $2"
+    echo "Running task '$2 ${@:3}' on '$REMOTE'..."
+    ssh root@$REMOTE "DOMAIN=$DOMAIN task run $2 ${@:3}"
 fi
 
 if [[ "$1" = "task:cron:list" ]] ; then

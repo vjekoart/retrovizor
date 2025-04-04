@@ -139,18 +139,25 @@ async function mergeReport ( pathMasterReport, report, reportPeriod )
     
     try
     {
-        const existing = await readFile( pathMasterReport, { encoding : "utf8" } );
-        const parsed   = parse( existing );
-        const reported = parsed.querySelector( `[data-period="${ reportPeriod }"]` );
+        const content      = await readFile( pathMasterReport, { encoding : "utf8" } );
+        const parsed       = parse( content );
+        const existingNode = parsed.querySelector( `[data-period="${ reportPeriod }"]` );
+        const reportNode   = parse( report );
 
-        if ( !reported )
+        if ( !existingNode )
         {
             console.info( `...appending report for '${ reportPeriod }'` );
+
+            parsed.querySelector( "body" ).appendChild( reportNode );
         }
         else
         {
             console.info( `...updating existing report for '${ reportPeriod }'` );
+
+            existingNode.replaceWith( reportNode );
         }
+
+        reportContent = parsed.toString();
     }
     catch ( error )
     {
