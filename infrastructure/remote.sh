@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+if [[ "$1" = "help" ]] || [[ -z "$1" ]] ; then
+
 cat << EOF
 [Usage]
 
@@ -10,7 +12,7 @@ $ ./infrastructure/remote.sh init          # Run an initialization script (inclu
 $ ./infrastructure/remote.sh deploy        # Deploy latest version of the web app
 $ ./infrastructure/remote.sh deploy:build  # Build and publish latest version of the web app
 $ ./infrastructure/remote.sh deploy:update # Fetch latest version of the repository
-$ ./infrastructure/remote.sh update        # Update server packages and restart services
+$ ./infrastructure/remote.sh server:update        # Update server packages and restart services
 
 # Task management
 
@@ -23,6 +25,9 @@ $ ./infrastructure/remote.sh task:cron:logs
 Tasks are NodeJS scripts placed inside the repository.
 EOF
 
+    exit
+fi
+
 source $(pwd)/.env
 
 if [[ "$1" = "send:scripts" ]] ; then
@@ -32,6 +37,7 @@ if [[ "$1" = "send:scripts" ]] ; then
     scp $(pwd)/infrastructure/deploy.remote.sh root@$REMOTE:/usr/local/bin/deploy
     scp $(pwd)/infrastructure/update.remote.sh root@$REMOTE:/usr/local/bin/update
     scp $(pwd)/infrastructure/task.remote.sh root@$REMOTE:/usr/local/bin/task
+    exit
 fi
 
 if [[ "$1" = "send:assets" ]] ; then
@@ -41,56 +47,68 @@ if [[ "$1" = "send:assets" ]] ; then
 
     # TODO: this should be optional
     scp $(pwd)/infrastructure/sites-available/stats.$DOMAIN root@$REMOTE:/etc/nginx/sites-available
+    exit
 fi
 
 if [[ "$1" = "init" ]] ; then
     echo "Initializing '$REMOTE'..."
     ssh root@$REMOTE 'initialize'
+    exit
 fi
 
 if [[ "$1" = "deploy" ]] ; then
     echo "Deploying the latest web app version to $REMOTE..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
     ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+    exit
 fi
 
 if [[ "$1" = "deploy:build" ]] ; then
     echo "Building and publishing the latest web app version to $REMOTE..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+    exit
 fi
 
 if [[ "$1" = "deploy:update" ]] ; then
     echo "Fetching the latest version of the repository to $REMOTE..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
+    exit
 fi
 
-if [[ "$1" = "update" ]] ; then
-    echo "Updating '$REMOTE'..."
+if [[ "$1" = "server:update" ]] ; then
+    echo "Updating server '$REMOTE'..."
     ssh root@$REMOTE 'update'
+    exit
 fi
 
 if [[ "$1" = "task:run" ]] ; then
     echo "Running task '$2 ${@:3}' on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task run $2 ${@:3}"
+    exit
 fi
 
 if [[ "$1" = "task:cron:list" ]] ; then
     echo "Listing cron tasks on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:list"
+    exit
 fi
 
 if [[ "$1" = "task:cron:set" ]] ; then
     echo "Setting cron task '$2' on a '$3' basis on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:set $2 $3"
+    exit
 fi
 
 if [[ "$1" = "task:cron:unset" ]] ; then
     echo "Unsetting a cron task '$2' on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:unset $2"
+    exit
 fi
 
 if [[ "$1" = "task:cron:logs" ]] ; then
     echo "Reading cron logs on '$REMOTE'..."
     ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:logs"
+    exit
 fi
 
+echo "Unknown command."

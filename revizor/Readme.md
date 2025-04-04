@@ -80,7 +80,7 @@ For motivation, see [Boring web frontend development](https://retrovizor.xyz/tex
     * Future (team) usage:
         * Enable something like a GitHub bot for code generation on servers that can be triggered via an API
         * Watch for review comments on PRs, and automatically fix/adjust code based on comments.
-7. Integrate with Django
+7. Integrate with Django: maybe should combine with Dockerisation? if database is introduced, non-dockerised environment can be painful
 
 ### Alpha.2: production optimisations
 
