@@ -28,86 +28,87 @@ EOF
     exit
 fi
 
+# ENV: DOMAIN, REMOTE, REPO, USER
 source $(pwd)/.env
 
 if [[ "$1" = "send:scripts" ]] ; then
     echo "Sending scripts to '$REMOTE'..."
 
-    scp $(pwd)/infrastructure/initialize.remote.sh root@$REMOTE:/usr/local/bin/initialize
-    scp $(pwd)/infrastructure/deploy.remote.sh root@$REMOTE:/usr/local/bin/deploy
-    scp $(pwd)/infrastructure/update.remote.sh root@$REMOTE:/usr/local/bin/update
-    scp $(pwd)/infrastructure/task.remote.sh root@$REMOTE:/usr/local/bin/task
+    scp $(pwd)/infrastructure/initialize.remote.sh $USER@$REMOTE:/usr/local/bin/initialize
+    scp $(pwd)/infrastructure/deploy.remote.sh $USER@$REMOTE:/usr/local/bin/deploy
+    scp $(pwd)/infrastructure/update.remote.sh $USER@$REMOTE:/usr/local/bin/update
+    scp $(pwd)/infrastructure/task.remote.sh $USER@$REMOTE:/usr/local/bin/task
     exit
 fi
 
 if [[ "$1" = "send:assets" ]] ; then
     echo "Sending assets to '$REMOTE'..."
 
-    scp $(pwd)/infrastructure/sites-available/$DOMAIN root@$REMOTE:/etc/nginx/sites-available
+    scp $(pwd)/infrastructure/sites-available/$DOMAIN $USER@$REMOTE:/etc/nginx/sites-available
 
     # TODO: this should be optional
-    scp $(pwd)/infrastructure/sites-available/stats.$DOMAIN root@$REMOTE:/etc/nginx/sites-available
+    scp $(pwd)/infrastructure/sites-available/stats.$DOMAIN $USER@$REMOTE:/etc/nginx/sites-available
     exit
 fi
 
 if [[ "$1" = "init" ]] ; then
     echo "Initializing '$REMOTE'..."
-    ssh root@$REMOTE 'initialize'
+    ssh $USER@$REMOTE 'initialize'
     exit
 fi
 
 if [[ "$1" = "deploy" ]] ; then
     echo "Deploying the latest web app version to $REMOTE..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
-    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
     exit
 fi
 
 if [[ "$1" = "deploy:build" ]] ; then
     echo "Building and publishing the latest web app version to $REMOTE..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy build"
     exit
 fi
 
 if [[ "$1" = "deploy:update" ]] ; then
     echo "Fetching the latest version of the repository to $REMOTE..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN REPO=$REPO deploy update"
     exit
 fi
 
 if [[ "$1" = "server:update" ]] ; then
     echo "Updating server '$REMOTE'..."
-    ssh root@$REMOTE 'update'
+    ssh $USER@$REMOTE 'update'
     exit
 fi
 
 if [[ "$1" = "task:run" ]] ; then
     echo "Running task '$2 ${@:3}' on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task run $2 ${@:3}"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN task run $2 ${@:3}"
     exit
 fi
 
 if [[ "$1" = "task:cron:list" ]] ; then
     echo "Listing cron tasks on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:list"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:list"
     exit
 fi
 
 if [[ "$1" = "task:cron:set" ]] ; then
     echo "Setting cron task '$2' on a '$3' basis on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:set $2 $3"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:set $2 $3"
     exit
 fi
 
 if [[ "$1" = "task:cron:unset" ]] ; then
     echo "Unsetting a cron task '$2' on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:unset $2"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:unset $2"
     exit
 fi
 
 if [[ "$1" = "task:cron:logs" ]] ; then
     echo "Reading cron logs on '$REMOTE'..."
-    ssh root@$REMOTE "DOMAIN=$DOMAIN task cron:logs"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:logs"
     exit
 fi
 
