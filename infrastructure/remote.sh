@@ -12,7 +12,7 @@ $ ./infrastructure/remote.sh init          # Run an initialization script (inclu
 $ ./infrastructure/remote.sh deploy        # Deploy latest version of the web app
 $ ./infrastructure/remote.sh deploy:build  # Build and publish latest version of the web app
 $ ./infrastructure/remote.sh deploy:update # Fetch latest version of the repository
-$ ./infrastructure/remote.sh server:update        # Update server packages and restart services
+$ ./infrastructure/remote.sh server:update # Update server packages and restart services
 
 # Task management
 
@@ -21,6 +21,7 @@ $ ./infrastructure/remote.sh task:cron:list
 $ ./infrastructure/remote.sh task:cron:set <relative/path> "@daily|@weekly|@monthly|<cron expression>"
 $ ./infrastructure/remote.sh task:cron:unset <relative/path>
 $ ./infrastructure/remote.sh task:cron:logs
+$ ./infrastructure/remote.sh task:cron:runlogs
 
 Tasks are NodeJS scripts placed inside the repository.
 EOF
@@ -109,6 +110,12 @@ fi
 if [[ "$1" = "task:cron:logs" ]] ; then
     echo "Reading cron logs on '$REMOTE'..."
     ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:logs"
+    exit
+fi
+
+if [[ "$1" = "task:cron:runlogs" ]] ; then
+    echo "Reading cron task logs on '$REMOTE'..."
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:runlogs"
     exit
 fi
 
