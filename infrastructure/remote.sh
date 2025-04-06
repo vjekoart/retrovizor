@@ -84,7 +84,7 @@ fi
 
 if [[ "$1" = "task:run" ]] ; then
     echo "Running task '$2 ${@:3}' on '$REMOTE'..."
-    ssh $USER@$REMOTE "DOMAIN=$DOMAIN task run $2 ${@:3}"
+    ssh $USER@$REMOTE "DOMAIN=$DOMAIN task run \"$2\" ${@:3}"
     exit
 fi
 
@@ -96,13 +96,13 @@ fi
 
 if [[ "$1" = "task:cron:set" ]] ; then
     echo "Setting cron task '$2' on a '$3' basis on '$REMOTE'..."
-    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:set $2 $3"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:set \"$2\" \"$3\""
     exit
 fi
 
 if [[ "$1" = "task:cron:unset" ]] ; then
     echo "Unsetting a cron task '$2' on '$REMOTE'..."
-    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:unset $2"
+    ssh $USER@$REMOTE "USER=$USER DOMAIN=$DOMAIN task cron:unset \"$2\""
     exit
 fi
 
