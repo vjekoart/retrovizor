@@ -11,7 +11,18 @@ describe( "User journey", () =>
 
     beforeAll( async () =>
     {
-        browser = await puppeteer.launch();
+        const config =
+        {
+            headless : true,
+            args     :
+            [
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ],
+            slowMo   : 100
+        }
+
+        browser = await puppeteer.launch( config );
         page    = await browser.newPage();
 
         await page.setViewport({ width : 1366, height : 768 });
