@@ -349,7 +349,7 @@ const tests =
             specFiles            : units,
             esmFilenameExtension : ".js",
             enableTopLevelAwait  : false,
-            useHtmlReporter      : false,
+            reporters            : [ "jasmine-console-reporter" ],
             env                  :
             {
                 stopSpecOnExpectationFailure : false,
