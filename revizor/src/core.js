@@ -394,9 +394,7 @@ const tests =
             console.info( "Compiled." );
         }
 
-        const results = await JasmineBrowser.runSpecs( config );
-
-        console.info( results );
+        await JasmineBrowser.runSpecs( config );
     }
 }
 
