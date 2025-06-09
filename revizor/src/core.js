@@ -349,7 +349,6 @@ const tests =
             specFiles            : units,
             esmFilenameExtension : ".js",
             enableTopLevelAwait  : false,
-            useHtmlReporter      : false,
             env                  :
             {
                 stopSpecOnExpectationFailure : false,

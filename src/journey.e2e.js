@@ -23,7 +23,7 @@ describe( "User journey", () =>
         const titleSelector = await page.locator( "retro-title >>> a" ).waitHandle();
         const titleText     = await titleSelector?.evaluate( el => el.textContent );
 
-        expect( titleText ).toBe( "Retrovizor" );
+        expect( titleText ).toContain( "trov" ); // Due to funny text
     });
 
     it( "Visit text page", async () =>
@@ -41,20 +41,20 @@ describe( "User journey", () =>
         await page.locator( "retro-nav >>> a[data-name=\"code\"]" ).click();
         await page.waitForNavigation();
 
-        const experimentsSelector = await page.locator( "retro-content-block:nth-child(1)" ).waitHandle();
+        const experimentsSelector = await page.locator( "h2:nth-of-type(1)" ).waitHandle();
         const experimentsTitle    = await experimentsSelector?.evaluate( el => el.textContent );
 
         expect( experimentsTitle ).toContain( "Experiments" );
 
-        const repositoriesSelector = await page.locator( "retro-content-block:nth-child(2)" ).waitHandle();
-        const repositoriesTitle    = await repositoriesSelector?.evaluate( el => el.textContent );
-
-        expect( repositoriesTitle ).toContain( "Git repositories" );
-
-        const gistsSelector = await page.locator( "retro-content-block:nth-child(3)" ).waitHandle();
+        const gistsSelector = await page.locator( "h2:nth-of-type(2)" ).waitHandle();
         const gistsTitle    = await gistsSelector?.evaluate( el => el.textContent );
 
         expect( gistsTitle ).toContain( "Gists" );
+
+        const repositoriesSelector = await page.locator( "h2:nth-of-type(3)" ).waitHandle();
+        const repositoriesTitle    = await repositoriesSelector?.evaluate( el => el.textContent );
+
+        expect( repositoriesTitle ).toContain( "Git repositories" );
     });
 
     it( "Visit user page", async () =>
@@ -62,15 +62,20 @@ describe( "User journey", () =>
         await page.locator( "retro-nav >>> a[data-name=\"user\"]" ).click();
         await page.waitForNavigation();
 
-        const careerSelector = await page.locator( "main h3:first-of-type" ).waitHandle();
+        const presenceSelector = await page.locator( "h2:nth-of-type(1)" ).waitHandle();
+        const presenceTitle    = await presenceSelector?.evaluate( el => el.textContent );
+
+        expect( presenceTitle ).toBe( "Online presence" );
+
+        const careerSelector = await page.locator( "h2:nth-of-type(2)" ).waitHandle();
         const careerTitle    = await careerSelector?.evaluate( el => el.textContent );
 
-        expect( careerTitle ).toBe( "Professional career" );
+        expect( careerTitle ).toBe( "Professional" );
 
-        const personalSelector = await page.locator( "main h3:last-of-type" ).waitHandle();
+        const personalSelector = await page.locator( "h2:nth-of-type(3)" ).waitHandle();
         const personalTitle    = await personalSelector?.evaluate( el => el.textContent );
 
-        expect( personalTitle ).toBe( "Personal work" );
+        expect( personalTitle ).toBe( "Unprofessional" );
     });
 
     it( "Go back to the homepage", async () =>
