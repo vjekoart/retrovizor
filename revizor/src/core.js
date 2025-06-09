@@ -366,7 +366,7 @@ const tests =
             port          : tests.jasmineBrowserServerPort,
             browser       :
             {
-                name : "headlessFirefox"
+                name : "headlessChrome"
             }
         }
 

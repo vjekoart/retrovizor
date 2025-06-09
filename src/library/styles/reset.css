@@ -22,6 +22,10 @@ html
 
     color       : var(--style-color-light);
     background  : var(--style-color-dark);
+
+    text-rendering          : auto;
+    -webkit-font-smoothing  : antialiased;
+    -moz-osx-font-smoothing : grayscale;
 }
 
 body
