@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
 
-# DOMAIN
-# REPO
+# ENV: DOMAIN, REPO
 
 BUILD_DIR="/var/local/$DOMAIN"
 TARGET_DIR="/var/www/$DOMAIN/html"
+
+OLD_BUILD_FIELS="$TARGET_DIR/*"
+NEW_BUILD_FILES="$BUILD_DIR/dist/*"
 
 if [[ "$1" = "update" ]] ; then
     echo "Updating the code..."
@@ -29,8 +31,9 @@ if [[ "$1" = "build" ]] ; then
 
     echo "Replacing artefacts..."
 
-    rm -rf "$TARGET_DIR/*"
-    cp -r "$BUILD_DIR/dist/*" "$TARGET_DIR/"
+    rm -rf $OLD_BUILD_FILES
+    cp -r $NEW_BUILD_FILES "$TARGET_DIR/"
 
     echo "Done."
 fi
+
