@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Retrovizor UI v2</title>
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            html {
+                font-family: monospace;
+                font-size: 16px;
+                font-weight: normal;
+                line-height: 24px;
+
+                color: #e6e6ec;
+                background: #16161d;
+            }
+
+            body {
+                width: 100%;
+                min-height: 100%;
+                background: radial-gradient(#26262d, transparent);
+            }
+
+            main {
+                max-width: 640px;
+                margin: 0 auto;
+                padding: 48px 16px;
+            }
+
+            nav {
+                margin: 0 0 48px 0;
+                text-align: center;
+            }
+
+            nav a {
+                color: #b6b6bd;
+                font-weight: normal;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            ul {
+                margin: 0;
+                padding: 0;
+
+                list-style-type: none;
+                text-align: center;
+            }
+
+            .after,
+            .before {
+                display: inline-block;
+            }
+
+            .after {
+                padding-left: 8px;
+                color: #36363d;
+            }
+
+            .before {
+                padding-right: 8px;
+                color: #66666d;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Text</a>
+                <a href="#">Code</a>
+                <a href="#">User</a>
+            </nav>
+            <ul>
+                <li><span class="before">#01</span>A first title<span class="after">.................</span></li>
+                <li><span class="before">#02</span>Here comes the second title<span class="after">...</span></li>
+                <li><span class="before">#03</span>Yet another title<span class="after">.............</span></li>
+                <li><span class="before">#04</span>Now it's even an article!<span class="after">.....</span></li>
+                <li><span class="before">#05</span>Almost the last shenanigan<span class="after">....</span></li>
+                <li><span class="before">#06</span>Finally, that's it!<span class="after">...........</span></li>
+            </ul>
+        </main>
+    </body>
+</html>
+
